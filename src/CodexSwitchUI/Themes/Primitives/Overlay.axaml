@@ -1,0 +1,59 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:primitives="using:CodexSwitchUI.Primitives">
+  <Style Selector="primitives|CodexOverlay">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="ScrimBrush" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="ScrimOpacity" Value="0.44" />
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="IsHitTestVisible" Value="True" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <DoubleTransition Property="ScrimOpacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="ScrimBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="primitives:CodexOverlay">
+        <Grid x:Name="PART_Root"
+              Background="{TemplateBinding Background}">
+          <Border x:Name="PART_Scrim"
+                  Background="{TemplateBinding ScrimBrush}"
+                  Opacity="{TemplateBinding ScrimOpacity}"
+                  IsVisible="{TemplateBinding IsScrimVisible}" />
+          <ContentPresenter x:Name="PART_Content"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="primitives|CodexOverlay /template/ Border#PART_Scrim">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="primitives|CodexOverlay.is-open">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="IsHitTestVisible" Value="True" />
+  </Style>
+
+  <Style Selector="primitives|CodexOverlay.is-closed">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="ScrimOpacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+
+  <Style Selector="primitives|CodexOverlay:not(.has-scrim) /template/ Border#PART_Scrim">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+</Styles>

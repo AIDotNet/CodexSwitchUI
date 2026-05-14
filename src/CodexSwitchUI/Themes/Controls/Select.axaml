@@ -1,0 +1,354 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexSelect">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingMd}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BackgroundBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.InputBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="PlaceholderForeground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="MaxDropDownHeight" Value="320" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="ItemContainerTheme">
+      <ControlTheme TargetType="ComboBoxItem">
+        <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+        <Setter Property="Padding" Value="10,7" />
+        <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="Transitions">
+          <Transitions>
+            <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+            <BrushTransition Property="Background" Duration="0:0:0.15" />
+            <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+          </Transitions>
+        </Setter>
+        <Setter Property="Template">
+          <ControlTemplate TargetType="ComboBoxItem">
+            <Border x:Name="PART_ItemRoot"
+                    MinHeight="32"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}">
+              <ContentPresenter Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Foreground="{TemplateBinding Foreground}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </Border>
+          </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:pointerover">
+          <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+          <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+        </Style>
+
+        <Style Selector="^:selected">
+          <Setter Property="Background" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+          <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SecondaryForegroundBrush}" />
+        </Style>
+
+        <Style Selector="^:pressed">
+          <Setter Property="Opacity" Value="0.82" />
+        </Style>
+
+        <Style Selector="^:disabled">
+          <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+        </Style>
+      </ControlTheme>
+    </Setter>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSelect">
+        <DataValidationErrors>
+          <Grid ColumnDefinitions="*,34">
+            <Border x:Name="PART_Trigger"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    MinHeight="{TemplateBinding MinHeight}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}" />
+            <Border x:Name="PART_FocusRing"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                    BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    IsHitTestVisible="False"
+                    Opacity="0" />
+            <TextBlock x:Name="PART_Placeholder"
+                       Grid.Column="0"
+                       Margin="{TemplateBinding Padding}"
+                       Text="{TemplateBinding PlaceholderText}"
+                       Foreground="{TemplateBinding PlaceholderForeground}"
+                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+              <TextBlock.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="SelectionBoxItem" RelativeSource="{RelativeSource TemplatedParent}" Converter="{x:Static ObjectConverters.IsNull}" />
+                  <Binding Path="!IsEditable" RelativeSource="{RelativeSource TemplatedParent}" />
+                </MultiBinding>
+              </TextBlock.IsVisible>
+            </TextBlock>
+            <ContentControl x:Name="PART_SelectedContentHost"
+                            Grid.Column="0"
+                            Margin="{TemplateBinding Padding}"
+                            Content="{TemplateBinding SelectionBoxItem}"
+                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                            Foreground="{TemplateBinding Foreground}"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            IsVisible="{TemplateBinding IsEditable, Converter={x:Static BoolConverters.Not}}" />
+            <controls:CodexTextBox x:Name="PART_EditableTextBox"
+                                   Grid.Column="0"
+                                   Margin="1"
+                                   Padding="{TemplateBinding Padding}"
+                                   MinHeight="{TemplateBinding MinHeight}"
+                                   Background="Transparent"
+                                   BorderBrush="Transparent"
+                                   BorderThickness="0"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   PlaceholderForeground="{TemplateBinding PlaceholderForeground}"
+                                   PlaceholderText="{TemplateBinding PlaceholderText}"
+                                   Text="{TemplateBinding Text, Mode=TwoWay}"
+                                   FocusAdorner="{x:Null}"
+                                   IsVisible="{TemplateBinding IsEditable}" />
+            <PathIcon x:Name="PART_Chevron"
+                      Grid.Column="1"
+                      Width="14"
+                      Height="14"
+                      Margin="0,0,12,0"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Center"
+                      Foreground="{TemplateBinding Foreground}"
+                      IsHitTestVisible="False"
+                      RenderTransform="none"
+                      Data="M7 10L12 5L10.6 3.6L7 7.2L3.4 3.6L2 5L7 10Z" />
+            <Popup x:Name="PART_Popup"
+                   WindowManagerAddShadowHint="False"
+                   IsOpen="{TemplateBinding IsDropDownOpen, Mode=TwoWay}"
+                   MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                   MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                   PlacementTarget="PART_Trigger"
+                   Placement="Bottom"
+                   IsLightDismissEnabled="True"
+                   InheritsTransform="True">
+              <Border x:Name="PART_PopupBorder"
+                      Margin="0,6,0,0"
+                      Padding="4"
+                      Background="{DynamicResource CodexSwitch.PopoverBrush}"
+                      BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                      BorderThickness="1"
+                      CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                      Opacity="0"
+                      RenderTransform="scale(0.98)">
+                <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                              VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                              IsScrollChainingEnabled="False"
+                              IsDeferredScrollingEnabled="{TemplateBinding (ScrollViewer.IsDeferredScrollingEnabled)}">
+                  <ItemsPresenter x:Name="PART_ItemsPresenter"
+                                  ItemsPanel="{TemplateBinding ItemsPanel}" />
+                </ScrollViewer>
+              </Border>
+            </Popup>
+          </Grid>
+        </DataValidationErrors>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSelect /template/ Border#PART_Trigger, controls|CodexSelect /template/ Border#PART_PopupBorder">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="BorderThickness" Duration="0:0:0.15" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSelect /template/ Border#PART_FocusRing">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSelect /template/ PathIcon#PART_Chevron">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSelect /template/ controls|CodexTextBox#PART_EditableTextBox /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect /template/ controls|CodexTextBox#PART_EditableTextBox /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect:pointerover /template/ Border#PART_Trigger">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect:focus /template/ Border#PART_Trigger">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect:focus /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect:dropdownopen /template/ Border#PART_Trigger">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect:dropdownopen /template/ PathIcon#PART_Chevron">
+    <Setter Property="RenderTransform" Value="rotate(180deg)" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect.popup-open /template/ Border#PART_PopupBorder">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect:pressed">
+    <Setter Property="Opacity" Value="0.96" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect:disabled /template/ Border#PART_Trigger">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.MutedBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect.size-sm">
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightSm}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingSm}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect.size-lg">
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightLg}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingLg}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect.size-icon">
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect.size-icon /template/ ContentControl#PART_SelectedContentHost">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect.size-icon /template/ TextBlock#PART_Placeholder">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect.size-icon /template/ PathIcon#PART_Chevron">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect.intent-error /template/ Border#PART_Trigger">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect.intent-success /template/ Border#PART_Trigger">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect.intent-warning /template/ Border#PART_Trigger">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect ComboBoxItem">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Padding" Value="10,7" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="ComboBoxItem">
+        <Border x:Name="PART_ItemRoot"
+                MinHeight="32"
+                Background="{TemplateBinding Background}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSelect ComboBoxItem:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect ComboBoxItem:selected">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SecondaryForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect ComboBoxItem:pressed">
+    <Setter Property="Opacity" Value="0.82" />
+  </Style>
+
+  <Style Selector="controls|CodexSelect ComboBoxItem:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+</Styles>

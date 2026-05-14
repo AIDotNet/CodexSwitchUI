@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <Description>Avalonia desktop documentation gallery for CodexSwitchUI.</Description>
+    <BuildProjectReferences>false</BuildProjectReferences>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodexSwitchUI\CodexSwitchUI.csproj" />
+    <ProjectReference Include="..\CodexSwitchUI.ECharts\CodexSwitchUI.ECharts.csproj" />
+  </ItemGroup>
+</Project>

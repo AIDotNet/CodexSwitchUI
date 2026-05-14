@@ -1,0 +1,39 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:easings="using:Avalonia.Animation.Easings"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+  <Styles.Resources>
+    <FontFamily x:Key="CodexSwitch.FontFamily">Inter, Segoe UI, sans-serif</FontFamily>
+    <x:Double x:Key="CodexSwitch.FontSizeSm">12</x:Double>
+    <x:Double x:Key="CodexSwitch.FontSizeMd">14</x:Double>
+    <x:Double x:Key="CodexSwitch.FontSizeLg">16</x:Double>
+
+    <CornerRadius x:Key="CodexSwitch.RadiusSm">4</CornerRadius>
+    <CornerRadius x:Key="CodexSwitch.RadiusMd">6</CornerRadius>
+    <CornerRadius x:Key="CodexSwitch.RadiusLg">8</CornerRadius>
+    <Thickness x:Key="CodexSwitch.FocusThickness">2</Thickness>
+    <Thickness x:Key="CodexSwitch.RingOffset">2</Thickness>
+
+    <x:Double x:Key="CodexSwitch.ControlHeightSm">32</x:Double>
+    <x:Double x:Key="CodexSwitch.ControlHeightMd">40</x:Double>
+    <x:Double x:Key="CodexSwitch.ControlHeightLg">48</x:Double>
+    <Thickness x:Key="CodexSwitch.ControlPaddingSm">12,6</Thickness>
+    <Thickness x:Key="CodexSwitch.ControlPaddingMd">14,8</Thickness>
+    <Thickness x:Key="CodexSwitch.ControlPaddingLg">16,10</Thickness>
+
+    <sys:TimeSpan x:Key="CodexSwitch.MotionDurationFast">0:0:0.12</sys:TimeSpan>
+    <sys:TimeSpan x:Key="CodexSwitch.MotionDurationDefault">0:0:0.15</sys:TimeSpan>
+    <sys:TimeSpan x:Key="CodexSwitch.MotionDurationSlow">0:0:0.22</sys:TimeSpan>
+    <easings:CubicEaseOut x:Key="CodexSwitch.MotionEaseOut" />
+    <easings:CubicEaseInOut x:Key="CodexSwitch.MotionEaseInOut" />
+
+    <x:Double x:Key="CodexSwitch.DisabledOpacity">0.5</x:Double>
+    <x:Double x:Key="CodexSwitch.OverlayOpacity">0.8</x:Double>
+    <x:Double x:Key="CodexSwitch.PopoverEnterOffset">4</x:Double>
+    <x:Double x:Key="CodexSwitch.DialogEnterOffset">8</x:Double>
+    <x:Double x:Key="CodexSwitch.ToastEnterOffset">8</x:Double>
+    <sys:TimeSpan x:Key="CodexSwitch.SkeletonShimmerDuration">0:0:2</sys:TimeSpan>
+    <x:Double x:Key="CodexSwitch.SkeletonShimmerOpacity">0.14</x:Double>
+    <x:Boolean x:Key="CodexSwitch.ReducedMotion">False</x:Boolean>
+  </Styles.Resources>
+</Styles>

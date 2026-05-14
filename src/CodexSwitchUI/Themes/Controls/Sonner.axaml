@@ -1,0 +1,98 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexSonner">
+    <Setter Property="MinWidth" Value="320" />
+    <Setter Property="MaxWidth" Value="420" />
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <ThicknessTransition Property="Margin" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSonner.empty">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.position-top-left">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.position-top-center">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.position-top-right">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.position-bottom-left">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.position-bottom-center">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.position-bottom-right">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.compact">
+    <Setter Property="Spacing" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner controls|CodexToast">
+    <Setter Property="MinWidth" Value="320" />
+    <Setter Property="MaxWidth" Value="420" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner Border.sonner-toast">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.18" />
+        <DoubleTransition Property="MaxHeight" Duration="0:0:0.16" />
+        <ThicknessTransition Property="Margin" Duration="0:0:0.16" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSonner Border.sonner-toast.open">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="MaxHeight" Value="1000" />
+    <Setter Property="Margin" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner Border.sonner-toast.closing">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="MaxHeight" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.rich-colors controls|CodexToast.variant-success">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.rich-colors controls|CodexToast.variant-warning">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.rich-colors controls|CodexToast.variant-destructive">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexSonner.close-hidden controls|CodexToast /template/ Button#PART_Close">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+</Styles>

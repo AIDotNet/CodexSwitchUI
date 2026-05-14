@@ -1,0 +1,174 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexCheckBox">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexCheckBox">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Border x:Name="PART_Box"
+                  Width="16"
+                  Height="16"
+                  CornerRadius="{DynamicResource CodexSwitch.RadiusSm}"
+                  Background="{DynamicResource CodexSwitch.BackgroundBrush}"
+                  BorderBrush="{DynamicResource CodexSwitch.InputBrush}"
+                  BorderThickness="1"
+                  RenderTransform="none"
+                  VerticalAlignment="Center">
+            <Grid>
+              <Border x:Name="PART_FocusRing"
+                      BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                      BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                      CornerRadius="{DynamicResource CodexSwitch.RadiusSm}"
+                      IsHitTestVisible="False"
+                      Opacity="0" />
+              <PathIcon x:Name="PART_Check"
+                        Width="12"
+                        Height="12"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource CodexSwitch.PrimaryForegroundBrush}"
+                        Opacity="0"
+                        RenderTransform="scale(0.65)"
+                        Data="M4 10L8 14L16 5L17.5 6.5L8 17L2.5 11.5Z" />
+              <Border x:Name="PART_Indeterminate"
+                      Width="9"
+                      Height="2"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      CornerRadius="1"
+                      Background="{DynamicResource CodexSwitch.PrimaryForegroundBrush}"
+                      Opacity="0"
+                      RenderTransform="scale(0.65)" />
+            </Grid>
+          </Border>
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            VerticalAlignment="Center" />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox /template/ Border#PART_Box">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="BorderThickness" Duration="0:0:0.15" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.10" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox /template/ PathIcon#PART_Check, controls|CodexCheckBox /template/ Border#PART_Indeterminate">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox /template/ Border#PART_FocusRing">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox:pointerover /template/ Border#PART_Box">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox:checked /template/ Border#PART_Box">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox:checked /template/ PathIcon#PART_Check">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox:indeterminate /template/ Border#PART_Box">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox:indeterminate /template/ Border#PART_Indeterminate">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox:pressed /template/ Border#PART_Box">
+    <Setter Property="RenderTransform" Value="scale(0.92)" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox:focus /template/ Border#PART_Box">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox:focus /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox.size-sm">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox.size-sm /template/ Border#PART_Box">
+    <Setter Property="Width" Value="14" />
+    <Setter Property="Height" Value="14" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox.size-lg">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox.size-lg /template/ Border#PART_Box">
+    <Setter Property="Width" Value="18" />
+    <Setter Property="Height" Value="18" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox.size-icon">
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox.size-icon /template/ Border#PART_Box">
+    <Setter Property="Width" Value="16" />
+    <Setter Property="Height" Value="16" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox.intent-error /template/ Border#PART_Box">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox.intent-success /template/ Border#PART_Box">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCheckBox.intent-warning /template/ Border#PART_Box">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+</Styles>

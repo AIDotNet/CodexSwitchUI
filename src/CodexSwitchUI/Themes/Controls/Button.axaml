@@ -1,0 +1,249 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexButton">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingMd}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PrimaryForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="RenderTransform" Value="none" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.10" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexButton">
+        <Grid MinWidth="{TemplateBinding MinWidth}"
+              MinHeight="{TemplateBinding MinHeight}">
+          <Border x:Name="PART_Root"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}">
+            <StackPanel x:Name="PART_ContentLayout"
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+              <ContentControl x:Name="PART_LoadingIndicator"
+                              Width="16"
+                              Height="16"
+                              IsVisible="False">
+                <controls:CodexSpinner Width="16"
+                                        Height="16"
+                                        MinWidth="16"
+                                        MinHeight="16"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        StrokeThickness="2"
+                                        Label="Loading button" />
+              </ContentControl>
+              <ContentControl x:Name="PART_LoadingContent"
+                              Content="{TemplateBinding LoadingContent}"
+                              IsVisible="False" />
+              <ContentControl x:Name="PART_LeadingIcon"
+                              Content="{TemplateBinding LeadingIcon}"
+                              IsVisible="False" />
+              <ContentPresenter x:Name="PART_ContentPresenter"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                RecognizesAccessKey="True"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+              <ContentControl x:Name="PART_TrailingIcon"
+                              Content="{TemplateBinding TrailingIcon}"
+                              IsVisible="False" />
+            </StackPanel>
+          </Border>
+          <Border x:Name="PART_FocusRing"
+                  BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                  BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  IsHitTestVisible="False"
+                  Opacity="0" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexButton /template/ Border#PART_Root">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="BorderThickness" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexButton /template/ Border#PART_FocusRing">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexButton /template/ ContentControl#PART_LoadingIndicator">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexButton:pointerover">
+    <Setter Property="Opacity" Value="0.92" />
+  </Style>
+
+  <Style Selector="controls|CodexButton:pressed">
+    <Setter Property="Opacity" Value="0.86" />
+    <Setter Property="RenderTransform" Value="scale(0.98)" />
+  </Style>
+
+  <Style Selector="controls|CodexButton:focus /template/ Border#PART_Root">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexButton:focus /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexButton:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.is-loading">
+    <Setter Property="Cursor" Value="Wait" />
+    <Setter Property="Opacity" Value="0.82" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.is-loading /template/ ContentControl#PART_LoadingIndicator">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.is-loading.has-loading-content /template/ ContentControl#PART_LoadingIndicator">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.is-loading.has-loading-content /template/ ContentControl#PART_LoadingContent">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.has-leading-icon /template/ ContentControl#PART_LeadingIcon">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.has-trailing-icon /template/ ContentControl#PART_TrailingIcon">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.size-sm">
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightSm}" />
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightSm}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingSm}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.size-lg">
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightLg}" />
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightLg}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingLg}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.size-icon">
+    <Setter Property="Width" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Height" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-secondary">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SecondaryForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-secondary:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-destructive">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-outline">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-outline:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-ghost">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-ghost:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-link">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="MinHeight" Value="0" />
+    <Setter Property="MinWidth" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-link:pointerover">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Opacity" Value="0.75" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-success">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SuccessForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexButton.variant-warning">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.WarningForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+</Styles>

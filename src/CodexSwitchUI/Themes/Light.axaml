@@ -1,0 +1,29 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Styles.Resources>
+    <SolidColorBrush x:Key="CodexSwitch.BackgroundBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="CodexSwitch.ForegroundBrush" Color="#FF09090B" />
+    <SolidColorBrush x:Key="CodexSwitch.CardBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="CodexSwitch.CardForegroundBrush" Color="#FF09090B" />
+    <SolidColorBrush x:Key="CodexSwitch.PopoverBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="CodexSwitch.PopoverForegroundBrush" Color="#FF09090B" />
+    <SolidColorBrush x:Key="CodexSwitch.PrimaryBrush" Color="#FF18181B" />
+    <SolidColorBrush x:Key="CodexSwitch.PrimaryForegroundBrush" Color="#FFFAFAFA" />
+    <SolidColorBrush x:Key="CodexSwitch.SecondaryBrush" Color="#FFF4F4F5" />
+    <SolidColorBrush x:Key="CodexSwitch.SecondaryForegroundBrush" Color="#FF18181B" />
+    <SolidColorBrush x:Key="CodexSwitch.MutedBrush" Color="#FFF4F4F5" />
+    <SolidColorBrush x:Key="CodexSwitch.MutedForegroundBrush" Color="#FF71717A" />
+    <SolidColorBrush x:Key="CodexSwitch.AccentBrush" Color="#FFF4F4F5" />
+    <SolidColorBrush x:Key="CodexSwitch.AccentForegroundBrush" Color="#FF18181B" />
+    <SolidColorBrush x:Key="CodexSwitch.DestructiveBrush" Color="#FFEF4444" />
+    <SolidColorBrush x:Key="CodexSwitch.DestructiveForegroundBrush" Color="#FFFAFAFA" />
+    <SolidColorBrush x:Key="CodexSwitch.BorderBrush" Color="#FFE4E4E7" />
+    <SolidColorBrush x:Key="CodexSwitch.InputBrush" Color="#FFE4E4E7" />
+    <SolidColorBrush x:Key="CodexSwitch.RingBrush" Color="#FFA1A1AA" />
+    <SolidColorBrush x:Key="CodexSwitch.SkeletonShimmerBrush" Color="#2409090B" />
+    <SolidColorBrush x:Key="CodexSwitch.SuccessBrush" Color="#FF16A34A" />
+    <SolidColorBrush x:Key="CodexSwitch.SuccessForegroundBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="CodexSwitch.WarningBrush" Color="#FFF59E0B" />
+    <SolidColorBrush x:Key="CodexSwitch.WarningForegroundBrush" Color="#FF09090B" />
+  </Styles.Resources>
+</Styles>

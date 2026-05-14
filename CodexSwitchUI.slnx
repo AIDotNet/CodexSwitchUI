@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CodexSwitchUI.Docs/CodexSwitchUI.Docs.csproj" />
+    <Project Path="src/CodexSwitchUI.ECharts/CodexSwitchUI.ECharts.csproj" />
+    <Project Path="src/CodexSwitchUI/CodexSwitchUI.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CodexSwitchUI.Tests/CodexSwitchUI.Tests.csproj" />
+  </Folder>
+</Solution>

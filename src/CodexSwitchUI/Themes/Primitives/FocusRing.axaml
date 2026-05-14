@@ -1,0 +1,51 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:primitives="using:CodexSwitchUI.Primitives">
+  <Style Selector="primitives|CodexFocusRing">
+    <Setter Property="RingBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+    <Setter Property="RingThickness" Value="{DynamicResource CodexSwitch.FocusThickness}" />
+    <Setter Property="RingOffset" Value="2" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="RingBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="RingThickness" Duration="0:0:0.15" />
+        <ThicknessTransition Property="RingOffset" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="primitives:CodexFocusRing">
+        <Grid x:Name="PART_Root"
+              ClipToBounds="False">
+          <ContentPresenter x:Name="PART_Content"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+          <Border x:Name="PART_Ring"
+                  Margin="{TemplateBinding RingOffset}"
+                  BorderBrush="{TemplateBinding RingBrush}"
+                  BorderThickness="{TemplateBinding RingThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  IsHitTestVisible="False"
+                  IsVisible="{TemplateBinding IsRingVisible}" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="primitives|CodexFocusRing /template/ Border#PART_Ring">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="BorderThickness" Duration="0:0:0.15" />
+        <ThicknessTransition Property="Margin" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="primitives|CodexFocusRing:not(:focus-within) /template/ Border#PART_Ring">
+    <Setter Property="Opacity" Value="0.74" />
+  </Style>
+</Styles>

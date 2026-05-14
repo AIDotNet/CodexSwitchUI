@@ -1,0 +1,157 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexRadio">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexRadio">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Border x:Name="PART_Ring"
+                  Width="16"
+                  Height="16"
+                  CornerRadius="8"
+                  Background="{DynamicResource CodexSwitch.BackgroundBrush}"
+                  BorderBrush="{DynamicResource CodexSwitch.InputBrush}"
+                  BorderThickness="1"
+                  RenderTransform="none"
+                  VerticalAlignment="Center">
+            <Grid>
+              <Border x:Name="PART_FocusRing"
+                      BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                      BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                      CornerRadius="8"
+                      IsHitTestVisible="False"
+                      Opacity="0" />
+              <Border x:Name="PART_Dot"
+                      Width="8"
+                      Height="8"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      CornerRadius="4"
+                      Background="{DynamicResource CodexSwitch.PrimaryBrush}"
+                      Opacity="0"
+                      RenderTransform="scale(0.55)" />
+            </Grid>
+          </Border>
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            VerticalAlignment="Center" />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexRadio /template/ Border#PART_Ring">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="BorderThickness" Duration="0:0:0.15" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.10" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexRadio /template/ Border#PART_Dot">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexRadio /template/ Border#PART_FocusRing">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexRadio:pointerover /template/ Border#PART_Ring">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio:checked /template/ Border#PART_Ring">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio:checked /template/ Border#PART_Dot">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio:pressed /template/ Border#PART_Ring">
+    <Setter Property="RenderTransform" Value="scale(0.92)" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio:focus /template/ Border#PART_Ring">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio:focus /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio.size-sm">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio.size-sm /template/ Border#PART_Ring">
+    <Setter Property="Width" Value="14" />
+    <Setter Property="Height" Value="14" />
+    <Setter Property="CornerRadius" Value="7" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio.size-lg">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio.size-lg /template/ Border#PART_Ring">
+    <Setter Property="Width" Value="18" />
+    <Setter Property="Height" Value="18" />
+    <Setter Property="CornerRadius" Value="9" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio.size-icon">
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio.size-icon /template/ Border#PART_Ring">
+    <Setter Property="Width" Value="16" />
+    <Setter Property="Height" Value="16" />
+    <Setter Property="CornerRadius" Value="8" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio.intent-error /template/ Border#PART_Ring">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio.intent-success /template/ Border#PART_Ring">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexRadio.intent-warning /template/ Border#PART_Ring">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+</Styles>

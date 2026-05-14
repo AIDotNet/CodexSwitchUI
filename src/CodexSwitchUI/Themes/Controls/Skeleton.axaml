@@ -1,0 +1,61 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexSkeleton">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="ShimmerBrush" Value="{DynamicResource CodexSwitch.SkeletonShimmerBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="MinHeight" Value="16" />
+    <Setter Property="PulseOpacity" Value="1" />
+    <Setter Property="PulseLowOpacity" Value="0.5" />
+    <Setter Property="PulseHighOpacity" Value="1" />
+    <Setter Property="PulseDuration" Value="{DynamicResource CodexSwitch.SkeletonShimmerDuration}" />
+    <Setter Property="ShimmerOpacity" Value="0" />
+    <Setter Property="ShimmerLowOpacity" Value="0" />
+    <Setter Property="ShimmerHighOpacity" Value="0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="ShimmerBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSkeleton">
+        <Border x:Name="PART_Surface"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Opacity="{TemplateBinding PulseOpacity}"
+                ClipToBounds="True">
+          <Grid>
+            <Border x:Name="PART_Shimmer"
+                    Background="{TemplateBinding ShimmerBrush}"
+                    Opacity="{TemplateBinding ShimmerOpacity}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsVisible="{TemplateBinding IsAnimated}" />
+            <ContentPresenter x:Name="PART_Content"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSkeleton /template/ Border#PART_Surface, controls|CodexSkeleton /template/ Border#PART_Shimmer">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSkeleton.static">
+    <Setter Property="PulseOpacity" Value="1" />
+    <Setter Property="ShimmerOpacity" Value="0" />
+  </Style>
+</Styles>

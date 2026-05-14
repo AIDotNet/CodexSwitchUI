@@ -1,0 +1,5 @@
+<Styles xmlns="https://github.com/avaloniaui">
+  <StyleInclude Source="avares://CodexSwitchUI/Tokens/BaseTokens.axaml" />
+  <StyleInclude Source="avares://CodexSwitchUI/Themes/Light.axaml" />
+  <StyleInclude Source="avares://CodexSwitchUI/Themes/ComponentStyles.axaml" />
+</Styles>

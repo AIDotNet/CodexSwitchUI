@@ -1,0 +1,105 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls"
+        x:CompileBindings="False">
+  <Style Selector="controls|CodexProgress">
+    <Setter Property="Height" Value="8" />
+    <Setter Property="MinHeight" Value="8" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexProgress">
+        <Border x:Name="PART_Track"
+                Height="{TemplateBinding Height}"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                CornerRadius="{DynamicResource CodexSwitch.RadiusLg}"
+                ClipToBounds="True">
+          <Grid>
+            <Border x:Name="PART_Indicator"
+                    HorizontalAlignment="Left"
+                    Width="{Binding TemplateSettings.ContainerWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                    Background="{TemplateBinding Foreground}"
+                    CornerRadius="{DynamicResource CodexSwitch.RadiusLg}" />
+            <Border x:Name="PART_IndeterminateIndicator"
+                    Width="72"
+                    HorizontalAlignment="Left"
+                    Background="{TemplateBinding Foreground}"
+                    CornerRadius="{DynamicResource CodexSwitch.RadiusLg}"
+                    Opacity="0"
+                    IsVisible="False" />
+            <TextBlock x:Name="PART_Text"
+                       IsVisible="{TemplateBinding ShowProgressText}"
+                       Text="{Binding Percentage, RelativeSource={RelativeSource TemplatedParent}, StringFormat={}{0:0}%}"
+                       Foreground="{DynamicResource CodexSwitch.PrimaryForegroundBrush}"
+                       FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                       FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexProgress /template/ Border#PART_Track, controls|CodexProgress /template/ Border#PART_Indicator, controls|CodexProgress /template/ Border#PART_IndeterminateIndicator">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <DoubleTransition Property="Width" Duration="0:0:0.2" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexProgress.indeterminate /template/ Border#PART_Indicator">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexProgress.indeterminate /template/ Border#PART_IndeterminateIndicator">
+    <Setter Property="IsVisible" Value="True" />
+    <Setter Property="Opacity" Value="0.72" />
+  </Style>
+
+  <Style Selector="controls|CodexProgress:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexProgress.size-sm">
+    <Setter Property="Height" Value="6" />
+    <Setter Property="MinHeight" Value="6" />
+  </Style>
+
+  <Style Selector="controls|CodexProgress.size-lg">
+    <Setter Property="Height" Value="12" />
+    <Setter Property="MinHeight" Value="12" />
+  </Style>
+
+  <Style Selector="controls|CodexProgress.variant-destructive">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexProgress.variant-success">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexProgress.variant-warning">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexProgress.variant-secondary">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+  </Style>
+</Styles>

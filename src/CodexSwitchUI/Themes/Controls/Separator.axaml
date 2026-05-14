@@ -1,0 +1,67 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexSeparator">
+    <Setter Property="Height" Value="1" />
+    <Setter Property="MinHeight" Value="1" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="CornerRadius" Value="1" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="PART_Line"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                MinWidth="{TemplateBinding MinWidth}"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                CornerRadius="{TemplateBinding CornerRadius}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSeparator.vertical">
+    <Setter Property="Width" Value="1" />
+    <Setter Property="MinWidth" Value="1" />
+    <Setter Property="Height" Value="24" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexSeparator.size-sm.horizontal">
+    <Setter Property="Opacity" Value="0.72" />
+  </Style>
+
+  <Style Selector="controls|CodexSeparator.size-lg.horizontal">
+    <Setter Property="Height" Value="2" />
+    <Setter Property="MinHeight" Value="2" />
+  </Style>
+
+  <Style Selector="controls|CodexSeparator.size-sm.vertical">
+    <Setter Property="Height" Value="16" />
+    <Setter Property="Opacity" Value="0.72" />
+  </Style>
+
+  <Style Selector="controls|CodexSeparator.size-lg.vertical">
+    <Setter Property="Width" Value="2" />
+    <Setter Property="MinWidth" Value="2" />
+    <Setter Property="Height" Value="32" />
+  </Style>
+
+  <Style Selector="controls|CodexSeparator.size-icon.horizontal">
+    <Setter Property="Height" Value="1" />
+    <Setter Property="MinHeight" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexSeparator.size-icon.vertical">
+    <Setter Property="Width" Value="1" />
+    <Setter Property="MinWidth" Value="1" />
+    <Setter Property="Height" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+  </Style>
+</Styles>

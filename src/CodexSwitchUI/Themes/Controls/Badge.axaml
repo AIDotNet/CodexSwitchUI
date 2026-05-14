@@ -1,0 +1,153 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexBadge">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PrimaryForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="Padding" Value="8,2" />
+    <Setter Property="MinHeight" Value="20" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="ClipToBounds" Value="True" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexBadge">
+        <Border x:Name="PART_Surface"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <StackPanel Orientation="Horizontal"
+                      Spacing="6"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+            <Border x:Name="PART_Status"
+                    Width="6"
+                    Height="6"
+                    CornerRadius="3"
+                    Background="{DynamicResource CodexSwitch.SuccessBrush}"
+                    IsVisible="{TemplateBinding IsStatusVisible}" />
+            <ContentPresenter x:Name="PART_Content"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+          </StackPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexBadge /template/ Border#PART_Surface, controls|CodexBadge /template/ Border#PART_Status">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexBadge:pointerover">
+    <Setter Property="Opacity" Value="0.88" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.size-sm">
+    <Setter Property="Padding" Value="6,1" />
+    <Setter Property="MinHeight" Value="18" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.size-lg">
+    <Setter Property="Padding" Value="10,3" />
+    <Setter Property="MinHeight" Value="24" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.size-icon">
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="MinHeight" Value="20" />
+    <Setter Property="Width" Value="20" />
+    <Setter Property="Height" Value="20" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.variant-secondary">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SecondaryForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.variant-outline">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BackgroundBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.variant-destructive">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.variant-success">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SuccessForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.variant-warning">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.WarningForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.variant-ghost">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.variant-ghost:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.variant-link">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="MinHeight" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.status-default /template/ Border#PART_Status, controls|CodexBadge.status-secondary /template/ Border#PART_Status">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.status-destructive /template/ Border#PART_Status">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.status-success /template/ Border#PART_Status">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexBadge.status-warning /template/ Border#PART_Status">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+</Styles>

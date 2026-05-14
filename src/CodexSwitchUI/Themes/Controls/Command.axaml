@@ -1,0 +1,324 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexCommand">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PopoverBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="ClipToBounds" Value="True" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="PART_Surface"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}">
+          <DockPanel>
+            <Border x:Name="PART_InputShell"
+                    DockPanel.Dock="Top"
+                    Background="{DynamicResource CodexSwitch.PopoverBrush}"
+                    BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                    BorderThickness="0,0,0,1"
+                    Padding="12,8">
+              <controls:CodexCommandInput x:Name="PART_Input"
+                                          PlaceholderText="{TemplateBinding Placeholder}" />
+            </Border>
+            <ContentPresenter Margin="0,6,0,0"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+          </DockPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommand:focus /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCommand.loading">
+    <Setter Property="Opacity" Value="0.88" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandInput">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="MinHeight" Value="28" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="CornerRadius" Value="0" />
+    <Setter Property="SelectionBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="SelectionForegroundBrush" Value="{DynamicResource CodexSwitch.PrimaryForegroundBrush}" />
+    <Setter Property="CaretBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="PlaceholderForeground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexCommandInput">
+        <Border x:Name="PART_InputRoot"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}">
+          <DockPanel Margin="{TemplateBinding Padding}">
+            <ScrollViewer x:Name="PART_ScrollViewer"
+                          HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                          VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
+                          IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
+                          AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}"
+                          BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}">
+              <Panel>
+                <TextBlock x:Name="PART_Placeholder"
+                           Foreground="{TemplateBinding PlaceholderForeground}"
+                           Opacity="0.72"
+                           Text="{TemplateBinding PlaceholderText}"
+                           TextAlignment="{TemplateBinding TextAlignment}"
+                           TextWrapping="{TemplateBinding TextWrapping}"
+                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                  <TextBlock.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.And}">
+                      <Binding ElementName="PART_TextPresenter" Path="PreeditText" Converter="{x:Static StringConverters.IsNullOrEmpty}" />
+                      <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Text" Converter="{x:Static StringConverters.IsNullOrEmpty}" />
+                    </MultiBinding>
+                  </TextBlock.IsVisible>
+                </TextBlock>
+                <TextPresenter x:Name="PART_TextPresenter"
+                               Text="{TemplateBinding Text, Mode=TwoWay}"
+                               CaretBlinkInterval="{TemplateBinding CaretBlinkInterval}"
+                               CaretIndex="{TemplateBinding CaretIndex}"
+                               SelectionStart="{TemplateBinding SelectionStart}"
+                               SelectionEnd="{TemplateBinding SelectionEnd}"
+                               TextAlignment="{TemplateBinding TextAlignment}"
+                               TextWrapping="{TemplateBinding TextWrapping}"
+                               LineHeight="{TemplateBinding LineHeight}"
+                               LetterSpacing="{TemplateBinding LetterSpacing}"
+                               PasswordChar="{TemplateBinding PasswordChar}"
+                               RevealPassword="{TemplateBinding RevealPassword}"
+                               SelectionBrush="{TemplateBinding SelectionBrush}"
+                               SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                               CaretBrush="{TemplateBinding CaretBrush}"
+                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+              </Panel>
+            </ScrollViewer>
+          </DockPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandInput:focus">
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandList">
+    <Setter Property="Margin" Value="4,0,4,6" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Spacing="2" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Margin="{TemplateBinding Margin}">
+          <ItemsPresenter />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandGroup">
+    <Setter Property="Margin" Value="0,4,0,0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Spacing="2" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <StackPanel Margin="{TemplateBinding Margin}">
+          <ContentPresenter Content="{TemplateBinding Header}"
+                            Margin="8,6,8,4"
+                            FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                            FontWeight="SemiBold"
+                            Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+          <ItemsPresenter />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="MinHeight" Value="36" />
+    <Setter Property="Padding" Value="8,7" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="PART_ItemRoot"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <Grid ColumnDefinitions="Auto,*,Auto">
+            <ContentPresenter x:Name="PART_Icon"
+                              Content="{TemplateBinding Icon}"
+                              IsVisible="{TemplateBinding HasIcon}"
+                              Margin="0,0,8,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+            <ContentPresenter x:Name="PART_Content"
+                              Grid.Column="1"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+            <TextBlock x:Name="PART_Shortcut"
+                       Grid.Column="2"
+                       Margin="12,0,0,0"
+                       Text="{TemplateBinding Shortcut}"
+                       IsVisible="{TemplateBinding HasShortcut}"
+                       FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                       Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                       VerticalAlignment="Center" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem:pointerover">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem:pointerover /template/ Border#PART_ItemRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem:focus /template/ Border#PART_ItemRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem.active">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem.active /template/ Border#PART_ItemRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexCommand Separator">
+    <Setter Property="Height" Value="1" />
+    <Setter Property="Margin" Value="6,4" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border x:Name="PART_Separator"
+                Height="{TemplateBinding Height}"
+                Margin="{TemplateBinding Margin}"
+                Background="{TemplateBinding Background}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandEmpty">
+    <Setter Property="Padding" Value="18,24" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandLoading">
+    <Setter Property="Padding" Value="18,24" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="Opacity" Value="0.7" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

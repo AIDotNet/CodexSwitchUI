@@ -1,0 +1,45 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:primitives="using:CodexSwitchUI.Primitives">
+  <Style Selector="primitives|CodexText">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="LineHeight" Value="22" />
+    <Setter Property="TextWrapping" Value="Wrap" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="primitives|CodexText.role-title">
+    <Setter Property="FontSize" Value="26" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="LineHeight" Value="32" />
+  </Style>
+
+  <Style Selector="primitives|CodexText.role-subtitle">
+    <Setter Property="FontSize" Value="18" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="LineHeight" Value="24" />
+  </Style>
+
+  <Style Selector="primitives|CodexText.role-body">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="LineHeight" Value="22" />
+  </Style>
+
+  <Style Selector="primitives|CodexText.role-muted">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="LineHeight" Value="20" />
+  </Style>
+
+  <Style Selector="primitives|CodexText.role-code">
+    <Setter Property="FontFamily" Value="Consolas, Cascadia Mono, monospace" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.MutedBrush}" />
+    <Setter Property="LineHeight" Value="20" />
+  </Style>
+</Styles>

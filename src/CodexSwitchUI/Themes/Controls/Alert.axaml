@@ -1,0 +1,167 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexAlert">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Padding" Value="16,14" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexAlert">
+        <Border x:Name="PART_Surface"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <Grid ColumnDefinitions="Auto,*,Auto"
+                RowDefinitions="Auto,Auto,Auto"
+                ColumnSpacing="12"
+                RowSpacing="4">
+            <ContentPresenter x:Name="PART_Icon"
+                              Grid.Row="0"
+                              Grid.RowSpan="3"
+                              Grid.Column="0"
+                              Width="16"
+                              Height="16"
+                              Content="{TemplateBinding Icon}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Top"
+                              IsVisible="{TemplateBinding HasIcon}" />
+            <PathIcon x:Name="PART_DefaultIcon"
+                      Grid.Row="0"
+                      Grid.RowSpan="3"
+                      Grid.Column="0"
+                      Width="16"
+                      Height="16"
+                      Foreground="{TemplateBinding Foreground}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Top"
+                      Data="M8 1.5L15 14.5H1L8 1.5ZM8 5.4V9.2M8 11.4V11.6"
+                      IsVisible="True" />
+            <TextBlock x:Name="PART_Title"
+                       Grid.Row="0"
+                       Grid.Column="1"
+                       Text="{TemplateBinding Title}"
+                       Foreground="{TemplateBinding Foreground}"
+                       FontFamily="{TemplateBinding FontFamily}"
+                       FontSize="{DynamicResource CodexSwitch.FontSizeMd}"
+                       FontWeight="SemiBold"
+                       LineHeight="20"
+                       TextWrapping="Wrap"
+                       IsVisible="{TemplateBinding HasTitle}" />
+            <TextBlock x:Name="PART_Description"
+                       Grid.Row="1"
+                       Grid.Column="1"
+                       Text="{TemplateBinding Description}"
+                       Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                       FontFamily="{TemplateBinding FontFamily}"
+                       FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                       LineHeight="20"
+                       TextWrapping="Wrap"
+                       IsVisible="{TemplateBinding HasDescription}" />
+            <ContentPresenter x:Name="PART_Content"
+                              Grid.Row="2"
+                              Grid.Column="1"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+            <ContentPresenter x:Name="PART_Action"
+                              Grid.Row="0"
+                              Grid.RowSpan="3"
+                              Grid.Column="2"
+                              Content="{TemplateBinding Action}"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Top"
+                              IsVisible="{TemplateBinding HasAction}" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexAlert /template/ Border#PART_Surface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexAlert /template/ ContentPresenter#PART_Icon">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexAlert /template/ PathIcon#PART_DefaultIcon">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexAlert:pointerover /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexAlert.has-icon /template/ PathIcon#PART_DefaultIcon">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexAlert.variant-destructive">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexAlert.variant-destructive /template/ TextBlock#PART_Description">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexAlert.variant-success">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexAlert.variant-warning">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexAlert.variant-secondary">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SecondaryForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexAlert.variant-outline">
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexAlert.variant-ghost">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexAlert.variant-link">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+  </Style>
+</Styles>
