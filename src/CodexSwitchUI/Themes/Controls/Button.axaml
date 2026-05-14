@@ -61,7 +61,7 @@
               <ContentControl x:Name="PART_LeadingIcon"
                               Content="{TemplateBinding LeadingIcon}"
                               IsVisible="False" />
-              <ContentPresenter x:Name="PART_ContentPresenter"
+              <ContentPresenter x:Name="PART_CodexButtonContent"
                                 Content="{TemplateBinding Content}"
                                 ContentTemplate="{TemplateBinding ContentTemplate}"
                                 RecognizesAccessKey="True"

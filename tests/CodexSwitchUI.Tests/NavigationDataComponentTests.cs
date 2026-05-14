@@ -30,13 +30,37 @@ public class NavigationDataComponentTests
         };
         var contextMenuLabel = new CodexContextMenuLabel { IsInset = true };
         var contextMenuGroup = new CodexContextMenuGroup { Header = "View" };
+        var menuGroup = new CodexMenuGroup { Header = "Components" };
         var command = new CodexCommand { IsLoading = true };
         var commandItem = new CodexCommandItem { IsActive = true, Icon = ">", Shortcut = "Ctrl+K" };
         var collapsible = new CodexCollapsible { Header = "Repository", Content = "Branches", IsOpen = true, Size = CodexControlSize.Large };
+        var sidebarMenuButton = new CodexSidebarMenuButton
+        {
+            Content = "Home",
+            Icon = ">",
+            Badge = "3",
+            IsActive = true,
+            Size = CodexControlSize.Small
+        };
+        var sidebarMenuAction = new CodexSidebarMenuAction { IsActive = true, IsShowOnHover = true };
+        var sidebarSubButton = new CodexSidebarMenuSubButton { IsActive = true };
         var table = new CodexTable { IsHoverable = false, IsStriped = true, IsCompact = true };
+        var tableHeader = new CodexTableHeader();
+        var tableBody = new CodexTableBody();
+        var tableFooter = new CodexTableFooter();
         var row = new CodexTableRow { IsSelected = true };
         var head = new CodexTableHead { Alignment = CodexTableCellAlignment.Right };
         var cell = new CodexTableCell { Alignment = CodexTableCellAlignment.Center };
+        var rankedBarChart = new CodexRankedBarChart
+        {
+            IsCompact = true,
+            MaxVisibleItems = 4,
+            ItemsSource =
+            [
+                new CodexRankedBarChartItem("OpenAI", 12, "12", "$0.04"),
+                new CodexRankedBarChartItem("Anthropic", 8, "8", "$0.02")
+            ]
+        };
         var avatar = new CodexAvatar { Size = CodexControlSize.Icon };
         var card = new CodexCard { IsInteractive = true, Title = "Metrics", Description = "Updated", Content = "42", Footer = "Footer" };
         var separator = new CodexSeparator { Orientation = Orientation.Vertical, Size = CodexControlSize.Large };
@@ -69,6 +93,9 @@ public class NavigationDataComponentTests
         Assert.Contains("inset", contextMenuLabel.Classes);
         Assert.True(contextMenuGroup.HasHeader);
         Assert.Contains("has-header", contextMenuGroup.Classes);
+        Assert.IsAssignableFrom<MenuItem>(menuGroup);
+        Assert.False(menuGroup.Focusable);
+        Assert.Equal("Components", menuGroup.Header);
         Assert.Contains("loading", command.Classes);
         Assert.Contains("active", commandItem.Classes);
         Assert.Contains("has-icon", commandItem.Classes);
@@ -79,12 +106,33 @@ public class NavigationDataComponentTests
         Assert.Contains("has-header", collapsible.Classes);
         Assert.Contains("has-content", collapsible.Classes);
         Assert.True(collapsible.IsContentVisible);
+        Assert.Contains("active", sidebarMenuButton.Classes);
+        Assert.Contains("has-icon", sidebarMenuButton.Classes);
+        Assert.Contains("has-badge", sidebarMenuButton.Classes);
+        Assert.Contains("size-sm", sidebarMenuButton.Classes);
+        Assert.Contains("active", sidebarMenuAction.Classes);
+        Assert.Contains("show-on-hover", sidebarMenuAction.Classes);
+        Assert.Contains("active", sidebarSubButton.Classes);
+        Assert.IsAssignableFrom<Button>(sidebarMenuButton);
+        Assert.IsAssignableFrom<Button>(sidebarMenuAction);
+        Assert.IsAssignableFrom<Button>(sidebarSubButton);
+        Assert.False(typeof(MenuItem).IsAssignableFrom(sidebarMenuButton.GetType()));
+        Assert.False(typeof(MenuItem).IsAssignableFrom(sidebarMenuAction.GetType()));
+        Assert.False(typeof(MenuItem).IsAssignableFrom(sidebarSubButton.GetType()));
         Assert.DoesNotContain("hoverable", table.Classes);
         Assert.Contains("striped", table.Classes);
         Assert.Contains("compact", table.Classes);
+        Assert.IsAssignableFrom<ContentControl>(table);
+        Assert.IsAssignableFrom<ContentControl>(tableHeader);
+        Assert.IsAssignableFrom<ItemsControl>(tableBody);
+        Assert.IsAssignableFrom<ContentControl>(tableFooter);
+        Assert.IsAssignableFrom<ContentControl>(row);
         Assert.Contains("selected", row.Classes);
         Assert.Contains("align-right", head.Classes);
         Assert.Contains("align-center", cell.Classes);
+        Assert.Contains("compact", rankedBarChart.Classes);
+        Assert.Equal(4, rankedBarChart.MaxVisibleItems);
+        Assert.NotNull(rankedBarChart.ItemsSource);
         Assert.Contains("size-icon", avatar.Classes);
         Assert.Contains("interactive", card.Classes);
         Assert.True(card.HasHeader);
@@ -124,6 +172,7 @@ public class NavigationDataComponentTests
     [InlineData("Command.axaml", "PART_InputRoot", "PART_TextPresenter", "PART_Icon", "PART_Shortcut")]
     [InlineData("Collapsible.axaml", "PART_Trigger", "PART_Chevron", "PART_ContentClip", "PART_ContentMeasure", "open", "closed", "TransformOperationsTransition")]
     [InlineData("Table.axaml", "PART_TableSurface", "PART_Head", "PART_Cell", "compact")]
+    [InlineData("RankedBarChart.axaml", "MutedForeground", "TrackBrush", "AccentBrush", "SecondaryAccentBrush", "TertiaryAccentBrush", "compact")]
     [InlineData("Card.axaml", "PART_Surface", "PART_Header", "PART_Footer", "interactive")]
     [InlineData("Separator.axaml", "PART_Line", "horizontal", "vertical", "size-lg")]
     public void StylesExposeExpectedTemplatePartsAndStateHooks(string fileName, params string[] expectedFragments)
@@ -153,6 +202,7 @@ public class NavigationDataComponentTests
     public void ShadcnStateStylesArePresentForNavigationDataAndUtilityComponents()
     {
         var root = Path.Combine(FindRepositoryRoot(), "src", "CodexSwitchUI", "Themes", "Controls");
+        var appShell = File.ReadAllText(Path.Combine(root, "ApplicationShell.axaml"));
         var tabs = File.ReadAllText(Path.Combine(root, "Tabs.axaml"));
         var navigationMenu = File.ReadAllText(Path.Combine(root, "NavigationMenu.axaml"));
         var menu = File.ReadAllText(Path.Combine(root, "Menu.axaml"));
@@ -160,6 +210,7 @@ public class NavigationDataComponentTests
         var command = File.ReadAllText(Path.Combine(root, "Command.axaml"));
         var collapsible = File.ReadAllText(Path.Combine(root, "Collapsible.axaml"));
         var table = File.ReadAllText(Path.Combine(root, "Table.axaml"));
+        var rankedBarChart = File.ReadAllText(Path.Combine(root, "RankedBarChart.axaml"));
 
         Assert.Contains(":selected", tabs);
         Assert.Contains(":pointerover", tabs);
@@ -171,10 +222,14 @@ public class NavigationDataComponentTests
         Assert.Contains("controls|CodexNavigationMenu.motion-from-end", navigationMenu);
         Assert.Contains("Width=\"{TemplateBinding ViewportWidth}\"", navigationMenu);
         Assert.Contains("MinHeight=\"{TemplateBinding ViewportMinHeight}\"", navigationMenu);
+        Assert.Contains("ItemsPanel=\"{TemplateBinding ItemsPanel}\"", navigationMenu);
         Assert.Contains("IsTransitionReversed=\"{TemplateBinding IsMotionReversed}\"", navigationMenu);
         Assert.Contains("controls|CodexNavigationMenuItem.open", navigationMenu);
         Assert.Contains("controls|CodexNavigationMenuLink.active", navigationMenu);
         Assert.Contains("controls|CodexMenuItem.active", menu);
+        Assert.Contains("controls|CodexMenu.side-nav", menu);
+        Assert.Contains("controls|CodexMenu.side-nav controls|CodexMenuItem:pressed", menu);
+        Assert.Contains("RenderTransform\" Value=\"none\"", menu);
         Assert.Contains("MenuItem:open", menu);
         Assert.Contains("MenuItem:checked", menu);
         Assert.Contains("Placement=\"RightEdgeAlignedTop\"", menu);
@@ -199,9 +254,18 @@ public class NavigationDataComponentTests
         Assert.Contains("controls|CodexCollapsible.closed", collapsible);
         Assert.Contains(":pointerover", collapsible);
         Assert.Contains(":disabled", collapsible);
+        Assert.Contains("controls|CodexSidebarMenuButton.active", appShell);
+        Assert.Contains("controls|CodexSidebarMenuButton:pointerover", appShell);
+        Assert.Contains("controls|CodexSidebarMenuButton:pointerover /template/ Border#PART_MenuButtonRoot", appShell);
+        Assert.Contains("controls|CodexSidebarMenuButton.active /template/ Border#PART_MenuButtonRoot", appShell);
+        Assert.Contains("controls|CodexSidebarMenuButton:focus /template/ Border#PART_FocusRing", appShell);
+        Assert.Contains("controls|CodexSidebarMenuAction.show-on-hover", appShell);
+        Assert.Contains("controls|CodexSidebarMenuSubButton.active", appShell);
         Assert.Contains("controls|CodexTableHeader", table);
         Assert.Contains("controls|CodexTable.compact", table);
         Assert.Contains("controls|CodexTable.hoverable controls|CodexTableRow:pointerover", table);
+        Assert.Contains("controls|CodexRankedBarChart.compact", rankedBarChart);
+        Assert.Contains("CodexSwitch.DisabledOpacity", rankedBarChart);
 
         // Next visual-pass hook: add rendered snapshot coverage for submenu popups and table column alignment.
     }
@@ -221,6 +285,7 @@ public class NavigationDataComponentTests
             File.ReadAllText(Path.Combine(controlsRoot, "Command.axaml")),
             File.ReadAllText(Path.Combine(controlsRoot, "Collapsible.axaml")),
             File.ReadAllText(Path.Combine(controlsRoot, "Table.axaml")),
+            File.ReadAllText(Path.Combine(controlsRoot, "RankedBarChart.axaml")),
             File.ReadAllText(Path.Combine(controlsRoot, "Card.axaml")),
             File.ReadAllText(Path.Combine(controlsRoot, "Separator.axaml")),
             File.ReadAllText(Path.Combine(primitiveRoot, "Typography.axaml"))
@@ -238,6 +303,92 @@ public class NavigationDataComponentTests
         Assert.Contains("FocusAdorner", styles[3]);
         Assert.Contains("FocusAdorner", styles[4]);
         Assert.Contains("FocusAdorner", styles[5]);
+    }
+
+    [Fact]
+    public void MenuAndCommandItemsUseShadcnFocusWithoutPressedChrome()
+    {
+        var root = Path.Combine(FindRepositoryRoot(), "src", "CodexSwitchUI", "Themes", "Controls");
+        var menu = File.ReadAllText(Path.Combine(root, "Menu.axaml"));
+        var command = File.ReadAllText(Path.Combine(root, "Command.axaml"));
+
+        var menuFocus = ExtractStyleBlock(menu, "controls|CodexMenu MenuItem:focus /template/ Border#PART_ItemRoot");
+        var menuPressed = ExtractStyleBlock(menu, "controls|CodexMenu MenuItem:pressed /template/ Border#PART_ItemRoot");
+        var commandFocus = ExtractStyleBlock(command, "controls|CodexCommandItem:focus /template/ Border#PART_ItemRoot");
+        var commandItem = ExtractStyleBlock(command, "controls|CodexCommandItem");
+
+        Assert.Contains("CodexSwitch.AccentBrush", menuFocus);
+        Assert.DoesNotContain("CodexSwitch.RingBrush", menuFocus);
+        Assert.Contains("Value=\"Transparent\"", menuFocus);
+        Assert.Contains("Value=\"none\"", menuPressed);
+        Assert.DoesNotContain("scale(", menuPressed);
+
+        Assert.Contains("FocusAdorner\" Value=\"{x:Null}", commandItem);
+        Assert.Contains("Focusable\" Value=\"True\"", commandItem);
+        Assert.Contains("CodexSwitch.AccentBrush", commandFocus);
+        Assert.DoesNotContain("CodexSwitch.RingBrush", commandFocus);
+        Assert.Contains("Value=\"Transparent\"", commandFocus);
+    }
+
+    [Fact]
+    public void MenuGroupUsesOwnContainerWithoutParentHoverChrome()
+    {
+        var root = FindRepositoryRoot();
+        var style = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Menu.axaml"));
+        var source = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Controls", "CodexMenu.cs"));
+        var groupStyle = ExtractStyleBlock(style, "controls|CodexMenuGroup");
+
+        Assert.Contains("public class CodexMenuGroup : MenuItem", source);
+        Assert.DoesNotContain("public class CodexMenuGroup : ItemsControl", source);
+        Assert.Contains("Focusable = false", source);
+        Assert.Contains("TargetType=\"controls:CodexMenuGroup\"", groupStyle);
+        Assert.Contains("PART_Group", groupStyle);
+        Assert.Contains("PART_GroupItems", groupStyle);
+        Assert.Contains("ItemsPanel=\"{TemplateBinding ItemsPanel}\"", groupStyle);
+        Assert.Contains("Cursor\" Value=\"Arrow\"", groupStyle);
+        Assert.DoesNotContain("PART_ItemRoot", groupStyle);
+    }
+
+    [Fact]
+    public void SidebarMenuPrimitivesOwnTemplatesWithoutAvaloniaMenuChrome()
+    {
+        var root = FindRepositoryRoot();
+        var style = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "ApplicationShell.axaml"));
+        var source = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Controls", "CodexApplicationShell.cs"));
+
+        Assert.Contains("public class CodexSidebarMenuButton : Button", source);
+        Assert.Contains("public class CodexSidebarMenuAction : Button", source);
+        Assert.Contains("public class CodexSidebarMenuSubButton : Button", source);
+        Assert.DoesNotContain("CodexSidebarMenuItem : MenuItem", source);
+        Assert.DoesNotContain("CodexSidebarMenuButton : MenuItem", source);
+
+        Assert.Contains("<ControlTemplate TargetType=\"controls:CodexSidebarMenuButton\"", style);
+        Assert.Contains("<ControlTemplate TargetType=\"controls:CodexSidebarMenuAction\"", style);
+        Assert.Contains("<ControlTemplate TargetType=\"controls:CodexSidebarMenuSubButton\"", style);
+        Assert.Contains("PART_MenuButtonRoot", style);
+        Assert.Contains("PART_ActionRoot", style);
+        Assert.Contains("PART_SubButtonRoot", style);
+        Assert.Contains("PART_FocusRing", style);
+        Assert.Contains("FocusAdorner\" Value=\"{x:Null}", style);
+        Assert.DoesNotContain("BasedOn=", style);
+        Assert.DoesNotContain("FluentTheme", style);
+        Assert.DoesNotContain("Avalonia.Themes.Fluent", style);
+    }
+
+    [Fact]
+    public void SidebarMenuHoverBackgroundAnimatesOnlyTemplateSurface()
+    {
+        var style = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "src", "CodexSwitchUI", "Themes", "Controls", "ApplicationShell.axaml"));
+
+        var buttonHover = ExtractStyleBlock(style, "controls|CodexSidebarMenuButton:pointerover");
+        var buttonHoverRoot = ExtractStyleBlock(style, "controls|CodexSidebarMenuButton:pointerover /template/ Border#PART_MenuButtonRoot");
+        var buttonActive = ExtractStyleBlock(style, "controls|CodexSidebarMenuButton.active");
+        var buttonActiveRoot = ExtractStyleBlock(style, "controls|CodexSidebarMenuButton.active /template/ Border#PART_MenuButtonRoot");
+
+        Assert.DoesNotContain("Property=\"Background\"", buttonHover);
+        Assert.DoesNotContain("Property=\"Background\"", buttonActive);
+        Assert.Contains("Property=\"Background\"", buttonHoverRoot);
+        Assert.Contains("Property=\"Background\"", buttonActiveRoot);
     }
 
     [Fact]
@@ -276,19 +427,22 @@ public class NavigationDataComponentTests
         return text.Split(value, StringSplitOptions.None).Length - 1;
     }
 
+    private static string ExtractStyleBlock(string style, string selector)
+    {
+        var open = $"<Style Selector=\"{selector}\"";
+        var start = style.IndexOf(open, StringComparison.Ordinal);
+
+        Assert.True(start >= 0, $"Missing style selector '{selector}'.");
+
+        var end = style.IndexOf("</Style>", start, StringComparison.Ordinal);
+
+        Assert.True(end >= 0, $"Style selector '{selector}' is not closed.");
+
+        return style[start..(end + "</Style>".Length)];
+    }
+
     private static string FindRepositoryRoot()
     {
-        var current = new DirectoryInfo(AppContext.BaseDirectory);
-        while (current is not null)
-        {
-            if (File.Exists(Path.Combine(current.FullName, "CodexSwitchUI.slnx")))
-            {
-                return current.FullName;
-            }
-
-            current = current.Parent;
-        }
-
-        throw new DirectoryNotFoundException("Could not locate repository root from test output directory.");
+        return TestRepository.FindRoot();
     }
 }

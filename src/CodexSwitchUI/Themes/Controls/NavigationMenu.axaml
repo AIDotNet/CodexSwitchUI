@@ -31,7 +31,8 @@
                   HorizontalAlignment="Left"
                   Background="Transparent"
                   Padding="{TemplateBinding Padding}">
-            <ItemsPresenter x:Name="PART_ItemsPresenter" />
+            <ItemsPresenter x:Name="PART_ItemsPresenter"
+                            ItemsPanel="{TemplateBinding ItemsPanel}" />
           </Border>
 
           <Grid x:Name="PART_ViewportPositioner"

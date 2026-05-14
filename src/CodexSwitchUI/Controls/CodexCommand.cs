@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.LogicalTree;
 
 namespace CodexSwitchUI.Controls;
 
@@ -59,7 +60,7 @@ public class CodexCommandGroup : ItemsControl
     }
 }
 
-public class CodexCommandItem : ContentControl
+public class CodexCommandItem : Button
 {
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<CodexCommandItem, bool>(nameof(IsActive));
@@ -109,6 +110,30 @@ public class CodexCommandItem : ContentControl
     public bool HasIcon => GetValue(HasIconProperty);
 
     public bool HasShortcut => GetValue(HasShortcutProperty);
+
+    protected override void OnClick()
+    {
+        base.OnClick();
+        SelectSiblingItems();
+    }
+
+    private void SelectSiblingItems()
+    {
+        var parent = this.GetLogicalParent();
+        if (parent is null)
+        {
+            IsActive = true;
+            return;
+        }
+
+        foreach (var child in parent.GetLogicalChildren())
+        {
+            if (child is CodexCommandItem item)
+            {
+                item.IsActive = ReferenceEquals(item, this);
+            }
+        }
+    }
 
     private void SyncClasses()
     {

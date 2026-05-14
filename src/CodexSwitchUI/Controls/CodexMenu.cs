@@ -104,15 +104,11 @@ public class CodexMenuSeparator : Separator
 {
 }
 
-public class CodexMenuGroup : ItemsControl
+public class CodexMenuGroup : MenuItem
 {
-    public static readonly StyledProperty<object?> HeaderProperty =
-        AvaloniaProperty.Register<CodexMenuGroup, object?>(nameof(Header));
-
-    public object? Header
+    public CodexMenuGroup()
     {
-        get => GetValue(HeaderProperty);
-        set => SetValue(HeaderProperty, value);
+        Focusable = false;
     }
 }
 

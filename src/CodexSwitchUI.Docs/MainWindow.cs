@@ -6,6 +6,9 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Layout;
 using Avalonia.Media;
 using CodexSwitchUI.Controls;
+using CodexSwitchUI.ECharts.Abstractions;
+using CodexSwitchUI.ECharts.Controls;
+using CodexSwitchUI.ECharts.Models;
 using CodexSwitchUI.ECharts.Themes;
 using CodexSwitchUI.Primitives;
 using CodexSwitchUI.Themes;
@@ -26,7 +29,7 @@ public sealed class MainWindow : Window
         new("Navigation", ["Tabs", "Navigation menu", "Collapsible", "Menu", "Context menu", "Command", "Side nav"]),
         new("Overlay", ["Dialog", "Popover", "Overlay", "Focus ring", "Open / closed"]),
         new("Feedback", ["Sonner", "Toast", "Badge", "Avatar", "Spinner", "Progress", "Skeleton", "Loading"]),
-        new("Data Display", ["Avatar", "Table", "Card", "Separator", "Typography"]),
+        new("Data Display", ["Avatar", "Table", "Ranked chart", "Card", "Separator", "Typography"]),
         new("Utilities", ["Card", "Separator", "Typography", "ECharts theme"]),
         new("Design Review", ["Strengths", "Motion check", "Next steps"])
     ];
@@ -34,6 +37,7 @@ public sealed class MainWindow : Window
     private readonly Border _sidebar = new();
     private readonly Border _topbar = new();
     private readonly ScrollViewer _scroll = new();
+    private readonly Dictionary<string, CodexSidebarMenuButton> _navItemsByCategory = new(StringComparer.Ordinal);
     private CodexSwitchThemeMode _currentMode = CodexSwitchThemeMode.Light;
     private string _activeCategory = "Overview";
 
@@ -93,6 +97,8 @@ public sealed class MainWindow : Window
 
     private Control BuildSidebar()
     {
+        _navItemsByCategory.Clear();
+
         var nav = new StackPanel
         {
             Spacing = 18,
@@ -132,10 +138,25 @@ public sealed class MainWindow : Window
 
         nav.Children.Add(new CodexSeparator());
 
-        foreach (var category in Categories)
+        var menu = new CodexSidebarMenu
         {
-            nav.Children.Add(BuildNavCategory(category));
-        }
+            ItemsSource = Categories
+                .Select(category => new CodexSidebarMenuItem { Content = BuildNavCategory(category) })
+                .ToArray(),
+            HorizontalAlignment = HorizontalAlignment.Stretch
+        };
+        nav.Children.Add(new CodexSidebarGroup
+        {
+            Content = new StackPanel
+            {
+                Spacing = 4,
+                Children =
+                {
+                    new CodexSidebarGroupLabel { Content = "Components" },
+                    new CodexSidebarGroupContent { Content = menu }
+                }
+            }
+        });
 
         nav.Children.Add(InfoPanel(
             "Docs-only motion preview",
@@ -147,39 +168,21 @@ public sealed class MainWindow : Window
         };
     }
 
-    private Control BuildNavCategory(NavCategory category)
+    private CodexSidebarMenuButton BuildNavCategory(NavCategory category)
     {
         var isActive = _activeCategory == category.Title;
-        var stack = new StackPanel { Spacing = 6 };
-
-        var categoryButton = WithMotion(new CodexButton
+        var item = new CodexSidebarMenuButton
         {
-            Content = category.Title,
-            Variant = isActive ? CodexControlVariant.Secondary : CodexControlVariant.Ghost,
-            Size = CodexControlSize.Small,
-            HorizontalAlignment = HorizontalAlignment.Stretch,
-            HorizontalContentAlignment = HorizontalAlignment.Left
-        });
-        categoryButton.Click += (_, _) => Navigate(category.Title);
+            Content = new TextBlock { Text = category.Title, TextTrimming = TextTrimming.CharacterEllipsis },
+            Icon = NavDot(isActive ? CodexSwitchResourceKeys.PrimaryBrush : CodexSwitchResourceKeys.MutedForegroundBrush),
+            IsActive = isActive,
+            HorizontalAlignment = HorizontalAlignment.Stretch
+        };
+        _navItemsByCategory[category.Title] = item;
+        item.Click += (_, _) => Navigate(category.Title);
+        ToolTip.SetTip(item, string.Join(" / ", category.Items));
 
-        stack.Children.Add(categoryButton);
-
-        foreach (var item in category.Items)
-        {
-            var itemButton = WithMotion(new CodexButton
-            {
-                Content = item,
-                Variant = CodexControlVariant.Ghost,
-                Size = CodexControlSize.Small,
-                Padding = new Thickness(18, 4, 8, 4),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                HorizontalContentAlignment = HorizontalAlignment.Left
-            });
-            itemButton.Click += (_, _) => Navigate(category.Title);
-            stack.Children.Add(itemButton);
-        }
-
-        return stack;
+        return item;
     }
 
     private Control BuildTopbar()
@@ -788,9 +791,9 @@ public sealed class MainWindow : Window
                                 Spacing = 6,
                                 Children =
                                 {
-                                    WithMotion(new CodexButton { Content = "Open dialog", Variant = CodexControlVariant.Ghost, HorizontalAlignment = HorizontalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Left }),
-                                    WithMotion(new CodexButton { Content = "Switch theme", Variant = CodexControlVariant.Ghost, HorizontalAlignment = HorizontalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Left }),
-                                    WithMotion(new CodexButton { Content = "Run design review", Variant = CodexControlVariant.Ghost, HorizontalAlignment = HorizontalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Left })
+                                    WithMotion(new CodexCommandItem { Content = "Open dialog", HorizontalAlignment = HorizontalAlignment.Stretch }),
+                                    WithMotion(new CodexCommandItem { Content = "Switch theme", HorizontalAlignment = HorizontalAlignment.Stretch }),
+                                    WithMotion(new CodexCommandItem { Content = "Run design review", HorizontalAlignment = HorizontalAlignment.Stretch })
                                 }
                             }
                         }), 1, 0)
@@ -818,23 +821,36 @@ public sealed class MainWindow : Window
                 </Border>
                 """),
             Case(
-                "Docs Side Navigation Pattern",
-                "The left menu is now category-first. Hover the entries to review the target motion pattern used throughout the workbench.",
-                PreviewSurface(new StackPanel
-                {
-                    Spacing = 8,
-                    Children =
-                    {
-                        MiniNav("Overview", true),
-                        MiniNav("Tokens", false),
-                        MiniNav("Forms", false),
-                        MiniNav("Feedback", false),
-                        MiniNav("Design Review", false)
-                    }
-                }),
+                "Sidebar And Segmented Controls",
+                "The extracted app-shell primitives cover a 220px navigation rail, shadcn-style sidebar menu buttons, icon-only actions, field labels, keyboard chips, and compact segmented ranges.",
+                PreviewSurface(BuildApplicationSidebarPreview()),
                 """
-                // Menu model:
-                new NavCategory("Forms", ["Button", "TextBox", "Select", "Switch / Slider"]);
+                <controls:CodexSidebar>
+                    <controls:CodexSidebarMenu>
+                        <controls:CodexSidebarMenuItem>
+                            <controls:CodexSidebarMenuButton Content="Home" IsActive="True" />
+                        </controls:CodexSidebarMenuItem>
+                    </controls:CodexSidebarMenu>
+                </controls:CodexSidebar>
+                <controls:CodexSegmentedControl>
+                    <controls:CodexSegmentedButton Content="24h" IsSelected="True" />
+                </controls:CodexSegmentedControl>
+                """),
+            Case(
+                "Docs Side Navigation Pattern",
+                "The left menu uses CodexSidebarMenu primitives with shadcn sidebar-menu active, hover, focus, action, badge, and disabled states without Avalonia MenuItem chrome.",
+                PreviewSurface(BuildDocsSideNavigationPreview()),
+                """
+                <controls:CodexSidebarGroup>
+                    <controls:CodexSidebarGroupLabel Content="Components" />
+                    <controls:CodexSidebarGroupContent>
+                        <controls:CodexSidebarMenu>
+                            <controls:CodexSidebarMenuItem>
+                                <controls:CodexSidebarMenuButton Content="Overview" IsActive="True" />
+                            </controls:CodexSidebarMenuItem>
+                        </controls:CodexSidebarMenu>
+                    </controls:CodexSidebarGroupContent>
+                </controls:CodexSidebarGroup>
                 """),
             Case(
                 "Navigation State Matrix",
@@ -845,6 +861,162 @@ public sealed class MainWindow : Window
                 <controls:CodexCommand Placeholder="Search..." />
                 <controls:CodexButton Variant="Ghost" IsEnabled="False" />
                 """));
+    }
+
+    private Control BuildApplicationSidebarPreview()
+    {
+        var sidebar = new CodexSidebar
+        {
+            Width = 220,
+            Content = new StackPanel
+            {
+                Spacing = 14,
+                Children =
+                {
+                    new StackPanel
+                    {
+                        Spacing = 4,
+                        Children =
+                        {
+                            new CodexText { Text = "CodexSwitch", Role = CodexTextRole.Subtitle },
+                            new CodexText { Text = "Local proxy workspace", Role = CodexTextRole.Muted, TextWrapping = TextWrapping.Wrap }
+                        }
+                    },
+                    new CodexSegmentedControl
+                    {
+                        Content = new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Spacing = 4,
+                            Children =
+                            {
+                                new CodexSegmentedButton { Content = "Codex", IsSelected = true },
+                                new CodexSegmentedButton { Content = "Claude" }
+                            }
+                        }
+                    },
+                    new CodexSidebarGroup
+                    {
+                        Content = new CodexSidebarGroupContent
+                        {
+                            Content = new CodexSidebarMenu
+                            {
+                                ItemsSource = new object[]
+                                {
+                                    new CodexSidebarMenuItem { Content = SidebarMenuButton("Home", true, "live", CodexSwitchResourceKeys.PrimaryBrush) },
+                                    new CodexSidebarMenuItem { Content = SidebarMenuButton("Logs", false, "134", CodexSwitchResourceKeys.MutedForegroundBrush) },
+                                    new CodexSidebarMenuItem { Content = SidebarMenuButton("Models", false, null, CodexSwitchResourceKeys.MutedForegroundBrush) },
+                                    new CodexSidebarMenuItem { Content = SidebarMenuButton("Settings", false, null, CodexSwitchResourceKeys.MutedForegroundBrush, isEnabled: false) }
+                                }
+                            }
+                        }
+                    },
+                    new CodexSeparator(),
+                    new CodexButton
+                    {
+                        Content = "Add provider",
+                        Variant = CodexControlVariant.Outline,
+                        Size = CodexControlSize.Small,
+                        HorizontalAlignment = HorizontalAlignment.Stretch
+                    }
+                }
+            }
+        };
+
+        var section = new CodexSection
+        {
+            Title = "Home",
+            Description = "Status, filters, and actions use library-owned primitives.",
+            Actions = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Spacing = 6,
+                Children =
+                {
+                    new CodexIconButton { Content = "R", IsRound = true },
+                    new CodexIconButton { Content = "+", Variant = CodexControlVariant.Default }
+                }
+            },
+            Content = new StackPanel
+            {
+                Spacing = 14,
+                Children =
+                {
+                    new Grid
+                    {
+                        ColumnDefinitions =
+                        {
+                            new ColumnDefinition(GridLength.Star),
+                            new ColumnDefinition(GridLength.Star)
+                        },
+                        ColumnSpacing = 12,
+                        Children =
+                        {
+                            new CodexField
+                            {
+                                Label = "Provider",
+                                Description = "Small density select",
+                                Content = new CodexSelect
+                                {
+                                    Size = CodexControlSize.Small,
+                                    SelectedIndex = 0,
+                                    ItemsSource = new[] { "OpenAI", "Anthropic", "Custom" }
+                                }
+                            },
+                            At(new StackPanel
+                            {
+                                Spacing = 6,
+                                Children =
+                                {
+                                    new CodexText { Text = "Shortcuts", Role = CodexTextRole.Muted },
+                                    new StackPanel
+                                    {
+                                        Orientation = Orientation.Horizontal,
+                                        Spacing = 6,
+                                        Children =
+                                        {
+                                            new CodexKbd { Content = "G" },
+                                            new CodexKbd { Content = "H" },
+                                            new CodexKbd { Content = "Enter" }
+                                        }
+                                    }
+                                }
+                            }, 1, 0)
+                        }
+                    },
+                    new CodexSegmentedControl
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Content = new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Spacing = 4,
+                            Children =
+                            {
+                                new CodexSegmentedButton { Content = "24h", IsSelected = true },
+                                new CodexSegmentedButton { Content = "7d" },
+                                new CodexSegmentedButton { Content = "30d" }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(new GridLength(220)),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 14,
+            Children =
+            {
+                sidebar,
+                At(section, 1, 0)
+            }
+        };
     }
 
     private Control TabsDocsExample(string title, string caption, Control preview, string code)
@@ -1109,6 +1281,49 @@ public sealed class MainWindow : Window
                 components,
                 patterns,
                 new CodexNavigationMenuItem { Header = "Changelog" }
+            }
+        });
+
+        menu.ActivateItem(components);
+        return menu;
+    }
+
+    private Control BuildNavigationMenuStatePreview()
+    {
+        var components = new CodexNavigationMenuItem
+        {
+            Header = "Components",
+            ViewportWidth = 500,
+            ViewportMinHeight = 172,
+            Content = NavigationMenuHorizontalContent(
+                "Components",
+                "Shared viewport with directional content motion.",
+                new CodexNavigationMenuLink { Content = "Tabs", Description = "Trigger list and cross-fade content." },
+                new CodexNavigationMenuLink { Content = "Menu", Description = "Popup surface and submenu motion." },
+                new CodexNavigationMenuLink { Content = "Command", Description = "Search input and active rows." })
+        };
+
+        var patterns = new CodexNavigationMenuItem
+        {
+            Header = "Patterns",
+            ViewportWidth = 420,
+            ViewportMinHeight = 150,
+            Content = NavigationMenuHorizontalContent(
+                "Patterns",
+                "Width and height follow the active content.",
+                new CodexNavigationMenuLink { Content = "Docs nav", Description = "Category-first navigation." },
+                new CodexNavigationMenuLink { Content = "Workbench", Description = "Compact command surfaces." })
+        };
+
+        var menu = WithMotion(new CodexNavigationMenu
+        {
+            Orientation = Orientation.Horizontal,
+            ItemsSource = new[]
+            {
+                components,
+                patterns,
+                new CodexNavigationMenuItem { Header = "Disabled", IsEnabled = false },
+                new CodexNavigationMenuItem { Header = "Link" }
             }
         });
 
@@ -1874,6 +2089,205 @@ public sealed class MainWindow : Window
         };
     }
 
+    private Control BuildDashboardProviderCardPreview()
+    {
+        return new StackPanel
+        {
+            Spacing = 14,
+            Children =
+            {
+                new Grid
+                {
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition(GridLength.Star),
+                        new ColumnDefinition(GridLength.Star),
+                        new ColumnDefinition(GridLength.Star)
+                    },
+                    ColumnSpacing = 12,
+                    Children =
+                    {
+                        WithMotion(new CodexStatCard
+                        {
+                            Label = "Proxy status",
+                            Value = "Running",
+                            Detail = "127.0.0.1:11434",
+                            Icon = NavDot(CodexSwitchResourceKeys.SuccessBrush),
+                            AccentBrush = Brush(CodexSwitchResourceKeys.SuccessBrush)
+                        }),
+                        At(WithMotion(new CodexStatCard
+                        {
+                            Label = "Live requests",
+                            Value = "128 rpm",
+                            Detail = "small density",
+                            Icon = NavDot(CodexSwitchResourceKeys.PrimaryBrush),
+                            AccentBrush = Brush(CodexSwitchResourceKeys.PrimaryBrush)
+                        }), 1, 0),
+                        At(WithMotion(new CodexStatCard
+                        {
+                            Label = "Total cost",
+                            Value = "$0.84",
+                            Detail = "30 day window",
+                            Icon = NavDot(CodexSwitchResourceKeys.WarningBrush),
+                            AccentBrush = Brush(CodexSwitchResourceKeys.WarningBrush)
+                        }), 2, 0)
+                    }
+                },
+                new Grid
+                {
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition(GridLength.Star),
+                        new ColumnDefinition(GridLength.Star)
+                    },
+                    ColumnSpacing = 12,
+                    Children =
+                    {
+                        ProviderCardPreview(
+                            "OpenAI",
+                            "https://api.openai.com/v1",
+                            "oai",
+                            true,
+                            false,
+                            true),
+                        At(ProviderCardPreview(
+                            "Anthropic",
+                            "https://api.anthropic.com",
+                            "ant",
+                            false,
+                            true,
+                            false), 1, 0)
+                    }
+                }
+            }
+        };
+    }
+
+    private CodexProviderCard ProviderCardPreview(string header, string description, string fallback, bool active, bool dragging, bool actionEnabled)
+    {
+        return WithMotion(new CodexProviderCard
+        {
+            Header = header,
+            Description = description,
+            IsActive = active,
+            IsDragging = dragging,
+            Leading = new CodexKbd { Content = active ? "1" : "2" },
+            Icon = ProviderIcon(fallback),
+            Meta = new CodexBadge { Content = "responses", Variant = CodexControlVariant.Secondary },
+            Status = new CodexBadge
+            {
+                Content = active ? "active" : "standby",
+                Variant = active ? CodexControlVariant.Success : CodexControlVariant.Outline
+            },
+            Usage = new CodexMetric
+            {
+                Label = "Quota",
+                Value = active ? "76%" : "42%",
+                Detail = dragging ? "dragging state" : "live sample"
+            },
+            Actions = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Spacing = 6,
+                Children =
+                {
+                    new CodexIconButton { Content = "E", Variant = CodexControlVariant.Ghost, IsEnabled = actionEnabled },
+                    new CodexIconButton { Content = "M", Variant = CodexControlVariant.Outline }
+                }
+            }
+        });
+    }
+
+    private Control ProviderIcon(string fallback)
+    {
+        return new Border
+        {
+            Width = 30,
+            Height = 30,
+            CornerRadius = new CornerRadius(7),
+            Background = Brush(CodexSwitchResourceKeys.MutedBrush),
+            BorderBrush = Brush(CodexSwitchResourceKeys.BorderBrush),
+            BorderThickness = new Thickness(1),
+            Child = new Grid
+            {
+                Children =
+                {
+                    new CodexImageIcon
+                    {
+                        Width = 18,
+                        Height = 18,
+                        Path = string.Empty,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center
+                    },
+                    new CodexText
+                    {
+                        Text = fallback,
+                        Role = CodexTextRole.Code,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center
+                    }
+                }
+            }
+        };
+    }
+
+    private Control BuildRankedBarChartPreview()
+    {
+        var providerItems = new[]
+        {
+            new CodexRankedBarChartItem("OpenAI", 128, "128", "84.5K tokens / $0.42 / 99.1%"),
+            new CodexRankedBarChartItem("Anthropic", 74, "74", "52.8K tokens / $0.31 / 98.6%"),
+            new CodexRankedBarChartItem("Gemini", 36, "36", "18.4K tokens / $0.09 / 97.8%"),
+            new CodexRankedBarChartItem("Local", 12, "12", "6.1K tokens / $0.00 / 100%")
+        };
+        var modelItems = new[]
+        {
+            new CodexRankedBarChartItem("gpt-5.5", 84500, "84.5K", "128 requests / $0.42"),
+            new CodexRankedBarChartItem("claude-sonnet-4-5", 52800, "52.8K", "74 requests / $0.31"),
+            new CodexRankedBarChartItem("gemini-2.5-pro", 18400, "18.4K", "36 requests / $0.09")
+        };
+
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 12,
+            RowSpacing = 12,
+            Children =
+            {
+                new CodexRankedBarChart
+                {
+                    ItemsSource = providerItems,
+                    EmptyText = "No provider usage",
+                    Height = 226
+                },
+                At(new CodexRankedBarChart
+                {
+                    ItemsSource = modelItems,
+                    EmptyText = "No model usage",
+                    IsCompact = true,
+                    Height = 206
+                }, 1, 0),
+                At(new CodexRankedBarChart
+                {
+                    EmptyText = "Empty state",
+                    IsEnabled = false,
+                    Height = 112,
+                    MaxVisibleItems = 3
+                }, 0, 1)
+            }
+        };
+    }
+
     private Control BuildDataDisplaySection()
     {
         return CategorySection(
@@ -1927,13 +2341,38 @@ public sealed class MainWindow : Window
                 """),
             Case(
                 "Table Foundation",
-                "CodexTable is currently a thin ItemsControl foundation. The docs uses control rows to show the intended table density.",
+                "CodexTable owns the reusable table surface while callers provide header/body row layout, matching the app table pattern without keeping CsTable local.",
                 PreviewSurface(BuildTablePreview()),
                 """
                 var table = new CodexTable
                 {
-                    ItemsSource = rows.Select(row => BuildRow(row))
+                    Content = new StackPanel { Children = { header, body } }
                 };
+                """),
+            Case(
+                "Ranked Bar Chart",
+                "CodexRankedBarChart renders compact top-N summaries as one lightweight drawing surface for dashboard provider, model, and segment breakdowns.",
+                PreviewSurface(BuildRankedBarChartPreview()),
+                """
+                <controls:CodexRankedBarChart
+                    ItemsSource="{Binding ProviderUsageChartItems}"
+                    EmptyText="{Binding EmptyText}"
+                    IsCompact="True" />
+                """),
+            Case(
+                "Dashboard Metrics And Provider Card",
+                "Home-page components are documented as reusable layout primitives: stat cards, metrics, image-icon slots, provider-card slots, active state, dragging state, disabled actions, and compact density.",
+                PreviewSurface(BuildDashboardProviderCardPreview()),
+                """
+                <controls:CodexStatCard Label="Requests" Value="128 rpm" />
+                <controls:CodexProviderCard
+                    Header="OpenAI"
+                    Description="https://api.openai.com/v1"
+                    IsActive="True">
+                    <controls:CodexProviderCard.Icon>
+                        <controls:CodexImageIcon Path="{Binding IconPath}" />
+                    </controls:CodexProviderCard.Icon>
+                </controls:CodexProviderCard>
                 """),
             Case(
                 "Data Display State Matrix",
@@ -1941,7 +2380,12 @@ public sealed class MainWindow : Window
                 PreviewSurface(BuildDataDisplayStateMatrix()),
                 """
                 <controls:CodexAvatar Fallback="CS" />
-                <controls:CodexTable ItemsSource="{Binding Rows}" />
+                <controls:CodexTable>
+                    <StackPanel>
+                        <controls:CodexTableHeader />
+                        <controls:CodexTableBody ItemsSource="{Binding Rows}" />
+                    </StackPanel>
+                </controls:CodexTable>
                 <controls:CodexBadge Variant="Warning" />
                 """),
             Case(
@@ -2032,6 +2476,19 @@ public sealed class MainWindow : Window
                 """
                 var echartsTheme = CodexSwitchEChartsTheme.FromCurrentTheme();
                 option.BackgroundColor = echartsTheme.BackgroundColor;
+                """),
+            Case(
+                "ECharts Usage Trend Chart",
+                "Usage dashboards can consume the ECharts package control through a neutral point contract while keeping the production legend and tooltip behavior.",
+                PreviewSurface(BuildEChartsUsageTrendChartExample()),
+                """
+                <echarts:CsUsageTrendChart
+                    ItemsSource="{Binding TrendPoints}"
+                    Granularity="{Binding UsageTrendGranularity}"
+                    TokensLabel="Tokens"
+                    CostLabel="Cost"
+                    CacheHitRateLabel="Cache hit rate"
+                    OutputTpsLabel="Output TPS" />
                 """),
             Case(
                 "Utilities State Matrix",
@@ -2130,6 +2587,163 @@ public sealed class MainWindow : Window
                 show current behavior, preview target behavior,
                 and label public-style work as a follow-up.
                 """));
+    }
+
+    private Control BuildEChartsUsageTrendChartExample()
+    {
+        return new Grid
+        {
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            RowSpacing = 14,
+            Children =
+            {
+                At(new Grid
+                {
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition(GridLength.Star),
+                        new ColumnDefinition(GridLength.Auto)
+                    },
+                    Children =
+                    {
+                        At(new WrapPanel
+                        {
+                            Children =
+                            {
+                                ChartLegendItem("#60A5FA", "Input"),
+                                ChartLegendItem("#A78BFA", "Cache hit"),
+                                ChartLegendItem("#F59E0B", "Cache write"),
+                                ChartLegendItem("#34D399", "Output"),
+                                ChartLegendItem("#22D3EE", "Reasoning"),
+                                ChartLegendLine("#F472B6", "Cost")
+                            }
+                        }, 0, 0),
+                        At(new CodexBadge { Content = "Local records", Variant = CodexControlVariant.Outline }, 1, 0)
+                    }
+                }, 0, 0),
+                At(new CsUsageTrendChart
+                {
+                    ItemsSource = CreateUsageTrendChartSample(),
+                    Granularity = UsageTrendChartGranularity.Hour,
+                    TokensLabel = "Tokens",
+                    RequestsLabel = "Requests",
+                    CostLabel = "Cost",
+                    InputLabel = "Input",
+                    CachedInputLabel = "Cache hit",
+                    CacheCreationInputLabel = "Cache write",
+                    CacheHitRateLabel = "Cache hit rate",
+                    OutputTpsLabel = "Output TPS",
+                    OutputLabel = "Output",
+                    ReasoningLabel = "Reasoning",
+                    EmptyText = "No usage records in this range",
+                    RefreshingText = "Refreshing",
+                    Height = 300
+                }, 0, 1),
+                At(new Grid
+                {
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition(GridLength.Star),
+                        new ColumnDefinition(GridLength.Star),
+                        new ColumnDefinition(GridLength.Star)
+                    },
+                    ColumnSpacing = 10,
+                    Children =
+                    {
+                        At(MetricTile("79.2K", "Tokens", "stacked input and output series"), 0, 0),
+                        At(MetricTile("24.6%", "Cache hit", "tooltip parity with dashboard"), 1, 0),
+                        At(MetricTile("$0.1441", "Cost", "right-axis pink trend line"), 2, 0)
+                    }
+                }, 0, 2)
+            }
+        };
+    }
+
+    private static UsageTrendChartPoint[] CreateUsageTrendChartSample()
+    {
+        var start = new DateTimeOffset(2026, 5, 14, 0, 0, 0, TimeSpan.Zero);
+        var points = new UsageTrendChartPoint[12];
+
+        for (var index = 0; index < points.Length; index++)
+        {
+            var activity = index switch
+            {
+                < 2 => 0,
+                < 5 => 1,
+                < 9 => 2,
+                _ => 1
+            };
+            var wave = Math.Sin(index / 1.65d) + 1.35d;
+            var input = activity * (long)Math.Round(940 + wave * 760 + index * 95);
+            var cached = activity * (long)Math.Round(input * (0.18d + index % 4 * 0.045d));
+            var cacheWrite = activity * (long)Math.Round(input * (0.08d + index % 3 * 0.025d));
+            var output = activity * (long)Math.Round(560 + wave * 430 + index * 58);
+            var reasoning = activity * (long)Math.Round(output * (0.16d + index % 2 * 0.08d));
+            var totalTokens = input + cached + cacheWrite + output + reasoning;
+
+            points[index] = new UsageTrendChartPoint
+            {
+                Timestamp = start.AddHours(index * 2),
+                Requests = activity == 0 ? 0 : 2 + index % 5,
+                InputTokens = input,
+                CachedInputTokens = cached,
+                CacheCreationInputTokens = cacheWrite,
+                OutputTokens = output,
+                ReasoningOutputTokens = reasoning,
+                OutputDurationMs = activity == 0 ? 0 : 1_900 + index * 120,
+                Cost = totalTokens == 0 ? 0m : Math.Round(totalTokens / 1_000_000m * 1.82m, 4)
+            };
+        }
+
+        return points;
+    }
+
+    private Control ChartLegendItem(string color, string label)
+    {
+        return new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = 7,
+            Margin = new Thickness(0, 0, 16, 6),
+            Children =
+            {
+                new Border
+                {
+                    Width = 8,
+                    Height = 8,
+                    CornerRadius = new CornerRadius(4),
+                    Background = new SolidColorBrush(Color.Parse(color)),
+                    VerticalAlignment = VerticalAlignment.Center
+                },
+                new CodexText { Text = label, Role = CodexTextRole.Muted }
+            }
+        };
+    }
+
+    private Control ChartLegendLine(string color, string label)
+    {
+        return new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = 7,
+            Margin = new Thickness(0, 0, 16, 6),
+            Children =
+            {
+                new Border
+                {
+                    Width = 18,
+                    Height = 2,
+                    Background = new SolidColorBrush(Color.Parse(color)),
+                    VerticalAlignment = VerticalAlignment.Center
+                },
+                new CodexText { Text = label, Role = CodexTextRole.Muted }
+            }
+        };
     }
 
     private Control BuildFormsStateMatrix()
@@ -2271,18 +2885,16 @@ public sealed class MainWindow : Window
                             Spacing = 4,
                             Children =
                             {
-                                WithMotion(new CodexButton { Content = "Open Forms", Variant = CodexControlVariant.Ghost, HorizontalAlignment = HorizontalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Left }),
-                                WithMotion(new CodexButton { Content = "Open Overlay", Variant = CodexControlVariant.Ghost, HorizontalAlignment = HorizontalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Left }),
-                                WithMotion(new CodexButton { Content = "Disabled command", Variant = CodexControlVariant.Ghost, IsEnabled = false, HorizontalAlignment = HorizontalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Left })
+                                WithMotion(new CodexCommandItem { Content = "Open Forms", HorizontalAlignment = HorizontalAlignment.Stretch }),
+                                WithMotion(new CodexCommandItem { Content = "Open Overlay", HorizontalAlignment = HorizontalAlignment.Stretch }),
+                                WithMotion(new CodexCommandItem { Content = "Disabled command", IsEnabled = false, HorizontalAlignment = HorizontalAlignment.Stretch })
                             }
                         }
                     })), 0, 1),
                 At(StateTile(
-                    "Side Navigation Buttons",
-                    "Active, inactive, hover, disabled.",
-                    MiniNav("Active category", true),
-                    MiniNav("Inactive category", false),
-                    WithMotion(new CodexButton { Content = "Disabled category", Variant = CodexControlVariant.Ghost, Size = CodexControlSize.Small, IsEnabled = false, HorizontalAlignment = HorizontalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Left })), 1, 1),
+                    "Side Navigation Menu",
+                    "CodexMenu active, inactive, hover, and disabled states.",
+                    BuildDocsSideNavigationPreview(includeDisabled: true)), 1, 1),
                 At(StateTile(
                     "Collapsible",
                     "Open, closed, disabled, and density states use one measured-height content path.",
@@ -2311,15 +2923,7 @@ public sealed class MainWindow : Window
                 At(StateTile(
                     "Navigation Menu",
                     "Open trigger, shared viewport, animated indicator, and disabled trigger.",
-                    BuildNavigationMenuPreview(),
-                    new CodexNavigationMenu
-                    {
-                        ItemsSource = new[]
-                        {
-                            new CodexNavigationMenuItem { Header = "Disabled", IsEnabled = false },
-                            new CodexNavigationMenuItem { Header = "Link" }
-                        }
-                    }), 1, 2)
+                    BuildNavigationMenuStatePreview()), 1, 2)
             }
         };
     }
@@ -2703,17 +3307,20 @@ public sealed class MainWindow : Window
                     "Header, row, disabled action.",
                     new CodexTable
                     {
-                        ItemsSource = new Control[]
+                        Content = new StackPanel
                         {
-                            TableRow("Name", "State", "Action", true),
-                            TableRow("Button", "Ready", "Hover / focus guarded", false),
-                            TableRow("Select", "Ready", "Popup + editable template owned", false),
-                            new Border
+                            Children =
                             {
-                                BorderBrush = Brush(CodexSwitchResourceKeys.BorderBrush),
-                                BorderThickness = new Thickness(0, 0, 0, 1),
-                                Padding = new Thickness(10, 8),
-                                Child = WithMotion(new CodexButton { Content = "Disabled row action", IsEnabled = false, Size = CodexControlSize.Small })
+                                TableRow("Name", "State", "Action", true),
+                                TableRow("Button", "Ready", "Hover / focus guarded", false),
+                                TableRow("Select", "Ready", "Popup + editable template owned", false),
+                                new Border
+                                {
+                                    BorderBrush = Brush(CodexSwitchResourceKeys.BorderBrush),
+                                    BorderThickness = new Thickness(0, 0, 0, 1),
+                                    Padding = new Thickness(10, 8),
+                                    Child = WithMotion(new CodexButton { Content = "Disabled row action", IsEnabled = false, Size = CodexControlSize.Small })
+                                }
                             }
                         }
                     }), 0, 1),
@@ -3420,10 +4027,13 @@ public sealed class MainWindow : Window
             TableRow("CodexTabs", "Navigation", "trigger + indicator transition", false),
             TableRow("CodexNavigationMenu", "Navigation", "viewport slide + size transition", false)
         };
+        var stack = new StackPanel();
+        foreach (var row in rows)
+            stack.Children.Add(row);
 
         return new CodexTable
         {
-            ItemsSource = rows
+            Content = stack
         };
     }
 
@@ -3738,16 +4348,97 @@ public sealed class MainWindow : Window
         });
     }
 
-    private CodexButton MiniNav(string label, bool active)
+    private Control NavDot(string resourceKey)
     {
-        return WithMotion(new CodexButton
+        return new Border
         {
-            Content = label,
-            Variant = active ? CodexControlVariant.Secondary : CodexControlVariant.Ghost,
-            Size = CodexControlSize.Small,
-            HorizontalAlignment = HorizontalAlignment.Stretch,
-            HorizontalContentAlignment = HorizontalAlignment.Left
+            Width = 8,
+            Height = 8,
+            CornerRadius = new CornerRadius(4),
+            Background = Brush(resourceKey),
+            VerticalAlignment = VerticalAlignment.Center
+        };
+    }
+
+    private CodexSidebarMenuButton SidebarMenuButton(
+        string label,
+        bool isActive,
+        string? badge,
+        string iconBrush,
+        bool isEnabled = true)
+    {
+        return WithMotion(new CodexSidebarMenuButton
+        {
+            Content = new TextBlock { Text = label, TextTrimming = TextTrimming.CharacterEllipsis },
+            Icon = NavDot(iconBrush),
+            Badge = string.IsNullOrWhiteSpace(badge) ? null : new CodexSidebarMenuBadge { Content = badge },
+            IsActive = isActive,
+            IsEnabled = isEnabled,
+            HorizontalAlignment = HorizontalAlignment.Stretch
         });
+    }
+
+    private Control BuildDocsSideNavigationPreview(bool includeDisabled = false)
+    {
+        var items = new List<CodexSidebarMenuItem>
+        {
+            new() { Content = SidebarMenuButton("Overview", true, null, CodexSwitchResourceKeys.PrimaryBrush) },
+            new() { Content = SidebarMenuButton("Tokens", false, null, CodexSwitchResourceKeys.MutedForegroundBrush) },
+            new() { Content = SidebarMenuButton("Forms", false, "3", CodexSwitchResourceKeys.MutedForegroundBrush) },
+            new()
+            {
+                Content = new Grid
+                {
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition(GridLength.Star),
+                        new ColumnDefinition(GridLength.Auto)
+                    },
+                    Children =
+                    {
+                        SidebarMenuButton("Feedback", false, null, CodexSwitchResourceKeys.MutedForegroundBrush),
+                        At(new CodexSidebarMenuAction
+                        {
+                            Content = "...",
+                            IsShowOnHover = true,
+                            HorizontalAlignment = HorizontalAlignment.Right
+                        }, 1, 0)
+                    }
+                }
+            },
+            new() { Content = SidebarMenuButton("Design Review", false, null, CodexSwitchResourceKeys.MutedForegroundBrush) }
+        };
+
+        if (includeDisabled)
+            items.Add(new CodexSidebarMenuItem
+            {
+                Content = SidebarMenuButton(
+                    "Disabled category",
+                    false,
+                    null,
+                    CodexSwitchResourceKeys.MutedForegroundBrush,
+                    isEnabled: false)
+            });
+
+        return new CodexSidebarGroup
+        {
+            Content = new StackPanel
+            {
+                Spacing = 4,
+                Children =
+                {
+                    new CodexSidebarGroupLabel { Content = "Components" },
+                    new CodexSidebarGroupContent
+                    {
+                        Content = new CodexSidebarMenu
+                        {
+                            ItemsSource = items,
+                            HorizontalAlignment = HorizontalAlignment.Stretch
+                        }
+                    }
+                }
+            }
+        };
     }
 
     private CodexButton ThemeAction(string label, CodexSwitchThemeMode mode, CodexControlVariant variant)
@@ -3867,12 +4558,28 @@ public sealed class MainWindow : Window
 
     private void Navigate(string category)
     {
+        if (_activeCategory == category)
+        {
+            return;
+        }
+
         _activeCategory = category;
-        _sidebar.Child = BuildSidebar();
+        RefreshSidebarSelection();
         _topbar.Child = BuildTopbar();
         _scroll.Content = BuildContent();
         _scroll.Offset = new Vector(0, 0);
         RefreshChrome();
+    }
+
+    private void RefreshSidebarSelection()
+    {
+        foreach (var category in Categories)
+        {
+            if (_navItemsByCategory.TryGetValue(category.Title, out var item))
+            {
+                item.IsActive = category.Title == _activeCategory;
+            }
+        }
     }
 
     private void ApplyTheme(CodexSwitchThemeMode mode)

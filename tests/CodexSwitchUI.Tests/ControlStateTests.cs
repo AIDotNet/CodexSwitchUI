@@ -105,6 +105,125 @@ public class ControlStateTests
     }
 
     [Fact]
+    public void SidebarAndSegmentedButtonsSelectExclusivelyOnClick()
+    {
+        var home = new CodexSideNavItem { Content = "Home", IsSelected = true };
+        var logs = new CodexSideNavItem { Content = "Logs" };
+        _ = new StackPanel
+        {
+            Children =
+            {
+                home,
+                logs
+            }
+        };
+
+        InvokeClick(logs);
+
+        Assert.False(home.IsSelected);
+        Assert.True(logs.IsSelected);
+        Assert.DoesNotContain("selected", home.Classes);
+        Assert.Contains("selected", logs.Classes);
+
+        var daily = new CodexSegmentedButton { Content = "24h", IsSelected = true };
+        var weekly = new CodexSegmentedButton { Content = "7d" };
+        var monthly = new CodexSegmentedButton { Content = "30d" };
+        _ = new StackPanel
+        {
+            Children =
+            {
+                daily,
+                weekly,
+                monthly
+            }
+        };
+
+        InvokeClick(monthly);
+
+        Assert.False(daily.IsSelected);
+        Assert.False(weekly.IsSelected);
+        Assert.True(monthly.IsSelected);
+        Assert.DoesNotContain("selected", daily.Classes);
+        Assert.DoesNotContain("selected", weekly.Classes);
+        Assert.Contains("selected", monthly.Classes);
+    }
+
+    [Fact]
+    public void SegmentedControlOwnsAnimatedSelectionIndicator()
+    {
+        var root = FindRepositoryRoot();
+        var style = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "ApplicationShell.axaml"));
+        var source = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Controls", "CodexNavigationPrimitives.cs"));
+        var segmentedControl = new CodexSegmentedControl();
+
+        Assert.False(segmentedControl.IsIndicatorVisible);
+        Assert.Equal(0, segmentedControl.IndicatorWidth);
+        Assert.Equal(0, segmentedControl.IndicatorHeight);
+        Assert.Equal(default, segmentedControl.IndicatorMargin);
+
+        Assert.Contains("IndicatorWidthProperty", source);
+        Assert.Contains("IndicatorHeightProperty", source);
+        Assert.Contains("IndicatorMarginProperty", source);
+        Assert.Contains("UpdateSelectionIndicator()", source);
+        Assert.Contains("QueueSelectionIndicatorUpdate()", source);
+        Assert.Contains("PART_IndicatorHost", source);
+        Assert.Contains("TranslatePoint(new Point(0, 0), _indicatorHost)", source);
+        Assert.DoesNotContain("TranslatePoint(new Point(0, 0), this)", source);
+        Assert.Contains("PART_Indicator", style);
+        Assert.Contains("<Canvas x:Name=\"PART_IndicatorHost\"", style);
+        Assert.Contains("IsHitTestVisible=\"False\"", style);
+        Assert.Contains("Width=\"{TemplateBinding IndicatorWidth}\"", style);
+        Assert.Contains("Height=\"{TemplateBinding IndicatorHeight}\"", style);
+        Assert.Contains("Margin=\"{TemplateBinding IndicatorMargin}\"", style);
+        Assert.Contains("ThicknessTransition Property=\"Margin\"", style);
+        Assert.Contains("DoubleTransition Property=\"Width\"", style);
+        Assert.Contains("DoubleTransition Property=\"Height\"", style);
+        Assert.Contains("<Setter Property=\"Background\" Value=\"Transparent\" />", style);
+    }
+
+    [Fact]
+    public void CommandItemsAndProviderCardsSelectExclusivelyOnClick()
+    {
+        var open = new CodexCommandItem { Content = "Open", IsActive = true };
+        var switchTheme = new CodexCommandItem { Content = "Switch theme" };
+        _ = new StackPanel
+        {
+            Children =
+            {
+                open,
+                switchTheme
+            }
+        };
+
+        Assert.IsAssignableFrom<Button>(switchTheme);
+
+        InvokeClick(switchTheme);
+
+        Assert.False(open.IsActive);
+        Assert.True(switchTheme.IsActive);
+        Assert.DoesNotContain("active", open.Classes);
+        Assert.Contains("active", switchTheme.Classes);
+
+        var openAi = new CodexProviderCard { Header = "OpenAI", IsActive = true };
+        var anthropic = new CodexProviderCard { Header = "Anthropic" };
+        _ = new StackPanel
+        {
+            Children =
+            {
+                openAi,
+                anthropic
+            }
+        };
+
+        InvokeClick(anthropic);
+
+        Assert.False(openAi.IsActive);
+        Assert.True(anthropic.IsActive);
+        Assert.DoesNotContain("active", openAi.Classes);
+        Assert.Contains("active", anthropic.Classes);
+    }
+
+    [Fact]
     public void SkeletonMatchesShadcnPulseDefaults()
     {
         var skeleton = new CodexSkeleton();
@@ -293,18 +412,14 @@ public class ControlStateTests
 
     private static string FindRepositoryRoot()
     {
-        var current = new DirectoryInfo(AppContext.BaseDirectory);
-        while (current is not null)
-        {
-            if (File.Exists(Path.Combine(current.FullName, "CodexSwitchUI.slnx")))
-            {
-                return current.FullName;
-            }
+        return TestRepository.FindRoot();
+    }
 
-            current = current.Parent;
-        }
-
-        throw new DirectoryNotFoundException("Could not locate repository root from test output directory.");
+    private static void InvokeClick(Button button)
+    {
+        var onClick = button.GetType().GetMethod("OnClick", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        Assert.NotNull(onClick);
+        onClick.Invoke(button, null);
     }
 
     private static string ReadStyle(string root, string component)

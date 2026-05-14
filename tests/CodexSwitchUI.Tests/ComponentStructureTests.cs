@@ -26,6 +26,7 @@ public class ComponentStructureTests
         "CodexAvatar",
         "CodexSpinner",
         "CodexProgress",
+        "CodexRankedBarChart",
         "CodexTable",
         "CodexMenu",
         "CodexContextMenu",
@@ -56,6 +57,7 @@ public class ComponentStructureTests
         "Avatar",
         "Spinner",
         "Progress",
+        "RankedBarChart",
         "Table",
         "Menu",
         "ContextMenu",
@@ -71,7 +73,7 @@ public class ComponentStructureTests
         [
             "<ControlTemplate TargetType=\"controls:CodexButton\"",
             "PART_Root",
-            "PART_ContentPresenter",
+            "PART_CodexButtonContent",
             "PART_LoadingIndicator",
             "PART_LeadingIcon",
             "PART_TrailingIcon",
@@ -534,18 +536,7 @@ public class ComponentStructureTests
 
     private static string FindRepositoryRoot()
     {
-        var current = new DirectoryInfo(AppContext.BaseDirectory);
-        while (current is not null)
-        {
-            if (File.Exists(Path.Combine(current.FullName, "CodexSwitchUI.slnx")))
-            {
-                return current.FullName;
-            }
-
-            current = current.Parent;
-        }
-
-        throw new DirectoryNotFoundException("Could not locate repository root from test output directory.");
+        return TestRepository.FindRoot();
     }
 
     private static string ReadStyle(string root, string component)

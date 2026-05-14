@@ -193,6 +193,9 @@
     <Setter Property="BorderBrush" Value="Transparent" />
     <Setter Property="BorderThickness" Value="1" />
     <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Focusable" Value="True" />
+    <Setter Property="Cursor" Value="Hand" />
     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Transitions">
@@ -205,7 +208,7 @@
       </Transitions>
     </Setter>
     <Setter Property="Template">
-      <ControlTemplate>
+      <ControlTemplate TargetType="controls:CodexCommandItem">
         <Border x:Name="PART_ItemRoot"
                 MinHeight="{TemplateBinding MinHeight}"
                 Background="{TemplateBinding Background}"
@@ -250,7 +253,11 @@
 
   <Style Selector="controls|CodexCommandItem:focus /template/ Border#PART_ItemRoot">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem:focus">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
   </Style>
 
   <Style Selector="controls|CodexCommandItem.active">
@@ -259,9 +266,11 @@
 
   <Style Selector="controls|CodexCommandItem.active /template/ Border#PART_ItemRoot">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
   </Style>
 
   <Style Selector="controls|CodexCommandItem:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
     <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
   </Style>
 

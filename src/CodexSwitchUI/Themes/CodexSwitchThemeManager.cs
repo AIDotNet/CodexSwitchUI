@@ -44,8 +44,20 @@ public sealed class CodexSwitchThemeManager
             _ => ThemeVariant.Default
         };
 
-        ApplyResources(application, Options.ResolvePalette(mode), Options);
+        ApplyResources(application, Options.ResolvePalette(ResolveResourceMode(application, mode)), Options);
         ThemeChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private static CodexSwitchThemeMode ResolveResourceMode(Application application, CodexSwitchThemeMode mode)
+    {
+        if (mode != CodexSwitchThemeMode.System)
+        {
+            return mode;
+        }
+
+        return application.ActualThemeVariant == ThemeVariant.Dark
+            ? CodexSwitchThemeMode.Dark
+            : CodexSwitchThemeMode.Light;
     }
 
     public static void ApplyResources(Application application, CodexSwitchPalette palette, CodexSwitchThemeOptions options)

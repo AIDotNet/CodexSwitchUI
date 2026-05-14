@@ -18,6 +18,7 @@
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Avatar.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Spinner.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Progress.axaml" />
+  <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/RankedBarChart.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Table.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Menu.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/ContextMenu.axaml" />
@@ -25,6 +26,7 @@
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Collapsible.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Separator.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Skeleton.axaml" />
+  <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/ApplicationShell.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Primitives/FocusRing.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Primitives/Overlay.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Primitives/Typography.axaml" />

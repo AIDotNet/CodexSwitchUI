@@ -310,17 +310,6 @@ public class OverlayFeedbackComponentTests
 
     private static string FindRepositoryRoot()
     {
-        var current = new DirectoryInfo(AppContext.BaseDirectory);
-        while (current is not null)
-        {
-            if (File.Exists(Path.Combine(current.FullName, "CodexSwitchUI.slnx")))
-            {
-                return current.FullName;
-            }
-
-            current = current.Parent;
-        }
-
-        throw new DirectoryNotFoundException("Could not locate repository root from test output directory.");
+        return TestRepository.FindRoot();
     }
 }

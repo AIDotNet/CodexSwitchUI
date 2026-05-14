@@ -1,0 +1,1026 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexSidebar">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="0,0,1,0" />
+    <Setter Property="Padding" Value="18,20" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebar">
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarHeader">
+    <Setter Property="Padding" Value="0,0,0,14" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarHeader">
+        <ContentPresenter Margin="{TemplateBinding Margin}"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarContent">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarContent">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+          <ContentPresenter Margin="{TemplateBinding Margin}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+        </ScrollViewer>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarFooter">
+    <Setter Property="Padding" Value="0,14,0,0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarFooter">
+        <ContentPresenter Margin="{TemplateBinding Margin}"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarGroup">
+    <Setter Property="Margin" Value="0,0,0,14" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarGroup">
+        <ContentPresenter Margin="{TemplateBinding Margin}"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarGroupLabel">
+    <Setter Property="MinHeight" Value="24" />
+    <Setter Property="Padding" Value="8,2" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarGroupLabel">
+        <Border MinHeight="{TemplateBinding MinHeight}"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarGroupContent">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarGroupContent">
+        <ContentPresenter Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarGroupAction">
+    <Setter Property="Width" Value="28" />
+    <Setter Property="Height" Value="28" />
+    <Setter Property="MinWidth" Value="28" />
+    <Setter Property="MinHeight" Value="28" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarGroupAction">
+        <Grid Width="{TemplateBinding Width}"
+              Height="{TemplateBinding Height}">
+          <Border x:Name="PART_ActionRoot"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+          </Border>
+          <Border x:Name="PART_FocusRing"
+                  BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                  BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  IsHitTestVisible="False"
+                  Opacity="0" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="controls|CodexSidebarGroupAction:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarGroupAction:focus /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <Style Selector="controls|CodexSidebarGroupAction:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexSidebarMenu">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Spacing="1" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarMenu">
+        <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarMenuItem">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarMenuItem">
+        <ContentPresenter Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarMenuButton">
+    <Setter Property="MinHeight" Value="34" />
+    <Setter Property="Padding" Value="8,6" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="RenderTransform" Value="none" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.10" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarMenuButton">
+        <Grid MinHeight="{TemplateBinding MinHeight}">
+          <Border x:Name="PART_MenuButtonRoot"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}"
+                  RenderTransform="{TemplateBinding RenderTransform}">
+            <Grid ColumnDefinitions="Auto,*,Auto"
+                  ColumnSpacing="8">
+              <ContentControl x:Name="PART_Icon"
+                              Content="{TemplateBinding Icon}"
+                              IsVisible="{TemplateBinding HasIcon}"
+                              Width="16"
+                              Height="16"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+              <ContentPresenter x:Name="PART_Label"
+                                Grid.Column="1"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                RecognizesAccessKey="True"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+              <ContentControl x:Name="PART_Badge"
+                              Grid.Column="2"
+                              Content="{TemplateBinding Badge}"
+                              IsVisible="{TemplateBinding HasBadge}"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Center" />
+            </Grid>
+          </Border>
+          <Border x:Name="PART_FocusRing"
+                  BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                  BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  IsHitTestVisible="False"
+                  Opacity="0" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton /template/ Border#PART_MenuButtonRoot, controls|CodexSidebarGroupAction /template/ Border#PART_ActionRoot, controls|CodexSidebarMenuAction /template/ Border#PART_ActionRoot, controls|CodexSidebarMenuSubButton /template/ Border#PART_SubButtonRoot">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="Background" Duration="0:0:0.10" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.10" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.10" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton /template/ Border#PART_FocusRing, controls|CodexSidebarGroupAction /template/ Border#PART_FocusRing, controls|CodexSidebarMenuAction /template/ Border#PART_FocusRing, controls|CodexSidebarMenuSubButton /template/ Border#PART_FocusRing">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton:pointerover">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton:pointerover /template/ Border#PART_MenuButtonRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton:pressed">
+    <Setter Property="Opacity" Value="0.86" />
+    <Setter Property="RenderTransform" Value="scale(0.985)" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton:focus /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton.active">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton.active /template/ Border#PART_MenuButtonRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton.size-sm">
+    <Setter Property="MinHeight" Value="30" />
+    <Setter Property="Padding" Value="8,4" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuButton.size-lg">
+    <Setter Property="MinHeight" Value="40" />
+    <Setter Property="Padding" Value="10,8" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+  </Style>
+
+  <Style Selector="controls|CodexSidebarMenuAction">
+    <Setter Property="Width" Value="28" />
+    <Setter Property="Height" Value="28" />
+    <Setter Property="MinWidth" Value="28" />
+    <Setter Property="MinHeight" Value="28" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarMenuAction">
+        <Grid Width="{TemplateBinding Width}"
+              Height="{TemplateBinding Height}">
+          <Border x:Name="PART_ActionRoot"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+          </Border>
+          <Border x:Name="PART_FocusRing"
+                  BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                  BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  IsHitTestVisible="False"
+                  Opacity="0" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuAction:pointerover">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuAction:pointerover /template/ Border#PART_ActionRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuAction.active">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuAction.active /template/ Border#PART_ActionRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuAction.show-on-hover">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuItem:pointerover controls|CodexSidebarMenuAction.show-on-hover, controls|CodexSidebarMenuAction.show-on-hover:focus">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuAction:focus /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuAction:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexSidebarMenuBadge">
+    <Setter Property="MinHeight" Value="20" />
+    <Setter Property="Padding" Value="6,1" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.MutedBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarMenuBadge">
+        <Border MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarMenuSub">
+    <Setter Property="Margin" Value="22,2,0,4" />
+    <Setter Property="Padding" Value="0,2,0,2" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1,0,0,0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Spacing="1" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarMenuSub">
+        <Border Margin="{TemplateBinding Margin}"
+                Padding="{TemplateBinding Padding}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+          <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarMenuSubItem">
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarMenuSubItem">
+        <ContentPresenter Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSidebarMenuSubButton">
+    <Setter Property="MinHeight" Value="28" />
+    <Setter Property="Padding" Value="8,4" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSidebarMenuSubButton">
+        <Grid MinHeight="{TemplateBinding MinHeight}">
+          <Border x:Name="PART_SubButtonRoot"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+          <Border x:Name="PART_FocusRing"
+                  BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                  BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  IsHitTestVisible="False"
+                  Opacity="0" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuSubButton:pointerover">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuSubButton:pointerover /template/ Border#PART_SubButtonRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuSubButton.active">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuSubButton.active /template/ Border#PART_SubButtonRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuSubButton:focus /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+  <Style Selector="controls|CodexSidebarMenuSubButton:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexSideNavItem">
+    <Setter Property="MinHeight" Value="38" />
+    <Setter Property="Padding" Value="10,8" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSideNavItem">
+        <Border x:Name="PART_Root"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <Grid ColumnDefinitions="Auto,*"
+                RowDefinitions="Auto,Auto"
+                ColumnSpacing="10">
+            <ContentPresenter Grid.RowSpan="2"
+                              Content="{TemplateBinding Icon}"
+                              IsVisible="{TemplateBinding HasIcon}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center" />
+            <ContentPresenter Grid.Column="1"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="Center" />
+            <TextBlock Grid.Row="1"
+                       Grid.Column="1"
+                       Text="{TemplateBinding Detail}"
+                       IsVisible="{TemplateBinding HasDetail}"
+                       FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                       Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                       TextTrimming="CharacterEllipsis" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="controls|CodexSideNavItem:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSideNavItem.selected">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSideNavItem:pressed">
+    <Setter Property="Opacity" Value="0.86" />
+  </Style>
+  <Style Selector="controls|CodexSideNavItem:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+    <Setter Property="Cursor" Value="Arrow" />
+  </Style>
+
+  <Style Selector="controls|CodexIconButton">
+    <Setter Property="Size" Value="Icon" />
+    <Setter Property="Variant" Value="Secondary" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+  <Style Selector="controls|CodexIconButton.round">
+    <Setter Property="CornerRadius" Value="999" />
+  </Style>
+
+  <Style Selector="controls|CodexSegmentedControl">
+    <Setter Property="Padding" Value="3" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.MutedBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSegmentedControl">
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <Grid ClipToBounds="True">
+            <Canvas x:Name="PART_IndicatorHost"
+                    IsHitTestVisible="False">
+              <Border x:Name="PART_Indicator"
+                      Width="{TemplateBinding IndicatorWidth}"
+                      Height="{TemplateBinding IndicatorHeight}"
+                      Margin="{TemplateBinding IndicatorMargin}"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Background="{DynamicResource CodexSwitch.CardBrush}"
+                      BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                      BorderThickness="1"
+                      CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                      IsVisible="{TemplateBinding IsIndicatorVisible}" />
+            </Canvas>
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSegmentedControl /template/ Border#PART_Indicator">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Width" Duration="0:0:0.18" />
+        <DoubleTransition Property="Height" Duration="0:0:0.18" />
+        <ThicknessTransition Property="Margin" Duration="0:0:0.18" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSegmentedButton">
+    <Setter Property="MinHeight" Value="30" />
+    <Setter Property="Padding" Value="11,5" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+    <Setter Property="RenderTransformOrigin" Value="50%,50%" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.16" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSegmentedButton">
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="controls|CodexSegmentedButton:pointerover">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+    <Setter Property="RenderTransform" Value="scale(1.03)" />
+  </Style>
+  <Style Selector="controls|CodexSegmentedButton.selected">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+  <Style Selector="controls|CodexSegmentedButton:pressed">
+    <Setter Property="Opacity" Value="0.82" />
+    <Setter Property="RenderTransform" Value="scale(0.97)" />
+  </Style>
+
+  <Style Selector="controls|CodexSection">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSection">
+        <Grid RowDefinitions="Auto,*"
+              RowSpacing="14">
+          <Grid ColumnDefinitions="*,Auto">
+            <StackPanel Spacing="4">
+              <TextBlock Text="{TemplateBinding Title}"
+                         IsVisible="{TemplateBinding HasTitle}"
+                         Foreground="{DynamicResource CodexSwitch.ForegroundBrush}"
+                         FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                         FontSize="18"
+                         FontWeight="SemiBold" />
+              <TextBlock Text="{TemplateBinding Description}"
+                         IsVisible="{TemplateBinding HasDescription}"
+                         Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                         FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                         FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                         TextWrapping="Wrap" />
+            </StackPanel>
+            <ContentPresenter Grid.Column="1"
+                              Content="{TemplateBinding Actions}"
+                              IsVisible="{TemplateBinding HasActions}"
+                              VerticalAlignment="Top" />
+          </Grid>
+          <ContentPresenter Grid.Row="1"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexField">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexField">
+        <StackPanel Spacing="6">
+          <TextBlock Text="{TemplateBinding Label}"
+                     IsVisible="{TemplateBinding HasLabel}"
+                     Foreground="{DynamicResource CodexSwitch.ForegroundBrush}"
+                     FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                     FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                     FontWeight="SemiBold" />
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+          <TextBlock Text="{TemplateBinding Description}"
+                     IsVisible="{TemplateBinding HasDescription}"
+                     Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                     FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                     FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexImageIcon">
+    <Setter Property="Stretch" Value="Uniform" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexStatCard">
+    <Setter Property="Padding" Value="14" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexStatCard">
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <Grid RowDefinitions="Auto,Auto,Auto"
+                ColumnDefinitions="*,Auto"
+                RowSpacing="7">
+            <TextBlock Text="{TemplateBinding Label}"
+                       Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                       FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                       FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                       TextTrimming="CharacterEllipsis" />
+            <ContentPresenter Grid.Column="1"
+                              Content="{TemplateBinding Icon}"
+                              IsVisible="{TemplateBinding HasIcon}" />
+            <ContentPresenter Grid.Row="1"
+                              Grid.ColumnSpan="2"
+                              Content="{TemplateBinding Value}" />
+            <TextBlock Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       Text="{TemplateBinding Detail}"
+                       IsVisible="{TemplateBinding HasDetail}"
+                       Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                       FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                       FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                       TextTrimming="CharacterEllipsis" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexMetric">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexMetric">
+        <StackPanel Spacing="3">
+          <TextBlock Text="{TemplateBinding Label}"
+                     Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                     FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                     FontSize="{DynamicResource CodexSwitch.FontSizeSm}" />
+          <ContentPresenter Content="{TemplateBinding Value}" />
+          <TextBlock Text="{TemplateBinding Detail}"
+                     IsVisible="{TemplateBinding HasDetail}"
+                     Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                     FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                     FontSize="{DynamicResource CodexSwitch.FontSizeSm}" />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexKbd">
+    <Setter Property="MinHeight" Value="22" />
+    <Setter Property="Padding" Value="7,2" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.MutedBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexKbd">
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexProviderCard">
+    <Setter Property="MinHeight" Value="88" />
+    <Setter Property="Padding" Value="12" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexProviderCard">
+        <Border x:Name="PART_Surface"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <Grid ColumnDefinitions="Auto,Auto,*,Auto"
+                RowDefinitions="Auto,Auto"
+                ColumnSpacing="12"
+                RowSpacing="7">
+            <ContentPresenter Grid.RowSpan="2"
+                              Content="{TemplateBinding Leading}"
+                              IsVisible="{TemplateBinding HasLeading}"
+                              VerticalAlignment="Stretch" />
+            <Border Grid.Column="1"
+                    Grid.RowSpan="2"
+                    Width="40"
+                    Height="40"
+                    CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                    Background="{DynamicResource CodexSwitch.MutedBrush}"
+                    VerticalAlignment="Center">
+              <ContentPresenter Content="{TemplateBinding Icon}"
+                                IsVisible="{TemplateBinding HasIcon}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+            </Border>
+            <StackPanel Grid.Column="2"
+                        Grid.RowSpan="2"
+                        Spacing="5"
+                        VerticalAlignment="Center">
+              <StackPanel Orientation="Horizontal"
+                          Spacing="8">
+                <ContentPresenter Content="{TemplateBinding Header}"
+                                  VerticalAlignment="Center" />
+                <ContentPresenter Content="{TemplateBinding Meta}"
+                                  IsVisible="{TemplateBinding HasMeta}"
+                                  VerticalAlignment="Center" />
+              </StackPanel>
+              <TextBlock Text="{TemplateBinding Description}"
+                         IsVisible="{TemplateBinding HasDescription}"
+                         Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                         FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                         FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                         TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+            <StackPanel Grid.Column="3"
+                        Spacing="7"
+                        HorizontalAlignment="Right">
+              <ContentPresenter Content="{TemplateBinding Status}"
+                                IsVisible="{TemplateBinding HasStatus}"
+                                HorizontalAlignment="Right" />
+              <ContentPresenter Content="{TemplateBinding Usage}"
+                                IsVisible="{TemplateBinding HasUsage}"
+                                HorizontalAlignment="Right" />
+              <ContentPresenter Content="{TemplateBinding Actions}"
+                                IsVisible="{TemplateBinding HasActions}"
+                                HorizontalAlignment="Right" />
+            </StackPanel>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="controls|CodexProviderCard:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard:pressed">
+    <Setter Property="Opacity" Value="0.92" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.active">
+    <Setter Property="Background" Value="#151D2B" />
+    <Setter Property="BorderBrush" Value="#0A84FF" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.active:pointerover">
+    <Setter Property="Background" Value="#18263A" />
+    <Setter Property="BorderBrush" Value="#2B95FF" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.dragging">
+    <Setter Property="Opacity" Value="0.92" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.dragging:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+</Styles>

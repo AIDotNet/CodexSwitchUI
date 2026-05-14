@@ -12,11 +12,6 @@
         <BrushTransition Property="Foreground" Duration="0:0:0.15" />
       </Transitions>
     </Setter>
-    <Setter Property="ItemsPanel">
-      <ItemsPanelTemplate>
-        <StackPanel />
-      </ItemsPanelTemplate>
-    </Setter>
     <Setter Property="Template">
       <ControlTemplate>
         <Border x:Name="PART_TableSurface"
@@ -32,11 +27,188 @@
           </Border.Transitions>
           <ScrollViewer HorizontalScrollBarVisibility="Auto"
                         VerticalScrollBarVisibility="Disabled">
-            <ItemsPresenter />
+            <ContentPresenter Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}" />
           </ScrollViewer>
         </Border>
       </ControlTemplate>
     </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexPinnedTable">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="ClipToBounds" Value="True" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexPinnedTable">
+        <Border x:Name="PART_TableSurface"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                ClipToBounds="True">
+          <Grid RowDefinitions="Auto,*">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="{TemplateBinding StartColumnWidth}" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="{TemplateBinding EndColumnWidth}" />
+            </Grid.ColumnDefinitions>
+
+            <Border Background="{DynamicResource CodexSwitch.MutedBrush}"
+                    BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                    BorderThickness="0,0,1,1"
+                    MinHeight="{TemplateBinding HeaderHeight}">
+              <ContentPresenter Content="{TemplateBinding StartHeader}"
+                                ContentTemplate="{TemplateBinding StartHeaderTemplate}"
+                                VerticalAlignment="Center" />
+            </Border>
+
+            <ScrollViewer x:Name="PART_HeaderScrollViewer"
+                          Grid.Column="1"
+                          HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Disabled"
+                          AllowAutoHide="True"
+                          IsHitTestVisible="False">
+              <Border Background="{DynamicResource CodexSwitch.MutedBrush}"
+                      BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                      BorderThickness="0,0,0,1"
+                      MinHeight="{TemplateBinding HeaderHeight}">
+                <ContentPresenter MinWidth="{TemplateBinding MiddleMinWidth}"
+                                  Content="{TemplateBinding MiddleHeader}"
+                                  ContentTemplate="{TemplateBinding MiddleHeaderTemplate}"
+                                  VerticalAlignment="Center" />
+              </Border>
+            </ScrollViewer>
+
+            <Border Grid.Column="2"
+                    Background="{DynamicResource CodexSwitch.MutedBrush}"
+                    BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                    BorderThickness="1,0,0,1"
+                    MinHeight="{TemplateBinding HeaderHeight}">
+              <ContentPresenter Content="{TemplateBinding EndHeader}"
+                                ContentTemplate="{TemplateBinding EndHeaderTemplate}"
+                                VerticalAlignment="Center" />
+            </Border>
+
+            <ItemsControl x:Name="PART_StartItemsControl"
+                          Grid.Row="1"
+                          RenderTransformOrigin="50%,50%"
+                          ItemsSource="{TemplateBinding ItemsSource}"
+                          ItemTemplate="{TemplateBinding StartCellTemplate}">
+              <ItemsControl.RenderTransform>
+                <TranslateTransform />
+              </ItemsControl.RenderTransform>
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+            <ScrollViewer x:Name="PART_BodyScrollViewer"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          RenderTransformOrigin="50%,50%"
+                          HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Disabled"
+                          AllowAutoHide="True">
+              <ScrollViewer.RenderTransform>
+                <TranslateTransform />
+              </ScrollViewer.RenderTransform>
+              <ItemsControl MinWidth="{TemplateBinding MiddleMinWidth}"
+                            ItemsSource="{TemplateBinding ItemsSource}"
+                            ItemTemplate="{TemplateBinding MiddleCellTemplate}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+              </ItemsControl>
+            </ScrollViewer>
+
+            <ItemsControl x:Name="PART_EndItemsControl"
+                          Grid.Row="1"
+                          Grid.Column="2"
+                          RenderTransformOrigin="50%,50%"
+                          ItemsSource="{TemplateBinding ItemsSource}"
+                          ItemTemplate="{TemplateBinding EndCellTemplate}">
+              <ItemsControl.RenderTransform>
+                <TranslateTransform />
+              </ItemsControl.RenderTransform>
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+            <Border x:Name="PART_LoadingBar"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="3"
+                    Height="2"
+                    Background="{DynamicResource CodexSwitch.PrimaryBrush}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Opacity="0"
+                    IsHitTestVisible="False" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexPinnedTable /template/ Border#PART_TableSurface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexPinnedTable /template/ Border#PART_LoadingBar">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexPinnedTable.loading /template/ Border#PART_LoadingBar">
+    <Setter Property="Opacity" Value="0.92" />
+  </Style>
+
+  <Style Selector="controls|CodexPinnedTable.compact">
+    <Setter Property="HeaderHeight" Value="36" />
+  </Style>
+
+  <Style Selector="controls|CodexPinnedTable controls|CodexTableRow:pointerover /template/ Border#PART_RowRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexPinnedTable.compact controls|CodexTableRow">
+    <Setter Property="MinHeight" Value="36" />
+  </Style>
+
+  <Style Selector="controls|CodexPinnedTable.compact controls|CodexTableHead">
+    <Setter Property="Padding" Value="8,6" />
+  </Style>
+
+  <Style Selector="controls|CodexPinnedTable.compact controls|CodexTableCell">
+    <Setter Property="Padding" Value="8,6" />
   </Style>
 
   <Style Selector="controls|CodexTableHeader">
@@ -46,15 +218,11 @@
         <BrushTransition Property="Background" Duration="0:0:0.15" />
       </Transitions>
     </Setter>
-    <Setter Property="ItemsPanel">
-      <ItemsPanelTemplate>
-        <StackPanel />
-      </ItemsPanelTemplate>
-    </Setter>
     <Setter Property="Template">
       <ControlTemplate>
         <Border Background="{TemplateBinding Background}">
-          <ItemsPresenter />
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
         </Border>
       </ControlTemplate>
     </Setter>
@@ -85,15 +253,11 @@
         <BrushTransition Property="Background" Duration="0:0:0.15" />
       </Transitions>
     </Setter>
-    <Setter Property="ItemsPanel">
-      <ItemsPanelTemplate>
-        <StackPanel />
-      </ItemsPanelTemplate>
-    </Setter>
     <Setter Property="Template">
       <ControlTemplate>
         <Border Background="{TemplateBinding Background}">
-          <ItemsPresenter />
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
         </Border>
       </ControlTemplate>
     </Setter>
@@ -111,11 +275,6 @@
         <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
       </Transitions>
     </Setter>
-    <Setter Property="ItemsPanel">
-      <ItemsPanelTemplate>
-        <StackPanel Orientation="Horizontal" />
-      </ItemsPanelTemplate>
-    </Setter>
     <Setter Property="Template">
       <ControlTemplate>
         <Border x:Name="PART_RowRoot"
@@ -123,7 +282,9 @@
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}">
-          <ItemsPresenter />
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            VerticalAlignment="Center" />
         </Border>
       </ControlTemplate>
     </Setter>

@@ -1,0 +1,6 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:echarts="using:CodexSwitchUI.ECharts.Controls">
+    <Style Selector="echarts|CsUsageTrendChart">
+        <Setter Property="MinHeight" Value="300"/>
+    </Style>
+</Styles>
