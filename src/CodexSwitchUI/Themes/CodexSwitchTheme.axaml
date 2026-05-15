@@ -1,4 +1,6 @@
-<Styles xmlns="https://github.com/avaloniaui">
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="CodexSwitchUI.Themes.CodexSwitchTheme">
   <StyleInclude Source="avares://CodexSwitchUI/Tokens/BaseTokens.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Light.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/ComponentStyles.axaml" />

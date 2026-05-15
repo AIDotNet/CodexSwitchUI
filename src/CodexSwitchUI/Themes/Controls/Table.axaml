@@ -27,7 +27,8 @@
           </Border.Transitions>
           <ScrollViewer HorizontalScrollBarVisibility="Auto"
                         VerticalScrollBarVisibility="Disabled">
-            <ContentPresenter Content="{TemplateBinding Content}"
+            <ContentPresenter x:Name="PART_TableContent"
+                              Content="{TemplateBinding Content}"
                               ContentTemplate="{TemplateBinding ContentTemplate}" />
           </ScrollViewer>
         </Border>

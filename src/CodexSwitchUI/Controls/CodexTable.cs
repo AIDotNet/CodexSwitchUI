@@ -21,6 +21,12 @@ public enum CodexTableCellAlignment
 
 public class CodexTable : ContentControl
 {
+    private static readonly TimeSpan ContentTransitionDuration = TimeSpan.FromMilliseconds(150);
+
+    private Control? _contentPresenter;
+    private TranslateTransform? _contentTransform;
+    private int _transitionVersion;
+
     public static readonly StyledProperty<bool> IsHoverableProperty =
         AvaloniaProperty.Register<CodexTable, bool>(nameof(IsHoverable), true);
 
@@ -30,11 +36,18 @@ public class CodexTable : ContentControl
     public static readonly StyledProperty<bool> IsCompactProperty =
         AvaloniaProperty.Register<CodexTable, bool>(nameof(IsCompact));
 
+    public static readonly StyledProperty<object?> TransitionKeyProperty =
+        AvaloniaProperty.Register<CodexTable, object?>(nameof(TransitionKey));
+
+    public static readonly StyledProperty<double> TransitionOffsetProperty =
+        AvaloniaProperty.Register<CodexTable, double>(nameof(TransitionOffset), 7);
+
     static CodexTable()
     {
         IsHoverableProperty.Changed.AddClassHandler<CodexTable>((table, _) => table.SyncClasses());
         IsStripedProperty.Changed.AddClassHandler<CodexTable>((table, _) => table.SyncClasses());
         IsCompactProperty.Changed.AddClassHandler<CodexTable>((table, _) => table.SyncClasses());
+        TransitionKeyProperty.Changed.AddClassHandler<CodexTable>((table, _) => table.StartContentTransition());
     }
 
     public CodexTable()
@@ -58,6 +71,75 @@ public class CodexTable : ContentControl
     {
         get => GetValue(IsCompactProperty);
         set => SetValue(IsCompactProperty, value);
+    }
+
+    public object? TransitionKey
+    {
+        get => GetValue(TransitionKeyProperty);
+        set => SetValue(TransitionKeyProperty, value);
+    }
+
+    public double TransitionOffset
+    {
+        get => GetValue(TransitionOffsetProperty);
+        set => SetValue(TransitionOffsetProperty, value);
+    }
+
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        _contentPresenter = e.NameScope.Find<Control>("PART_TableContent");
+        if (_contentPresenter is null)
+            return;
+
+        _contentPresenter.Transitions =
+        [
+            new DoubleTransition
+            {
+                Property = OpacityProperty,
+                Duration = ContentTransitionDuration,
+                Easing = new CubicEaseOut()
+            }
+        ];
+
+        _contentTransform = _contentPresenter.RenderTransform as TranslateTransform;
+        if (_contentTransform is null)
+        {
+            _contentTransform = new TranslateTransform();
+            _contentPresenter.RenderTransform = _contentTransform;
+        }
+
+        _contentTransform.Transitions =
+        [
+            new DoubleTransition
+            {
+                Property = TranslateTransform.YProperty,
+                Duration = ContentTransitionDuration,
+                Easing = new CubicEaseOut()
+            }
+        ];
+    }
+
+    private void StartContentTransition()
+    {
+        if (_contentPresenter is null)
+            return;
+
+        var version = ++_transitionVersion;
+        _contentPresenter.Opacity = 0.72;
+        if (_contentTransform is not null)
+            _contentTransform.Y = Math.Max(0, TransitionOffset);
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (version != _transitionVersion || _contentPresenter is null)
+                return;
+
+            _contentPresenter.Opacity = 1;
+            if (_contentTransform is not null)
+                _contentTransform.Y = 0;
+        }, DispatcherPriority.Render);
     }
 
     private void SyncClasses()
@@ -109,10 +191,10 @@ public class CodexPinnedTable : TemplatedControl
         AvaloniaProperty.Register<CodexPinnedTable, IDataTemplate?>(nameof(EndCellTemplate));
 
     public static readonly StyledProperty<GridLength> StartColumnWidthProperty =
-        AvaloniaProperty.Register<CodexPinnedTable, GridLength>(nameof(StartColumnWidth), new GridLength(88));
+        AvaloniaProperty.Register<CodexPinnedTable, GridLength>(nameof(StartColumnWidth), new GridLength(128));
 
     public static readonly StyledProperty<GridLength> EndColumnWidthProperty =
-        AvaloniaProperty.Register<CodexPinnedTable, GridLength>(nameof(EndColumnWidth), new GridLength(52));
+        AvaloniaProperty.Register<CodexPinnedTable, GridLength>(nameof(EndColumnWidth), new GridLength(96));
 
     public static readonly StyledProperty<double> MiddleMinWidthProperty =
         AvaloniaProperty.Register<CodexPinnedTable, double>(nameof(MiddleMinWidth), 640);

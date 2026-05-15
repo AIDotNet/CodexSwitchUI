@@ -1,4 +1,4 @@
-using Avalonia.Markup.Xaml.Styling;
+using Avalonia.Markup.Xaml;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 
@@ -7,7 +7,7 @@ namespace CodexSwitchUI.Themes;
 /// <summary>
 /// App style entry point. Add this to <c>Application.Styles</c> or XAML styles.
 /// </summary>
-public sealed class CodexSwitchTheme : Styles
+public sealed partial class CodexSwitchTheme : Styles
 {
     public CodexSwitchTheme()
         : this(includeFluentBaseTheme: true)
@@ -21,9 +21,6 @@ public sealed class CodexSwitchTheme : Styles
             Add(new FluentTheme());
         }
 
-        Add(new StyleInclude(new Uri("avares://CodexSwitchUI"))
-        {
-            Source = new Uri("avares://CodexSwitchUI/Themes/CodexSwitchTheme.axaml")
-        });
+        AvaloniaXamlLoader.Load(this);
     }
 }
