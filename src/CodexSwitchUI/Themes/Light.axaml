@@ -25,5 +25,15 @@
     <SolidColorBrush x:Key="CodexSwitch.SuccessForegroundBrush" Color="#FFFFFFFF" />
     <SolidColorBrush x:Key="CodexSwitch.WarningBrush" Color="#FFF59E0B" />
     <SolidColorBrush x:Key="CodexSwitch.WarningForegroundBrush" Color="#FF09090B" />
+    <SolidColorBrush x:Key="CodexSwitch.ProviderCardActiveBrush" Color="#FFEFF6FF" />
+    <SolidColorBrush x:Key="CodexSwitch.ProviderCardActiveHoverBrush" Color="#FFDBEAFE" />
+    <SolidColorBrush x:Key="CodexSwitch.ProviderCardActivePressedBrush" Color="#FFBFDBFE" />
+    <SolidColorBrush x:Key="CodexSwitch.ProviderCardActiveBorderBrush" Color="#FF93C5FD" />
+    <SolidColorBrush x:Key="CodexSwitch.ProviderCardActiveForegroundBrush" Color="#FF0F172A" />
+    <SolidColorBrush x:Key="CodexSwitch.ProviderCardActiveMutedForegroundBrush" Color="#FF475569" />
+    <SolidColorBrush x:Key="CodexSwitch.ProviderCardActiveIconBrush" Color="#FFDBEAFE" />
+    <SolidColorBrush x:Key="CodexSwitch.ProviderUsageBrush" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="CodexSwitch.ProviderUsageHoverBrush" Color="#FFF8FAFC" />
+    <SolidColorBrush x:Key="CodexSwitch.ProviderUsageBorderBrush" Color="#FFBFDBFE" />
   </Styles.Resources>
 </Styles>

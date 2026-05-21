@@ -28,6 +28,26 @@ public sealed record CodexSwitchPalette(
     string Warning,
     string WarningForeground)
 {
+    public string ProviderCardActive { get; init; } = "#FFEFF6FF";
+
+    public string ProviderCardActiveHover { get; init; } = "#FFDBEAFE";
+
+    public string ProviderCardActivePressed { get; init; } = "#FFBFDBFE";
+
+    public string ProviderCardActiveBorder { get; init; } = "#FF93C5FD";
+
+    public string ProviderCardActiveForeground { get; init; } = "#FF0F172A";
+
+    public string ProviderCardActiveMutedForeground { get; init; } = "#FF475569";
+
+    public string ProviderCardActiveIcon { get; init; } = "#FFDBEAFE";
+
+    public string ProviderUsage { get; init; } = "#FFFFFFFF";
+
+    public string ProviderUsageHover { get; init; } = "#FFF8FAFC";
+
+    public string ProviderUsageBorder { get; init; } = "#FFBFDBFE";
+
     public static CodexSwitchPalette Light { get; } = new(
         Background: "#FFFFFFFF",
         Foreground: "#FF09090B",
@@ -51,7 +71,19 @@ public sealed record CodexSwitchPalette(
         Success: "#FF16A34A",
         SuccessForeground: "#FFFFFFFF",
         Warning: "#FFF59E0B",
-        WarningForeground: "#FF09090B");
+        WarningForeground: "#FF09090B")
+    {
+        ProviderCardActive = "#FFEFF6FF",
+        ProviderCardActiveHover = "#FFDBEAFE",
+        ProviderCardActivePressed = "#FFBFDBFE",
+        ProviderCardActiveBorder = "#FF93C5FD",
+        ProviderCardActiveForeground = "#FF0F172A",
+        ProviderCardActiveMutedForeground = "#FF475569",
+        ProviderCardActiveIcon = "#FFDBEAFE",
+        ProviderUsage = "#FFFFFFFF",
+        ProviderUsageHover = "#FFF8FAFC",
+        ProviderUsageBorder = "#FFBFDBFE"
+    };
 
     public static CodexSwitchPalette Dark { get; } = new(
         Background: "#FF09090B",
@@ -76,7 +108,19 @@ public sealed record CodexSwitchPalette(
         Success: "#FF22C55E",
         SuccessForeground: "#FF052E16",
         Warning: "#FFFBBF24",
-        WarningForeground: "#FF1C1917");
+        WarningForeground: "#FF1C1917")
+    {
+        ProviderCardActive = "#FF0F172A",
+        ProviderCardActiveHover = "#FF172033",
+        ProviderCardActivePressed = "#FF1E293B",
+        ProviderCardActiveBorder = "#FF2563EB",
+        ProviderCardActiveForeground = "#FFF8FAFC",
+        ProviderCardActiveMutedForeground = "#FFCBD5E1",
+        ProviderCardActiveIcon = "#FF1E293B",
+        ProviderUsage = "#CC020617",
+        ProviderUsageHover = "#E6020617",
+        ProviderUsageBorder = "#FF334155"
+    };
 
     public static CodexSwitchPalette Zinc { get; } = Light;
 }

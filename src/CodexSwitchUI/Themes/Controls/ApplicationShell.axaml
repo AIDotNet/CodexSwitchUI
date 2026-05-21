@@ -954,6 +954,7 @@
                               VerticalAlignment="Stretch" />
             <Border Grid.Column="1"
                     Grid.RowSpan="2"
+                    x:Name="PART_IconShell"
                     Width="40"
                     Height="40"
                     CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
@@ -969,14 +970,17 @@
                         Spacing="5"
                         VerticalAlignment="Center">
               <StackPanel Orientation="Horizontal"
+                          x:Name="PART_HeaderLine"
                           Spacing="8">
-                <ContentPresenter Content="{TemplateBinding Header}"
+                <ContentPresenter x:Name="PART_HeaderPresenter"
+                                  Content="{TemplateBinding Header}"
                                   VerticalAlignment="Center" />
                 <ContentPresenter Content="{TemplateBinding Meta}"
                                   IsVisible="{TemplateBinding HasMeta}"
                                   VerticalAlignment="Center" />
               </StackPanel>
               <TextBlock Text="{TemplateBinding Description}"
+                         x:Name="PART_Description"
                          IsVisible="{TemplateBinding HasDescription}"
                          Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
                          FontFamily="{DynamicResource CodexSwitch.FontFamily}"
@@ -1009,12 +1013,25 @@
     <Setter Property="Opacity" Value="0.92" />
   </Style>
   <Style Selector="controls|CodexProviderCard.active">
-    <Setter Property="Background" Value="#151D2B" />
-    <Setter Property="BorderBrush" Value="#0A84FF" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.ProviderCardActiveBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.ProviderCardActiveBorderBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ProviderCardActiveForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.active /template/ Border#PART_IconShell">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.ProviderCardActiveIconBrush}" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.active /template/ ContentPresenter#PART_HeaderPresenter TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ProviderCardActiveForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.active /template/ TextBlock#PART_Description">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ProviderCardActiveMutedForegroundBrush}" />
   </Style>
   <Style Selector="controls|CodexProviderCard.active:pointerover">
-    <Setter Property="Background" Value="#18263A" />
-    <Setter Property="BorderBrush" Value="#2B95FF" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.ProviderCardActiveHoverBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.ProviderCardActiveBorderBrush}" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.active:pressed">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.ProviderCardActivePressedBrush}" />
   </Style>
   <Style Selector="controls|CodexProviderCard.dragging">
     <Setter Property="Opacity" Value="0.92" />

@@ -89,6 +89,16 @@ public sealed class CodexSwitchThemeManager
         SetBrush(application, CodexSwitchResourceKeys.SuccessForegroundBrush, palette.SuccessForeground);
         SetBrush(application, CodexSwitchResourceKeys.WarningBrush, palette.Warning);
         SetBrush(application, CodexSwitchResourceKeys.WarningForegroundBrush, palette.WarningForeground);
+        SetBrush(application, CodexSwitchResourceKeys.ProviderCardActiveBrush, palette.ProviderCardActive);
+        SetBrush(application, CodexSwitchResourceKeys.ProviderCardActiveHoverBrush, palette.ProviderCardActiveHover);
+        SetBrush(application, CodexSwitchResourceKeys.ProviderCardActivePressedBrush, palette.ProviderCardActivePressed);
+        SetBrush(application, CodexSwitchResourceKeys.ProviderCardActiveBorderBrush, palette.ProviderCardActiveBorder);
+        SetBrush(application, CodexSwitchResourceKeys.ProviderCardActiveForegroundBrush, palette.ProviderCardActiveForeground);
+        SetBrush(application, CodexSwitchResourceKeys.ProviderCardActiveMutedForegroundBrush, palette.ProviderCardActiveMutedForeground);
+        SetBrush(application, CodexSwitchResourceKeys.ProviderCardActiveIconBrush, palette.ProviderCardActiveIcon);
+        SetBrush(application, CodexSwitchResourceKeys.ProviderUsageBrush, palette.ProviderUsage);
+        SetBrush(application, CodexSwitchResourceKeys.ProviderUsageHoverBrush, palette.ProviderUsageHover);
+        SetBrush(application, CodexSwitchResourceKeys.ProviderUsageBorderBrush, palette.ProviderUsageBorder);
 
         application.Resources[CodexSwitchResourceKeys.FontFamily] = new FontFamily(options.FontFamily);
         application.Resources[CodexSwitchResourceKeys.FontSizeSm] = 12d;

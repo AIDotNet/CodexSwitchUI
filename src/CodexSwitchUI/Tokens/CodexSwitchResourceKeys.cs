@@ -28,6 +28,16 @@ public static class CodexSwitchResourceKeys
     public const string SuccessForegroundBrush = "CodexSwitch.SuccessForegroundBrush";
     public const string WarningBrush = "CodexSwitch.WarningBrush";
     public const string WarningForegroundBrush = "CodexSwitch.WarningForegroundBrush";
+    public const string ProviderCardActiveBrush = "CodexSwitch.ProviderCardActiveBrush";
+    public const string ProviderCardActiveHoverBrush = "CodexSwitch.ProviderCardActiveHoverBrush";
+    public const string ProviderCardActivePressedBrush = "CodexSwitch.ProviderCardActivePressedBrush";
+    public const string ProviderCardActiveBorderBrush = "CodexSwitch.ProviderCardActiveBorderBrush";
+    public const string ProviderCardActiveForegroundBrush = "CodexSwitch.ProviderCardActiveForegroundBrush";
+    public const string ProviderCardActiveMutedForegroundBrush = "CodexSwitch.ProviderCardActiveMutedForegroundBrush";
+    public const string ProviderCardActiveIconBrush = "CodexSwitch.ProviderCardActiveIconBrush";
+    public const string ProviderUsageBrush = "CodexSwitch.ProviderUsageBrush";
+    public const string ProviderUsageHoverBrush = "CodexSwitch.ProviderUsageHoverBrush";
+    public const string ProviderUsageBorderBrush = "CodexSwitch.ProviderUsageBorderBrush";
 
     public const string FontFamily = "CodexSwitch.FontFamily";
     public const string FontSizeSm = "CodexSwitch.FontSizeSm";
