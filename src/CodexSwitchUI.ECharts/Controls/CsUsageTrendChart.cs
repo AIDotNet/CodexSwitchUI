@@ -9,14 +9,16 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using CodexSwitchUI.ECharts.Abstractions;
 using CodexSwitchUI.ECharts.Formatting;
+using CodexSwitchUI.Tokens;
 
 namespace CodexSwitchUI.ECharts.Controls;
 
 public sealed class CsUsageTrendChart : Control
 {
     private static readonly TimeSpan ChartAnimationDuration = TimeSpan.FromMilliseconds(520);
-    private static readonly Typeface LabelTypeface = new("Inter", FontStyle.Normal, FontWeight.Normal, FontStretch.Normal);
-    private static readonly Typeface EmphasisTypeface = new("Inter", FontStyle.Normal, FontWeight.SemiBold, FontStretch.Normal);
+    private static readonly FontFamily ChartFontFamily = new(CodexSwitchFonts.DefaultFontFamily);
+    private static readonly Typeface LabelTypeface = new(ChartFontFamily, FontStyle.Normal, FontWeight.Normal, FontStretch.Normal);
+    private static readonly Typeface EmphasisTypeface = new(ChartFontFamily, FontStyle.Normal, FontWeight.SemiBold, FontStretch.Normal);
     private static readonly IBrush PlotBackgroundBrush = Brush("#0AFFFFFF");
     private static readonly IBrush AxisBrush = Brush("#8AA3A3A3");
     private static readonly IBrush TooltipBackgroundBrush = Brush("#F0202023");

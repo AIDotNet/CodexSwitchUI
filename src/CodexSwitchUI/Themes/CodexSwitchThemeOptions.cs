@@ -28,7 +28,7 @@ public sealed record CodexSwitchThemeOptions
     public CodexSwitchPalette DarkPalette { get; init; } = CodexSwitchPalette.Dark;
     public CodexSwitchPalette? CustomPalette { get; init; }
     public double Radius { get; init; } = 6;
-    public string FontFamily { get; init; } = "Inter, Segoe UI, sans-serif";
+    public string FontFamily { get; init; } = CodexSwitchFonts.DefaultFontFamily;
     public CodexSwitchDensity Density { get; init; } = CodexSwitchDensity.Default;
     public TimeSpan MotionDurationFast { get; init; } = TimeSpan.FromMilliseconds(120);
     public TimeSpan MotionDurationDefault { get; init; } = TimeSpan.FromMilliseconds(150);

@@ -1,7 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:primitives="using:CodexSwitchUI.Primitives">
   <Style Selector="primitives|CodexText">
-    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontFamily" Value="Consolas, Cascadia Mono, monospace" />
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
     <Setter Property="LineHeight" Value="22" />
@@ -37,7 +37,7 @@
   </Style>
 
   <Style Selector="primitives|CodexText.role-code">
-    <Setter Property="FontFamily" Value="Consolas, Cascadia Mono, monospace" />
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.MutedBrush}" />
     <Setter Property="LineHeight" Value="20" />

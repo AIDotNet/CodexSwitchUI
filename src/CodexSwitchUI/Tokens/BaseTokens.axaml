@@ -3,7 +3,7 @@
         xmlns:easings="using:Avalonia.Animation.Easings"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime">
   <Styles.Resources>
-    <FontFamily x:Key="CodexSwitch.FontFamily">Inter, Segoe UI, sans-serif</FontFamily>
+    <FontFamily x:Key="CodexSwitch.FontFamily">Inter, Segoe UI, PingFang SC, Microsoft YaHei UI, sans-serif</FontFamily>
     <x:Double x:Key="CodexSwitch.FontSizeSm">12</x:Double>
     <x:Double x:Key="CodexSwitch.FontSizeMd">14</x:Double>
     <x:Double x:Key="CodexSwitch.FontSizeLg">16</x:Double>
