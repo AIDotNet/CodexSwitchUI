@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using CodexSwitchUI.Controls;
@@ -59,6 +60,17 @@ public class NavigationDataComponentTests
             [
                 new CodexRankedBarChartItem("OpenAI", 12, "12", "$0.04"),
                 new CodexRankedBarChartItem("Anthropic", 8, "8", "$0.02")
+            ]
+        };
+        var usagePieChart = new CodexUsagePieChart
+        {
+            IsCompact = true,
+            TotalLabel = "Requests",
+            TotalValue = "20",
+            ItemsSource =
+            [
+                new CodexUsagePieChartItem("gpt-5.5", 12, "60%", "12 requests"),
+                new CodexUsagePieChartItem("gpt-5.4", 8, "40%", "8 requests")
             ]
         };
         var avatar = new CodexAvatar { Size = CodexControlSize.Icon };
@@ -133,6 +145,10 @@ public class NavigationDataComponentTests
         Assert.Contains("compact", rankedBarChart.Classes);
         Assert.Equal(4, rankedBarChart.MaxVisibleItems);
         Assert.NotNull(rankedBarChart.ItemsSource);
+        Assert.Contains("compact", usagePieChart.Classes);
+        Assert.Equal("Requests", usagePieChart.TotalLabel);
+        Assert.Equal("20", usagePieChart.TotalValue);
+        Assert.NotNull(usagePieChart.ItemsSource);
         Assert.Contains("size-icon", avatar.Classes);
         Assert.Contains("interactive", card.Classes);
         Assert.True(card.HasHeader);
@@ -173,6 +189,7 @@ public class NavigationDataComponentTests
     [InlineData("Collapsible.axaml", "PART_Trigger", "PART_Chevron", "PART_ContentClip", "PART_ContentMeasure", "open", "closed", "TransformOperationsTransition")]
     [InlineData("Table.axaml", "PART_TableSurface", "PART_Head", "PART_Cell", "compact")]
     [InlineData("RankedBarChart.axaml", "MutedForeground", "TrackBrush", "AccentBrush", "SecondaryAccentBrush", "TertiaryAccentBrush", "compact")]
+    [InlineData("UsagePieChart.axaml", "MutedForeground", "TrackBrush", "SliceBorderBrush", "CenterFillBrush", "TooltipBackground", "TooltipForeground", "TooltipBorderBrush", "compact")]
     [InlineData("Card.axaml", "PART_Surface", "PART_Header", "PART_Footer", "interactive")]
     [InlineData("Separator.axaml", "PART_Line", "horizontal", "vertical", "size-lg")]
     public void StylesExposeExpectedTemplatePartsAndStateHooks(string fileName, params string[] expectedFragments)
@@ -211,6 +228,7 @@ public class NavigationDataComponentTests
         var collapsible = File.ReadAllText(Path.Combine(root, "Collapsible.axaml"));
         var table = File.ReadAllText(Path.Combine(root, "Table.axaml"));
         var rankedBarChart = File.ReadAllText(Path.Combine(root, "RankedBarChart.axaml"));
+        var usagePieChart = File.ReadAllText(Path.Combine(root, "UsagePieChart.axaml"));
 
         Assert.Contains(":selected", tabs);
         Assert.Contains(":pointerover", tabs);
@@ -266,6 +284,8 @@ public class NavigationDataComponentTests
         Assert.Contains("controls|CodexTable.hoverable controls|CodexTableRow:pointerover", table);
         Assert.Contains("controls|CodexRankedBarChart.compact", rankedBarChart);
         Assert.Contains("CodexSwitch.DisabledOpacity", rankedBarChart);
+        Assert.Contains("controls|CodexUsagePieChart.compact", usagePieChart);
+        Assert.Contains("CodexSwitch.DisabledOpacity", usagePieChart);
 
         // Next visual-pass hook: add rendered snapshot coverage for submenu popups and table column alignment.
     }
@@ -286,6 +306,7 @@ public class NavigationDataComponentTests
             File.ReadAllText(Path.Combine(controlsRoot, "Collapsible.axaml")),
             File.ReadAllText(Path.Combine(controlsRoot, "Table.axaml")),
             File.ReadAllText(Path.Combine(controlsRoot, "RankedBarChart.axaml")),
+            File.ReadAllText(Path.Combine(controlsRoot, "UsagePieChart.axaml")),
             File.ReadAllText(Path.Combine(controlsRoot, "Card.axaml")),
             File.ReadAllText(Path.Combine(controlsRoot, "Separator.axaml")),
             File.ReadAllText(Path.Combine(primitiveRoot, "Typography.axaml"))
@@ -420,6 +441,36 @@ public class NavigationDataComponentTests
         Assert.Contains("if (_collapseWhenAnimationCompletes && !IsOpen)", source);
         Assert.Contains("SetValue(IsContentVisibleProperty, false)", source);
         Assert.Contains("CssEaseOut", source);
+    }
+
+    [Theory]
+    [InlineData(100, 100, 24, 14, 44, 12)]
+    [InlineData(78.5, 64.5, 31.2, 16.8, 58.4, 10.6)]
+    [InlineData(120, 96, 48, 18, 76, 13)]
+    public void UsagePieChartCentersValueAndLabelGroup(
+        double centerX,
+        double centerY,
+        double valueWidth,
+        double valueHeight,
+        double labelWidth,
+        double labelHeight)
+    {
+        const double spacing = 2d;
+
+        var layout = CodexUsagePieChart.CalculateCenterLabelLayout(
+            new Point(centerX, centerY),
+            valueWidth,
+            valueHeight,
+            labelWidth,
+            labelHeight,
+            spacing);
+        var groupBottom = layout.LabelOrigin.Y + labelHeight;
+        var groupCenter = layout.ValueOrigin.Y + (groupBottom - layout.ValueOrigin.Y) / 2d;
+
+        Assert.InRange(Math.Abs(groupCenter - centerY), 0d, 0.5d);
+        Assert.Equal(centerX - valueWidth / 2d, layout.ValueOrigin.X, 6);
+        Assert.Equal(centerX - labelWidth / 2d, layout.LabelOrigin.X, 6);
+        Assert.Equal(valueHeight + spacing + labelHeight, layout.CombinedHeight, 6);
     }
 
     private static int Count(string text, string value)

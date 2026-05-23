@@ -19,6 +19,7 @@
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Spinner.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Progress.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/RankedBarChart.axaml" />
+  <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/UsagePieChart.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Table.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Menu.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/ContextMenu.axaml" />

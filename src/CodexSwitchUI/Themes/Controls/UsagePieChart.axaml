@@ -1,0 +1,30 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexUsagePieChart">
+    <Setter Property="MinHeight" Value="206" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="MutedForeground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="TrackBrush" Value="{DynamicResource CodexSwitch.MutedBrush}" />
+    <Setter Property="SliceBorderBrush" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="CenterFillBrush" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="TooltipBackground" Value="{DynamicResource CodexSwitch.PopoverBrush}" />
+    <Setter Property="TooltipForeground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="TooltipBorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexUsagePieChart.compact">
+    <Setter Property="MinHeight" Value="178" />
+  </Style>
+
+  <Style Selector="controls|CodexUsagePieChart:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+</Styles>
