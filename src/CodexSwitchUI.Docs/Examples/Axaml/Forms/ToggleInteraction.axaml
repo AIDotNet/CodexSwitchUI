@@ -1,0 +1,36 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <controls:CodexField Label="Pointer and keyboard"
+                       Description="Pointer release, Space, and Enter all toggle the same pressed state.">
+    <StackPanel Spacing="10">
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexToggle Content="Bookmark"
+                              IsPressed="True" />
+        <controls:CodexToggle Content="Bold"
+                              Variant="Outline" />
+        <controls:CodexToggle Content="Disabled"
+                              IsEnabled="False" />
+      </StackPanel>
+      <TextBlock Text="Bookmark is on."
+                 Opacity="0.72" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Size and variant"
+                       Description="Standalone Toggle keeps its own hover, pressed, disabled, and focus-visible motion.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexToggle Content="S"
+                            Size="Small" />
+      <controls:CodexToggle Content="Default"
+                            IsPressed="True" />
+      <controls:CodexToggle Content="Large"
+                            Size="Large"
+                            Variant="Outline" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

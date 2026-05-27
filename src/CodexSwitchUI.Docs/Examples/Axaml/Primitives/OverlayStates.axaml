@@ -1,0 +1,41 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <StackPanel Spacing="8">
+    <TextBlock Text="Open" />
+    <Grid Height="150">
+      <primitives:CodexOverlay IsOpen="True"
+                               ScrimOpacity="0.36"
+                               HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center">
+        <controls:CodexCard Width="210"
+                            Title="Open"
+                            Description="Composed layer">
+          <controls:CodexButton Content="Dismiss"
+                                Size="Small" />
+        </controls:CodexCard>
+      </primitives:CodexOverlay>
+    </Grid>
+  </StackPanel>
+
+  <StackPanel Grid.Column="1"
+              Spacing="8">
+    <TextBlock Text="No scrim" />
+    <Grid Height="150">
+      <primitives:CodexOverlay IsOpen="True"
+                               IsScrimVisible="False"
+                               ScrimOpacity="0"
+                               HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center">
+        <controls:CodexCard Width="210"
+                            Title="No scrim"
+                            Description="Content remains composed">
+          <controls:CodexButton Content="Dismiss"
+                                Size="Small" />
+        </controls:CodexCard>
+      </primitives:CodexOverlay>
+    </Grid>
+  </StackPanel>
+</Grid>

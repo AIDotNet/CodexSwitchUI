@@ -1,0 +1,23 @@
+<controls:CodexMenu xmlns="https://github.com/avaloniaui"
+                    xmlns:controls="using:CodexSwitchUI.Controls"
+                    MinWidth="240">
+  <controls:CodexMenuGroup Header="States" />
+  <controls:CodexMenuItem Header="Active item"
+                          Shortcut="Ctrl+A"
+                          IsActive="True" />
+  <controls:CodexMenuItem Header="Checked item"
+                          ToggleType="CheckBox"
+                          IsChecked="True" />
+  <controls:CodexMenuItem Header="Radio item"
+                          ToggleType="Radio"
+                          IsChecked="True" />
+  <controls:CodexMenuSeparator />
+  <controls:CodexMenuItem Header="Open submenu"
+                          IsSubMenuOpen="True">
+    <controls:CodexMenuItem Header="JSON" />
+    <controls:CodexMenuItem Header="Markdown"
+                            IsEnabled="False" />
+  </controls:CodexMenuItem>
+  <controls:CodexMenuItem Header="Disabled"
+                          IsEnabled="False" />
+</controls:CodexMenu>

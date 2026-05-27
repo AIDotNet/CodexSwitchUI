@@ -1,0 +1,18 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexInputGroup MinWidth="320">
+    <controls:CodexInputGroupAddon Content="Search" />
+    <controls:CodexInputGroupInput PlaceholderText="Providers, models, or routes" />
+    <controls:CodexInputGroupAddon Align="InlineEnd"
+                                   Content="12 results" />
+  </controls:CodexInputGroup>
+
+  <controls:CodexInputGroup MinWidth="320">
+    <controls:CodexInputGroupAddon Content="https://" />
+    <controls:CodexInputGroupInput Text="api.openai.com" />
+    <controls:CodexInputGroupAddon Align="InlineEnd">
+      <controls:CodexInputGroupButton Content="Copy" />
+    </controls:CodexInputGroupAddon>
+  </controls:CodexInputGroup>
+</StackPanel>

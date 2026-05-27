@@ -1,0 +1,215 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexHoverCard">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PopoverBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="MinWidth" Value="220" />
+    <Setter Property="MaxWidth" Value="320" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexHoverCard">
+        <Grid x:Name="PART_Root"
+              ClipToBounds="False">
+          <ContentPresenter x:Name="PART_Trigger"
+                            Content="{TemplateBinding Trigger}"
+                            ContentTemplate="{TemplateBinding TriggerTemplate}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+
+          <Border x:Name="PART_Surface"
+                  MinWidth="{TemplateBinding MinWidth}"
+                  MaxWidth="{TemplateBinding MaxWidth}"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}"
+                  Opacity="1"
+                  RenderTransform="translate(0px, 0px) scale(1)"
+                  RenderTransformOrigin="50%,50%">
+            <ContentPresenter x:Name="PART_Content"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Foreground="{TemplateBinding Foreground}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+
+          <Border x:Name="PART_Arrow"
+                  Width="10"
+                  Height="10"
+                  Background="{TemplateBinding Background}"
+                  IsVisible="{TemplateBinding IsArrowVisible}"
+                  RenderTransform="rotate(45deg)"
+                  RenderTransformOrigin="50%,50%" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.closed /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.open /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="IsHitTestVisible" Value="True" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.has-trigger /template/ ContentPresenter#PART_Trigger">
+    <Setter Property="IsHitTestVisible" Value="True" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.has-content /template/ Border#PART_Surface">
+    <Setter Property="ClipToBounds" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.delayed-open /template/ Border#PART_Surface">
+    <Setter Property="RenderTransformOrigin" Value="50%,50%" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.delayed-close /template/ Border#PART_Surface">
+    <Setter Property="RenderTransformOrigin" Value="50%,50%" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.side-top /template/ Border#PART_Surface">
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,-112,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.side-bottom /template/ Border#PART_Surface">
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,38,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.side-left /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="-248,0,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.side-right /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="0,0,-248,0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.align-start /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.align-center /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.align-end /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.closed.side-top /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(0px, 4px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.closed.side-bottom /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(0px, -4px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.closed.side-left /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(4px, 0px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.closed.side-right /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(-4px, 0px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard /template/ Border#PART_Surface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="BorderThickness" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard /template/ Border#PART_Arrow">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard:not(.has-arrow) /template/ Border#PART_Arrow">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.closed /template/ Border#PART_Arrow">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.side-top /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,-12,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.side-bottom /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,32,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.side-left /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="-14,0,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.side-right /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="0,0,-14,0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.size-sm">
+    <Setter Property="Padding" Value="12" />
+    <Setter Property="MinWidth" Value="180" />
+    <Setter Property="MaxWidth" Value="280" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.size-lg">
+    <Setter Property="Padding" Value="18" />
+    <Setter Property="MinWidth" Value="260" />
+    <Setter Property="MaxWidth" Value="380" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.size-icon">
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="MinWidth" Value="220" />
+    <Setter Property="MaxWidth" Value="320" />
+  </Style>
+</Styles>

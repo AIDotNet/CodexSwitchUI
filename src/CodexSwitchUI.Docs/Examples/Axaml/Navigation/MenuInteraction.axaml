@@ -1,0 +1,62 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <TextBlock Text="ItemSelected: choose a leaf menu item."
+             Opacity="0.72" />
+  <Grid ColumnDefinitions="*,*"
+        RowDefinitions="Auto,Auto"
+        ColumnSpacing="14"
+        RowSpacing="14">
+  <controls:CodexMenu MinWidth="230">
+    <controls:CodexMenuGroup Header="Keyboard path" />
+    <controls:CodexMenuItem Header="Focused submenu"
+                            Shortcut="Right"
+                            IsActive="True"
+                            IsSubMenuOpen="True">
+      <controls:CodexMenuItem Header="Archive" />
+      <controls:CodexMenuItem Header="Favorites" />
+    </controls:CodexMenuItem>
+    <controls:CodexMenuItem Header="Close submenu"
+                            Shortcut="Left" />
+  </controls:CodexMenu>
+
+  <controls:CodexMenu Grid.Column="1"
+                      MinWidth="230">
+    <controls:CodexMenuGroup Header="Pointer path" />
+    <controls:CodexMenuItem Header="Hover opens after delay"
+                            Shortcut="100ms"
+                            IsSubMenuOpen="True">
+      <controls:CodexMenuItem Header="JSON" />
+      <controls:CodexMenuItem Header="Markdown" />
+    </controls:CodexMenuItem>
+    <controls:CodexMenuItem Header="Pointer leave closes"
+                            Shortcut="300ms" />
+  </controls:CodexMenu>
+
+  <controls:CodexMenu Grid.Row="1"
+                      MinWidth="230"
+                      IsLoading="True">
+    <controls:CodexMenuGroup Header="Loading gate" />
+    <controls:CodexMenuItem Header="Refresh providers"
+                            Shortcut="Ctrl+R" />
+    <controls:CodexMenuItem Header="Export blocked">
+      <controls:CodexMenuItem Header="JSON" />
+      <controls:CodexMenuItem Header="CSV" />
+    </controls:CodexMenuItem>
+  </controls:CodexMenu>
+
+  <controls:CodexMenu Grid.Row="1"
+                      Grid.Column="1"
+                      MinWidth="230">
+    <controls:CodexMenuGroup Header="Selection path" />
+    <controls:CodexMenuItem Header="Checked"
+                            ToggleType="CheckBox"
+                            IsChecked="True" />
+    <controls:CodexMenuItem Header="Radio selected"
+                            ToggleType="Radio"
+                            IsChecked="True" />
+    <controls:CodexMenuItem Header="Disabled leaf"
+                            IsEnabled="False" />
+  </controls:CodexMenu>
+  </Grid>
+</StackPanel>

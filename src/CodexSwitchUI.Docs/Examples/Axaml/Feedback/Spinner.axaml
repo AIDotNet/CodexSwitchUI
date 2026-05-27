@@ -1,0 +1,12 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Orientation="Horizontal"
+            Spacing="16">
+  <controls:CodexSpinner Size="Small"
+                         Label="Small loading" />
+  <controls:CodexSpinner Label="Loading" />
+  <controls:CodexSpinner Size="Large"
+                         Label="Large loading" />
+  <controls:CodexSpinner IsActive="False"
+                         Label="Paused" />
+</StackPanel>

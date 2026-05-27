@@ -13,13 +13,16 @@
     <Setter Property="MaxWidth" Value="420" />
     <Setter Property="ClipToBounds" Value="False" />
     <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+    <Setter Property="RenderTransformOrigin" Value="50%,50%" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="Template">
@@ -99,7 +102,7 @@
                     Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
-                    Command="{TemplateBinding CloseCommand}"
+                    Command="{TemplateBinding DismissCommand}"
                     FocusAdorner="{x:Null}"
                     IsVisible="{TemplateBinding IsCloseVisible}">
               <Button.Template>
@@ -133,11 +136,16 @@
     </Setter>
   </Style>
 
+  <Style Selector="controls|CodexToast.closed">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="RenderTransform" Value="translate(0px, 8px) scale(0.98)" />
+  </Style>
+
   <Style Selector="controls|CodexToast /template/ Border#PART_Surface">
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>

@@ -1,0 +1,33 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexField Label="Default">
+    <controls:CodexSlider Minimum="0"
+                          Maximum="100"
+                          Value="45"
+                          MinWidth="320" />
+  </controls:CodexField>
+  <controls:CodexField Label="Success large">
+    <controls:CodexSlider Minimum="0"
+                          Maximum="100"
+                          Value="72"
+                          Size="Large"
+                          Intent="Success"
+                          MinWidth="320" />
+  </controls:CodexField>
+  <controls:CodexField Label="Warning small">
+    <controls:CodexSlider Minimum="0"
+                          Maximum="100"
+                          Value="18"
+                          Size="Small"
+                          Intent="Warning"
+                          MinWidth="320" />
+  </controls:CodexField>
+  <controls:CodexField Label="Disabled">
+    <controls:CodexSlider Minimum="0"
+                          Maximum="100"
+                          Value="64"
+                          IsEnabled="False"
+                          MinWidth="320" />
+  </controls:CodexField>
+</StackPanel>

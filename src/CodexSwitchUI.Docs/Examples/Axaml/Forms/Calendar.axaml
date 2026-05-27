@@ -1,0 +1,9 @@
+<controls:CodexField xmlns="https://github.com/avaloniaui"
+                     xmlns:controls="using:CodexSwitchUI.Controls"
+                     Label="Deployment date"
+                     Description="Single selection uses the same day-grid surface as shadcn Calendar.">
+  <controls:CodexCalendar DisplayDate="2026-05-01"
+                          SelectedDate="2026-05-20"
+                          ActiveDate="2026-05-20"
+                          HorizontalAlignment="Left" />
+</controls:CodexField>

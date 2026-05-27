@@ -1,0 +1,43 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <controls:CodexTabs SelectedIndex="0">
+    <controls:CodexTabItem Header="Preview">
+      <controls:CodexCard Title="Rendered case"
+                          Description="Selected tab content stays owned by the tab item.">
+        <controls:CodexButton Content="Run preview"
+                              Size="Small" />
+      </controls:CodexCard>
+    </controls:CodexTabItem>
+    <controls:CodexTabItem Header="Events">
+      <primitives:CodexText Text="Keyboard activation uses the same selected item path."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexTabItem>
+    <controls:CodexTabItem Header="Disabled"
+                           IsEnabled="False">
+      <primitives:CodexText Text="Disabled tabs are skipped."
+                            Role="Muted" />
+    </controls:CodexTabItem>
+  </controls:CodexTabs>
+
+  <controls:CodexTabs Grid.Column="1"
+                      Orientation="Vertical"
+                      Variant="Line"
+                      SelectedIndex="1">
+    <controls:CodexTabItem Header="Overview">
+      <primitives:CodexText Text="Vertical overview"
+                            Role="Muted" />
+    </controls:CodexTabItem>
+    <controls:CodexTabItem Header="State">
+      <primitives:CodexText Text="Line indicator follows selection."
+                            Role="Muted" />
+    </controls:CodexTabItem>
+    <controls:CodexTabItem Header="Motion">
+      <primitives:CodexText Text="Content remains stable while headers move."
+                            Role="Muted" />
+    </controls:CodexTabItem>
+  </controls:CodexTabs>
+</Grid>

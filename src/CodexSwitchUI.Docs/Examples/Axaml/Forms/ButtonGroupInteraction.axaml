@@ -1,0 +1,70 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Independent child actions"
+                       Description="The group owns layout while every child keeps the button activation path.">
+    <StackPanel Spacing="10">
+      <primitives:CodexText Role="Muted"
+                            Text="Action: none." />
+      <controls:CodexButtonGroup>
+        <controls:CodexButton Content="Archive"
+                              Variant="Outline" />
+        <controls:CodexButton Content="Snooze"
+                              Variant="Outline" />
+        <controls:CodexButtonGroupSeparator />
+        <controls:CodexButton Content="Sync"
+                              Variant="Secondary"
+                              IsLoading="True"
+                              LoadingContent="Syncing" />
+      </controls:CodexButtonGroup>
+      <controls:CodexButton Content="Toggle sync"
+                            Variant="Ghost"
+                            Size="Small" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Tab stops"
+                       Description="Tab moves through focusable children without adding a selectable group state.">
+    <controls:CodexButtonGroup Variant="Outline">
+      <controls:CodexButton Content="Preview" />
+      <controls:CodexButton Content="Code" />
+      <controls:CodexButton Content="Events" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Nested clusters"
+                       Description="Nested groups create adjacent action clusters while preserving each child click handler.">
+    <controls:CodexButtonGroup>
+      <controls:CodexButtonGroup Variant="Outline">
+        <controls:CodexButton Content="List" />
+        <controls:CodexButton Content="Grid" />
+      </controls:CodexButtonGroup>
+      <controls:CodexButtonGroup>
+        <controls:CodexIconButton Content="+"
+                                  Variant="Secondary" />
+        <controls:CodexIconButton Content="..."
+                                  Variant="Secondary" />
+      </controls:CodexButtonGroup>
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled guard"
+                       Description="Disabled children stay in the group but do not run pointer or keyboard activation.">
+    <controls:CodexButtonGroup Variant="Outline">
+      <controls:CodexButton Content="Runnable" />
+      <controls:CodexButton Content="Disabled"
+                            IsEnabled="False" />
+      <controls:CodexButton Content="Danger"
+                            Variant="Destructive"
+                            IsEnabled="False" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+</Grid>

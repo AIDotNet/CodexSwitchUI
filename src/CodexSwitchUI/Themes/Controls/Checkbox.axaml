@@ -9,8 +9,8 @@
     <Setter Property="Cursor" Value="Hand" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="Template">
@@ -63,10 +63,10 @@
   <Style Selector="controls|CodexCheckBox /template/ Border#PART_Box">
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <ThicknessTransition Property="BorderThickness" Duration="0:0:0.15" />
-        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.10" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="BorderThickness" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -74,8 +74,8 @@
   <Style Selector="controls|CodexCheckBox /template/ PathIcon#PART_Check, controls|CodexCheckBox /template/ Border#PART_Indeterminate">
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
-        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -83,8 +83,8 @@
   <Style Selector="controls|CodexCheckBox /template/ Border#PART_FocusRing">
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -94,22 +94,26 @@
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexCheckBox:checked /template/ Border#PART_Box">
+  <Style Selector="controls|CodexCheckBox:checked /template/ Border#PART_Box,
+                   controls|CodexCheckBox.state-checked /template/ Border#PART_Box">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexCheckBox:checked /template/ PathIcon#PART_Check">
+  <Style Selector="controls|CodexCheckBox:checked /template/ PathIcon#PART_Check,
+                   controls|CodexCheckBox.state-checked /template/ PathIcon#PART_Check">
     <Setter Property="Opacity" Value="1" />
     <Setter Property="RenderTransform" Value="scale(1)" />
   </Style>
 
-  <Style Selector="controls|CodexCheckBox:indeterminate /template/ Border#PART_Box">
+  <Style Selector="controls|CodexCheckBox:indeterminate /template/ Border#PART_Box,
+                   controls|CodexCheckBox.state-indeterminate /template/ Border#PART_Box">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexCheckBox:indeterminate /template/ Border#PART_Indeterminate">
+  <Style Selector="controls|CodexCheckBox:indeterminate /template/ Border#PART_Indeterminate,
+                   controls|CodexCheckBox.state-indeterminate /template/ Border#PART_Indeterminate">
     <Setter Property="Opacity" Value="1" />
     <Setter Property="RenderTransform" Value="scale(1)" />
   </Style>
@@ -118,11 +122,11 @@
     <Setter Property="RenderTransform" Value="scale(0.92)" />
   </Style>
 
-  <Style Selector="controls|CodexCheckBox:focus /template/ Border#PART_Box">
+  <Style Selector="controls|CodexCheckBox:focus-visible /template/ Border#PART_Box">
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexCheckBox:focus /template/ Border#PART_FocusRing">
+  <Style Selector="controls|CodexCheckBox:focus-visible /template/ Border#PART_FocusRing">
     <Setter Property="Opacity" Value="1" />
   </Style>
 

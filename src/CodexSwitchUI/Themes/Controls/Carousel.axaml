@@ -1,0 +1,256 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexCarousel">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="MinWidth" Value="320" />
+    <Setter Property="MinHeight" Value="180" />
+    <Setter Property="Focusable" Value="True" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Horizontal" Spacing="12" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexCarousel">
+        <Grid x:Name="PART_Root"
+              RowDefinitions="*,Auto">
+          <Border x:Name="PART_Viewport"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}"
+                  ClipToBounds="True">
+            <ScrollViewer x:Name="PART_ScrollViewer"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Disabled"
+                          AllowAutoHide="True"
+                          ClipToBounds="True">
+              <ItemsPresenter x:Name="PART_ItemsPresenter" />
+            </ScrollViewer>
+          </Border>
+
+          <Border x:Name="PART_FocusRing"
+                  Grid.RowSpan="2"
+                  BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                  BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  IsHitTestVisible="False"
+                  Opacity="0" />
+
+          <Grid x:Name="PART_Controls"
+                Grid.Row="1"
+                ColumnDefinitions="Auto,*,Auto"
+                Margin="0,10,0,0">
+            <controls:CodexButton x:Name="PART_PreviousButton"
+                                  Grid.Column="0"
+                                  Content="&lt;"
+                                  Size="Icon"
+                                  Variant="Outline"
+                                  IsVisible="{TemplateBinding ShowNavigation}"
+                                  Command="{Binding PreviousCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+            <TextBlock x:Name="PART_Status"
+                       Grid.Column="1"
+                       Text="{TemplateBinding StatusText}"
+                       Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                       FontFamily="{TemplateBinding FontFamily}"
+                       FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       IsVisible="{TemplateBinding ShowStatus}" />
+            <controls:CodexButton x:Name="PART_NextButton"
+                                  Grid.Column="2"
+                                  Content="&gt;"
+                                  Size="Icon"
+                                  Variant="Outline"
+                                  IsVisible="{TemplateBinding ShowNavigation}"
+                                  Command="{Binding NextCommand, RelativeSource={RelativeSource TemplatedParent}}" />
+          </Grid>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCarousel.vertical">
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Vertical" Spacing="12" />
+      </ItemsPanelTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCarousel /template/ Border#PART_Viewport, controls|CodexCarousel /template/ Border#PART_FocusRing">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCarousel /template/ Grid#PART_Controls">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCarousel:focus-visible /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexCarousel:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexCarousel.hide-navigation.hide-status /template/ Grid#PART_Controls">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexCarousel.loop /template/ Border#PART_Viewport">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCarousel.show-navigation /template/ controls|CodexButton#PART_PreviousButton,
+                   controls|CodexCarousel.show-navigation /template/ controls|CodexButton#PART_NextButton,
+                   controls|CodexCarousel.show-status /template/ TextBlock#PART_Status">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexCarousel.can-previous /template/ controls|CodexButton#PART_PreviousButton,
+                   controls|CodexCarousel.can-next /template/ controls|CodexButton#PART_NextButton">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexCarousel.size-sm">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="MinHeight" Value="150" />
+  </Style>
+
+  <Style Selector="controls|CodexCarousel.size-lg">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+    <Setter Property="MinHeight" Value="220" />
+  </Style>
+
+  <Style Selector="controls|CodexCarousel.size-icon">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="MinWidth" Value="180" />
+    <Setter Property="MinHeight" Value="120" />
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem">
+    <Setter Property="MinWidth" Value="260" />
+    <Setter Property="MinHeight" Value="160" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="RenderTransform" Value="scale(0.985)" />
+    <Setter Property="RenderTransformOrigin" Value="50%,50%" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexCarouselItem">
+        <Border x:Name="PART_ItemRoot"
+                MinWidth="{TemplateBinding MinWidth}"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter x:Name="PART_ItemContent"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem /template/ Border#PART_ItemRoot">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BoxShadowsTransition Property="BoxShadow" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem.carousel-item">
+    <Setter Property="Opacity" Value="0.74" />
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem.selected">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem.selected /template/ Border#PART_ItemRoot">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+    <Setter Property="BoxShadow" Value="0 8 24 0 #16000000" />
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem.before-selected,
+                   controls|CodexCarouselItem.after-selected">
+    <Setter Property="RenderTransform" Value="scale(0.985)" />
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem:pointerover">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem:pointerover /template/ Border#PART_ItemRoot">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem.size-sm">
+    <Setter Property="MinWidth" Value="220" />
+    <Setter Property="MinHeight" Value="132" />
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem.size-lg">
+    <Setter Property="MinWidth" Value="320" />
+    <Setter Property="MinHeight" Value="200" />
+  </Style>
+
+  <Style Selector="controls|CodexCarouselItem.vertical">
+    <Setter Property="MinWidth" Value="280" />
+    <Setter Property="MinHeight" Value="120" />
+  </Style>
+</Styles>

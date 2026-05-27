@@ -1,0 +1,31 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <Grid ColumnDefinitions="*,Auto">
+    <TextBlock Text="Checked" />
+    <controls:CodexSwitch Grid.Column="1"
+                          IsChecked="True" />
+  </Grid>
+  <Grid ColumnDefinitions="*,Auto">
+    <TextBlock Text="Unchecked" />
+    <controls:CodexSwitch Grid.Column="1" />
+  </Grid>
+  <Grid ColumnDefinitions="*,Auto">
+    <TextBlock Text="Warning" />
+    <controls:CodexSwitch Grid.Column="1"
+                          Intent="Warning"
+                          IsChecked="True" />
+  </Grid>
+  <Grid ColumnDefinitions="*,Auto">
+    <TextBlock Text="Large" />
+    <controls:CodexSwitch Grid.Column="1"
+                          Size="Large"
+                          IsChecked="True" />
+  </Grid>
+  <Grid ColumnDefinitions="*,Auto">
+    <TextBlock Text="Disabled" />
+    <controls:CodexSwitch Grid.Column="1"
+                          IsChecked="True"
+                          IsEnabled="False" />
+  </Grid>
+</StackPanel>

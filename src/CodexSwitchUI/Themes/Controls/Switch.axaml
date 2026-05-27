@@ -2,50 +2,66 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:CodexSwitchUI.Controls">
   <Style Selector="controls|CodexSwitch">
-    <Setter Property="Width" Value="44" />
-    <Setter Property="Height" Value="24" />
     <Setter Property="MinWidth" Value="44" />
     <Setter Property="MinHeight" Value="24" />
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.InputBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
     <Setter Property="BorderBrush" Value="Transparent" />
     <Setter Property="BorderThickness" Value="1" />
     <Setter Property="CornerRadius" Value="12" />
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="FontWeight" Value="Medium" />
     <Setter Property="FocusAdorner" Value="{x:Null}" />
     <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="Template">
       <ControlTemplate TargetType="controls:CodexSwitch">
-        <Border x:Name="PART_Track"
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="{TemplateBinding CornerRadius}">
-          <Grid>
-            <Border x:Name="PART_FocusRing"
-                    BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
-                    BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}"
-                    IsHitTestVisible="False"
-                    Opacity="0" />
-            <Border x:Name="PART_Thumb"
-                    Width="20"
-                    Height="20"
-                    Margin="2"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    CornerRadius="10"
-                    Background="{DynamicResource CodexSwitch.BackgroundBrush}"
-                    RenderTransform="none" />
-          </Grid>
-        </Border>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+          <Border x:Name="PART_Track"
+                  Width="{TemplateBinding MinWidth}"
+                  Height="{TemplateBinding MinHeight}"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}">
+            <Grid>
+              <Border x:Name="PART_FocusRing"
+                      BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                      BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                      CornerRadius="{TemplateBinding CornerRadius}"
+                      IsHitTestVisible="False"
+                      Opacity="0" />
+              <Border x:Name="PART_Thumb"
+                      Width="20"
+                      Height="20"
+                      Margin="2"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      CornerRadius="10"
+                      Background="{DynamicResource CodexSwitch.BackgroundBrush}"
+                      RenderTransform="none" />
+            </Grid>
+          </Border>
+          <ContentPresenter x:Name="PART_Content"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            IsVisible="{TemplateBinding HasContent}"
+                            RecognizesAccessKey="True" />
+        </StackPanel>
       </ControlTemplate>
     </Setter>
   </Style>
@@ -53,9 +69,9 @@
   <Style Selector="controls|CodexSwitch /template/ Border#PART_Track">
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <ThicknessTransition Property="BorderThickness" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="BorderThickness" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -63,9 +79,9 @@
   <Style Selector="controls|CodexSwitch /template/ Border#PART_Thumb">
     <Setter Property="Transitions">
       <Transitions>
-        <ThicknessTransition Property="Margin" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.10" />
+        <ThicknessTransition Property="Margin" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -73,8 +89,8 @@
   <Style Selector="controls|CodexSwitch /template/ Border#PART_FocusRing">
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -87,11 +103,11 @@
     <Setter Property="RenderTransform" Value="scale(0.92)" />
   </Style>
 
-  <Style Selector="controls|CodexSwitch:focus /template/ Border#PART_Track">
+  <Style Selector="controls|CodexSwitch:focus-visible /template/ Border#PART_Track">
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexSwitch:focus /template/ Border#PART_FocusRing">
+  <Style Selector="controls|CodexSwitch:focus-visible /template/ Border#PART_FocusRing">
     <Setter Property="Opacity" Value="1" />
   </Style>
 
@@ -109,8 +125,6 @@
   </Style>
 
   <Style Selector="controls|CodexSwitch.size-sm">
-    <Setter Property="Width" Value="36" />
-    <Setter Property="Height" Value="20" />
     <Setter Property="MinWidth" Value="36" />
     <Setter Property="MinHeight" Value="20" />
     <Setter Property="CornerRadius" Value="10" />
@@ -127,8 +141,6 @@
   </Style>
 
   <Style Selector="controls|CodexSwitch.size-lg">
-    <Setter Property="Width" Value="52" />
-    <Setter Property="Height" Value="28" />
     <Setter Property="MinWidth" Value="52" />
     <Setter Property="MinHeight" Value="28" />
     <Setter Property="CornerRadius" Value="14" />
@@ -145,8 +157,6 @@
   </Style>
 
   <Style Selector="controls|CodexSwitch.size-icon">
-    <Setter Property="Width" Value="40" />
-    <Setter Property="Height" Value="24" />
     <Setter Property="MinWidth" Value="40" />
     <Setter Property="MinHeight" Value="24" />
     <Setter Property="CornerRadius" Value="12" />

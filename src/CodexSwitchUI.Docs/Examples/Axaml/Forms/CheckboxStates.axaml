@@ -1,0 +1,17 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexCheckBox Content="Checked"
+                          IsChecked="True" />
+  <controls:CodexCheckBox Content="Unchecked" />
+  <controls:CodexCheckBox Content="Indeterminate"
+                          IsThreeState="True"
+                          IsChecked="{x:Null}" />
+  <controls:CodexCheckBox Content="Warning intent"
+                          IsChecked="True"
+                          Intent="Warning" />
+  <controls:CodexCheckBox Content="Disabled"
+                          IsChecked="True"
+                          IsEnabled="False" />
+</StackPanel>

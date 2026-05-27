@@ -1,0 +1,34 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexField Label="Placeholder trigger"
+                       Description="Calendar icon, placeholder text, chevron, and focus ring are owned by the template.">
+    <controls:CodexDatePicker DisplayDate="2026-05-01"
+                              PlaceholderText="Pick a date"
+                              MinWidth="280"
+                              HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Label="Clear action"
+                       Description="Selected state exposes the clear button without page-level visibility code.">
+    <controls:CodexDatePicker DisplayDate="2026-05-01"
+                              SelectedDate="2026-05-20"
+                              MinWidth="280"
+                              HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Label="Calendar surface"
+                       Description="Popover content hosts CodexCalendar with the same range, week, and bound properties.">
+    <controls:CodexDatePicker DisplayDate="2026-01-01"
+                              SelectionMode="Range"
+                              RangeStart="2026-01-20"
+                              RangeEnd="2026-01-27"
+                              FirstDayOfWeek="Monday"
+                              ShowWeekNumbers="True"
+                              IsOpen="True"
+                              CloseOnSelect="False"
+                              Size="Small"
+                              MinWidth="280"
+                              HorizontalAlignment="Left" />
+  </controls:CodexField>
+</StackPanel>

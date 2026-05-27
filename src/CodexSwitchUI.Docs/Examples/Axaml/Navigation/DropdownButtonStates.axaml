@@ -1,0 +1,37 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexDropdownButton Content="Open"
+                                IsOpen="True"
+                                Align="Start">
+    <controls:CodexDropdownButton.DropDownContent>
+      <StackPanel Width="180">
+        <controls:CodexButton Content="Rename"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+        <controls:CodexButton Content="Archive"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+      </StackPanel>
+    </controls:CodexDropdownButton.DropDownContent>
+  </controls:CodexDropdownButton>
+
+  <controls:CodexDropdownButton Grid.Column="1"
+                                Content="End align"
+                                Align="End"
+                                DropDownContent="Aligned to the end edge." />
+
+  <controls:CodexDropdownButton Grid.Row="1"
+                                Content="Loading"
+                                IsLoading="True"
+                                DropDownContent="Loading blocks open and close-on-select." />
+
+  <controls:CodexDropdownButton Grid.Row="1"
+                                Grid.Column="1"
+                                Content="Disabled"
+                                IsEnabled="False"
+                                DropDownContent="Disabled trigger cannot open." />
+</Grid>

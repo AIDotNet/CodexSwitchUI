@@ -8,13 +8,19 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using CodexSwitchUI.Themes;
 
 namespace CodexSwitchUI.Controls;
+
+public sealed class CodexCollapsibleOpenChangedEventArgs(bool isOpen) : EventArgs
+{
+    public bool IsOpen { get; } = isOpen;
+}
 
 public class CodexCollapsible : CodexFrame
 {
     private static readonly TimeSpan FrameInterval = TimeSpan.FromMilliseconds(16);
-    private static readonly TimeSpan DefaultAnimationDuration = TimeSpan.FromMilliseconds(200);
+    private static readonly TimeSpan DefaultAnimationDuration = CodexSwitchThemeOptions.ShadcnDefault.MotionDurationSlow;
 
     public static readonly StyledProperty<object?> HeaderProperty =
         AvaloniaProperty.Register<CodexCollapsible, object?>(nameof(Header));
@@ -68,7 +74,7 @@ public class CodexCollapsible : CodexFrame
             collapsible.SyncSlotStates();
             collapsible.RequestContentMeasure();
         });
-        IsOpenProperty.Changed.AddClassHandler<CodexCollapsible>((collapsible, _) => collapsible.SyncOpenState());
+        IsOpenProperty.Changed.AddClassHandler<CodexCollapsible>((collapsible, args) => collapsible.OnOpenChanged(args));
         SizeProperty.Changed.AddClassHandler<CodexCollapsible>((collapsible, _) => collapsible.SyncClasses());
         ContentPaddingProperty.Changed.AddClassHandler<CodexCollapsible>((collapsible, _) => collapsible.RequestContentMeasure());
         AnimationDurationProperty.Changed.AddClassHandler<CodexCollapsible>((collapsible, _) =>
@@ -87,6 +93,8 @@ public class CodexCollapsible : CodexFrame
         SyncClasses();
         SyncSlotStates();
     }
+
+    public event EventHandler<CodexCollapsibleOpenChangedEventArgs>? OpenChanged;
 
     public object? Header
     {
@@ -134,7 +142,7 @@ public class CodexCollapsible : CodexFrame
 
     public bool HasContent => GetValue(HasContentProperty);
 
-    public void Toggle()
+    public virtual void Toggle()
     {
         if (IsEnabled)
         {
@@ -212,25 +220,45 @@ public class CodexCollapsible : CodexFrame
             return;
         }
 
-        _trigger?.Focus();
+        _trigger?.Focus(NavigationMethod.Pointer, KeyModifiers.None);
         Toggle();
         e.Handled = true;
     }
 
     private void OnTriggerKeyDown(object? sender, KeyEventArgs e)
     {
-        if (e.Key is not (Key.Enter or Key.Space))
+        if (!TryHandleTriggerKey(e.Key))
         {
             return;
         }
 
-        Toggle();
         e.Handled = true;
     }
 
-    private void SyncOpenState()
+    internal virtual bool TryHandleTriggerKey(Key key)
+    {
+        if (key is not (Key.Enter or Key.Space))
+        {
+            return false;
+        }
+
+        Toggle();
+        return true;
+    }
+
+    internal bool FocusTrigger(NavigationMethod method = NavigationMethod.Directional)
+    {
+        return _trigger?.Focus(method, KeyModifiers.None) == true;
+    }
+
+    private void OnOpenChanged(AvaloniaPropertyChangedEventArgs args)
     {
         SyncOpenState(immediate: false);
+
+        if (args.OldValue is bool oldValue && args.NewValue is bool newValue && oldValue != newValue)
+        {
+            OpenChanged?.Invoke(this, new CodexCollapsibleOpenChangedEventArgs(newValue));
+        }
     }
 
     private void SyncOpenState(bool immediate)

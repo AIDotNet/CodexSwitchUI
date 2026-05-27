@@ -1,8 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
+using Avalonia.Input;
 
 namespace CodexSwitchUI.Controls;
 
+[PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexTextBox : TextBox
 {
     public static readonly StyledProperty<CodexControlIntent> IntentProperty =
@@ -33,6 +36,24 @@ public class CodexTextBox : TextBox
     {
         get => GetValue(SizeProperty);
         set => SetValue(SizeProperty, value);
+    }
+
+    protected override void OnGotFocus(FocusChangedEventArgs e)
+    {
+        base.OnGotFocus(e);
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, CodexFocusVisible.FromFocusChange(e));
+    }
+
+    protected override void OnLostFocus(FocusChangedEventArgs e)
+    {
+        base.OnLostFocus(e);
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        base.OnPointerPressed(e);
     }
 
     private void SyncClasses()

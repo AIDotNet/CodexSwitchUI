@@ -1,0 +1,23 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexKbd Content="Esc"
+                       Size="Small" />
+    <controls:CodexKbd Content="Enter" />
+    <controls:CodexKbd Content="Shift"
+                       Size="Large" />
+  </StackPanel>
+
+  <controls:CodexKbdGroup Size="Small">
+    <controls:CodexKbd Content="Cmd"
+                       Size="Small" />
+    <controls:CodexKbd Content="K"
+                       Size="Small" />
+    <controls:CodexKbd Content="then"
+                       Size="Small" />
+    <controls:CodexKbd Content="P"
+                       Size="Small" />
+  </controls:CodexKbdGroup>
+</StackPanel>

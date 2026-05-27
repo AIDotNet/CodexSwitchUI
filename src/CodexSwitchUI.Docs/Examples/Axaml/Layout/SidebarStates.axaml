@@ -1,0 +1,91 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*,*"
+      ColumnSpacing="14">
+  <controls:CodexCard Title="Expanded inset"
+                      Description="Provider open">
+    <Grid Height="260">
+      <controls:CodexSidebar Variant="Inset"
+                             Collapsible="Offcanvas">
+        <StackPanel>
+          <controls:CodexSidebarHeader>
+            <TextBlock Text="Expanded"
+                       FontWeight="SemiBold" />
+          </controls:CodexSidebarHeader>
+          <controls:CodexSidebarContent>
+            <StackPanel Spacing="5">
+              <controls:CodexSidebarGroupLabel Content="Platform" />
+              <controls:CodexSidebarMenuButton Content="Providers"
+                                               Icon="P"
+                                               Badge="12"
+                                               IsActive="True" />
+              <controls:CodexSidebarMenuButton Content="Usage"
+                                               Icon="U" />
+            </StackPanel>
+          </controls:CodexSidebarContent>
+          <controls:CodexSidebarFooter>
+            <controls:CodexButton Content="Action"
+                                  Size="Small" />
+          </controls:CodexSidebarFooter>
+        </StackPanel>
+      </controls:CodexSidebar>
+    </Grid>
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="1"
+                      Title="Icon collapsed"
+                      Description="Collapsible=Icon">
+    <Grid Height="260">
+      <controls:CodexSidebar Collapsible="Icon"
+                             IsOpen="False"
+                             HorizontalAlignment="Left">
+        <StackPanel>
+          <controls:CodexSidebarHeader>
+            <TextBlock Text="Icon"
+                       FontWeight="SemiBold" />
+          </controls:CodexSidebarHeader>
+          <controls:CodexSidebarContent>
+            <StackPanel Spacing="5">
+              <controls:CodexSidebarGroupLabel Content="Menu" />
+              <controls:CodexSidebarMenuButton Content="Providers"
+                                               Icon="P"
+                                               IsActive="True" />
+              <controls:CodexSidebarMenuButton Content="Sessions"
+                                               Icon="S" />
+              <controls:CodexSidebarMenuButton Content="Usage"
+                                               Icon="U" />
+            </StackPanel>
+          </controls:CodexSidebarContent>
+        </StackPanel>
+      </controls:CodexSidebar>
+    </Grid>
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="2"
+                      Title="Floating right"
+                      Description="Side=Right">
+    <Grid Height="260">
+      <controls:CodexSidebar Side="Right"
+                             Variant="Floating"
+                             Collapsible="None">
+        <StackPanel>
+          <controls:CodexSidebarHeader>
+            <TextBlock Text="Right side"
+                       FontWeight="SemiBold" />
+          </controls:CodexSidebarHeader>
+          <controls:CodexSidebarContent>
+            <StackPanel Spacing="5">
+              <controls:CodexSidebarGroupLabel Content="Workspace" />
+              <controls:CodexSidebarMenuButton Content="Routing"
+                                               Icon="R"
+                                               IsActive="True" />
+              <controls:CodexSidebarMenuButton Content="Security"
+                                               Icon="L"
+                                               IsEnabled="False" />
+            </StackPanel>
+          </controls:CodexSidebarContent>
+        </StackPanel>
+      </controls:CodexSidebar>
+    </Grid>
+  </controls:CodexCard>
+</Grid>

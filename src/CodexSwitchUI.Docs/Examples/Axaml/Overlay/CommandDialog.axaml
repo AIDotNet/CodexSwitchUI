@@ -1,0 +1,28 @@
+<controls:CodexCommandDialog xmlns="https://github.com/avaloniaui"
+                             xmlns:controls="using:CodexSwitchUI.Controls"
+	                             Placeholder="Run command..."
+	                             IsOpen="True"
+	                             CloseOnItemSelected="True">
+  <controls:CodexCommandDialog.Trigger>
+    <controls:CodexButton Content="Open command menu"
+                          Size="Small" />
+  </controls:CodexCommandDialog.Trigger>
+  <controls:CodexCommandList>
+    <controls:CodexCommandGroup Header="Session">
+      <controls:CodexCommandItem Content="Open current session"
+                                 Icon="S"
+                                 Shortcut="Enter"
+                                 IsActive="True" />
+      <controls:CodexCommandItem Content="Archive session"
+                                 Icon="A" />
+    </controls:CodexCommandGroup>
+    <controls:CodexCommandSeparator />
+    <controls:CodexCommandGroup Header="Provider">
+      <controls:CodexCommandItem Content="Switch provider"
+                                 Icon="P"
+                                 Shortcut="Cmd+P" />
+      <controls:CodexCommandItem Content="Refresh models"
+                                 Icon="R" />
+    </controls:CodexCommandGroup>
+  </controls:CodexCommandList>
+</controls:CodexCommandDialog>

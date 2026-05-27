@@ -1,0 +1,44 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            x:CompileBindings="False"
+            Spacing="12">
+  <primitives:CodexText Role="Muted"
+                        Text="Refresh data, toggle density, switch line/area rendering, and reduce motion." />
+
+  <controls:CodexChartContainer Width="650"
+                                Title="Interactive line chart"
+                                Description="Pointer movement updates active point state while data changes redraw through motion tokens.">
+    <controls:CodexChartContainer.Legend>
+      <controls:CodexChartLegend>
+        <controls:CodexChartLegendItem Content="Requests"
+                                       Value="live"
+                                       IndicatorStyle="Line"
+                                       IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+      </controls:CodexChartLegend>
+    </controls:CodexChartContainer.Legend>
+
+    <controls:CodexLineChart Width="560"
+                             ItemsSource="{Binding LineChartItems}" />
+  </controls:CodexChartContainer>
+
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexButton Content="Refresh data"
+                          Size="Small"
+                          Variant="Secondary" />
+    <controls:CodexButton Content="Density"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Area"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Dots"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Reduce motion"
+                          Size="Small"
+                          Variant="Ghost" />
+  </StackPanel>
+</StackPanel>

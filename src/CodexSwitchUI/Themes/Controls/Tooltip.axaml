@@ -1,0 +1,199 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexTooltipProvider">
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexTooltipProvider">
+        <ContentPresenter x:Name="PART_Content"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexTooltip">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PrimaryForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="MinHeight" Value="28" />
+    <Setter Property="MaxWidth" Value="320" />
+    <Setter Property="Padding" Value="8,4" />
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+    <Setter Property="RenderTransformOrigin" Value="50%,50%" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexTooltip">
+        <Grid x:Name="PART_Root"
+              ClipToBounds="False">
+          <ContentPresenter x:Name="PART_Trigger"
+                            Content="{TemplateBinding Trigger}"
+                            ContentTemplate="{TemplateBinding TriggerTemplate}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
+
+          <Border x:Name="PART_Surface"
+                  MinHeight="{TemplateBinding MinHeight}"
+                  MaxWidth="{TemplateBinding MaxWidth}"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                  Padding="{TemplateBinding Padding}"
+                  Opacity="1"
+                  RenderTransform="translate(0px, 0px) scale(1)"
+                  RenderTransformOrigin="50%,50%">
+            <ContentPresenter x:Name="PART_Content"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Foreground="{TemplateBinding Foreground}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+
+          <Border x:Name="PART_Arrow"
+                  Width="8"
+                  Height="8"
+                  Background="{TemplateBinding Background}"
+                  IsVisible="{TemplateBinding IsArrowVisible}"
+                  RenderTransform="rotate(45deg)"
+                  RenderTransformOrigin="50%,50%" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.closed /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.open /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.closed.side-top /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(0px, 2px) scale(0.95)" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.closed.side-bottom /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(0px, -2px) scale(0.95)" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.closed.side-left /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(2px, 0px) scale(0.95)" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.closed.side-right /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(-2px, 0px) scale(0.95)" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip /template/ Border#PART_Surface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.has-trigger.side-top /template/ Border#PART_Surface">
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,-36,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.has-trigger.side-bottom /template/ Border#PART_Surface">
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,36,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.has-trigger.side-left /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="-188,0,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.has-trigger.side-right /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="0,0,-188,0" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip /template/ Border#PART_Arrow">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.has-arrow /template/ Border#PART_Arrow">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.closed /template/ Border#PART_Arrow">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.side-top /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+    <Setter Property="Margin" Value="0,0,0,-4" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.side-bottom /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,-4,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.side-left /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="0,0,-4,0" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.side-right /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="-4,0,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.size-sm">
+    <Setter Property="MinHeight" Value="24" />
+    <Setter Property="Padding" Value="7,3" />
+    <Setter Property="FontSize" Value="11" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.size-lg">
+    <Setter Property="MinHeight" Value="32" />
+    <Setter Property="Padding" Value="10,6" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+  </Style>
+
+  <Style Selector="controls|CodexTooltip.size-icon">
+    <Setter Property="MinHeight" Value="28" />
+    <Setter Property="Padding" Value="8,4" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+</Styles>

@@ -1,0 +1,99 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Action refresh"
+                       Description="Action clicks update section slots while the page band stays stable.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Refresh the section or toggle its slots." />
+        <controls:CodexSection Title="Provider routing"
+                               Description="Action clicks update title, description, and body while layout stays stable.">
+          <controls:CodexSection.Actions>
+            <controls:CodexButton Content="Refresh"
+                                  Size="Small"
+                                  Variant="Secondary" />
+          </controls:CodexSection.Actions>
+          <Grid ColumnDefinitions="*,*"
+                ColumnSpacing="12">
+            <controls:CodexMetric Label="Success rate"
+                                  Detail="Last 24 hours">
+              <controls:CodexMetric.Value>
+                <primitives:CodexText Role="Subtitle"
+                                      Text="99.4%" />
+              </controls:CodexMetric.Value>
+            </controls:CodexMetric>
+            <controls:CodexMetric Grid.Column="1"
+                                  Label="Latency"
+                                  Detail="p95">
+              <controls:CodexMetric.Value>
+                <primitives:CodexText Role="Subtitle"
+                                      Text="284ms" />
+              </controls:CodexMetric.Value>
+            </controls:CodexMetric>
+          </Grid>
+        </controls:CodexSection>
+        <controls:CodexButton Content="Toggle actions"
+                              Size="Small"
+                              Variant="Ghost" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Empty body"
+                       Description="A section can keep header and action slots without body content.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexSection Title="Empty body"
+                               Description="Header and action spacing remain stable with no content.">
+          <controls:CodexSection.Actions>
+            <controls:CodexButton Content="Add"
+                                  Size="Small" />
+          </controls:CodexSection.Actions>
+        </controls:CodexSection>
+        <controls:CodexButton Content="Toggle body"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Dense content"
+                       Description="Metrics, charts, and action rows share one section layout contract.">
+    <controls:CodexField.Content>
+      <controls:CodexSection Title="Usage summary"
+                             Description="Dense body content remains aligned below the header.">
+        <controls:CodexSection.Actions>
+          <controls:CodexButton Content="Export"
+                                Size="Small"
+                                Variant="Secondary" />
+        </controls:CodexSection.Actions>
+        <controls:CodexRankedBarChart Width="360"
+                                      IsCompact="True"
+                                      MaxVisibleItems="3" />
+      </controls:CodexSection>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Description-only"
+                       Description="Description-only headers keep compact spacing and action alignment.">
+    <controls:CodexField.Content>
+      <controls:CodexSection Description="No title, but actions remain aligned to the trailing edge.">
+        <controls:CodexSection.Actions>
+          <controls:CodexIconButton Content="+"
+                                    IsRound="True" />
+        </controls:CodexSection.Actions>
+        <controls:CodexBadge Content="description-only"
+                             Variant="Outline" />
+      </controls:CodexSection>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

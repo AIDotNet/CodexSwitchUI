@@ -1,0 +1,77 @@
+<controls:CodexSidebarProvider xmlns="https://github.com/avaloniaui"
+                               xmlns:controls="using:CodexSwitchUI.Controls"
+                               KeyboardShortcut="B"
+                               ShortcutModifiers="Control">
+  <Grid ColumnDefinitions="260,Auto,*"
+        ColumnSpacing="10"
+        Height="380">
+    <controls:CodexSidebar Variant="Inset"
+                           Collapsible="Icon">
+      <StackPanel>
+        <controls:CodexSidebarHeader>
+          <StackPanel Spacing="2">
+            <TextBlock Text="CodexSwitch"
+                       FontWeight="SemiBold" />
+            <TextBlock Text="Interactive"
+                       Opacity="0.72" />
+          </StackPanel>
+        </controls:CodexSidebarHeader>
+
+        <controls:CodexSidebarContent>
+          <StackPanel Spacing="14">
+            <controls:CodexSidebarGroup>
+              <StackPanel Spacing="5">
+                <controls:CodexSidebarGroupLabel Content="Platform" />
+                <controls:CodexSidebarMenuButton Content="Providers"
+                                                 Icon="P"
+                                                 Badge="12"
+                                                 IsActive="True" />
+                <controls:CodexSidebarMenuButton Content="Sessions"
+                                                 Icon="S"
+                                                 Badge="Live" />
+                <controls:CodexSidebarMenuButton Content="Usage"
+                                                 Icon="U" />
+              </StackPanel>
+            </controls:CodexSidebarGroup>
+          </StackPanel>
+        </controls:CodexSidebarContent>
+
+        <controls:CodexSidebarFooter>
+          <controls:CodexButton Content="Footer action"
+                                Size="Small"
+                                HorizontalAlignment="Stretch" />
+        </controls:CodexSidebarFooter>
+      </StackPanel>
+    </controls:CodexSidebar>
+
+    <controls:CodexSidebarRail Grid.Column="1" />
+
+    <controls:CodexSidebarInset Grid.Column="2">
+      <controls:CodexSection Title="Interaction contract"
+                             Description="Trigger, rail, and shortcut all publish one provider state.">
+        <controls:CodexSection.Actions>
+          <StackPanel Orientation="Horizontal"
+                      Spacing="8">
+            <controls:CodexSidebarTrigger Content="Toggle" />
+            <controls:CodexButton Content="Run Ctrl+B"
+                                  Size="Small"
+                                  Variant="Outline" />
+          </StackPanel>
+        </controls:CodexSection.Actions>
+        <StackPanel Spacing="10">
+          <TextBlock Text="Sidebar is expanded."
+                     Opacity="0.72" />
+          <controls:CodexStatCard Label="Trigger"
+                                  Value="Click"
+                                  Detail="ToggleOpen" />
+          <controls:CodexStatCard Label="Rail"
+                                  Value="Click"
+                                  Detail="ToggleOpen" />
+          <controls:CodexStatCard Label="Shortcut"
+                                  Value="Ctrl+B"
+                                  Detail="TryHandleShortcut" />
+        </StackPanel>
+      </controls:CodexSection>
+    </controls:CodexSidebarInset>
+  </Grid>
+</controls:CodexSidebarProvider>

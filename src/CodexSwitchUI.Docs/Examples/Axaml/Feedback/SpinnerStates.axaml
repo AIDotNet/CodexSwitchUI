@@ -1,0 +1,14 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Orientation="Horizontal"
+            Spacing="16">
+  <controls:CodexSpinner Size="Small"
+                         Label="Small" />
+  <controls:CodexSpinner Label="Default" />
+  <controls:CodexSpinner Size="Large"
+                         Label="Large" />
+  <controls:CodexSpinner IsActive="False"
+                         Label="Paused" />
+  <controls:CodexSpinner RotationDuration="0:0:0"
+                         Label="Reduced motion" />
+</StackPanel>

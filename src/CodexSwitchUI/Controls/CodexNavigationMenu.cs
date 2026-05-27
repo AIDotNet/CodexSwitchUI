@@ -1,11 +1,31 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
+using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
+
+public sealed class CodexNavigationMenuActiveItemChangedEventArgs(
+    CodexNavigationMenuItem? oldItem,
+    CodexNavigationMenuItem? newItem,
+    string? value) : EventArgs
+{
+    public CodexNavigationMenuItem? OldItem { get; } = oldItem;
+
+    public CodexNavigationMenuItem? NewItem { get; } = newItem;
+
+    public string? Value { get; } = value;
+}
+
+public sealed class CodexNavigationMenuActivatedEventArgs(object? commandParameter) : EventArgs
+{
+    public object? CommandParameter { get; } = commandParameter;
+}
 
 public class CodexNavigationMenu : ItemsControl
 {
@@ -33,8 +53,12 @@ public class CodexNavigationMenu : ItemsControl
     public static readonly StyledProperty<CodexNavigationMenuItem?> ActiveItemProperty =
         AvaloniaProperty.Register<CodexNavigationMenu, CodexNavigationMenuItem?>(nameof(ActiveItem));
 
+    public static readonly StyledProperty<string?> ActiveValueProperty =
+        AvaloniaProperty.Register<CodexNavigationMenu, string?>(nameof(ActiveValue));
+
     private CodexNavigationMenuItem? _activeItem;
     private int _activeIndex = -1;
+    private bool _isSyncingActiveValue;
 
     static CodexNavigationMenu()
     {
@@ -42,12 +66,15 @@ public class CodexNavigationMenu : ItemsControl
         OrientationProperty.Changed.AddClassHandler<CodexNavigationMenu>((menu, _) => menu.SyncClasses());
         IsViewportOpenProperty.Changed.AddClassHandler<CodexNavigationMenu>((menu, _) => menu.SyncClasses());
         IsMotionReversedProperty.Changed.AddClassHandler<CodexNavigationMenu>((menu, _) => menu.SyncClasses());
+        ActiveValueProperty.Changed.AddClassHandler<CodexNavigationMenu>((menu, args) => menu.OnActiveValueChanged(args.NewValue as string));
     }
 
     public CodexNavigationMenu()
     {
         SyncClasses();
     }
+
+    public event EventHandler<CodexNavigationMenuActiveItemChangedEventArgs>? ActiveItemChanged;
 
     public CodexControlSize Size
     {
@@ -97,10 +124,26 @@ public class CodexNavigationMenu : ItemsControl
         private set => SetValue(ActiveItemProperty, value);
     }
 
-    public void ActivateItem(CodexNavigationMenuItem item)
+    public string? ActiveValue
     {
-        if (!item.IsEnabled || !item.HasContent)
+        get => GetValue(ActiveValueProperty);
+        set => SetValue(ActiveValueProperty, value);
+    }
+
+    public void ActivateItem(CodexNavigationMenuItem item, bool activateLink = false)
+    {
+        if (!item.IsEnabled)
         {
+            return;
+        }
+
+        if (!item.HasContent)
+        {
+            if (activateLink)
+            {
+                item.TryActivateLink();
+            }
+
             CloseViewport();
             return;
         }
@@ -108,6 +151,7 @@ public class CodexNavigationMenu : ItemsControl
         var nextIndex = IndexOf(item);
         var hasPrevious = _activeIndex >= 0;
         IsMotionReversed = hasPrevious && nextIndex >= 0 && nextIndex < _activeIndex;
+        var oldItem = _activeItem;
 
         if (!ReferenceEquals(_activeItem, item))
         {
@@ -123,16 +167,36 @@ public class CodexNavigationMenu : ItemsControl
         ViewportMinHeight = item.ViewportMinHeight;
         IsViewportOpen = true;
         SyncClasses();
+
+        var value = item.ResolveValue();
+        SetActiveValue(value);
+        if (!ReferenceEquals(oldItem, item))
+        {
+            ActiveItemChanged?.Invoke(this, new CodexNavigationMenuActiveItemChangedEventArgs(oldItem, item, value));
+        }
     }
 
     public void CloseViewport()
     {
+        var oldItem = _activeItem;
         _activeItem?.SetOpenState(false);
         _activeItem = null;
         _activeIndex = -1;
         ActiveItem = null;
+        SetActiveValue(null);
         IsViewportOpen = false;
         SyncClasses();
+
+        if (oldItem is not null)
+        {
+            ActiveItemChanged?.Invoke(this, new CodexNavigationMenuActiveItemChangedEventArgs(oldItem, null, null));
+        }
+    }
+
+    protected override void OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToLogicalTree(e);
+        ApplyActiveValue(ActiveValue);
     }
 
     protected override void OnPointerExited(PointerEventArgs e)
@@ -151,13 +215,68 @@ public class CodexNavigationMenu : ItemsControl
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        base.OnKeyDown(e);
-
-        if (e.Key == Key.Escape)
+        if (TryHandleNavigationKey(e.Key))
         {
-            CloseViewport();
             e.Handled = true;
+            return;
         }
+
+        base.OnKeyDown(e);
+    }
+
+    internal bool TryHandleNavigationKey(Key key)
+    {
+        if (key != Key.Escape)
+        {
+            return false;
+        }
+
+        CloseViewport();
+        return true;
+    }
+
+    internal bool TryHandleItemNavigationKey(CodexNavigationMenuItem currentItem, Key key, bool moveFocus = true)
+    {
+        if (ItemsView.Count == 0)
+        {
+            return false;
+        }
+
+        var currentIndex = IndexOf(currentItem);
+        if (currentIndex < 0)
+        {
+            currentIndex = _activeIndex >= 0 ? _activeIndex : FirstActivatableIndex();
+        }
+
+        var nextIndex = key switch
+        {
+            Key.Home => FirstActivatableIndex(),
+            Key.End => LastActivatableIndex(),
+            Key.Right when Orientation == Orientation.Horizontal => NextActivatableIndex(currentIndex, 1),
+            Key.Left when Orientation == Orientation.Horizontal => NextActivatableIndex(currentIndex, -1),
+            Key.Down when Orientation == Orientation.Vertical => NextActivatableIndex(currentIndex, 1),
+            Key.Up when Orientation == Orientation.Vertical => NextActivatableIndex(currentIndex, -1),
+            _ => -1
+        };
+
+        if (nextIndex < 0)
+        {
+            return false;
+        }
+
+        var item = NavigationItemAt(nextIndex);
+        if (item is null)
+        {
+            return false;
+        }
+
+        if (moveFocus)
+        {
+            item.Focus(NavigationMethod.Directional, KeyModifiers.None);
+        }
+
+        ActivateItem(item);
+        return true;
     }
 
     private int IndexOf(CodexNavigationMenuItem item)
@@ -174,6 +293,58 @@ public class CodexNavigationMenu : ItemsControl
         return -1;
     }
 
+    private int FirstActivatableIndex()
+    {
+        for (var index = 0; index < ItemsView.Count; index++)
+        {
+            if (NavigationItemAt(index) is { IsEnabled: true })
+            {
+                return index;
+            }
+        }
+
+        return -1;
+    }
+
+    private int LastActivatableIndex()
+    {
+        for (var index = ItemsView.Count - 1; index >= 0; index--)
+        {
+            if (NavigationItemAt(index) is { IsEnabled: true })
+            {
+                return index;
+            }
+        }
+
+        return -1;
+    }
+
+    private int NextActivatableIndex(int currentIndex, int step)
+    {
+        var count = ItemsView.Count;
+        for (var offset = 1; offset <= count; offset++)
+        {
+            var index = (currentIndex + (offset * step) + count) % count;
+            if (NavigationItemAt(index) is { IsEnabled: true })
+            {
+                return index;
+            }
+        }
+
+        return -1;
+    }
+
+    private CodexNavigationMenuItem? NavigationItemAt(int index)
+    {
+        if (index < 0 || index >= ItemsView.Count)
+        {
+            return null;
+        }
+
+        return ItemsView[index] as CodexNavigationMenuItem
+            ?? ContainerFromIndex(index) as CodexNavigationMenuItem;
+    }
+
     private void SyncClasses()
     {
         CodexClassSync.SetSize(Classes, Size);
@@ -184,12 +355,64 @@ public class CodexNavigationMenu : ItemsControl
         Classes.Set("motion-from-start", IsMotionReversed);
         Classes.Set("motion-from-end", IsViewportOpen && !IsMotionReversed);
     }
+
+    private void OnActiveValueChanged(string? value)
+    {
+        if (_isSyncingActiveValue)
+        {
+            return;
+        }
+
+        ApplyActiveValue(value);
+    }
+
+    private void ApplyActiveValue(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            CloseViewport();
+            return;
+        }
+
+        for (var index = 0; index < ItemsView.Count; index++)
+        {
+            if (NavigationItemAt(index) is { } item
+                && string.Equals(item.ResolveValue(), value, StringComparison.Ordinal))
+            {
+                ActivateItem(item);
+                return;
+            }
+        }
+    }
+
+    private void SetActiveValue(string? value)
+    {
+        _isSyncingActiveValue = true;
+        try
+        {
+            SetValue(ActiveValueProperty, value);
+        }
+        finally
+        {
+            _isSyncingActiveValue = false;
+        }
+    }
 }
 
+[PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexNavigationMenuItem : HeaderedContentControl
 {
+    public static readonly StyledProperty<string?> ValueProperty =
+        AvaloniaProperty.Register<CodexNavigationMenuItem, string?>(nameof(Value));
+
     public static readonly StyledProperty<object?> IconProperty =
         AvaloniaProperty.Register<CodexNavigationMenuItem, object?>(nameof(Icon));
+
+    public static readonly StyledProperty<ICommand?> CommandProperty =
+        AvaloniaProperty.Register<CodexNavigationMenuItem, ICommand?>(nameof(Command));
+
+    public static readonly StyledProperty<object?> CommandParameterProperty =
+        AvaloniaProperty.Register<CodexNavigationMenuItem, object?>(nameof(CommandParameter));
 
     public static readonly StyledProperty<bool> IsOpenProperty =
         AvaloniaProperty.Register<CodexNavigationMenuItem, bool>(nameof(IsOpen));
@@ -208,6 +431,8 @@ public class CodexNavigationMenuItem : HeaderedContentControl
 
     static CodexNavigationMenuItem()
     {
+        CommandProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
+        CommandParameterProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
         IconProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
         IsOpenProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
         ContentProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
@@ -219,10 +444,30 @@ public class CodexNavigationMenuItem : HeaderedContentControl
         SyncClasses();
     }
 
+    public event EventHandler<CodexNavigationMenuActivatedEventArgs>? Activated;
+
+    public string? Value
+    {
+        get => GetValue(ValueProperty);
+        set => SetValue(ValueProperty, value);
+    }
+
     public object? Icon
     {
         get => GetValue(IconProperty);
         set => SetValue(IconProperty, value);
+    }
+
+    public ICommand? Command
+    {
+        get => GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
+    }
+
+    public object? CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
     }
 
     public bool IsOpen
@@ -252,6 +497,18 @@ public class CodexNavigationMenuItem : HeaderedContentControl
         SetValue(IsOpenProperty, isOpen);
     }
 
+    public bool TryActivateLink()
+    {
+        if (!IsEnabled || HasContent || !(Command?.CanExecute(CommandParameter) ?? true))
+        {
+            return false;
+        }
+
+        Command?.Execute(CommandParameter);
+        Activated?.Invoke(this, new CodexNavigationMenuActivatedEventArgs(CommandParameter));
+        return true;
+    }
+
     protected override void OnPointerEntered(PointerEventArgs e)
     {
         base.OnPointerEntered(e);
@@ -260,12 +517,21 @@ public class CodexNavigationMenuItem : HeaderedContentControl
 
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
         base.OnPointerPressed(e);
 
         if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
         {
-            Focus();
-            Activate();
+            Focus(NavigationMethod.Pointer, KeyModifiers.None);
+            if (!TryActivateLink())
+            {
+                Activate();
+            }
+            else
+            {
+                FindOwner()?.CloseViewport();
+            }
+
             e.Handled = true;
         }
     }
@@ -273,26 +539,67 @@ public class CodexNavigationMenuItem : HeaderedContentControl
     protected override void OnGotFocus(FocusChangedEventArgs e)
     {
         base.OnGotFocus(e);
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, CodexFocusVisible.FromFocusChange(e));
         Activate();
+    }
+
+    protected override void OnLostFocus(FocusChangedEventArgs e)
+    {
+        base.OnLostFocus(e);
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        base.OnKeyDown(e);
-
-        if (e.Key is Key.Enter or Key.Space)
+        var owner = FindOwner();
+        if (TryHandleActivationKey(e.Key, owner)
+            || owner?.TryHandleItemNavigationKey(this, e.Key) == true)
         {
-            Activate();
             e.Handled = true;
+            return;
         }
+
+        base.OnKeyDown(e);
     }
 
-    private void Activate()
+    internal bool TryHandleActivationKey(Key key, CodexNavigationMenu? owner = null)
     {
-        var owner = ItemsControl.ItemsControlFromItemContainer(this) as CodexNavigationMenu
-            ?? this.GetVisualAncestors().OfType<CodexNavigationMenu>().FirstOrDefault();
+        if (key is not (Key.Enter or Key.Space))
+        {
+            return false;
+        }
 
+        if (TryActivateLink())
+        {
+            owner?.CloseViewport();
+        }
+        else
+        {
+            Activate(owner);
+        }
+
+        return true;
+    }
+
+    internal string? ResolveValue()
+    {
+        var value = string.IsNullOrWhiteSpace(Value)
+            ? Header?.ToString()
+            : Value;
+
+        return value?.Trim();
+    }
+
+    private void Activate(CodexNavigationMenu? owner = null)
+    {
+        owner ??= FindOwner();
         owner?.ActivateItem(this);
+    }
+
+    private CodexNavigationMenu? FindOwner()
+    {
+        return ItemsControl.ItemsControlFromItemContainer(this) as CodexNavigationMenu
+            ?? this.GetVisualAncestors().OfType<CodexNavigationMenu>().FirstOrDefault();
     }
 
     private void SyncClasses()
@@ -305,6 +612,7 @@ public class CodexNavigationMenuItem : HeaderedContentControl
         Classes.Set("has-icon", HasIcon);
         Classes.Set("has-content", hasContent);
         Classes.Set("link", !hasContent);
+        Classes.Set("can-activate", !hasContent && (Command?.CanExecute(CommandParameter) ?? true));
     }
 
     private static bool HasValue(object? value)
@@ -368,6 +676,7 @@ public class CodexNavigationMenuContent : ItemsControl
     }
 }
 
+[PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexNavigationMenuLink : ContentControl
 {
     public static readonly StyledProperty<string?> DescriptionProperty =
@@ -375,6 +684,12 @@ public class CodexNavigationMenuLink : ContentControl
 
     public static readonly StyledProperty<object?> IconProperty =
         AvaloniaProperty.Register<CodexNavigationMenuLink, object?>(nameof(Icon));
+
+    public static readonly StyledProperty<ICommand?> CommandProperty =
+        AvaloniaProperty.Register<CodexNavigationMenuLink, ICommand?>(nameof(Command));
+
+    public static readonly StyledProperty<object?> CommandParameterProperty =
+        AvaloniaProperty.Register<CodexNavigationMenuLink, object?>(nameof(CommandParameter));
 
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<CodexNavigationMenuLink, bool>(nameof(IsActive));
@@ -389,6 +704,8 @@ public class CodexNavigationMenuLink : ContentControl
     {
         DescriptionProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
         IconProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
+        CommandProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
+        CommandParameterProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
         IsActiveProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
     }
 
@@ -397,6 +714,8 @@ public class CodexNavigationMenuLink : ContentControl
         Focusable = true;
         SyncClasses();
     }
+
+    public event EventHandler<CodexNavigationMenuActivatedEventArgs>? Activated;
 
     public string? Description
     {
@@ -410,6 +729,18 @@ public class CodexNavigationMenuLink : ContentControl
         set => SetValue(IconProperty, value);
     }
 
+    public ICommand? Command
+    {
+        get => GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
+    }
+
+    public object? CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
+    }
+
     public bool IsActive
     {
         get => GetValue(IsActiveProperty);
@@ -420,6 +751,58 @@ public class CodexNavigationMenuLink : ContentControl
 
     public bool HasIcon => GetValue(HasIconProperty);
 
+    protected override void OnGotFocus(FocusChangedEventArgs e)
+    {
+        base.OnGotFocus(e);
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, CodexFocusVisible.FromFocusChange(e));
+    }
+
+    protected override void OnLostFocus(FocusChangedEventArgs e)
+    {
+        base.OnLostFocus(e);
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        base.OnPointerReleased(e);
+
+        if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased
+            && TryActivate())
+        {
+            e.Handled = true;
+        }
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (e.Key is (Key.Enter or Key.Space) && TryActivate())
+        {
+            e.Handled = true;
+            return;
+        }
+
+        base.OnKeyDown(e);
+    }
+
+    public bool TryActivate()
+    {
+        if (!IsEnabled || !(Command?.CanExecute(CommandParameter) ?? true))
+        {
+            return false;
+        }
+
+        Command?.Execute(CommandParameter);
+        Activated?.Invoke(this, new CodexNavigationMenuActivatedEventArgs(CommandParameter));
+        return true;
+    }
+
     private void SyncClasses()
     {
         SetValue(HasDescriptionProperty, HasValue(Description));
@@ -427,6 +810,7 @@ public class CodexNavigationMenuLink : ContentControl
         Classes.Set("active", IsActive);
         Classes.Set("has-description", HasDescription);
         Classes.Set("has-icon", HasIcon);
+        Classes.Set("can-activate", Command?.CanExecute(CommandParameter) ?? true);
     }
 
     private static bool HasValue(object? value)

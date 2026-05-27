@@ -1,0 +1,108 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <StackPanel Spacing="10">
+    <primitives:CodexText Role="Muted"
+                          Text="Sheet is open on the right edge." />
+    <Grid Height="280">
+      <controls:CodexSheet Title="Route filters"
+                           Description="Dismiss, Escape, outside pointer, and focus return reuse the dialog contract."
+                           Side="Right"
+                           IsOpen="True"
+                           Width="360">
+        <controls:CodexSheet.Trigger>
+          <controls:CodexButton Content="Toggle sheet"
+                                Size="Small" />
+        </controls:CodexSheet.Trigger>
+        <controls:CodexSheet.Content>
+          <StackPanel Spacing="10">
+            <controls:CodexField Label="Provider">
+              <controls:CodexTextBox Text="OpenAI" />
+            </controls:CodexField>
+            <controls:CodexCheckBox Content="Show degraded routes"
+                                    IsChecked="True" />
+            <controls:CodexAlert Title="Mounted exit state"
+                                 Description="Closing sets IsOpen=false and keeps the sheet available for exit motion."
+                                 Variant="Secondary" />
+          </StackPanel>
+        </controls:CodexSheet.Content>
+        <controls:CodexSheet.Action>
+          <StackPanel Orientation="Horizontal"
+                      Spacing="8"
+                      HorizontalAlignment="Right">
+            <controls:CodexButton Content="Reset"
+                                  Variant="Secondary"
+                                  Size="Small" />
+            <controls:CodexButton Content="Apply"
+                                  Size="Small" />
+          </StackPanel>
+        </controls:CodexSheet.Action>
+      </controls:CodexSheet>
+    </Grid>
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexButton Content="Dismiss command"
+                            Size="Small"
+                            Variant="Secondary" />
+      <controls:CodexButton Content="Cycle side"
+                            Size="Small"
+                            Variant="Ghost" />
+      <controls:CodexButton Content="Manual policy"
+                            Size="Small"
+                            Variant="Ghost" />
+    </StackPanel>
+  </StackPanel>
+
+  <controls:CodexSheet Grid.Column="1"
+                       Title="Manual close"
+                       Description="Outside pointer and Escape can be disabled for transactional flows."
+                       Side="Left"
+                       Width="330"
+                       IsOpen="True"
+                       CloseOnEscape="False"
+                       DismissOnOutsidePointer="False"
+                       IsCloseVisible="False">
+    <controls:CodexSheet.Content>
+      <primitives:CodexText Role="Muted"
+                            Text="Host code controls when this sheet closes." />
+    </controls:CodexSheet.Content>
+    <controls:CodexSheet.Action>
+      <controls:CodexButton Content="Apply"
+                            Size="Small" />
+    </controls:CodexSheet.Action>
+  </controls:CodexSheet>
+
+  <controls:CodexSheet Grid.Row="1"
+                       Title="Closed edge state"
+                       Description="Closed class preserves the side-specific exit transform."
+                       Side="Bottom"
+                       IsOpen="False">
+    <controls:CodexSheet.Trigger>
+      <controls:CodexButton Content="Open closed sheet"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexSheet.Trigger>
+    <primitives:CodexText Role="Muted"
+                          Text="Useful for reduced-motion and snapshot checks." />
+  </controls:CodexSheet>
+
+  <controls:CodexSheet Grid.Row="1"
+                       Grid.Column="1"
+                       Title="No close button"
+                       Description="showCloseButton=false maps to IsCloseVisible=false."
+                       Side="Top"
+                       IsOpen="True"
+                       IsCloseVisible="False">
+    <StackPanel Spacing="8">
+      <primitives:CodexText Role="Muted"
+                            Text="The action slot can provide the only close affordance." />
+      <controls:CodexButton Content="Done"
+                            Size="Small"
+                            HorizontalAlignment="Left" />
+    </StackPanel>
+  </controls:CodexSheet>
+</Grid>

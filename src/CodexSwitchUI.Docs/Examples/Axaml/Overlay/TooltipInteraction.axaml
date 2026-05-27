@@ -1,0 +1,57 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <StackPanel Spacing="8">
+    <controls:CodexTooltip Content="Usage refreshes every minute."
+                           Placement="Bottom"
+                           IsArrowVisible="True"
+                           Size="Small"
+                           OpenDelay="0:0:0">
+      <controls:CodexTooltip.Trigger>
+        <controls:CodexButton Content="Billing target"
+                              Size="Small"
+                              HorizontalAlignment="Left" />
+      </controls:CodexTooltip.Trigger>
+    </controls:CodexTooltip>
+    <TextBlock Text="OpenChanged: tooltip starts closed."
+               TextWrapping="Wrap" />
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexButton Content="Open now"
+                            Size="Small"
+                            Variant="Secondary" />
+      <controls:CodexButton Content="Dismiss"
+                            Size="Small"
+                            Variant="Outline" />
+    </StackPanel>
+  </StackPanel>
+
+  <controls:CodexTooltip Grid.Column="1"
+                         Content="Escape dismissal is disabled for persistent hints."
+                         Placement="Right"
+                         CloseOnEscape="False"
+                         IsOpen="True"
+                         IsArrowVisible="True" />
+
+  <controls:CodexTooltip Grid.Row="1"
+                         Content="Large top-aligned tooltip with arrow."
+                         Placement="Top"
+                         IsOpen="True"
+                         IsArrowVisible="True"
+                         Size="Large">
+    <controls:CodexTooltip.Trigger>
+      <controls:CodexButton Content="Save"
+                            Variant="Secondary" />
+    </controls:CodexTooltip.Trigger>
+  </controls:CodexTooltip>
+
+  <controls:CodexTooltip Grid.Row="1"
+                         Grid.Column="1"
+                         Content="Closed hint keeps side and arrow state."
+                         Placement="Left"
+                         IsOpen="False"
+                         IsArrowVisible="True" />
+</Grid>

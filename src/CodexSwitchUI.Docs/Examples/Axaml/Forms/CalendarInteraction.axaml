@@ -1,0 +1,79 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Selection events"
+                       Description="SelectedDateChanged, ActiveDateChanged, and DisplayDateChanged mirror DayPicker onSelect/onMonthChange paths.">
+    <StackPanel Spacing="10">
+      <TextBlock Text="Calendar events: waiting."
+                 Foreground="DimGray"
+                 FontSize="12" />
+      <controls:CodexCalendar DisplayDate="2026-05-01"
+                              SelectedDate="2026-05-13"
+                              ActiveDate="2026-05-22"
+                              HorizontalAlignment="Left" />
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="Select May 25"
+                              Size="Small"
+                              Variant="Outline" />
+        <controls:CodexButton Content="Next month"
+                              Size="Small"
+                              Variant="Ghost" />
+        <controls:CodexButton Content="Move active"
+                              Size="Small"
+                              Variant="Ghost" />
+      </StackPanel>
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Range events"
+                       Description="RangeChanged reports open and completed range state after each date selection.">
+    <StackPanel Spacing="10">
+      <TextBlock Text="RangeChanged: waiting."
+                 Foreground="DimGray"
+                 FontSize="12" />
+      <controls:CodexCalendar DisplayDate="2026-02-01"
+                              SelectionMode="Range"
+                              RangeStart="2026-02-09"
+                              RangeEnd="2026-02-18"
+                              ActiveDate="2026-02-18"
+                              HorizontalAlignment="Left" />
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="Start Mar 6"
+                              Size="Small"
+                              Variant="Outline" />
+        <controls:CodexButton Content="Finish Mar 12"
+                              Size="Small"
+                              Variant="Ghost" />
+      </StackPanel>
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Disabled bounds"
+                       Description="Pointer and Enter share the same unavailable guard.">
+    <controls:CodexCalendar DisplayDate="2026-03-01"
+                            SelectedDate="2026-03-16"
+                            ActiveDate="2026-03-16"
+                            MinDate="2026-03-09"
+                            MaxDate="2026-03-23"
+                            Intent="Error"
+                            HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Compact month"
+                       Description="Small size keeps day hit targets stable for dense popovers.">
+    <controls:CodexCalendar DisplayDate="2026-12-01"
+                            SelectedDate="2026-12-11"
+                            ActiveDate="2026-12-11"
+                            Size="Small"
+                            HorizontalAlignment="Left" />
+  </controls:CodexField>
+</Grid>

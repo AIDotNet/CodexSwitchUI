@@ -1,0 +1,39 @@
+<controls:CodexItemGroup xmlns="https://github.com/avaloniaui"
+                         xmlns:controls="using:CodexSwitchUI.Controls"
+                         Variant="Outline"
+                         IsInset="True">
+  <controls:CodexItem Title="OpenAI"
+                      Description="Primary route for Responses requests."
+                      IsInteractive="True"
+                      IsSelected="True">
+    <controls:CodexItem.Media>
+      <controls:CodexItemMedia Content="AI"
+                               Variant="Success" />
+    </controls:CodexItem.Media>
+    <controls:CodexItem.Actions>
+      <controls:CodexButton Content="Open"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexItem.Actions>
+    <controls:CodexItem.Footer>
+      <controls:CodexBadge Content="active"
+                           Variant="Success"
+                           IsStatusVisible="True" />
+    </controls:CodexItem.Footer>
+  </controls:CodexItem>
+
+  <controls:CodexItemSeparator />
+
+  <controls:CodexItem Title="Claude"
+                      Description="Warm fallback with lower priority."
+                      IsInteractive="True">
+    <controls:CodexItem.Media>
+      <controls:CodexItemMedia Content="CL" />
+    </controls:CodexItem.Media>
+    <controls:CodexItem.Actions>
+      <controls:CodexButton Content="Route"
+                            Size="Small"
+                            Variant="Ghost" />
+    </controls:CodexItem.Actions>
+  </controls:CodexItem>
+</controls:CodexItemGroup>

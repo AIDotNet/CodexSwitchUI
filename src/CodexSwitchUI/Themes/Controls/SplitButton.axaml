@@ -1,0 +1,244 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls"
+        xmlns:converters="using:CodexSwitchUI.Converters">
+  <Styles.Resources>
+    <converters:SplitButtonCornerRadiusPartConverter x:Key="CodexSplitButtonLeftRadius"
+                                                     Part="Left" />
+    <converters:SplitButtonCornerRadiusPartConverter x:Key="CodexSplitButtonRightRadius"
+                                                     Part="Right" />
+  </Styles.Resources>
+
+  <Style Selector="controls|CodexSplitButton">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PopoverBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="Padding" Value="4" />
+    <Setter Property="MinWidth" Value="200" />
+    <Setter Property="MaxWidth" Value="340" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexSplitButton">
+        <Grid x:Name="PART_Root"
+              ClipToBounds="False">
+          <Grid x:Name="PART_ButtonGroup"
+                ColumnDefinitions="*,1,Auto"
+                ClipToBounds="False">
+            <controls:CodexButton x:Name="PART_PrimaryAction"
+                                  Grid.Column="0"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Variant="{TemplateBinding Variant}"
+                                  Size="{TemplateBinding Size}"
+                                  IsLoading="{TemplateBinding IsLoading}"
+                                  IsEnabled="{TemplateBinding IsPrimaryActionAvailable}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+            <Border x:Name="PART_Divider"
+                    Grid.Column="1"
+                    Background="{TemplateBinding BorderBrush}"
+                    Opacity="0.7"
+                    Margin="0,6" />
+
+            <controls:CodexButton x:Name="PART_MenuTrigger"
+                                  Grid.Column="2"
+                                  Variant="{TemplateBinding Variant}"
+                                  Size="{TemplateBinding Size}"
+                                  IsLoading="{TemplateBinding IsLoading}"
+                                  IsEnabled="{TemplateBinding CanOpenDropDown}"
+                                  HorizontalContentAlignment="Center"
+                                  VerticalContentAlignment="Center"
+                                  AutomationProperties.Name="Open menu">
+              <PathIcon x:Name="PART_Chevron"
+                        Width="14"
+                        Height="14"
+                        RenderTransformOrigin="50%,50%"
+                        Data="M7 10L12 5L10.6 3.6L7 7.2L3.4 3.6L2 5L7 10Z" />
+            </controls:CodexButton>
+          </Grid>
+
+          <Popup x:Name="PART_Popup"
+                 WindowManagerAddShadowHint="False"
+                 IsOpen="{TemplateBinding IsOpen, Mode=TwoWay}"
+                 MinWidth="{Binding Bounds.Width, ElementName=PART_ButtonGroup}"
+                 PlacementTarget="PART_ButtonGroup"
+                 Placement="{TemplateBinding Placement}"
+                 IsLightDismissEnabled="True"
+                 InheritsTransform="True">
+            <Grid x:Name="PART_PopupRoot"
+                  ClipToBounds="False">
+              <Border x:Name="PART_Surface"
+                      MinWidth="{TemplateBinding MinWidth}"
+                      MaxWidth="{TemplateBinding MaxWidth}"
+                      Margin="0,6,0,0"
+                      Padding="{TemplateBinding Padding}"
+                      Background="{TemplateBinding Background}"
+                      BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      CornerRadius="{DynamicResource CodexSwitch.RadiusLg}"
+                      Opacity="0"
+                      RenderTransform="translate(0px, -4px) scale(0.96)"
+                      RenderTransformOrigin="50%,0%">
+                <ContentPresenter x:Name="PART_DropDownContent"
+                                  Content="{TemplateBinding DropDownContent}"
+                                  ContentTemplate="{TemplateBinding DropDownContentTemplate}"
+                                  Foreground="{TemplateBinding Foreground}" />
+              </Border>
+
+              <Border x:Name="PART_Arrow"
+                      Width="10"
+                      Height="10"
+                      Background="{TemplateBinding Background}"
+                      IsVisible="{TemplateBinding IsArrowVisible}"
+                      RenderTransform="rotate(45deg)"
+                      RenderTransformOrigin="50%,50%" />
+            </Grid>
+          </Popup>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.loading">
+    <Setter Property="Opacity" Value="0.88" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton /template/ controls|CodexButton#PART_PrimaryAction">
+    <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource CodexSplitButtonLeftRadius}}" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton /template/ controls|CodexButton#PART_MenuTrigger">
+    <Setter Property="CornerRadius" Value="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource CodexSplitButtonRightRadius}}" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton /template/ Border#PART_Divider">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.primary-action-disabled /template/ Border#PART_Divider">
+    <Setter Property="Opacity" Value="0.45" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton:not(.can-open-dropdown) /template/ controls|CodexButton#PART_MenuTrigger">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.open /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.closed /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.open PathIcon#PART_Chevron">
+    <Setter Property="RenderTransform" Value="rotate(180deg)" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton /template/ Border#PART_Surface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton PathIcon#PART_Chevron">
+    <Setter Property="Transitions">
+      <Transitions>
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton /template/ Border#PART_Arrow">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton:not(.has-arrow) /template/ Border#PART_Arrow">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.side-bottom /template/ Border#PART_Surface">
+    <Setter Property="Margin" Value="0,6,0,0" />
+    <Setter Property="RenderTransformOrigin" Value="50%,0%" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.side-top /template/ Border#PART_Surface">
+    <Setter Property="Margin" Value="0,0,0,6" />
+    <Setter Property="RenderTransformOrigin" Value="50%,100%" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.side-left /template/ Border#PART_Surface">
+    <Setter Property="Margin" Value="0,0,6,0" />
+    <Setter Property="RenderTransformOrigin" Value="100%,50%" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.side-right /template/ Border#PART_Surface">
+    <Setter Property="Margin" Value="6,0,0,0" />
+    <Setter Property="RenderTransformOrigin" Value="0%,50%" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.align-start /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.align-center /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.align-end /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.size-sm">
+    <Setter Property="MinWidth" Value="176" />
+    <Setter Property="Padding" Value="4" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.size-lg">
+    <Setter Property="MinWidth" Value="240" />
+    <Setter Property="Padding" Value="6" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton.size-icon">
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="4" />
+  </Style>
+
+  <Style Selector="controls|CodexSplitButton:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+</Styles>

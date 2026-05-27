@@ -1,0 +1,51 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <StackPanel Spacing="10">
+    <controls:CodexPopover Title="Usage limit"
+                           Description="Popover content is anchored to a trigger and can restore focus on dismiss."
+                           IsOpen="True"
+                           IsArrowVisible="True">
+      <controls:CodexPopover.Trigger>
+        <controls:CodexButton Content="Usage trigger"
+                              Size="Small" />
+      </controls:CodexPopover.Trigger>
+
+      <StackPanel Spacing="8">
+        <controls:CodexProgress Minimum="0"
+                                Maximum="100"
+                                Value="72"
+                                Variant="Warning" />
+        <primitives:CodexText Text="72% of the monthly budget is used."
+                              Role="Muted"
+                              TextWrapping="Wrap" />
+      </StackPanel>
+      <controls:CodexPopover.Action>
+        <controls:CodexButton Content="Open billing"
+                              Size="Small" />
+      </controls:CodexPopover.Action>
+    </controls:CodexPopover>
+  </StackPanel>
+
+  <controls:CodexPopover Grid.Column="1"
+                         Title="Manual dismiss"
+                         Description="Escape and outside pointer dismissal can be disabled for persistent panels."
+                         IsOpen="True"
+                         CloseOnEscape="False"
+                         DismissOnOutsidePointer="False"
+                         IsCloseVisible="False">
+    <StackPanel Spacing="8">
+      <controls:CodexBadge Content="manual"
+                           Variant="Outline" />
+      <primitives:CodexText Text="The host owns closing and focus return."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </StackPanel>
+    <controls:CodexPopover.Action>
+      <controls:CodexButton Content="Apply"
+                            Size="Small" />
+    </controls:CodexPopover.Action>
+  </controls:CodexPopover>
+</Grid>

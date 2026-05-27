@@ -1,0 +1,29 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      x:CompileBindings="False"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexLineChart Width="360"
+                           ItemsSource="{Binding LineChartItems}" />
+
+  <controls:CodexLineChart Grid.Column="1"
+                           Width="360"
+                           ShowArea="False"
+                           ShowDots="False"
+                           ItemsSource="{Binding LineChartBurstItems}" />
+
+  <controls:CodexLineChart Grid.Row="1"
+                           Width="360"
+                           IsCompact="True"
+                           ShowGridLines="False"
+                           ItemsSource="{Binding LineChartFlatItems}" />
+
+  <controls:CodexLineChart Grid.Row="1"
+                           Grid.Column="1"
+                           Width="360"
+                           EmptyText="No trend data"
+                           ItemsSource="{Binding EmptyLineChartItems}" />
+</Grid>

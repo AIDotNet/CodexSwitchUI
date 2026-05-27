@@ -1,0 +1,28 @@
+<controls:CodexSection xmlns="https://github.com/avaloniaui"
+                       xmlns:controls="using:CodexSwitchUI.Controls"
+                       Title="Provider routing"
+                       Description="One component owns heading, helper text, actions, and body spacing.">
+  <controls:CodexSection.Actions>
+    <controls:CodexButton Content="Configure"
+                          Size="Small" />
+  </controls:CodexSection.Actions>
+
+  <Grid ColumnDefinitions="*,*"
+        ColumnSpacing="12">
+    <controls:CodexMetric Label="Success rate"
+                          Detail="Last 24 hours">
+      <controls:CodexMetric.Value>
+        <TextBlock Text="99.4%"
+                   FontWeight="SemiBold" />
+      </controls:CodexMetric.Value>
+    </controls:CodexMetric>
+    <controls:CodexMetric Grid.Column="1"
+                          Label="Latency"
+                          Detail="p95">
+      <controls:CodexMetric.Value>
+        <TextBlock Text="284ms"
+                   FontWeight="SemiBold" />
+      </controls:CodexMetric.Value>
+    </controls:CodexMetric>
+  </Grid>
+</controls:CodexSection>

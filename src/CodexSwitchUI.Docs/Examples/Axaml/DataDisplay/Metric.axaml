@@ -1,0 +1,34 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*,*"
+      ColumnSpacing="12">
+  <controls:CodexStatCard Label="Tokens"
+                          Detail="+18% from yesterday">
+    <controls:CodexStatCard.Value>
+      <TextBlock Text="42.7K"
+                 FontWeight="SemiBold" />
+    </controls:CodexStatCard.Value>
+    <controls:CodexStatCard.Icon>
+      <controls:CodexBadge Content="API"
+                           Variant="Secondary" />
+    </controls:CodexStatCard.Icon>
+  </controls:CodexStatCard>
+
+  <controls:CodexStatCard Grid.Column="1"
+                          Label="Latency"
+                          Detail="p95 response time">
+    <controls:CodexStatCard.Value>
+      <TextBlock Text="284ms"
+                 FontWeight="SemiBold" />
+    </controls:CodexStatCard.Value>
+  </controls:CodexStatCard>
+
+  <controls:CodexMetric Grid.Column="2"
+                        Label="Fallbacks"
+                        Detail="Last hour">
+    <controls:CodexMetric.Value>
+      <TextBlock Text="7"
+                 FontWeight="SemiBold" />
+    </controls:CodexMetric.Value>
+  </controls:CodexMetric>
+</Grid>

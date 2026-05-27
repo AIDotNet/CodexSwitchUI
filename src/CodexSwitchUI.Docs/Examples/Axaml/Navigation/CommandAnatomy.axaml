@@ -1,0 +1,34 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="0.85*,1.15*"
+      ColumnSpacing="14">
+  <controls:CodexCard Title="Command input"
+                      Description="The input primitive can be mounted and tested directly.">
+    <controls:CodexCommandInput PlaceholderText="Filter commands..."
+                                Text="provider" />
+  </controls:CodexCard>
+
+  <controls:CodexCommand Grid.Column="1"
+                         Placeholder="Search actions..."
+                         IsLoading="True">
+    <controls:CodexCommandList>
+      <controls:CodexCommandGroup Header="Providers">
+        <controls:CodexCommandItem Content="Switch to OpenAI"
+                                   Icon="O"
+                                   Shortcut="Cmd+1"
+                                   IsActive="True" />
+        <controls:CodexCommandItem Content="Switch to Claude"
+                                   Icon="C"
+                                   Shortcut="Cmd+2" />
+        <controls:CodexCommandItem Content="Disabled provider"
+                                   Icon="D"
+                                   IsEnabled="False" />
+      </controls:CodexCommandGroup>
+
+      <controls:CodexCommandSeparator />
+
+      <controls:CodexCommandLoading Content="Refreshing command results..." />
+      <controls:CodexCommandEmpty Content="No matching commands." />
+    </controls:CodexCommandList>
+  </controls:CodexCommand>
+</Grid>

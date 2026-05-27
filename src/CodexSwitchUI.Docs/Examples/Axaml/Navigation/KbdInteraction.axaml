@@ -1,0 +1,80 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Shortcut sequence"
+                       Description="Host state can replace shortcut tokens while size classes stay synchronized.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Shortcut: Cmd + K." />
+        <controls:CodexKbdGroup Size="Small">
+          <controls:CodexKbd Content="Cmd"
+                             Size="Small" />
+          <controls:CodexKbd Content="K"
+                             Size="Small" />
+        </controls:CodexKbdGroup>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Switch shortcut"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Toggle density"
+                                Size="Small"
+                                Variant="Ghost" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Command hint composition"
+                       Description="Kbd tokens align with command rows and trailing shortcuts.">
+    <controls:CodexField.Content>
+      <controls:CodexCommand>
+        <controls:CodexCommandList>
+          <controls:CodexCommandItem Content="Open command palette"
+                                     Shortcut="Cmd K"
+                                     IsActive="True" />
+          <controls:CodexCommandItem Content="Switch provider"
+                                     Shortcut="Shift P" />
+        </controls:CodexCommandList>
+      </controls:CodexCommand>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Chord sequence"
+                       Description="Multi-step shortcuts keep fixed token spacing.">
+    <controls:CodexField.Content>
+      <controls:CodexKbdGroup Size="Small">
+        <controls:CodexKbd Content="Cmd"
+                           Size="Small" />
+        <controls:CodexKbd Content="K"
+                           Size="Small" />
+        <controls:CodexKbd Content="then"
+                           Size="Small" />
+        <controls:CodexKbd Content="P"
+                           Size="Small" />
+      </controls:CodexKbdGroup>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled host"
+                       Description="Shortcut hints remain readable inside disabled controls.">
+    <controls:CodexField.Content>
+      <controls:CodexButton Content="Run shortcut"
+                            IsEnabled="False">
+        <controls:CodexButton.TrailingIcon>
+          <controls:CodexKbd Content="Enter"
+                             Size="Small" />
+        </controls:CodexButton.TrailingIcon>
+      </controls:CodexButton>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

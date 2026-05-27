@@ -1,0 +1,64 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexResizablePanelGroup Height="180"
+                                     Orientation="Horizontal">
+    <controls:CodexResizablePanel DefaultSize="35"
+                                  MinSize="20">
+      <TextBlock Text="Horizontal" />
+    </controls:CodexResizablePanel>
+    <controls:CodexResizableHandle WithHandle="True" />
+    <controls:CodexResizablePanel DefaultSize="65"
+                                  MinSize="30">
+      <TextBlock Text="Two panels" />
+    </controls:CodexResizablePanel>
+  </controls:CodexResizablePanelGroup>
+
+  <controls:CodexResizablePanelGroup Grid.Column="1"
+                                     Height="180"
+                                     Orientation="Vertical">
+    <controls:CodexResizablePanel DefaultSize="34"
+                                  MinSize="20">
+      <TextBlock Text="Header" />
+    </controls:CodexResizablePanel>
+    <controls:CodexResizableHandle WithHandle="True" />
+    <controls:CodexResizablePanel DefaultSize="66"
+                                  MinSize="35">
+      <TextBlock Text="Content" />
+    </controls:CodexResizablePanel>
+  </controls:CodexResizablePanelGroup>
+
+  <controls:CodexResizablePanelGroup Grid.Row="1"
+                                     Height="180"
+                                     Size="Small"
+                                     Orientation="Horizontal">
+    <controls:CodexResizablePanel DefaultSize="24"
+                                  MinSize="15">
+      <TextBlock Text="Compact" />
+    </controls:CodexResizablePanel>
+    <controls:CodexResizableHandle />
+    <controls:CodexResizablePanel DefaultSize="76"
+                                  MinSize="40">
+      <TextBlock Text="Hidden grip" />
+    </controls:CodexResizablePanel>
+  </controls:CodexResizablePanelGroup>
+
+  <controls:CodexResizablePanelGroup Grid.Row="1"
+                                     Grid.Column="1"
+                                     Height="180"
+                                     Size="Large"
+                                     Orientation="Horizontal">
+    <controls:CodexResizablePanel DefaultSize="20"
+                                  MinSize="20">
+      <TextBlock Text="At min" />
+    </controls:CodexResizablePanel>
+    <controls:CodexResizableHandle WithHandle="True" />
+    <controls:CodexResizablePanel DefaultSize="80"
+                                  MinSize="30">
+      <TextBlock Text="Large handle" />
+    </controls:CodexResizablePanel>
+  </controls:CodexResizablePanelGroup>
+</Grid>

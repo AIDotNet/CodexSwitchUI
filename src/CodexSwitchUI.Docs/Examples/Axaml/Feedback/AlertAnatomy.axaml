@@ -1,0 +1,50 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexAlert Icon="i"
+                       Title="New feature available"
+                       Description="Alert maps the Web composition to icon, title, description, content, and action slots.">
+    <controls:CodexAlert.Content>
+      <StackPanel Spacing="6">
+        <controls:CodexBadge Content="Release channel"
+                             Variant="Secondary"
+                             Size="Small"
+                             IsStatusVisible="True" />
+        <TextBlock Text="The content slot can host rich controls below the description."
+                   TextWrapping="Wrap" />
+      </StackPanel>
+    </controls:CodexAlert.Content>
+    <controls:CodexAlert.Action>
+      <controls:CodexButton Content="Enable"
+                            Size="Small"
+                            Variant="Outline" />
+    </controls:CodexAlert.Action>
+  </controls:CodexAlert>
+
+  <controls:CodexAlert Grid.Column="1"
+                       Icon="!"
+                       Title="Payment failed"
+                       Description="Destructive alerts keep the same slot anatomy while changing semantic tone."
+                       Variant="Destructive">
+    <controls:CodexAlert.Action>
+      <controls:CodexButton Content="Retry"
+                            Size="Small"
+                            Variant="Destructive" />
+    </controls:CodexAlert.Action>
+  </controls:CodexAlert>
+
+  <controls:CodexAlert Grid.Row="1"
+                       Icon="ok"
+                       Title="Payment successful"
+                       Description="A simple icon, title, and description callout mirrors the shadcn basic case."
+                       Variant="Success" />
+
+  <controls:CodexAlert Grid.Row="1"
+                       Grid.Column="1"
+                       Title="Subscription expires soon"
+                       Description="Without a custom icon, the default alert glyph stays mounted and animated."
+                       Variant="Warning" />
+</Grid>

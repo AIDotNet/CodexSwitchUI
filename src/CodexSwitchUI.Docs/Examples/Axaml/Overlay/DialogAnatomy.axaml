@@ -1,0 +1,54 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexDialog Title="Archive session?"
+                        Description="Header copy, body content, close control, and action row are slotted."
+                        IsOpen="True">
+    <controls:CodexDialog.Trigger>
+      <controls:CodexButton Content="Archive session"
+                            Size="Small" />
+    </controls:CodexDialog.Trigger>
+
+    <StackPanel Spacing="10">
+      <controls:CodexAlert Icon="!"
+                           Title="This can be restored later."
+                           Description="The body can compose any Codex component."
+                           Variant="Warning" />
+      <controls:CodexField Label="Audit note">
+        <controls:CodexTextarea MinHeight="82"
+                                PlaceholderText="Optional note" />
+      </controls:CodexField>
+    </StackPanel>
+
+    <controls:CodexDialog.Action>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="Cancel"
+                              Variant="Outline"
+                              Size="Small" />
+        <controls:CodexButton Content="Archive"
+                              Variant="Destructive"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexDialog.Action>
+  </controls:CodexDialog>
+
+  <controls:CodexDialog Grid.Column="1"
+                        Title="Passive summary"
+                        Description="Close content can be hidden while keeping the body mounted."
+                        IsOpen="True"
+                        IsCloseVisible="False">
+    <controls:CodexMetric Label="Requests"
+                          Detail="Last hour">
+      <controls:CodexMetric.Value>
+        <TextBlock Text="128"
+                   FontSize="20" />
+      </controls:CodexMetric.Value>
+    </controls:CodexMetric>
+    <controls:CodexDialog.Action>
+      <controls:CodexButton Content="Done"
+                            Size="Small" />
+    </controls:CodexDialog.Action>
+  </controls:CodexDialog>
+</Grid>

@@ -1,0 +1,27 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="10">
+  <controls:CodexProviderCard Header="Active"
+                              Meta="Selected"
+                              Description="Selected provider card"
+                              Icon="A"
+                              Status="Healthy"
+                              Usage="42.7K"
+                              IsActive="True" />
+  <controls:CodexProviderCard Header="Inactive"
+                              Meta="Ready"
+                              Description="Hover and click can select this row"
+                              Icon="I"
+                              Status="Healthy"
+                              Usage="7.1K" />
+  <controls:CodexProviderCard Header="Dragging"
+                              Description="Drag feedback suppresses hover recolor"
+                              Icon="D"
+                              Status="Moving"
+                              IsDragging="True" />
+  <controls:CodexProviderCard Header="Disabled"
+                              Description="Disabled row cannot become active"
+                              Icon="X"
+                              Status="Locked"
+                              IsEnabled="False" />
+</StackPanel>

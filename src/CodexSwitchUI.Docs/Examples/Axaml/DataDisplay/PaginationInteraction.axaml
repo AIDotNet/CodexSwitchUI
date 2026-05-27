@@ -1,0 +1,57 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <StackPanel Spacing="8">
+    <primitives:CodexText Text="Home/End, arrow keys, page buttons, and host calls emit source-aware PageChanged events."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+    <controls:CodexPagination Page="9"
+                              PageCount="42"
+                              SiblingCount="2"
+                              BoundaryCount="1" />
+    <primitives:CodexText Text="PageChanged: Source, OldPage, and NewPage are available to the host."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+    <controls:CodexButton Content="Host jump"
+                          Variant="Outline"
+                          Size="Small"
+                          HorizontalAlignment="Left" />
+  </StackPanel>
+
+  <StackPanel Grid.Column="1"
+              Spacing="8">
+    <primitives:CodexText Text="Compact mode hides first/last controls while preserving page events."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+    <controls:CodexPagination Page="3"
+                              PageCount="8"
+                              IsCompact="True"
+                              ShowFirstLast="False"
+                              Size="Small" />
+  </StackPanel>
+
+  <StackPanel Grid.Row="1"
+              Spacing="8">
+    <primitives:CodexText Text="Loading suppresses pointer and keyboard page changes."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+    <controls:CodexPagination Page="6"
+                              PageCount="18"
+                              IsLoading="True" />
+  </StackPanel>
+
+  <StackPanel Grid.Row="1"
+              Grid.Column="1"
+              Spacing="8">
+    <primitives:CodexText Text="Boundary pages disable unavailable previous or next actions."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+    <controls:CodexPagination Page="18"
+                              PageCount="18"
+                              BoundaryCount="2" />
+  </StackPanel>
+</Grid>

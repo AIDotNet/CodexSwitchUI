@@ -1,0 +1,25 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexDialog Title="Open dialog"
+                        Description="Open class drives the visible layer state."
+                        IsOpen="True">
+    <controls:CodexDialog.Content>
+      <TextBlock Text="Escape, outside pointer, and close button share Dismiss."
+                 TextWrapping="Wrap" />
+    </controls:CodexDialog.Content>
+    <controls:CodexDialog.Action>
+      <controls:CodexButton Content="Confirm"
+                            Size="Small" />
+    </controls:CodexDialog.Action>
+  </controls:CodexDialog>
+
+  <controls:CodexDialog Grid.Column="1"
+                        Title="Closed dialog"
+                        Description="Closed class drives exit opacity and transform."
+                        IsOpen="False">
+    <TextBlock Text="The surface remains testable while closed."
+               TextWrapping="Wrap" />
+  </controls:CodexDialog>
+</Grid>

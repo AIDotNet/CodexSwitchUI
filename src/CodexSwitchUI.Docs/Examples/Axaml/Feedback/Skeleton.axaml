@@ -1,0 +1,16 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexSkeleton Width="240"
+                          Height="18" />
+  <controls:CodexSkeleton Width="360"
+                          Height="18" />
+  <controls:CodexSkeleton Width="310"
+                          Height="18" />
+  <controls:CodexSkeleton Width="72"
+                          Height="72"
+                          CornerRadius="36" />
+  <controls:CodexSkeleton Width="220"
+                          Height="18"
+                          IsAnimated="False" />
+</StackPanel>

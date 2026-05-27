@@ -1,0 +1,18 @@
+<controls:CodexSideNav xmlns="https://github.com/avaloniaui"
+                       xmlns:controls="using:CodexSwitchUI.Controls"
+                       SelectedValue="providers">
+  <StackPanel Spacing="6">
+    <controls:CodexSideNavItem Value="providers"
+                               Icon="P"
+                               Content="Providers"
+                               Detail="12 configured" />
+    <controls:CodexSideNavItem Value="sessions"
+                               Icon="S"
+                               Content="Sessions"
+                               Detail="Live workspace" />
+    <controls:CodexSideNavItem Value="usage"
+                               Icon="U"
+                               Content="Usage"
+                               Detail="Token analytics" />
+  </StackPanel>
+</controls:CodexSideNav>

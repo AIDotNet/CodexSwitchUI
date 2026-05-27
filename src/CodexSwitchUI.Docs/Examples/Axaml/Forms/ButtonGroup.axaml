@@ -1,0 +1,19 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexButtonGroup Variant="Outline">
+    <controls:CodexButton Content="Archive report" />
+    <controls:CodexButton Content="Snooze" />
+    <controls:CodexButton Content="Copy" />
+  </controls:CodexButtonGroup>
+
+  <controls:CodexButtonGroup>
+    <controls:CodexButton Content="Paste"
+                          Variant="Secondary" />
+    <controls:CodexButtonGroupSeparator />
+    <controls:CodexIconButton Content="+"
+                              Variant="Secondary" />
+    <controls:CodexIconButton Content="..."
+                              Variant="Secondary" />
+  </controls:CodexButtonGroup>
+</StackPanel>

@@ -1,0 +1,9 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexBadge Content="CodexSwitchUI Docs" />
+  <controls:CodexField Label="Search components"
+                       Description="Every menu opens a standalone docs page.">
+    <controls:CodexTextBox PlaceholderText="Button, Select, EmptyState..." />
+  </controls:CodexField>
+</StackPanel>

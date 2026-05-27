@@ -1,0 +1,23 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexHoverCard IsOpen="True">
+    <controls:CodexHoverCard.Trigger>
+      <controls:CodexButton Content="Open hover card" />
+    </controls:CodexHoverCard.Trigger>
+    <TextBlock Text="Open state after the Web-style hover/focus delay."
+               TextWrapping="Wrap" />
+  </controls:CodexHoverCard>
+
+  <controls:CodexHoverCard Grid.Column="1"
+                           IsOpen="False"
+                           Placement="Left"
+                           Align="End">
+    <controls:CodexHoverCard.Trigger>
+      <controls:CodexButton Content="Closed hover card" />
+    </controls:CodexHoverCard.Trigger>
+    <TextBlock Text="Closed state keeps side and align classes available."
+               TextWrapping="Wrap" />
+  </controls:CodexHoverCard>
+</Grid>

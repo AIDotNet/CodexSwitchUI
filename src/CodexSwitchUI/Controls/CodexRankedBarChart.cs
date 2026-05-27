@@ -2,7 +2,9 @@ using System.Collections.Specialized;
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
 
@@ -28,14 +30,30 @@ public sealed record CodexRankedBarChartItem(
     string DetailText = "",
     IBrush? AccentBrush = null) : ICodexRankedBarChartItem;
 
+public sealed class CodexRankedBarChartActiveItemChangedEventArgs(
+    int oldIndex,
+    int newIndex,
+    ICodexRankedBarChartItem? oldItem,
+    ICodexRankedBarChartItem? newItem)
+    : EventArgs
+{
+    public int OldIndex { get; } = oldIndex;
+
+    public int NewIndex { get; } = newIndex;
+
+    public ICodexRankedBarChartItem? OldItem { get; } = oldItem;
+
+    public ICodexRankedBarChartItem? NewItem { get; } = newItem;
+}
+
 public class CodexRankedBarChart : TemplatedControl
 {
     private static readonly IBrush DefaultForegroundBrush = Brushes.Black;
     private static readonly IBrush DefaultMutedForegroundBrush = Brushes.Gray;
-    private static readonly IBrush DefaultTrackBrush = new SolidColorBrush(Color.FromArgb(28, 120, 120, 120));
-    private static readonly IBrush DefaultAccentBrush = new SolidColorBrush(Color.Parse("#3B82F6"));
-    private static readonly IBrush DefaultSecondaryAccentBrush = new SolidColorBrush(Color.Parse("#10B981"));
-    private static readonly IBrush DefaultTertiaryAccentBrush = new SolidColorBrush(Color.Parse("#F59E0B"));
+    private static readonly IBrush DefaultTrackBrush = new ImmutableSolidColorBrush(Color.FromArgb(28, 120, 120, 120));
+    private static readonly IBrush DefaultAccentBrush = new ImmutableSolidColorBrush(Color.Parse("#3B82F6"));
+    private static readonly IBrush DefaultSecondaryAccentBrush = new ImmutableSolidColorBrush(Color.Parse("#10B981"));
+    private static readonly IBrush DefaultTertiaryAccentBrush = new ImmutableSolidColorBrush(Color.Parse("#F59E0B"));
 
     public static readonly StyledProperty<IEnumerable<ICodexRankedBarChartItem>?> ItemsSourceProperty =
         AvaloniaProperty.Register<CodexRankedBarChart, IEnumerable<ICodexRankedBarChartItem>?>(nameof(ItemsSource));
@@ -70,6 +88,9 @@ public class CodexRankedBarChart : TemplatedControl
     public static readonly StyledProperty<bool> IsCompactProperty =
         AvaloniaProperty.Register<CodexRankedBarChart, bool>(nameof(IsCompact));
 
+    public static readonly StyledProperty<int> ActiveIndexProperty =
+        AvaloniaProperty.Register<CodexRankedBarChart, int>(nameof(ActiveIndex), -1);
+
     private ICodexRankedBarChartItem[] _items = [];
     private INotifyCollectionChanged? _observedItemsSource;
     private bool _itemsDirty = true;
@@ -88,6 +109,7 @@ public class CodexRankedBarChart : TemplatedControl
             AccentBrushProperty,
             SecondaryAccentBrushProperty,
             TertiaryAccentBrushProperty,
+            ActiveIndexProperty,
             BackgroundProperty,
             BorderBrushProperty,
             BorderThicknessProperty,
@@ -112,14 +134,19 @@ public class CodexRankedBarChart : TemplatedControl
                 args.OldValue as IEnumerable<ICodexRankedBarChartItem>,
                 args.NewValue as IEnumerable<ICodexRankedBarChartItem>));
         IsCompactProperty.Changed.AddClassHandler<CodexRankedBarChart>((chart, _) => chart.SyncClasses());
+        ActiveIndexProperty.Changed.AddClassHandler<CodexRankedBarChart>((chart, args) => chart.OnActiveIndexChanged(args));
     }
 
     public CodexRankedBarChart()
     {
         ClipToBounds = true;
         Focusable = false;
+        PointerMoved += OnPointerMoved;
+        PointerExited += OnPointerExited;
         SyncClasses();
     }
+
+    public event EventHandler<CodexRankedBarChartActiveItemChangedEventArgs>? ActiveItemChanged;
 
     public IEnumerable<ICodexRankedBarChartItem>? ItemsSource
     {
@@ -185,6 +212,21 @@ public class CodexRankedBarChart : TemplatedControl
     {
         get => GetValue(IsCompactProperty);
         set => SetValue(IsCompactProperty, value);
+    }
+
+    public int ActiveIndex
+    {
+        get => GetValue(ActiveIndexProperty);
+        set => SetValue(ActiveIndexProperty, value);
+    }
+
+    public ICodexRankedBarChartItem? ActiveItem
+    {
+        get
+        {
+            EnsureItems();
+            return ActiveIndex >= 0 && ActiveIndex < GetVisibleCount() ? _items[ActiveIndex] : null;
+        }
     }
 
     public override void Render(DrawingContext context)
@@ -270,6 +312,12 @@ public class CodexRankedBarChart : TemplatedControl
         var labelLayout = CreateTextLayout(item.Label, labelTypeface, fontSize, foreground, labelWidth);
         var valueLayout = CreateTextLayout(item.ValueText, valueTypeface, fontSize, foreground, valueWidth, TextAlignment.Right);
 
+        if (index == ActiveIndex)
+        {
+            using var activeOpacity = context.PushOpacity(0.55d);
+            context.DrawRectangle(track, null, new Rect(x - 7d, y - 5d, width + 14d, rowHeight), 8d, 8d);
+        }
+
         DrawTextLayout(context, labelLayout, new Point(x, y));
         DrawTextLayout(context, valueLayout, new Point(x + width, y), TextAlignment.Right);
 
@@ -324,6 +372,44 @@ public class CodexRankedBarChart : TemplatedControl
         return maxItems == 0 ? 0 : Math.Min(maxItems, _items.Length);
     }
 
+    private void OnPointerMoved(object? sender, PointerEventArgs e)
+    {
+        EnsureItems();
+        ActiveIndex = HitTest(e.GetPosition(this));
+    }
+
+    private void OnPointerExited(object? sender, PointerEventArgs e)
+    {
+        ActiveIndex = -1;
+    }
+
+    private int HitTest(Point position)
+    {
+        var visibleCount = GetVisibleCount();
+        if (visibleCount == 0)
+            return -1;
+
+        var bounds = new Rect(Bounds.Size);
+        if (bounds.Width <= 0 || bounds.Height <= 0)
+            return -1;
+
+        var content = bounds.Deflate(BorderThickness).Deflate(Padding);
+        if (content.Width <= 0 || content.Height <= 0 || position.X < content.X || position.X > content.Right)
+            return -1;
+
+        var rowHeight = Math.Max(24d, RowHeight);
+        var rowSpacing = Math.Max(0d, RowSpacing);
+        for (var index = 0; index < visibleCount; index++)
+        {
+            var rowTop = content.Y + index * (rowHeight + rowSpacing);
+            var rowBottom = rowTop + rowHeight;
+            if (position.Y >= rowTop && position.Y <= rowBottom)
+                return index;
+        }
+
+        return -1;
+    }
+
     private void EnsureItems()
     {
         if (!_itemsDirty)
@@ -331,6 +417,7 @@ public class CodexRankedBarChart : TemplatedControl
 
         _items = ToArray(ItemsSource);
         _itemsDirty = false;
+        SyncClasses();
     }
 
     private void OnItemsSourceChanged(
@@ -344,6 +431,7 @@ public class CodexRankedBarChart : TemplatedControl
         if (_observedItemsSource is not null)
             _observedItemsSource.CollectionChanged += OnObservedItemsSourceChanged;
 
+        ActiveIndex = -1;
         _itemsDirty = true;
         InvalidateMeasure();
         InvalidateVisual();
@@ -351,6 +439,7 @@ public class CodexRankedBarChart : TemplatedControl
 
     private void OnObservedItemsSourceChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        ActiveIndex = -1;
         _itemsDirty = true;
 
         if (_refreshQueued)
@@ -365,9 +454,38 @@ public class CodexRankedBarChart : TemplatedControl
         }, DispatcherPriority.Background);
     }
 
+    private void OnActiveIndexChanged(AvaloniaPropertyChangedEventArgs args)
+    {
+        EnsureItems();
+
+        var oldIndex = args.OldValue is int oldValue ? oldValue : -1;
+        var visibleCount = GetVisibleCount();
+        var newIndex = ActiveIndex >= 0 && ActiveIndex < visibleCount ? ActiveIndex : -1;
+        if (ActiveIndex != newIndex)
+        {
+            SetCurrentValue(ActiveIndexProperty, newIndex);
+            return;
+        }
+
+        var oldItem = oldIndex >= 0 && oldIndex < visibleCount ? _items[oldIndex] : null;
+        var newItem = newIndex >= 0 && newIndex < visibleCount ? _items[newIndex] : null;
+        SyncClasses();
+        if (oldIndex != newIndex)
+        {
+            ActiveItemChanged?.Invoke(
+                this,
+                new CodexRankedBarChartActiveItemChangedEventArgs(oldIndex, newIndex, oldItem, newItem));
+        }
+
+        InvalidateVisual();
+    }
+
     private void SyncClasses()
     {
+        Classes.Set("ranked-bar-chart", true);
         Classes.Set("compact", IsCompact);
+        Classes.Set("empty", _items.Length == 0 || GetVisibleCount() == 0);
+        Classes.Set("has-active-row", ActiveIndex >= 0);
     }
 
     private static ICodexRankedBarChartItem[] ToArray(IEnumerable<ICodexRankedBarChartItem>? source)

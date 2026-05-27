@@ -1,0 +1,14 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Orientation="Horizontal"
+            Spacing="10">
+  <controls:CodexIconButton Content="+"
+                            IsRound="True" />
+  <controls:CodexIconButton Content="i" />
+  <controls:CodexIconButton Content="x"
+                            Variant="Destructive" />
+  <controls:CodexIconButton Content="..."
+                            Variant="Ghost" />
+  <controls:CodexIconButton Content=">"
+                            IsEnabled="False" />
+</StackPanel>

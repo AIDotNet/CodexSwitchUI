@@ -1,0 +1,81 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexSideNav SelectedValue="sessions">
+    <StackPanel Spacing="6">
+      <controls:CodexSideNavItem Value="providers"
+                                 Icon="P"
+                                 Content="Providers"
+                                 Detail="Previously selected" />
+      <controls:CodexSideNavItem Value="sessions"
+                                 Icon="S"
+                                 Content="Sessions"
+                                 Detail="Clicked row" />
+      <controls:CodexSideNavItem Value="usage"
+                                 Icon="U"
+                                 Content="Usage"
+                                 Detail="Sibling cleared" />
+    </StackPanel>
+  </controls:CodexSideNav>
+
+  <controls:CodexSideNav Grid.Column="1"
+                         SelectedValue="keyboard">
+    <StackPanel Spacing="6">
+      <controls:CodexSideNavItem Value="keyboard"
+                                 Icon="K"
+                                 Content="Keyboard select"
+                                 Detail="Enter / Space route" />
+      <controls:CodexSideNavItem Value="disabled"
+                                 Icon="D"
+                                 Content="Disabled"
+                                 Detail="Cannot become selected"
+                                 IsEnabled="False" />
+      <controls:CodexSideNavItem Value="plain"
+                                 Content="No icon row"
+                                 Detail="Content still aligns" />
+    </StackPanel>
+  </controls:CodexSideNav>
+
+  <controls:CodexSideNav Grid.Row="1"
+                         SelectedValue="active-provider">
+    <StackPanel Spacing="6">
+      <controls:CodexSideNavItem Value="active-provider"
+                                 Icon="A"
+                                 Content="Active provider"
+                                 Detail="12 models" />
+      <controls:CodexSideNavItem Value="backup-provider"
+                                 Icon="B"
+                                 Content="Backup provider"
+                                 Detail="Cold standby" />
+      <controls:CodexSideNavItem Value="local-provider"
+                                 Icon="L"
+                                 Content="Local provider"
+                                 Detail="Offline ready" />
+    </StackPanel>
+  </controls:CodexSideNav>
+
+  <controls:CodexSideNav Grid.Row="1"
+                         Grid.Column="1"
+                         SelectedValue="dense">
+    <StackPanel Spacing="6">
+      <controls:CodexSideNavItem Value="dense"
+                                 Content="Dense label" />
+      <controls:CodexSideNavItem Value="icon-detail"
+                                 Icon="I"
+                                 Content="Icon only detail"
+                                 Detail="Hover and pressed feedback" />
+      <controls:CodexSideNavItem Value="unavailable"
+                                 Icon="X"
+                                 Content="Unavailable"
+                                 IsEnabled="False" />
+    </StackPanel>
+  </controls:CodexSideNav>
+
+  <TextBlock Grid.Row="2"
+             Grid.ColumnSpan="2"
+             Text="ValueChanged emits old/new values, items, and indexes."
+             TextWrapping="Wrap" />
+</Grid>

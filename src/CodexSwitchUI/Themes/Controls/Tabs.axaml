@@ -13,9 +13,9 @@
     <Setter Property="ClipToBounds" Value="False" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="ItemsPanel">
@@ -34,11 +34,17 @@
                   Padding="3">
             <Border.Transitions>
               <Transitions>
-                <BrushTransition Property="Background" Duration="0:0:0.15" />
-                <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+                <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+                <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
               </Transitions>
             </Border.Transitions>
-            <ItemsPresenter />
+            <ItemsPresenter x:Name="PART_ItemsPresenter">
+              <ItemsPresenter.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Orientation="Horizontal" Spacing="0" />
+                </ItemsPanelTemplate>
+              </ItemsPresenter.ItemsPanel>
+            </ItemsPresenter>
           </Border>
           <Border x:Name="PART_Content"
                   Background="Transparent"
@@ -58,7 +64,7 @@
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexTabs TabItem">
+  <Style Selector="controls|CodexTabs controls|CodexTabItem">
     <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
     <Setter Property="FontWeight" Value="Medium" />
@@ -78,11 +84,11 @@
     <Setter Property="FocusAdorner" Value="{x:Null}" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="Template">
@@ -112,8 +118,8 @@
                       Opacity="0">
                 <Border.Transitions>
                   <Transitions>
-                    <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-                    <BrushTransition Property="Background" Duration="0:0:0.15" />
+                    <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+                    <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
                   </Transitions>
                 </Border.Transitions>
               </Border>
@@ -127,8 +133,8 @@
                       Opacity="0">
                 <Border.Transitions>
                   <Transitions>
-                    <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-                    <BrushTransition Property="Background" Duration="0:0:0.15" />
+                    <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+                    <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
                   </Transitions>
                 </Border.Transitions>
               </Border>
@@ -145,72 +151,72 @@
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexTabs TabItem /template/ Border#PART_TriggerRoot">
+  <Style Selector="controls|CodexTabs controls|CodexTabItem /template/ Border#PART_TriggerRoot">
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <ThicknessTransition Property="BorderThickness" Duration="0:0:0.15" />
-        <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="BorderThickness" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BoxShadowsTransition Property="BoxShadow" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexTabs TabItem /template/ Border#PART_FocusRing">
+  <Style Selector="controls|CodexTabs controls|CodexTabItem /template/ Border#PART_FocusRing">
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexTabs TabItem PathIcon">
+  <Style Selector="controls|CodexTabs controls|CodexTabItem PathIcon">
     <Setter Property="Width" Value="16" />
     <Setter Property="Height" Value="16" />
     <Setter Property="VerticalAlignment" Value="Center" />
   </Style>
 
-  <Style Selector="controls|CodexTabs TabItem:pointerover">
+  <Style Selector="controls|CodexTabs controls|CodexTabItem:pointerover">
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexTabs TabItem:focus /template/ Border#PART_TriggerRoot">
+  <Style Selector="controls|CodexTabs controls|CodexTabItem:focus-visible /template/ Border#PART_TriggerRoot">
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexTabs TabItem:focus /template/ Border#PART_FocusRing">
+  <Style Selector="controls|CodexTabs controls|CodexTabItem:focus-visible /template/ Border#PART_FocusRing">
     <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
   </Style>
 
-  <Style Selector="controls|CodexTabs TabItem:selected">
+  <Style Selector="controls|CodexTabs controls|CodexTabItem:selected">
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexTabs TabItem:selected /template/ Border#PART_TriggerRoot">
+  <Style Selector="controls|CodexTabs controls|CodexTabItem:selected /template/ Border#PART_TriggerRoot">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.BackgroundBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.InputBrush}" />
     <Setter Property="BoxShadow" Value="0 1 2 0 #14000000" />
   </Style>
 
-  <Style Selector="controls|CodexTabs TabItem:disabled">
+  <Style Selector="controls|CodexTabs controls|CodexTabItem:disabled">
     <Setter Property="Cursor" Value="Arrow" />
     <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
   </Style>
 
-  <Style Selector="controls|CodexTabs.size-sm TabItem">
+  <Style Selector="controls|CodexTabs.size-sm controls|CodexTabItem">
     <Setter Property="MinHeight" Value="30" />
     <Setter Property="Padding" Value="7,3" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
   </Style>
 
-  <Style Selector="controls|CodexTabs.size-lg TabItem">
+  <Style Selector="controls|CodexTabs.size-lg controls|CodexTabItem">
     <Setter Property="MinHeight" Value="36" />
     <Setter Property="Padding" Value="11,6" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
   </Style>
 
-  <Style Selector="controls|CodexTabs.size-icon TabItem">
+  <Style Selector="controls|CodexTabs.size-icon controls|CodexTabItem">
     <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
     <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
     <Setter Property="Padding" Value="0" />
@@ -235,11 +241,17 @@
                   Padding="3">
             <Border.Transitions>
               <Transitions>
-                <BrushTransition Property="Background" Duration="0:0:0.15" />
-                <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+                <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+                <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
               </Transitions>
             </Border.Transitions>
-            <ItemsPresenter />
+            <ItemsPresenter x:Name="PART_ItemsPresenter">
+              <ItemsPresenter.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Orientation="Vertical" Spacing="0" />
+                </ItemsPanelTemplate>
+              </ItemsPresenter.ItemsPanel>
+            </ItemsPresenter>
           </Border>
           <Border x:Name="PART_Content"
                   Grid.Column="1"
@@ -260,7 +272,7 @@
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexTabs.vertical TabItem">
+  <Style Selector="controls|CodexTabs.vertical controls|CodexTabItem">
     <Setter Property="HorizontalAlignment" Value="Stretch" />
     <Setter Property="HorizontalContentAlignment" Value="Left" />
   </Style>
@@ -279,18 +291,23 @@
     <Setter Property="Padding" Value="3" />
   </Style>
 
-  <Style Selector="controls|CodexTabs.variant-line TabItem">
+  <Style Selector="controls|CodexTabs.activation-manual /template/ Border#PART_List">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.InputBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexTabs.variant-line controls|CodexTabItem">
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderBrush" Value="Transparent" />
     <Setter Property="CornerRadius" Value="0" />
   </Style>
 
-  <Style Selector="controls|CodexTabs.variant-line TabItem:pointerover /template/ Border#PART_TriggerRoot">
+  <Style Selector="controls|CodexTabs.variant-line controls|CodexTabItem:pointerover /template/ Border#PART_TriggerRoot">
     <Setter Property="Background" Value="Transparent" />
   </Style>
 
-  <Style Selector="controls|CodexTabs.variant-line TabItem:selected /template/ Border#PART_TriggerRoot">
+  <Style Selector="controls|CodexTabs.variant-line controls|CodexTabItem:selected /template/ Border#PART_TriggerRoot">
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderBrush" Value="Transparent" />
     <Setter Property="BoxShadow" Value="0 0 0 0 #00000000" />

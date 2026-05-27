@@ -1,0 +1,122 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:animation="using:Avalonia.Animation"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:media="using:Avalonia.Media"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Runtime transition"
+                       Description="Runtime surfaces resolve duration and easing tokens before applying transitions.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Default duration resolved from theme motion tokens." />
+        <controls:CodexCard Width="300"
+                            Title="Animated surface"
+                            Description="Opacity and translate transitions share Codex motion tokens.">
+          <controls:CodexCard.Transitions>
+            <Transitions>
+              <animation:DoubleTransition Property="Opacity"
+                                          Duration="{DynamicResource CodexSwitch.MotionDurationDefault}"
+                                          Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+            </Transitions>
+          </controls:CodexCard.Transitions>
+          <controls:CodexCard.RenderTransform>
+            <media:TranslateTransform Y="0">
+              <media:TranslateTransform.Transitions>
+                <Transitions>
+                  <animation:DoubleTransition Property="Y"
+                                              Duration="{DynamicResource CodexSwitch.MotionDurationDefault}"
+                                              Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+                </Transitions>
+              </media:TranslateTransform.Transitions>
+            </media:TranslateTransform>
+          </controls:CodexCard.RenderTransform>
+          <controls:CodexBadge Content="Motion ready"
+                               Variant="Secondary" />
+        </controls:CodexCard>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Animate opacity"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Translate Y"
+                                Size="Small"
+                                Variant="Ghost" />
+          <controls:CodexButton Content="Reduce motion"
+                                Size="Small"
+                                Variant="Ghost" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Duration tokens"
+                       Description="Fast, default, and slow durations map to Web-style interaction tiers.">
+    <controls:CodexField.Content>
+      <Grid ColumnDefinitions="*,*,*"
+            ColumnSpacing="12">
+        <StackPanel Spacing="8">
+          <controls:CodexKbd Content="120ms"
+                             Size="Small" />
+          <primitives:CodexText Role="Subtitle"
+                                Text="Fast" />
+          <primitives:CodexText Role="Muted"
+                                Text="focus/hover" />
+        </StackPanel>
+        <StackPanel Grid.Column="1"
+                    Spacing="8">
+          <controls:CodexKbd Content="150ms"
+                             Size="Small" />
+          <primitives:CodexText Role="Subtitle"
+                                Text="Default" />
+          <primitives:CodexText Role="Muted"
+                                Text="surface" />
+        </StackPanel>
+        <StackPanel Grid.Column="2"
+                    Spacing="8">
+          <controls:CodexKbd Content="220ms"
+                             Size="Small" />
+          <primitives:CodexText Role="Subtitle"
+                                Text="Slow" />
+          <primitives:CodexText Role="Muted"
+                                Text="overlay" />
+        </StackPanel>
+      </Grid>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Reduced handoff"
+                       Description="Zero duration keeps final state deterministic for reduced-motion flows.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="8">
+        <controls:CodexKbd Content="0ms"
+                           Size="Small" />
+        <primitives:CodexText Role="Subtitle"
+                              Text="Reduced motion" />
+        <primitives:CodexText Role="Muted"
+                              Text="State changes complete immediately while controls keep the same event contract." />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Token comparison"
+                       Description="Motion helpers are used by components that animate open, close, refresh, and hover states.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="8">
+        <primitives:CodexText Role="Code"
+                              Text="CodexMotion.ApplyOpacityTransition(control, duration, easing)" />
+        <primitives:CodexText Role="Code"
+                              Text="CodexMotion.ApplyTranslateYTransition(transform, duration, easing)" />
+        <primitives:CodexText Role="Muted"
+                              Text="Runtime animations stay aligned with theme resources." />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

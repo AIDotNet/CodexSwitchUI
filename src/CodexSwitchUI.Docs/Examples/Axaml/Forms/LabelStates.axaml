@@ -1,0 +1,44 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Default">
+    <StackPanel Spacing="6">
+      <controls:CodexLabel Content="Model" />
+      <controls:CodexTextBox Text="gpt-5" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Required">
+    <StackPanel Spacing="6">
+      <controls:CodexLabel Content="API key"
+                           IsRequired="True" />
+      <controls:CodexTextBox PasswordChar="*"
+                             PlaceholderText="sk-..." />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Intent">
+    <StackPanel Spacing="6">
+      <controls:CodexLabel Content="Endpoint"
+                           Intent="Error" />
+      <controls:CodexTextBox Intent="Error"
+                             Text="/v1/responses" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled target">
+    <StackPanel Spacing="6">
+      <controls:CodexLabel Content="Locked route"
+                           IsEnabled="False" />
+      <controls:CodexTextBox Text="locked"
+                             IsEnabled="False" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

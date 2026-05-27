@@ -1,0 +1,19 @@
+<controls:CodexBreadcrumb xmlns="https://github.com/avaloniaui"
+                          xmlns:controls="using:CodexSwitchUI.Controls"
+                          Label="Documentation path">
+  <controls:CodexBreadcrumbList>
+    <controls:CodexBreadcrumbItem>
+      <controls:CodexBreadcrumbLink Content="Home"
+                                    Href="/" />
+    </controls:CodexBreadcrumbItem>
+    <controls:CodexBreadcrumbSeparator />
+    <controls:CodexBreadcrumbItem>
+      <controls:CodexBreadcrumbLink Content="Components"
+                                    Href="/components" />
+    </controls:CodexBreadcrumbItem>
+    <controls:CodexBreadcrumbSeparator />
+    <controls:CodexBreadcrumbItem IsCurrent="True">
+      <controls:CodexBreadcrumbPage Content="Breadcrumb" />
+    </controls:CodexBreadcrumbItem>
+  </controls:CodexBreadcrumbList>
+</controls:CodexBreadcrumb>

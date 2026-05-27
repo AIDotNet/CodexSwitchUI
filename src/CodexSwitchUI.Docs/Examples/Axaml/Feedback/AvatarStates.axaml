@@ -1,0 +1,25 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Orientation="Horizontal"
+            Spacing="12">
+  <controls:CodexAvatar Fallback="LD"
+                        ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/openai.png" />
+  <controls:CodexAvatar Fallback="OK"
+                        Variant="Success"
+                        IsStatusVisible="True" />
+  <controls:CodexAvatar Fallback="ER"
+                        ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/missing-avatar.png" />
+  <controls:CodexAvatar Fallback="DL"
+                        FallbackDelay="0:0:0.6"
+                        LoadingStatus="Loading" />
+  <controls:CodexAvatar Fallback="WA"
+                        Variant="Secondary"
+                        StatusVariant="Warning"
+                        IsStatusVisible="True" />
+  <controls:CodexAvatar Fallback="OL"
+                        Variant="Outline"
+                        Size="Small" />
+  <controls:CodexAvatar Fallback="LG"
+                        Variant="Default"
+                        Size="Large" />
+</StackPanel>

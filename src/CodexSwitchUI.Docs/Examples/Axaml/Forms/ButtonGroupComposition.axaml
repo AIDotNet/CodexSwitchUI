@@ -1,0 +1,59 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Input">
+    <controls:CodexButtonGroup>
+      <controls:CodexButtonGroupText Content="Endpoint" />
+      <controls:CodexTextBox Text="api.openai.com"
+                             MinWidth="210" />
+      <controls:CodexButton Content="Ping"
+                            Variant="Secondary" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Select">
+    <controls:CodexButtonGroup>
+      <controls:CodexButtonGroupText Content="Budget" />
+      <controls:CodexSelect Width="150"
+                            SelectedIndex="1">
+        <ComboBoxItem>Low</ComboBoxItem>
+        <ComboBoxItem>Medium</ComboBoxItem>
+        <ComboBoxItem>High</ComboBoxItem>
+      </controls:CodexSelect>
+      <controls:CodexButton Content="Apply"
+                            Variant="Secondary" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Nested">
+    <controls:CodexButtonGroup>
+      <controls:CodexButtonGroup Variant="Outline">
+        <controls:CodexButton Content="Audio" />
+        <controls:CodexButton Content="Text" />
+      </controls:CodexButtonGroup>
+      <controls:CodexButtonGroup>
+        <controls:CodexIconButton Content="+"
+                                  Variant="Secondary" />
+        <controls:CodexIconButton Content="..."
+                                  Variant="Secondary" />
+      </controls:CodexButtonGroup>
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Split">
+    <controls:CodexButtonGroup>
+      <controls:CodexButton Content="Deploy"
+                            Variant="Secondary" />
+      <controls:CodexButtonGroupSeparator />
+      <controls:CodexIconButton Content="v"
+                                Variant="Secondary" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+</Grid>

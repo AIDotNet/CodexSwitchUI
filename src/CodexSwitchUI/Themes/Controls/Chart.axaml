@@ -1,0 +1,309 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexChart, controls|CodexChartContainer">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.CardForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Padding" Value="18" />
+    <Setter Property="ClipToBounds" Value="True" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexChartContainer">
+        <Border x:Name="PART_Surface"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <Grid RowDefinitions="Auto,Auto,*,Auto,Auto"
+                RowSpacing="14">
+            <Grid x:Name="PART_Header"
+                  ColumnDefinitions="*,Auto"
+                  IsVisible="{TemplateBinding HasHeader}">
+              <StackPanel Spacing="4">
+                <TextBlock x:Name="PART_Title"
+                           Text="{TemplateBinding Title}"
+                           IsVisible="{TemplateBinding HasTitle}"
+                           Foreground="{TemplateBinding Foreground}"
+                           FontFamily="{TemplateBinding FontFamily}"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           TextWrapping="Wrap" />
+                <TextBlock x:Name="PART_Description"
+                           Text="{TemplateBinding Description}"
+                           IsVisible="{TemplateBinding HasDescription}"
+                           Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                           FontFamily="{TemplateBinding FontFamily}"
+                           FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                           TextWrapping="Wrap" />
+              </StackPanel>
+              <ContentPresenter Grid.Column="1"
+                                Content="{TemplateBinding Legend}"
+                                IsVisible="{TemplateBinding HasLegend}"
+                                VerticalAlignment="Top" />
+            </Grid>
+
+            <Border x:Name="PART_RefreshBar"
+                    Grid.Row="1"
+                    Height="2"
+                    Background="{DynamicResource CodexSwitch.PrimaryBrush}"
+                    CornerRadius="{DynamicResource CodexSwitch.RadiusFull}"
+                    Opacity="0"
+                    IsHitTestVisible="False" />
+
+            <Grid Grid.Row="2">
+              <ContentPresenter x:Name="PART_ChartContent"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                IsVisible="{TemplateBinding HasContent}"
+                                RenderTransformOrigin="50%,50%">
+                <ContentPresenter.RenderTransform>
+                  <TranslateTransform />
+                </ContentPresenter.RenderTransform>
+              </ContentPresenter>
+              <ContentPresenter x:Name="PART_Tooltip"
+                                Content="{TemplateBinding Tooltip}"
+                                IsVisible="{TemplateBinding HasTooltip}"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Margin="0,8,8,0" />
+            </Grid>
+
+            <ContentPresenter x:Name="PART_Footer"
+                              Grid.Row="4"
+                              Content="{TemplateBinding Footer}"
+                              IsVisible="{TemplateBinding HasFooter}" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexChartContainer /template/ Border#PART_Surface, controls|CodexChartContainer /template/ Border#PART_RefreshBar">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexChartContainer.refreshing /template/ Border#PART_RefreshBar">
+    <Setter Property="Opacity" Value="0.92" />
+  </Style>
+
+  <Style Selector="controls|CodexChartContainer.interactive:pointerover /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexChartContainer.size-sm">
+    <Setter Property="Padding" Value="14" />
+  </Style>
+
+  <Style Selector="controls|CodexChartContainer.size-lg">
+    <Setter Property="Padding" Value="22" />
+  </Style>
+
+  <Style Selector="controls|CodexChartContainer.size-icon">
+    <Setter Property="Padding" Value="12" />
+  </Style>
+
+  <Style Selector="controls|CodexChartContainer:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexChartLegend">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="12" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexChartLegend">
+        <ItemsPresenter />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexChartLegend.vertical">
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Vertical"
+                    Spacing="8" />
+      </ItemsPanelTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexChartLegend.compact">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeXs}" />
+  </Style>
+
+  <Style Selector="controls|CodexChartLegendItem">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="IndicatorBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexChartLegendItem">
+        <StackPanel Orientation="Horizontal"
+                    Spacing="6"
+                    VerticalAlignment="Center">
+          <Border x:Name="PART_Indicator"
+                  Width="8"
+                  Height="8"
+                  CornerRadius="{DynamicResource CodexSwitch.RadiusFull}"
+                  Background="{TemplateBinding IndicatorBrush}"
+                  VerticalAlignment="Center" />
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            VerticalAlignment="Center" />
+          <TextBlock x:Name="PART_Value"
+                     Text="{TemplateBinding Value}"
+                     IsVisible="{TemplateBinding HasValue}"
+                     Foreground="{DynamicResource CodexSwitch.ForegroundBrush}"
+                     FontFamily="{TemplateBinding FontFamily}"
+                     FontSize="{TemplateBinding FontSize}"
+                     FontWeight="SemiBold"
+                     VerticalAlignment="Center" />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexChartLegendItem.indicator-line /template/ Border#PART_Indicator">
+    <Setter Property="Width" Value="14" />
+    <Setter Property="Height" Value="3" />
+  </Style>
+
+  <Style Selector="controls|CodexChartLegendItem.indicator-square /template/ Border#PART_Indicator">
+    <Setter Property="Width" Value="9" />
+    <Setter Property="Height" Value="9" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexChartTooltipContent">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PopoverBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Padding" Value="10,8" />
+    <Setter Property="MinWidth" Value="148" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Spacing="6" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexChartTooltipContent">
+        <Border x:Name="PART_Surface"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                Padding="{TemplateBinding Padding}">
+          <StackPanel Spacing="8">
+            <TextBlock x:Name="PART_Label"
+                       Text="{TemplateBinding Label}"
+                       IsVisible="{TemplateBinding HasLabel}"
+                       Foreground="{TemplateBinding Foreground}"
+                       FontFamily="{TemplateBinding FontFamily}"
+                       FontSize="{TemplateBinding FontSize}"
+                       FontWeight="SemiBold" />
+            <ItemsPresenter />
+          </StackPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexChartTooltipContent.closed">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexChartTooltipContent /template/ Border#PART_Surface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexChartTooltipItem">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="IndicatorBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexChartTooltipItem">
+        <Grid ColumnDefinitions="Auto,*,Auto"
+              ColumnSpacing="8"
+              MinWidth="128">
+          <Border x:Name="PART_Indicator"
+                  Width="8"
+                  Height="8"
+                  CornerRadius="{DynamicResource CodexSwitch.RadiusFull}"
+                  Background="{TemplateBinding IndicatorBrush}"
+                  VerticalAlignment="Center" />
+          <ContentPresenter Grid.Column="1"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            VerticalAlignment="Center" />
+          <TextBlock Grid.Column="2"
+                     Text="{TemplateBinding Value}"
+                     IsVisible="{TemplateBinding HasValue}"
+                     Foreground="{TemplateBinding Foreground}"
+                     FontFamily="{TemplateBinding FontFamily}"
+                     FontSize="{TemplateBinding FontSize}"
+                     FontWeight="SemiBold"
+                     VerticalAlignment="Center" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexChartTooltipContent.hide-indicator controls|CodexChartTooltipItem /template/ Border#PART_Indicator">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexChartTooltipItem.indicator-line /template/ Border#PART_Indicator">
+    <Setter Property="Width" Value="14" />
+    <Setter Property="Height" Value="3" />
+  </Style>
+
+  <Style Selector="controls|CodexChartTooltipItem.indicator-square /template/ Border#PART_Indicator">
+    <Setter Property="Width" Value="9" />
+    <Setter Property="Height" Value="9" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+  </Style>
+</Styles>

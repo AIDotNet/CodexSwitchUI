@@ -1,0 +1,218 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexAlertDialog">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.CardForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Padding" Value="24" />
+    <Setter Property="MinWidth" Value="360" />
+    <Setter Property="MaxWidth" Value="512" />
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="ActionVariant" Value="Default" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexAlertDialog">
+        <Grid x:Name="PART_Root"
+              RowDefinitions="Auto,Auto"
+              ClipToBounds="False">
+          <ContentPresenter x:Name="PART_Trigger"
+                            Grid.Row="0"
+                            Content="{TemplateBinding Trigger}"
+                            ContentTemplate="{TemplateBinding TriggerTemplate}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{TemplateBinding HasTrigger}" />
+
+          <Grid Grid.Row="1"
+                ClipToBounds="False">
+            <Border x:Name="PART_Overlay"
+                    Background="{DynamicResource CodexSwitch.ForegroundBrush}"
+                    Opacity="0.44"
+                    CornerRadius="{DynamicResource CodexSwitch.RadiusLg}" />
+
+            <Border x:Name="PART_Surface"
+                    MinWidth="{TemplateBinding MinWidth}"
+                    MaxWidth="{TemplateBinding MaxWidth}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}"
+                    HorizontalAlignment="Center"
+                    RenderTransformOrigin="50%,50%">
+              <StackPanel x:Name="PART_Layout"
+                          Spacing="18">
+                <Grid x:Name="PART_Header"
+                      ColumnDefinitions="Auto,*"
+                      ColumnSpacing="14"
+                      IsVisible="{TemplateBinding HasHeader}">
+                  <Border x:Name="PART_Media"
+                          Width="40"
+                          Height="40"
+                          Background="{DynamicResource CodexSwitch.MutedBrush}"
+                          BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                          BorderThickness="1"
+                          CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                          IsVisible="{TemplateBinding HasMedia}">
+                    <ContentPresenter Content="{TemplateBinding Media}"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center" />
+                  </Border>
+
+                  <StackPanel x:Name="PART_HeaderText"
+                              Grid.Column="1"
+                              Spacing="6">
+                    <TextBlock x:Name="PART_Title"
+                               Text="{TemplateBinding Title}"
+                               IsVisible="{TemplateBinding HasTitle}"
+                               Foreground="{TemplateBinding Foreground}"
+                               FontFamily="{TemplateBinding FontFamily}"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap" />
+                    <TextBlock x:Name="PART_Description"
+                               Text="{TemplateBinding Description}"
+                               IsVisible="{TemplateBinding HasDescription}"
+                               Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                               FontFamily="{TemplateBinding FontFamily}"
+                               FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                               TextWrapping="Wrap" />
+                  </StackPanel>
+                </Grid>
+
+                <ContentPresenter x:Name="PART_Content"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  IsVisible="{TemplateBinding HasContent}" />
+
+                <StackPanel x:Name="PART_Footer"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Spacing="10">
+                  <controls:CodexButton x:Name="PART_Cancel"
+                                        Content="{TemplateBinding CancelContent}"
+                                        Command="{Binding CancelDialogCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Variant="Outline"
+                                        Size="{TemplateBinding Size}"
+                                        IsLoading="{TemplateBinding IsCancelLoading}"
+                                        IsVisible="{TemplateBinding HasCancelContent}" />
+                  <controls:CodexButton x:Name="PART_Action"
+                                        Content="{TemplateBinding ActionContent}"
+                                        Command="{Binding ActionDialogCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Variant="{TemplateBinding ActionVariant}"
+                                        Size="{TemplateBinding Size}"
+                                        IsLoading="{TemplateBinding IsActionLoading}"
+                                        IsVisible="{TemplateBinding HasActionContent}" />
+                </StackPanel>
+              </StackPanel>
+            </Border>
+          </Grid>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.has-trigger /template/ Grid#PART_Root">
+    <Setter Property="RowSpacing" Value="10" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.closed /template/ Border#PART_Overlay">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.open /template/ Border#PART_Overlay">
+    <Setter Property="Opacity" Value="0.44" />
+    <Setter Property="IsHitTestVisible" Value="True" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.closed /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+    <Setter Property="RenderTransform" Value="translate(0px, 8px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.open /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="IsHitTestVisible" Value="True" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.non-modal /template/ Border#PART_Overlay">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.size-sm">
+    <Setter Property="MinWidth" Value="320" />
+    <Setter Property="MaxWidth" Value="420" />
+    <Setter Property="Padding" Value="20" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.size-lg">
+    <Setter Property="MaxWidth" Value="560" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.size-icon">
+    <Setter Property="MinWidth" Value="320" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog /template/ Border#PART_Surface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="BorderThickness" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog /template/ Border#PART_Overlay">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog /template/ Border#PART_Media">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.action-destructive /template/ Border#PART_Media">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.action-destructive /template/ Border#PART_Media ContentPresenter">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.response-required /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.outside-dismissable /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.focus-cancel /template/ controls|CodexButton#PART_Cancel">
+    <Setter Property="Variant" Value="Outline" />
+  </Style>
+
+  <Style Selector="controls|CodexAlertDialog.loading /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+</Styles>

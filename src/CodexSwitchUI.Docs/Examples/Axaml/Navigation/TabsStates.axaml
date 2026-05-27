@@ -1,0 +1,39 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexTabs SelectedIndex="1">
+    <controls:CodexTabItem Header="Overview"
+                           Content="Overview content" />
+    <controls:CodexTabItem Header="Usage"
+                           Content="Selected content" />
+    <controls:CodexTabItem Header="Disabled"
+                           IsEnabled="False" />
+  </controls:CodexTabs>
+
+  <controls:CodexTabs Grid.Column="1"
+                      Variant="Line"
+                      Size="Small"
+                      SelectedIndex="0">
+    <controls:CodexTabItem Header="Line" />
+    <controls:CodexTabItem Header="Events" />
+  </controls:CodexTabs>
+
+  <controls:CodexTabs Grid.Row="1"
+                      Orientation="Vertical"
+                      SelectedIndex="0">
+    <controls:CodexTabItem Header="Vertical"
+                           Content="Vertical orientation" />
+    <controls:CodexTabItem Header="State" />
+  </controls:CodexTabs>
+
+  <controls:CodexTabs Grid.Row="1"
+                      Grid.Column="1"
+                      Size="Large"
+                      SelectedIndex="0">
+    <controls:CodexTabItem Header="Large" />
+    <controls:CodexTabItem Header="Second" />
+  </controls:CodexTabs>
+</Grid>

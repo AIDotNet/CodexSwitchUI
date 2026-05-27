@@ -1,0 +1,101 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      x:CompileBindings="False"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexChartContainer Title="Compact"
+                                Description="Small container with compact legend."
+                                Size="Small">
+    <controls:CodexChartContainer.Legend>
+      <controls:CodexChartLegend IsCompact="True">
+        <controls:CodexChartLegendItem Content="Desktop"
+                                       IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+        <controls:CodexChartLegendItem Content="Mobile"
+                                       IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+      </controls:CodexChartLegend>
+    </controls:CodexChartContainer.Legend>
+    <controls:CodexRankedBarChart Width="360"
+                                  IsCompact="True"
+                                  MaxVisibleItems="3"
+                                  ItemsSource="{Binding RankedItems}" />
+  </controls:CodexChartContainer>
+
+  <controls:CodexChartContainer Grid.Column="1"
+                                Title="Refreshing"
+                                Description="Top refresh bar and content transition stay container-owned."
+                                IsRefreshing="True"
+                                TransitionKey="refreshing">
+    <controls:CodexChartContainer.Legend>
+      <controls:CodexChartLegend>
+        <controls:CodexChartLegendItem Content="Desktop"
+                                       Value="7,324"
+                                       IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+        <controls:CodexChartLegendItem Content="Mobile"
+                                       Value="7,250"
+                                       IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+      </controls:CodexChartLegend>
+    </controls:CodexChartContainer.Legend>
+    <controls:CodexUsagePieChart Width="360"
+                                 Height="220"
+                                 TotalLabel="Tokens"
+                                 TotalValue="88.4K"
+                                 ItemsSource="{Binding UsageBurstItems}" />
+  </controls:CodexChartContainer>
+
+  <controls:CodexChartContainer Grid.Row="1"
+                                Title="Vertical legend"
+                                Description="Legend config can be stacked.">
+    <controls:CodexChartContainer.Legend>
+      <controls:CodexChartLegend Orientation="Vertical">
+        <controls:CodexChartLegendItem Content="Desktop"
+                                       Value="7,324"
+                                       IndicatorStyle="Line"
+                                       IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+        <controls:CodexChartLegendItem Content="Mobile"
+                                       Value="7,250"
+                                       IndicatorStyle="Line"
+                                       IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+      </controls:CodexChartLegend>
+    </controls:CodexChartContainer.Legend>
+    <controls:CodexChartContainer.Tooltip>
+      <controls:CodexChartTooltipContent Label="June"
+                                         IndicatorStyle="Line">
+        <controls:CodexChartTooltipItem Content="Desktop"
+                                        Value="1,486"
+                                        IndicatorStyle="Line"
+                                        IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+        <controls:CodexChartTooltipItem Content="Mobile"
+                                        Value="1,200"
+                                        IndicatorStyle="Line"
+                                        IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+      </controls:CodexChartTooltipContent>
+    </controls:CodexChartContainer.Tooltip>
+    <controls:CodexRankedBarChart Width="360"
+                                  MaxVisibleItems="4"
+                                  ItemsSource="{Binding RankedBurstItems}" />
+  </controls:CodexChartContainer>
+
+  <controls:CodexChartContainer Grid.Row="1"
+                                Grid.Column="1"
+                                Title="Closed tooltip"
+                                Description="TooltipContent can remain mounted but hidden.">
+    <controls:CodexChartContainer.Tooltip>
+      <controls:CodexChartTooltipContent Label="May"
+                                         IsOpen="False"
+                                         IndicatorStyle="Square">
+        <controls:CodexChartTooltipItem Content="Desktop"
+                                        Value="820"
+                                        IndicatorStyle="Square"
+                                        IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+      </controls:CodexChartTooltipContent>
+    </controls:CodexChartContainer.Tooltip>
+    <controls:CodexUsagePieChart Width="360"
+                                 Height="220"
+                                 TotalLabel="Requests"
+                                 TotalValue="1,206"
+                                 ItemsSource="{Binding UsageCompactItems}" />
+  </controls:CodexChartContainer>
+</Grid>

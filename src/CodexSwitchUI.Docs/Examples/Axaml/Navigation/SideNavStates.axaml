@@ -1,0 +1,28 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="10">
+  <controls:CodexSideNav SelectedValue="selected">
+    <controls:CodexSideNavItem Value="selected"
+                               Icon="A"
+                               Content="Selected"
+                               Detail="Root value active" />
+  </controls:CodexSideNav>
+  <controls:CodexSideNavItem Grid.Column="1"
+                             Value="detail"
+                             Icon="B"
+                             Content="With detail"
+                             Detail="Secondary copy" />
+  <controls:CodexSideNavItem Grid.Row="1"
+                             Value="no-icon"
+                             Content="No icon" />
+  <controls:CodexSideNavItem Grid.Row="1"
+                             Grid.Column="1"
+                             Value="disabled"
+                             Icon="D"
+                             Content="Disabled"
+                             Detail="Unavailable"
+                             IsEnabled="False" />
+</Grid>

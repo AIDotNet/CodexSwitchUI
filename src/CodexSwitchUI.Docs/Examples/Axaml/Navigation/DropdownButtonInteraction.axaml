@@ -1,0 +1,63 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <TextBlock Text="OpenChanged: dropdown starts open."
+             TextWrapping="Wrap" />
+
+  <Grid ColumnDefinitions="*,*"
+        RowDefinitions="Auto,Auto"
+        ColumnSpacing="14"
+        RowSpacing="14">
+    <controls:CodexDropdownButton Content="Provider actions"
+                                  IsOpen="True"
+                                  IsArrowVisible="True"
+                                  Align="Start">
+      <controls:CodexDropdownButton.DropDownContent>
+        <StackPanel Width="188"
+                    Spacing="6">
+          <controls:CodexButton Content="Rename"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+          <controls:CodexButton Content="Duplicate"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+          <controls:CodexButton Content="Delete"
+                                Variant="Destructive"
+                                HorizontalAlignment="Stretch" />
+        </StackPanel>
+      </controls:CodexDropdownButton.DropDownContent>
+    </controls:CodexDropdownButton>
+
+    <controls:CodexDropdownButton Grid.Column="1"
+                                  Content="Keep surface"
+                                  IsOpen="True"
+                                  CloseOnItemSelected="False"
+                                  Align="End">
+      <controls:CodexDropdownButton.DropDownContent>
+        <StackPanel Width="196"
+                    Spacing="6">
+          <controls:CodexButton Content="Copy ID"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+          <controls:CodexButton Content="Open logs"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+          <controls:CodexButton Content="Dismiss manually"
+                                Variant="Outline"
+                                HorizontalAlignment="Stretch" />
+        </StackPanel>
+      </controls:CodexDropdownButton.DropDownContent>
+    </controls:CodexDropdownButton>
+
+    <controls:CodexDropdownButton Grid.Row="1"
+                                  Content="Loading"
+                                  IsLoading="True"
+                                  DropDownContent="Loading blocks open and child action close." />
+
+    <controls:CodexDropdownButton Grid.Row="1"
+                                  Grid.Column="1"
+                                  Content="Disabled"
+                                  IsEnabled="False"
+                                  DropDownContent="Disabled trigger cannot open the surface." />
+  </Grid>
+</StackPanel>

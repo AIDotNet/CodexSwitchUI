@@ -1,0 +1,21 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <Border MinHeight="220">
+    <controls:CodexSonner Position="TopRight"
+                          RichColors="True"
+                          Expand="True"
+                          VisibleToasts="3"
+                          Offset="0" />
+  </Border>
+
+  <Border Grid.Column="1"
+          MinHeight="220">
+    <controls:CodexSonner Position="BottomLeft"
+                          RichColors="False"
+                          Expand="False"
+                          VisibleToasts="2"
+                          Offset="0" />
+  </Border>
+</Grid>

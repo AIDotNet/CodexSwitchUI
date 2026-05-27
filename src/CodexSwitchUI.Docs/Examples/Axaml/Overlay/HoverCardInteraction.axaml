@@ -1,0 +1,85 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexHoverCard IsOpen="True"
+                           Placement="Right"
+                           Align="Start"
+                           OpenDelay="0:0:0.7"
+                           CloseDelay="0:0:0.3">
+    <controls:CodexHoverCard.Trigger>
+      <controls:CodexButton Content="Provider details"
+                            Size="Small" />
+    </controls:CodexHoverCard.Trigger>
+    <StackPanel Width="260"
+                Spacing="8">
+      <primitives:CodexText Text="OpenAI"
+                            Role="Subtitle" />
+      <primitives:CodexText Text="Primary route"
+                            Role="Muted" />
+      <controls:CodexBadge Content="Healthy"
+                           Variant="Success"
+                           HorizontalAlignment="Left" />
+    </StackPanel>
+  </controls:CodexHoverCard>
+
+  <controls:CodexHoverCard Grid.Column="1"
+                           IsOpen="True"
+                           Placement="Top"
+                           Align="End"
+                           OpenDelay="0:0:0"
+                           CloseDelay="0:0:0"
+                           IsArrowVisible="False">
+    <controls:CodexHoverCard.Trigger>
+      <controls:CodexButton Content="Instant focus"
+                            Size="Small" />
+    </controls:CodexHoverCard.Trigger>
+    <StackPanel Width="260"
+                Spacing="8">
+      <primitives:CodexText Text="Claude"
+                            Role="Subtitle" />
+      <primitives:CodexText Text="Fallback route"
+                            Role="Muted" />
+      <controls:CodexBadge Content="Ready"
+                           Variant="Secondary"
+                           HorizontalAlignment="Left" />
+    </StackPanel>
+  </controls:CodexHoverCard>
+
+  <controls:CodexHoverCard Grid.Row="1"
+                           IsOpen="False"
+                           IsEnabled="False">
+    <controls:CodexHoverCard.Trigger>
+      <controls:CodexButton Content="Disabled trigger"
+                            Size="Small"
+                            IsEnabled="False" />
+    </controls:CodexHoverCard.Trigger>
+    <primitives:CodexText Text="Disabled hover cards ignore pointer and focus open requests."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+  </controls:CodexHoverCard>
+
+  <controls:CodexHoverCard Grid.Row="1"
+                           Grid.Column="1"
+                           IsOpen="False"
+                           Placement="Left"
+                           Align="Center">
+    <controls:CodexHoverCard.Trigger>
+      <controls:CodexButton Content="Closed state"
+                            Size="Small" />
+    </controls:CodexHoverCard.Trigger>
+    <StackPanel Width="260"
+                Spacing="8">
+      <primitives:CodexText Text="Local proxy"
+                            Role="Subtitle" />
+      <primitives:CodexText Text="Paused route"
+                            Role="Muted" />
+      <controls:CodexBadge Content="Paused"
+                           Variant="Secondary"
+                           HorizontalAlignment="Left" />
+    </StackPanel>
+  </controls:CodexHoverCard>
+</Grid>

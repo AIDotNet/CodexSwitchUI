@@ -1,0 +1,34 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="16">
+  <controls:CodexNavigationMenu>
+    <controls:CodexNavigationMenuItem Header="Open"
+                                      Icon="O"
+                                      IsOpen="True"
+                                      ViewportWidth="360">
+      <controls:CodexNavigationMenuContent Header="Open viewport"
+                                           Description="Active item owns viewport content.">
+        <controls:CodexNavigationMenuLink Content="Active link"
+                                          Description="Current page"
+                                          IsActive="True" />
+        <controls:CodexNavigationMenuLink Content="Secondary link"
+                                          Description="Another route" />
+      </controls:CodexNavigationMenuContent>
+    </controls:CodexNavigationMenuItem>
+    <controls:CodexNavigationMenuItem Header="Disabled"
+                                      Icon="D"
+                                      Content="Disabled content"
+                                      IsEnabled="False" />
+    <controls:CodexNavigationMenuItem Header="Link"
+                                      Icon="L" />
+  </controls:CodexNavigationMenu>
+
+  <controls:CodexNavigationMenu Orientation="Vertical"
+                                Size="Small">
+    <controls:CodexNavigationMenuItem Header="Vertical"
+                                      Content="Vertical viewport" />
+    <controls:CodexNavigationMenuItem Header="Disabled"
+                                      Content="Disabled"
+                                      IsEnabled="False" />
+  </controls:CodexNavigationMenu>
+</StackPanel>

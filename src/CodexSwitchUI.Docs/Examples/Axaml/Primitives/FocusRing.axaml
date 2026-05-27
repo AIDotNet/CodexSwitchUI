@@ -1,0 +1,15 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            Orientation="Horizontal"
+            Spacing="18">
+  <primitives:CodexFocusRing IsRingVisible="True"
+                             RingOffset="4">
+    <controls:CodexButton Content="Visible ring" />
+  </primitives:CodexFocusRing>
+
+  <primitives:CodexFocusRing IsRingVisible="False">
+    <controls:CodexButton Content="Hidden ring"
+                          Variant="Secondary" />
+  </primitives:CodexFocusRing>
+</StackPanel>

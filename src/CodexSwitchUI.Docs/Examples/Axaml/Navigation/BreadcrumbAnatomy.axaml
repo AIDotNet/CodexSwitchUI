@@ -1,0 +1,49 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexBreadcrumb Label="Anatomy breadcrumb">
+    <controls:CodexBreadcrumbList>
+      <controls:CodexBreadcrumbItem>
+        <controls:CodexBreadcrumbLink Content="Breadcrumb" />
+      </controls:CodexBreadcrumbItem>
+      <controls:CodexBreadcrumbSeparator />
+      <controls:CodexBreadcrumbItem>
+        <controls:CodexBreadcrumbLink Content="BreadcrumbList" />
+      </controls:CodexBreadcrumbItem>
+      <controls:CodexBreadcrumbSeparator />
+      <controls:CodexBreadcrumbItem>
+        <controls:CodexBreadcrumbLink Content="BreadcrumbItem" />
+      </controls:CodexBreadcrumbItem>
+      <controls:CodexBreadcrumbSeparator />
+      <controls:CodexBreadcrumbItem IsCurrent="True">
+        <controls:CodexBreadcrumbPage Content="BreadcrumbPage" />
+      </controls:CodexBreadcrumbItem>
+    </controls:CodexBreadcrumbList>
+  </controls:CodexBreadcrumb>
+
+  <controls:CodexField Label="Composable slots"
+                       Description="Links, separators, ellipsis, and the current page are independent pieces.">
+    <controls:CodexField.Content>
+      <controls:CodexBreadcrumb Label="Slot breadcrumb">
+        <controls:CodexBreadcrumbList>
+          <controls:CodexBreadcrumbItem>
+            <controls:CodexBreadcrumbLink Content="Home"
+                                          Href="/" />
+          </controls:CodexBreadcrumbItem>
+          <controls:CodexBreadcrumbSeparator Content="/" />
+          <controls:CodexBreadcrumbItem>
+            <controls:CodexBreadcrumbEllipsis />
+          </controls:CodexBreadcrumbItem>
+          <controls:CodexBreadcrumbSeparator Content="/" />
+          <controls:CodexBreadcrumbItem>
+            <controls:CodexBreadcrumbLink Content="Navigation" />
+          </controls:CodexBreadcrumbItem>
+          <controls:CodexBreadcrumbSeparator Content="/" />
+          <controls:CodexBreadcrumbItem IsCurrent="True">
+            <controls:CodexBreadcrumbPage Content="Breadcrumb" />
+          </controls:CodexBreadcrumbItem>
+        </controls:CodexBreadcrumbList>
+      </controls:CodexBreadcrumb>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</StackPanel>

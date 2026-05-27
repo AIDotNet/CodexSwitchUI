@@ -1,0 +1,76 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Role and wrapping"
+                       Description="Host events update role classes and wrapping without replacing the text block.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Role is Body and wrapping is enabled." />
+        <primitives:CodexText Width="330"
+                              Role="Body"
+                              TextWrapping="Wrap"
+                              Text="Body copy wraps inside the component while host events change only the typography role." />
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Cycle role"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Toggle wrap"
+                                Size="Small"
+                                Variant="Ghost" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Code role"
+                       Description="Inline code keeps compact rhythm while inheriting tokenized color and background.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="8">
+        <primitives:CodexText Role="Code"
+                              Text="const duration = CodexMotion.ResolveDefaultDuration(target);" />
+        <primitives:CodexText Role="Muted"
+                              Text="Code role stays readable inside command descriptions and API snippets." />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Muted metadata"
+                       Description="Metadata uses the muted role without changing surrounding content hierarchy.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="6">
+        <primitives:CodexText Role="Body"
+                              Text="Provider route refreshed" />
+        <primitives:CodexText Role="Muted"
+                              Text="Updated 12 seconds ago" />
+        <primitives:CodexText Role="Muted"
+                              Text="Fallback latency p95 284ms" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Dense hierarchy"
+                       Description="Title, body, muted, and code roles compose in compact surfaces.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="7">
+        <primitives:CodexText Role="Subtitle"
+                              Text="Usage summary" />
+        <primitives:CodexText Role="Body"
+                              Text="42.7K tokens routed through the primary provider." />
+        <primitives:CodexText Role="Code"
+                              Text="route=openai/default" />
+        <primitives:CodexText Role="Muted"
+                              Text="Compact dashboards keep text rhythm token-driven." />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

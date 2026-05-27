@@ -1,0 +1,56 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            Spacing="12">
+  <primitives:CodexText Text="OpenChanged: measured disclosure starts open."
+                        Role="Muted"
+                        TextWrapping="Wrap" />
+
+  <Grid ColumnDefinitions="*,*"
+        RowDefinitions="Auto,Auto"
+        ColumnSpacing="14"
+        RowSpacing="14">
+    <controls:CodexCollapsible Header="Measured disclosure"
+                               IsOpen="True"
+                               AnimationDuration="0:0:0.22"
+                               ContentPadding="0,10,0,0">
+      <StackPanel Spacing="8">
+        <primitives:CodexText Text="Content height is measured before animating open."
+                              Role="Muted"
+                              TextWrapping="Wrap" />
+        <controls:CodexCheckBox Content="Enable regional fallback"
+                                IsChecked="True" />
+        <controls:CodexButton Content="Apply"
+                              Size="Small"
+                              HorizontalAlignment="Left" />
+      </StackPanel>
+    </controls:CodexCollapsible>
+
+    <controls:CodexCollapsible Grid.Column="1"
+                               Header="Reduced motion"
+                               IsOpen="True"
+                               AnimationDuration="0:0:0">
+      <primitives:CodexText Text="Zero duration jumps to the final measured height."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexCollapsible>
+
+    <controls:CodexCollapsible Grid.Row="1"
+                               Header="Closed"
+                               IsOpen="False">
+      <primitives:CodexText Text="Closed state preserves content for measurement."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexCollapsible>
+
+    <controls:CodexCollapsible Grid.Row="1"
+                               Grid.Column="1"
+                               Header="Disabled"
+                               IsOpen="False"
+                               IsEnabled="False">
+      <primitives:CodexText Text="Disabled trigger ignores pointer and keyboard toggle."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexCollapsible>
+  </Grid>
+</StackPanel>

@@ -1,0 +1,176 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexCommandDialog">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PopoverBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="MinWidth" Value="420" />
+    <Setter Property="MaxWidth" Value="640" />
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+    <Setter Property="RenderTransformOrigin" Value="50%,50%" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexCommandDialog">
+        <Grid x:Name="PART_Root"
+              RowDefinitions="Auto,*"
+              ClipToBounds="False">
+          <ContentPresenter x:Name="PART_Trigger"
+                            Grid.Row="0"
+                            Content="{TemplateBinding Trigger}"
+                            ContentTemplate="{TemplateBinding TriggerTemplate}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{TemplateBinding HasTrigger}" />
+
+          <Grid x:Name="PART_Layer"
+                Grid.Row="1"
+                ClipToBounds="False">
+            <Border x:Name="PART_Overlay"
+                    Background="{DynamicResource CodexSwitch.ForegroundBrush}"
+                    Opacity="0.44"
+                    CornerRadius="{DynamicResource CodexSwitch.RadiusLg}" />
+
+            <Border x:Name="PART_Surface"
+                    Width="{TemplateBinding Width}"
+                    Height="{TemplateBinding Height}"
+                    MinWidth="{TemplateBinding MinWidth}"
+                    MaxWidth="{TemplateBinding MaxWidth}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}"
+                    HorizontalAlignment="Center"
+                    RenderTransformOrigin="50%,50%">
+              <Grid>
+                <controls:CodexCommand x:Name="PART_Command"
+                                       Placeholder="{TemplateBinding Placeholder}"
+                                       SearchText="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                       ShouldFilter="{TemplateBinding ShouldFilter}"
+                                       LoopNavigation="{TemplateBinding LoopNavigation}"
+                                       IsLoading="{TemplateBinding IsLoading}"
+                                       Background="Transparent"
+                                       BorderBrush="Transparent"
+                                       BorderThickness="0"
+                                       CornerRadius="{TemplateBinding CornerRadius}">
+                  <ContentPresenter x:Name="PART_Content"
+                                    Content="{TemplateBinding Content}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}" />
+                </controls:CodexCommand>
+
+                <Button x:Name="PART_Close"
+                        Width="28"
+                        Height="28"
+                        Margin="8"
+                        Padding="0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Command="{TemplateBinding DismissCommand}"
+                        FocusAdorner="{x:Null}"
+                        IsVisible="{TemplateBinding IsCloseVisible}">
+                  <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                      <Border x:Name="PART_CloseSurface"
+                              Background="{TemplateBinding Background}"
+                              CornerRadius="{DynamicResource CodexSwitch.RadiusSm}">
+                        <Grid>
+                          <PathIcon Width="12"
+                                    Height="12"
+                                    Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Data="M3.4 2L2 3.4L6.6 8L2 12.6L3.4 14L8 9.4L12.6 14L14 12.6L9.4 8L14 3.4L12.6 2L8 6.6Z" />
+                        </Grid>
+                      </Border>
+                    </ControlTemplate>
+                  </Button.Template>
+                </Button>
+              </Grid>
+            </Border>
+          </Grid>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog.has-trigger /template/ Grid#PART_Root">
+    <Setter Property="RowSpacing" Value="10" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog.closed /template/ Border#PART_Overlay">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog.open /template/ Border#PART_Overlay">
+    <Setter Property="Opacity" Value="0.44" />
+    <Setter Property="IsHitTestVisible" Value="True" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog.non-modal /template/ Border#PART_Overlay">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog.closed /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+    <Setter Property="RenderTransform" Value="translate(0px, 8px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog.open /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="IsHitTestVisible" Value="True" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog.loading /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="0.88" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog /template/ Border#PART_Overlay">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog /template/ Border#PART_Surface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="BorderThickness" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog /template/ Button#PART_Close:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog /template/ Button#PART_Close:pressed">
+    <Setter Property="Opacity" Value="0.7" />
+  </Style>
+</Styles>

@@ -11,12 +11,13 @@
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Padding" Value="0" />
     <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="IndeterminateAnimationDuration" Value="{DynamicResource CodexSwitch.SkeletonShimmerDuration}" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="Template">
@@ -34,7 +35,8 @@
                     Background="{TemplateBinding Foreground}"
                     CornerRadius="{DynamicResource CodexSwitch.RadiusLg}" />
             <Border x:Name="PART_IndeterminateIndicator"
-                    Width="72"
+                    Width="{TemplateBinding IndeterminateIndicatorWidth}"
+                    Margin="{TemplateBinding IndeterminateIndicatorMargin}"
                     HorizontalAlignment="Left"
                     Background="{TemplateBinding Foreground}"
                     CornerRadius="{DynamicResource CodexSwitch.RadiusLg}"
@@ -57,9 +59,9 @@
   <Style Selector="controls|CodexProgress /template/ Border#PART_Track, controls|CodexProgress /template/ Border#PART_Indicator, controls|CodexProgress /template/ Border#PART_IndeterminateIndicator">
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <DoubleTransition Property="Width" Duration="0:0:0.2" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <DoubleTransition Property="Width" Duration="{DynamicResource CodexSwitch.MotionDurationSlow}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>

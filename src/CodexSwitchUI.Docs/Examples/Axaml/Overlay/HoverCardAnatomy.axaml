@@ -1,0 +1,108 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Trigger and content"
+                       Description="HoverCard keeps trigger and preview content mounted together.">
+    <controls:CodexField.Content>
+      <controls:CodexHoverCard IsOpen="True"
+                               Placement="Bottom"
+                               Align="Start"
+                               OpenDelay="0:0:0.7"
+                               CloseDelay="0:0:0.3">
+        <controls:CodexHoverCard.Trigger>
+          <controls:CodexButton Content="Hover Here" />
+        </controls:CodexHoverCard.Trigger>
+        <StackPanel Width="260"
+                    Spacing="8">
+          <primitives:CodexText Text="The React Framework"
+                                Role="Subtitle" />
+          <primitives:CodexText Text="Created and maintained by @vercel."
+                                Role="Muted"
+                                TextWrapping="Wrap" />
+        </StackPanel>
+      </controls:CodexHoverCard>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Side and align"
+                       Description="Content placement maps to side and align classes.">
+    <controls:CodexField.Content>
+      <controls:CodexHoverCard IsOpen="True"
+                               Placement="Top"
+                               Align="End"
+                               IsArrowVisible="True">
+        <controls:CodexHoverCard.Trigger>
+          <controls:CodexButton Content="Top end"
+                                Size="Small" />
+        </controls:CodexHoverCard.Trigger>
+        <StackPanel Width="240"
+                    Spacing="8">
+          <primitives:CodexText Text="Top / end"
+                                Role="Subtitle" />
+          <controls:CodexBadge Content="side=top align=end"
+                               Variant="Outline"
+                               HorizontalAlignment="Left" />
+        </StackPanel>
+      </controls:CodexHoverCard>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Rich preview"
+                       Description="Hover content can compose avatar, text, badge, and shortcut hints.">
+    <controls:CodexField.Content>
+      <controls:CodexHoverCard IsOpen="True"
+                               Placement="Right"
+                               Align="Start">
+        <controls:CodexHoverCard.Trigger>
+          <controls:CodexButton Content="@vercel"
+                                Variant="Ghost" />
+        </controls:CodexHoverCard.Trigger>
+        <StackPanel Width="280"
+                    Spacing="10">
+          <StackPanel Orientation="Horizontal"
+                      Spacing="10">
+            <controls:CodexAvatar Fallback="VC"
+                                  Size="Small" />
+            <StackPanel Spacing="2">
+              <primitives:CodexText Text="@vercel"
+                                    Role="Subtitle" />
+              <primitives:CodexText Text="Frontend cloud"
+                                    Role="Muted" />
+            </StackPanel>
+          </StackPanel>
+          <controls:CodexKbdGroup Size="Small">
+            <controls:CodexKbd Content="Cmd"
+                               Size="Small" />
+            <controls:CodexKbd Content="K"
+                               Size="Small" />
+          </controls:CodexKbdGroup>
+        </StackPanel>
+      </controls:CodexHoverCard>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Closed preview"
+                       Description="Closed state keeps trigger, side, align, and exit transform state.">
+    <controls:CodexField.Content>
+      <controls:CodexHoverCard IsOpen="False"
+                               Placement="Left"
+                               Align="Center">
+        <controls:CodexHoverCard.Trigger>
+          <controls:CodexButton Content="Closed"
+                                Size="Small" />
+        </controls:CodexHoverCard.Trigger>
+        <primitives:CodexText Text="Closed content remains available for exit motion."
+                              Role="Muted"
+                              TextWrapping="Wrap" />
+      </controls:CodexHoverCard>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

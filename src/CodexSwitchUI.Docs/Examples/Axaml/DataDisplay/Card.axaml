@@ -1,0 +1,24 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexCard Title="Usage"
+                      Description="Last 24 hours">
+    <TextBlock Text="42.7K tokens"
+               FontWeight="SemiBold" />
+    <controls:CodexCard.Footer>
+      <controls:CodexBadge Content="Updated"
+                           Variant="Secondary"
+                           HorizontalAlignment="Left" />
+    </controls:CodexCard.Footer>
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="1"
+                      IsInteractive="True"
+                      Title="Fallback routing"
+                      Description="Interactive card state"
+                      Footer="Configure">
+    <TextBlock Text="Hover and focus use card-owned transitions."
+               TextWrapping="Wrap" />
+  </controls:CodexCard>
+</Grid>

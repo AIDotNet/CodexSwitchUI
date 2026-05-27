@@ -1,0 +1,18 @@
+<controls:CodexField xmlns="https://github.com/avaloniaui"
+                     xmlns:controls="using:CodexSwitchUI.Controls"
+                     Label="Status"
+                     Description="Native selection keeps option semantics and simple mobile-friendly behavior.">
+  <controls:CodexNativeSelect SelectedIndex="0"
+                              MinWidth="260">
+    <controls:CodexNativeSelectOption Value=""
+                                      Content="Select status" />
+    <controls:CodexNativeSelectOption Value="todo"
+                                      Content="Todo" />
+    <controls:CodexNativeSelectOption Value="in-progress"
+                                      Content="In Progress" />
+    <controls:CodexNativeSelectOption Value="done"
+                                      Content="Done" />
+    <controls:CodexNativeSelectOption Value="cancelled"
+                                      Content="Cancelled" />
+  </controls:CodexNativeSelect>
+</controls:CodexField>

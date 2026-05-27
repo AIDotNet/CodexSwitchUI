@@ -1,0 +1,70 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Selected">
+    <controls:CodexDatePicker DisplayDate="2026-05-01"
+                              SelectedDate="2026-05-20"
+                              MinWidth="280"
+                              HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Open"
+                       Description="Open class drives the popover scale and chevron motion.">
+    <controls:CodexDatePicker DisplayDate="2026-06-01"
+                              SelectedDate="2026-06-12"
+                              IsOpen="True"
+                              CloseOnSelect="False"
+                              MinWidth="280"
+                              HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Range"
+                       Description="The trigger summarizes the selected range.">
+    <controls:CodexDatePicker DisplayDate="2026-01-01"
+                              SelectionMode="Range"
+                              RangeStart="2026-01-20"
+                              RangeEnd="2026-01-27"
+                              MinWidth="280"
+                              HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Loading"
+                       Description="Loading suppresses opening and date selection while the surface stays visible.">
+    <controls:CodexDatePicker DisplayDate="2026-02-01"
+                              SelectedDate="2026-02-14"
+                              IsOpen="True"
+                              IsLoading="True"
+                              MinWidth="280"
+                              HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="2"
+                       Label="Bounded"
+                       Intent="Warning"
+                       Message="Dates outside the booking window are unavailable.">
+    <controls:CodexDatePicker DisplayDate="2026-03-01"
+                              SelectedDate="2026-03-16"
+                              MinDate="2026-03-09"
+                              MaxDate="2026-03-23"
+                              Intent="Warning"
+                              MinWidth="280"
+                              HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="2"
+                       Grid.Column="1"
+                       Label="Disabled">
+    <controls:CodexDatePicker DisplayDate="2026-04-01"
+                              PlaceholderText="Unavailable"
+                              IsEnabled="False"
+                              MinWidth="280"
+                              HorizontalAlignment="Left" />
+  </controls:CodexField>
+</Grid>

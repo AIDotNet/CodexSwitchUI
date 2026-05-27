@@ -1,0 +1,90 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="16">
+  <controls:CodexNavigationMenu>
+    <controls:CodexNavigationMenuItem Header="Overview"
+                                      Icon="O"
+                                      IsOpen="True"
+                                      ViewportWidth="360">
+      <controls:CodexNavigationMenuContent Header="Pointer enter"
+                                           Description="Trigger activation opens the shared viewport.">
+        <controls:CodexNavigationMenuLink Content="Getting started"
+                                          Description="Current route"
+                                          IsActive="True" />
+        <controls:CodexNavigationMenuLink Content="Motion"
+                                          Description="Duration and easing tokens" />
+      </controls:CodexNavigationMenuContent>
+    </controls:CodexNavigationMenuItem>
+    <controls:CodexNavigationMenuItem Header="Components"
+                                      Icon="C"
+                                      ViewportWidth="420">
+      <controls:CodexNavigationMenuContent Header="Arrow right"
+                                           Description="Horizontal arrows activate the next trigger.">
+        <controls:CodexNavigationMenuLink Content="Forms"
+                                          Description="Inputs and actions" />
+        <controls:CodexNavigationMenuLink Content="Overlay"
+                                          Description="Dialog and popover" />
+      </controls:CodexNavigationMenuContent>
+    </controls:CodexNavigationMenuItem>
+  </controls:CodexNavigationMenu>
+
+  <controls:CodexNavigationMenu Grid.Column="1">
+    <controls:CodexNavigationMenuItem Header="Previous"
+                                      Icon="P"
+                                      ViewportWidth="320">
+      <controls:CodexNavigationMenuContent Header="Previous"
+                                           Description="Moving back reverses the content motion.">
+        <controls:CodexNavigationMenuLink Content="State"
+                                          Description="Motion from start" />
+      </controls:CodexNavigationMenuContent>
+    </controls:CodexNavigationMenuItem>
+    <controls:CodexNavigationMenuItem Header="Active"
+                                      Icon="A"
+                                      IsOpen="True"
+                                      ViewportWidth="420">
+      <controls:CodexNavigationMenuContent Header="Active"
+                                           Description="The active item owns viewport width and content.">
+        <controls:CodexNavigationMenuLink Content="Selected route"
+                                          Description="Active visual"
+                                          IsActive="True" />
+      </controls:CodexNavigationMenuContent>
+    </controls:CodexNavigationMenuItem>
+    <controls:CodexNavigationMenuItem Header="Disabled"
+                                      Icon="D"
+                                      IsEnabled="False"
+                                      Content="Disabled viewport" />
+  </controls:CodexNavigationMenu>
+
+  <controls:CodexNavigationMenu Grid.Row="1"
+                                Orientation="Vertical"
+                                Size="Small">
+    <controls:CodexNavigationMenuItem Header="Up"
+                                      Content="Vertical previous item" />
+    <controls:CodexNavigationMenuItem Header="Selected"
+                                      IsOpen="True"
+                                      Content="Vertical viewport content" />
+    <controls:CodexNavigationMenuItem Header="Disabled"
+                                      IsEnabled="False"
+                                      Content="Skipped item" />
+    <controls:CodexNavigationMenuItem Header="Down"
+                                      Content="Vertical next item" />
+  </controls:CodexNavigationMenu>
+
+  <controls:CodexNavigationMenu Grid.Row="1"
+                                Grid.Column="1">
+    <controls:CodexNavigationMenuItem Header="Escape"
+                                      Icon="E"
+                                      IsOpen="True">
+      <controls:CodexNavigationMenuContent Header="Dismiss"
+                                           Description="Escape closes the viewport and clears active item.">
+        <controls:CodexNavigationMenuLink Content="Close contract"
+                                          Description="Shared open state" />
+      </controls:CodexNavigationMenuContent>
+    </controls:CodexNavigationMenuItem>
+    <controls:CodexNavigationMenuItem Header="Link"
+                                      Icon="L" />
+  </controls:CodexNavigationMenu>
+</Grid>

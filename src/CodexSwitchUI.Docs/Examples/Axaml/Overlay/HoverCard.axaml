@@ -1,0 +1,20 @@
+<controls:CodexHoverCard xmlns="https://github.com/avaloniaui"
+                         xmlns:controls="using:CodexSwitchUI.Controls"
+                         IsOpen="True"
+                         Placement="Right"
+                         Align="Start">
+  <controls:CodexHoverCard.Trigger>
+    <controls:CodexButton Content="Provider details" />
+  </controls:CodexHoverCard.Trigger>
+
+  <StackPanel Width="260"
+              Spacing="8">
+    <TextBlock Text="OpenAI"
+               FontWeight="SemiBold" />
+    <TextBlock Text="99.95% availability across the latest routing window."
+               TextWrapping="Wrap" />
+    <controls:CodexBadge Content="Healthy"
+                         Variant="Success"
+                         HorizontalAlignment="Left" />
+  </StackPanel>
+</controls:CodexHoverCard>

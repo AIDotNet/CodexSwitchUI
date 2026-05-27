@@ -1,0 +1,20 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <StackPanel Orientation="Horizontal"
+              Spacing="10"
+              VerticalAlignment="Center">
+    <controls:CodexCheckBox x:Name="terms"
+                            IsChecked="True" />
+    <controls:CodexLabel Target="{Binding #terms}"
+                         Content="Accept terms and conditions" />
+  </StackPanel>
+
+  <StackPanel Spacing="6">
+    <controls:CodexLabel Content="Provider name"
+                         IsRequired="True" />
+    <controls:CodexTextBox PlaceholderText="OpenAI"
+                           MinWidth="280" />
+  </StackPanel>
+</StackPanel>

@@ -1,0 +1,39 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      Height="260">
+  <controls:CodexSheet Title="Provider filters"
+                       Description="Sheet extends dialog dismissal with edge-mounted slide motion."
+                       Side="Right"
+                       IsOpen="True"
+                       Width="360">
+    <controls:CodexSheet.Trigger>
+      <controls:CodexButton Content="Open filters"
+                            Size="Small" />
+    </controls:CodexSheet.Trigger>
+    <controls:CodexSheet.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexField Label="Status">
+          <controls:CodexSelect Width="240"
+                                SelectedIndex="0">
+            <x:String>Healthy</x:String>
+            <x:String>Warning</x:String>
+            <x:String>Disabled</x:String>
+          </controls:CodexSelect>
+        </controls:CodexField>
+        <controls:CodexCheckBox Content="Only active routes"
+                                IsChecked="True" />
+      </StackPanel>
+    </controls:CodexSheet.Content>
+    <controls:CodexSheet.Action>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="Reset"
+                              Variant="Secondary"
+                              Size="Small" />
+        <controls:CodexButton Content="Apply"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexSheet.Action>
+  </controls:CodexSheet>
+</Grid>

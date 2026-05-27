@@ -1,0 +1,65 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Selected">
+    <controls:CodexNativeSelect SelectedIndex="2"
+                                MinWidth="220">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Select fruit" />
+      <controls:CodexNativeSelectOption Value="apple"
+                                        Content="Apple" />
+      <controls:CodexNativeSelectOption Value="banana"
+                                        Content="Banana" />
+      <controls:CodexNativeSelectOption Value="blueberry"
+                                        Content="Blueberry" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Disabled">
+    <controls:CodexNativeSelect SelectedIndex="1"
+                                IsEnabled="False"
+                                MinWidth="220">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Disabled" />
+      <controls:CodexNativeSelectOption Value="apple"
+                                        Content="Apple" />
+      <controls:CodexNativeSelectOption Value="banana"
+                                        Content="Banana" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Invalid"
+                       Intent="Error"
+                       Message="Pick a status before continuing.">
+    <controls:CodexNativeSelect SelectedIndex="0"
+                                IsInvalid="True"
+                                MinWidth="220">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Error state" />
+      <controls:CodexNativeSelectOption Value="todo"
+                                        Content="Todo" />
+      <controls:CodexNativeSelectOption Value="done"
+                                        Content="Done" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Small">
+    <controls:CodexNativeSelect SelectedIndex="1"
+                                Size="Small"
+                                MinWidth="220">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Select size" />
+      <controls:CodexNativeSelectOption Value="small"
+                                        Content="Small" />
+      <controls:CodexNativeSelectOption Value="medium"
+                                        Content="Medium" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+</Grid>

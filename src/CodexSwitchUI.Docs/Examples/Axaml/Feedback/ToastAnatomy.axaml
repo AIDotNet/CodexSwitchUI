@@ -1,0 +1,35 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            Spacing="12">
+  <controls:CodexToast Icon="i"
+                       Title="Provider switched"
+                       Description="Requests now route through the fallback provider."
+                       CloseContent="Close">
+    <StackPanel Spacing="6">
+      <controls:CodexBadge Content="fallback"
+                           Variant="Secondary" />
+      <primitives:CodexText Text="Action and close controls stay inside the toast template."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </StackPanel>
+
+    <controls:CodexToast.Action>
+      <controls:CodexButton Content="Undo"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexToast.Action>
+  </controls:CodexToast>
+
+  <controls:CodexToast Icon="!"
+                       Title="Model sync failed"
+                       Description="Destructive tone, close hidden, and action visible."
+                       Variant="Destructive"
+                       IsCloseVisible="False">
+    <controls:CodexToast.Action>
+      <controls:CodexButton Content="Retry"
+                            Size="Small"
+                            Variant="Outline" />
+    </controls:CodexToast.Action>
+  </controls:CodexToast>
+</StackPanel>

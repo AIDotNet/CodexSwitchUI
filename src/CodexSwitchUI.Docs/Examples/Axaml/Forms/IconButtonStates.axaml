@@ -1,0 +1,49 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="12"
+      RowSpacing="12">
+  <StackPanel Spacing="6">
+    <TextBlock Text="Default" />
+    <controls:CodexIconButton Content="+" />
+  </StackPanel>
+
+  <StackPanel Grid.Column="1"
+              Spacing="6">
+    <TextBlock Text="Round" />
+    <controls:CodexIconButton Content="+"
+                              IsRound="True" />
+  </StackPanel>
+
+  <StackPanel Grid.Column="2"
+              Spacing="6">
+    <TextBlock Text="Ghost" />
+    <controls:CodexIconButton Content="..."
+                              Variant="Ghost" />
+  </StackPanel>
+
+  <StackPanel Grid.Row="1"
+              Spacing="6">
+    <TextBlock Text="Destructive" />
+    <controls:CodexIconButton Content="x"
+                              Variant="Destructive" />
+  </StackPanel>
+
+  <StackPanel Grid.Row="1"
+              Grid.Column="1"
+              Spacing="6">
+    <TextBlock Text="Loading" />
+    <controls:CodexIconButton Content=">"
+                              IsLoading="True"
+                              LoadingContent="..." />
+  </StackPanel>
+
+  <StackPanel Grid.Row="1"
+              Grid.Column="2"
+              Spacing="6">
+    <TextBlock Text="Disabled" />
+    <controls:CodexIconButton Content="i"
+                              IsEnabled="False" />
+  </StackPanel>
+</Grid>

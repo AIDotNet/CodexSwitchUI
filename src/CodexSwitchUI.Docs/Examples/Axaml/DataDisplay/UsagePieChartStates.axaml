@@ -1,0 +1,14 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexUsagePieChart Width="360"
+                               Height="220"
+                               TotalLabel="Tokens"
+                               TotalValue="68K" />
+  <controls:CodexUsagePieChart Grid.Column="1"
+                               Width="360"
+                               Height="220"
+                               TotalLabel="Tokens"
+                               TotalValue="0" />
+</Grid>

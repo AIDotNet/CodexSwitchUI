@@ -1,0 +1,50 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexScrollArea Type="Always"
+                            IsInsetContent="True"
+                            Width="300"
+                            Height="180"
+                            VerticalScrollBarVisibility="Auto">
+    <StackPanel Spacing="8">
+      <controls:CodexButton Content="Always"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+      <controls:CodexButton Content="Visible"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+      <controls:CodexButton Content="Inset"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+      <controls:CodexButton Content="Boundary"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+      <controls:CodexButton Content="End"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+    </StackPanel>
+  </controls:CodexScrollArea>
+
+  <controls:CodexScrollArea Grid.Column="1"
+                            Type="Hover"
+                            IsEnabled="False"
+                            Width="300"
+                            Height="180"
+                            VerticalScrollBarVisibility="Auto">
+    <StackPanel Spacing="8">
+      <controls:CodexButton Content="Disabled"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+      <controls:CodexButton Content="Hover"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+      <controls:CodexButton Content="Scrollbar"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+      <controls:CodexButton Content="State"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+    </StackPanel>
+  </controls:CodexScrollArea>
+</Grid>

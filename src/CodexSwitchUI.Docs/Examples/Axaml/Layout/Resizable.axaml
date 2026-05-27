@@ -1,0 +1,27 @@
+<controls:CodexResizablePanelGroup xmlns="https://github.com/avaloniaui"
+                                   xmlns:controls="using:CodexSwitchUI.Controls"
+                                   Width="640"
+                                   Height="260"
+                                   Orientation="Horizontal">
+  <controls:CodexResizablePanel DefaultSize="28"
+                                MinSize="18">
+    <StackPanel Spacing="6">
+      <TextBlock Text="Sidebar"
+                 FontWeight="SemiBold" />
+      <TextBlock Text="Provider filters and saved views"
+                 TextWrapping="Wrap" />
+    </StackPanel>
+  </controls:CodexResizablePanel>
+
+  <controls:CodexResizableHandle WithHandle="True" />
+
+  <controls:CodexResizablePanel DefaultSize="72"
+                                MinSize="35">
+    <StackPanel Spacing="6">
+      <TextBlock Text="Content"
+                 FontWeight="SemiBold" />
+      <TextBlock Text="Drag the handle or focus it and use arrow keys."
+                 TextWrapping="Wrap" />
+    </StackPanel>
+  </controls:CodexResizablePanel>
+</controls:CodexResizablePanelGroup>

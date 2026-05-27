@@ -1,0 +1,78 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexAlertDialog IsOpen="True"
+                             Title="Default confirmation"
+                             Description="Cancel receives least-destructive focus when the surface opens.">
+    <primitives:CodexText Text="Default action uses the primary button treatment."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+  </controls:CodexAlertDialog>
+
+  <controls:CodexAlertDialog Grid.Column="1"
+                             IsOpen="True"
+                             Title="Small with media"
+                             Description="Small size tightens spacing while keeping the media slot."
+                             Media="?"
+                             Size="Small"
+                             ActionContent="Share">
+    <primitives:CodexText Text="Media can be an icon, text, or any custom control."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+  </controls:CodexAlertDialog>
+
+  <controls:CodexAlertDialog Grid.Row="1"
+                             IsOpen="True"
+                             Title="Delete chat?"
+                             Description="Destructive action tone stays on the action button and media slot."
+                             Media="!"
+                             ActionContent="Delete"
+                             ActionVariant="Destructive">
+    <primitives:CodexText Text="This mirrors shadcn destructive AlertDialog examples."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+  </controls:CodexAlertDialog>
+
+  <controls:CodexAlertDialog Grid.Row="1"
+                             Grid.Column="1"
+                             IsOpen="True"
+                             Title="Submitting"
+                             Description="Loading suppresses the action command until the host clears it."
+                             IsActionLoading="True"
+                             ActionContent="Saving">
+    <primitives:CodexText Text="Action loading is surfaced as a component class."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+  </controls:CodexAlertDialog>
+
+  <controls:CodexAlertDialog Grid.Row="2"
+                             Title="Closed exit state"
+                             Description="Closed class keeps the surface available for exit motion checks."
+                             IsOpen="False"
+                             ActionContent="Continue">
+    <controls:CodexAlertDialog.Trigger>
+      <controls:CodexButton Content="Show closed alert"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexAlertDialog.Trigger>
+    <primitives:CodexText Text="Closed AlertDialog remains mounted in docs."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+  </controls:CodexAlertDialog>
+
+  <controls:CodexAlertDialog Grid.Row="2"
+                             Grid.Column="1"
+                             IsOpen="True"
+                             Title="Host-managed async"
+                             Description="CloseOnAction can be disabled for async completion."
+                             CloseOnAction="False"
+                             ActionContent="Submit later">
+    <primitives:CodexText Text="The host can close after the asynchronous action resolves."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+  </controls:CodexAlertDialog>
+</Grid>

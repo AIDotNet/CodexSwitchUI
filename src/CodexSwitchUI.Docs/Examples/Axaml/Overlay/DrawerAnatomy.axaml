@@ -1,0 +1,58 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexDrawer Title="Edit profile"
+                        Description="Handle, title, description, body, close control, and footer are component-owned."
+                        Direction="Bottom"
+                        CloseContent="Esc"
+                        IsOpen="True">
+    <controls:CodexDrawer.Trigger>
+      <controls:CodexButton Content="Open profile drawer"
+                            Size="Small" />
+    </controls:CodexDrawer.Trigger>
+    <StackPanel Spacing="10">
+      <controls:CodexField Label="Name">
+        <controls:CodexTextBox Text="Ada Lovelace" />
+      </controls:CodexField>
+      <controls:CodexField Label="Username">
+        <controls:CodexTextBox Text="@ada" />
+      </controls:CodexField>
+      <controls:CodexField Label="Bio">
+        <controls:CodexTextarea MinHeight="68"
+                                Text="Primary route reviewer." />
+      </controls:CodexField>
+    </StackPanel>
+    <controls:CodexDrawer.Action>
+      <StackPanel Orientation="Horizontal"
+                  HorizontalAlignment="Right"
+                  Spacing="8">
+        <controls:CodexButton Content="Cancel"
+                              Variant="Secondary"
+                              Size="Small" />
+        <controls:CodexButton Content="Save"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexDrawer.Action>
+  </controls:CodexDrawer>
+
+  <controls:CodexDrawer Grid.Column="1"
+                        Title="No handle"
+                        Description="Handle visibility can be disabled for command-only drawers."
+                        Direction="Right"
+                        Width="360"
+                        IsHandleVisible="False"
+                        ShouldScaleBackground="False"
+                        IsOpen="True">
+    <controls:CodexDrawer.Trigger>
+      <controls:CodexButton Content="Open no-handle drawer"
+                            Size="Small" />
+    </controls:CodexDrawer.Trigger>
+    <StackPanel Spacing="8">
+      <controls:CodexAlert Title="Manual close"
+                           Description="The close button or footer action owns the dismissal path."
+                           Variant="Secondary" />
+      <TextBlock Text="This mirrors command-only drawer composition." />
+    </StackPanel>
+  </controls:CodexDrawer>
+</Grid>

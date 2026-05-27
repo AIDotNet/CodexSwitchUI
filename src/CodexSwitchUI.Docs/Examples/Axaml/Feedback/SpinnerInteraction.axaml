@@ -1,0 +1,60 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexField Label="Attach animation"
+                       Description="Active spinners start their runtime timer after entering the visual tree.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="14">
+      <controls:CodexSpinner Size="Small"
+                             Label="Small loading" />
+      <controls:CodexSpinner Label="Default loading" />
+      <controls:CodexSpinner Size="Large"
+                             Label="Large loading" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Paused state"
+                       Description="Inactive state stops animation and exposes idle automation status.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="14">
+      <controls:CodexSpinner IsActive="False"
+                             Label="Paused loading" />
+      <controls:CodexSpinner IsActive="False"
+                             Size="Large"
+                             Label="Paused large" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Reduced motion"
+                       Description="Zero duration renders the final static frame without timer churn.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="14">
+      <controls:CodexSpinner RotationDuration="0:0:0"
+                             Label="Reduced motion" />
+      <controls:CodexSpinner RotationDuration="0:0:0"
+                             Size="Large"
+                             Label="Reduced large" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Loading composition"
+                       Description="Spinners remain non-interactive inside buttons and status rows.">
+    <StackPanel Spacing="10">
+      <controls:CodexButton Content="Refreshing"
+                            IsLoading="True" />
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexSpinner Label="Syncing" />
+        <controls:CodexBadge Content="syncing"
+                             Variant="Secondary" />
+      </StackPanel>
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

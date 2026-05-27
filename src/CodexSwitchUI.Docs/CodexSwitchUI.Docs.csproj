@@ -13,4 +13,13 @@
     <ProjectReference Include="..\CodexSwitchUI\CodexSwitchUI.csproj" />
     <ProjectReference Include="..\CodexSwitchUI.ECharts\CodexSwitchUI.ECharts.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="..\..\..\CodexSwitch\Assets\icons\*.png"
+                      Link="Assets\icons\%(Filename)%(Extension)" />
+    <AvaloniaResource Remove="Examples\Axaml\**\*.axaml" />
+    <None Update="Examples\Axaml\**\*.axaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

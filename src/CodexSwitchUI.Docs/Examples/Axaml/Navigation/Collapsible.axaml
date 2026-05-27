@@ -1,0 +1,13 @@
+<controls:CodexCollapsible xmlns="https://github.com/avaloniaui"
+                           xmlns:controls="using:CodexSwitchUI.Controls"
+                           Header="Advanced routing"
+                           IsOpen="True">
+  <StackPanel Spacing="10">
+    <controls:CodexCheckBox Content="Prefer cached sessions"
+                            IsChecked="True" />
+    <controls:CodexCheckBox Content="Enable regional fallback" />
+    <controls:CodexButton Content="Apply"
+                          Size="Small"
+                          HorizontalAlignment="Left" />
+  </StackPanel>
+</controls:CodexCollapsible>

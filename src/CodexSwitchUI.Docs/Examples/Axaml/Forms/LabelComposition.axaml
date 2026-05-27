@@ -1,0 +1,47 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Checkbox row">
+    <StackPanel Orientation="Horizontal"
+                Spacing="10">
+      <controls:CodexCheckBox x:Name="routing"
+                              IsChecked="True" />
+      <controls:CodexLabel Target="{Binding #routing}"
+                           Content="Enable provider routing" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Switch row">
+    <StackPanel Orientation="Horizontal"
+                Spacing="10">
+      <controls:CodexSwitch x:Name="streaming"
+                            IsChecked="True" />
+      <controls:CodexLabel Target="{Binding #streaming}"
+                           Content="Stream responses" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Inline input">
+    <StackPanel Spacing="6">
+      <controls:CodexLabel Content="Base URL" />
+      <controls:CodexInputGroup>
+        <controls:CodexInputGroupAddon Content="https://" />
+        <controls:CodexInputGroupInput Text="api.openai.com" />
+      </controls:CodexInputGroup>
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Field label reuse"
+                       Description="CodexField uses CodexLabel internally for required and intent styling."
+                       IsRequired="True">
+    <controls:CodexTextBox PlaceholderText="Provider alias" />
+  </controls:CodexField>
+</Grid>

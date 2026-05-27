@@ -1,0 +1,173 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls"
+        x:CompileBindings="False">
+  <Style Selector="controls|CodexPagination">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexPagination">
+        <StackPanel x:Name="PART_Root"
+                    Orientation="Horizontal"
+                    Spacing="4"
+                    VerticalAlignment="Center">
+          <controls:CodexButton x:Name="PART_FirstButton"
+                                Variant="Ghost"
+                                Size="{TemplateBinding Size}"
+                                IsEnabled="{TemplateBinding CanGoPrevious}"
+                                IsVisible="{TemplateBinding ShowFirstLast}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center">
+            <PathIcon Width="14"
+                      Height="14"
+                      Data="M11 5L6 10L11 15M6 5L1 10L6 15" />
+          </controls:CodexButton>
+
+          <controls:CodexButton x:Name="PART_PreviousButton"
+                                Variant="Ghost"
+                                Size="{TemplateBinding Size}"
+                                IsEnabled="{TemplateBinding CanGoPrevious}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center">
+            <PathIcon Width="14"
+                      Height="14"
+                      Data="M10 5L5 10L10 15" />
+          </controls:CodexButton>
+
+          <ItemsControl x:Name="PART_Items"
+                        ItemsSource="{TemplateBinding PageItems}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="4" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <controls:CodexPaginationPageButton Content="{Binding Label}"
+                                                     Page="{Binding Page}"
+                                                     IsCurrent="{Binding IsCurrent}"
+                                                     IsEllipsis="{Binding IsEllipsis}"
+                                                     IsEnabled="{Binding IsEnabled}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+          <controls:CodexButton x:Name="PART_NextButton"
+                                Variant="Ghost"
+                                Size="{TemplateBinding Size}"
+                                IsEnabled="{TemplateBinding CanGoNext}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center">
+            <PathIcon Width="14"
+                      Height="14"
+                      Data="M5 5L10 10L5 15" />
+          </controls:CodexButton>
+
+          <controls:CodexButton x:Name="PART_LastButton"
+                                Variant="Ghost"
+                                Size="{TemplateBinding Size}"
+                                IsEnabled="{TemplateBinding CanGoNext}"
+                                IsVisible="{TemplateBinding ShowFirstLast}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center">
+            <PathIcon Width="14"
+                      Height="14"
+                      Data="M1 5L6 10L1 15M6 5L11 10L6 15" />
+          </controls:CodexButton>
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexPagination.loading">
+    <Setter Property="Opacity" Value="0.72" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination.compact /template/ StackPanel#PART_Root">
+    <Setter Property="Spacing" Value="2" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination.first-page /template/ controls|CodexButton#PART_FirstButton, controls|CodexPagination.first-page /template/ controls|CodexButton#PART_PreviousButton">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination.last-page /template/ controls|CodexButton#PART_NextButton, controls|CodexPagination.last-page /template/ controls|CodexButton#PART_LastButton">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination:not(.show-first-last) /template/ controls|CodexButton#PART_FirstButton, controls|CodexPagination:not(.show-first-last) /template/ controls|CodexButton#PART_LastButton">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination.size-sm">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination.size-sm /template/ controls|CodexPaginationPageButton">
+    <Setter Property="Size" Value="Small" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination.size-lg">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination.size-lg /template/ controls|CodexPaginationPageButton">
+    <Setter Property="Size" Value="Large" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination.size-icon">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+  </Style>
+
+  <Style Selector="controls|CodexPaginationPageButton">
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexPaginationPageButton.current">
+    <Setter Property="Variant" Value="Default" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PrimaryForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexPaginationPageButton.ellipsis">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="0.66" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination.size-sm controls|CodexPaginationPageButton">
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightSm}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightSm}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexPagination.size-lg controls|CodexPaginationPageButton">
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightLg}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightLg}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+</Styles>

@@ -1,0 +1,63 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Data refresh"
+                       Description="ItemsSource changes rebuild row geometry and progress bars.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Move across rows to reveal ActiveItemChanged, or refresh the ranked chart." />
+        <controls:CodexRankedBarChart Width="420"
+                                      MaxVisibleItems="4" />
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Refresh data"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Toggle compact"
+                                Size="Small"
+                                Variant="Ghost" />
+          <controls:CodexButton Content="Toggle max rows"
+                                Size="Small"
+                                Variant="Secondary" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Empty state"
+                       Description="Empty ItemsSource keeps the chart frame mounted and paints empty text.">
+    <controls:CodexField.Content>
+      <controls:CodexRankedBarChart Width="360"
+                                    EmptyText="No ranked usage" />
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Accent refresh"
+                       Description="Rows can own accent brushes while the chart keeps shared track resources.">
+    <controls:CodexField.Content>
+      <controls:CodexRankedBarChart Width="360"
+                                    MaxVisibleItems="3"
+                                    AccentBrush="{DynamicResource CodexSwitch.PrimaryBrush}"
+                                    SecondaryAccentBrush="{DynamicResource CodexSwitch.SuccessBrush}"
+                                    TertiaryAccentBrush="{DynamicResource CodexSwitch.WarningBrush}" />
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Compact comparison"
+                       Description="Compact charts preserve value and detail text while tightening spacing.">
+    <controls:CodexField.Content>
+      <controls:CodexRankedBarChart Width="360"
+                                    IsCompact="True"
+                                    MaxVisibleItems="3" />
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

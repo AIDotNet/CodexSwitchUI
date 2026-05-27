@@ -1,0 +1,10 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Orientation="Horizontal"
+            Spacing="8">
+  <controls:CodexButton Content="Save changes" />
+  <controls:CodexButton Content="Preview"
+                        Variant="Secondary" />
+  <controls:CodexButton Content="Delete"
+                        Variant="Destructive" />
+</StackPanel>

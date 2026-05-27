@@ -1,0 +1,44 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            x:CompileBindings="False"
+            Spacing="12">
+  <primitives:CodexText Role="Muted"
+                        Text="Refresh data, toggle orientation, hide grid/axis labels, and reduce motion." />
+
+  <controls:CodexChartContainer Width="650"
+                                Title="Interactive bar chart"
+                                Description="Pointer movement updates active bar state while data changes redraw through motion tokens.">
+    <controls:CodexChartContainer.Legend>
+      <controls:CodexChartLegend>
+        <controls:CodexChartLegendItem Content="Requests"
+                                       Value="live"
+                                       IndicatorStyle="Square"
+                                       IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+      </controls:CodexChartLegend>
+    </controls:CodexChartContainer.Legend>
+
+    <controls:CodexBarChart Width="560"
+                            ItemsSource="{Binding BarChartItems}" />
+  </controls:CodexChartContainer>
+
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexButton Content="Refresh data"
+                          Size="Small"
+                          Variant="Secondary" />
+    <controls:CodexButton Content="Orientation"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Grid"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Axis labels"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Reduce motion"
+                          Size="Small"
+                          Variant="Ghost" />
+  </StackPanel>
+</StackPanel>

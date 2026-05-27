@@ -1,0 +1,19 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexAlert Icon="!"
+                       Title="Provider latency is elevated"
+                       Description="Fallback routing is active for the next request window."
+                       Variant="Warning">
+    <controls:CodexAlert.Action>
+      <controls:CodexButton Content="Inspect"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexAlert.Action>
+  </controls:CodexAlert>
+
+  <controls:CodexAlert Icon="i"
+                       Title="Usage report ready"
+                       Description="The latest token usage snapshot has been indexed."
+                       Variant="Success" />
+</StackPanel>

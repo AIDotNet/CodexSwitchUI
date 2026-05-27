@@ -1,0 +1,9 @@
+<controls:CodexField xmlns="https://github.com/avaloniaui"
+                     xmlns:controls="using:CodexSwitchUI.Controls"
+                     Label="Protocol">
+  <controls:CodexSelect SelectedIndex="0">
+    <ComboBoxItem Content="OpenAI" />
+    <ComboBoxItem Content="Claude" />
+    <ComboBoxItem Content="Responses" />
+  </controls:CodexSelect>
+</controls:CodexField>

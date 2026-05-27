@@ -1,0 +1,97 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Interactive card event"
+                       Description="Pointer release on the card and footer action update different owned slots.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Click the interactive card or footer action." />
+        <controls:CodexCard IsInteractive="True"
+                            Title="Fallback routing"
+                            Description="Interactive card surface">
+          <StackPanel Spacing="8">
+            <primitives:CodexText Role="Body"
+                                  Text="Claude Sonnet is the current fallback."
+                                  TextWrapping="Wrap" />
+            <controls:CodexBadge Content="ready"
+                                 Variant="Success"
+                                 IsStatusVisible="True" />
+          </StackPanel>
+          <controls:CodexCard.Footer>
+            <controls:CodexButton Content="Configure"
+                                  Size="Small"
+                                  Variant="Secondary" />
+          </controls:CodexCard.Footer>
+        </controls:CodexCard>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Dynamic slots"
+                       Description="Header, content, and footer presence stay property-driven.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexCard Title="Dynamic slots"
+                            Description="Content and footer can be removed without replacing the card.">
+          <primitives:CodexText Role="Muted"
+                                Text="Content slot is currently visible."
+                                TextWrapping="Wrap" />
+          <controls:CodexCard.Footer>
+            <controls:CodexBadge Content="visible"
+                                 Variant="Secondary" />
+          </controls:CodexCard.Footer>
+        </controls:CodexCard>
+        <controls:CodexButton Content="Toggle slots"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Disabled action guard"
+                       Description="Footer actions can be disabled while card copy stays readable.">
+    <controls:CodexField.Content>
+      <controls:CodexCard Title="Paused provider"
+                          Description="The footer action is visible but locked.">
+        <primitives:CodexText Role="Muted"
+                              Text="Disabled hosts keep the same layout contract."
+                              TextWrapping="Wrap" />
+        <controls:CodexCard.Footer>
+          <controls:CodexButton Content="Resume"
+                                Size="Small"
+                                Variant="Secondary"
+                                IsEnabled="False" />
+        </controls:CodexCard.Footer>
+      </controls:CodexCard>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Dense composition"
+                       Description="Cards can host badges, metrics, and command surfaces without nested chrome.">
+    <controls:CodexField.Content>
+      <controls:CodexCard IsInteractive="True"
+                          Title="Budget window"
+                          Description="Last 24 hours">
+        <StackPanel Spacing="8">
+          <primitives:CodexText Role="Subtitle"
+                                Text="42.7K tokens" />
+          <controls:CodexProgress Value="66"
+                                  Variant="Success" />
+        </StackPanel>
+        <controls:CodexCard.Footer>
+          <controls:CodexBadge Content="66%"
+                               Variant="Success" />
+        </controls:CodexCard.Footer>
+      </controls:CodexCard>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

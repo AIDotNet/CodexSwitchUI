@@ -1,0 +1,84 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="16">
+  <StackPanel Spacing="8">
+    <controls:CodexSegmentedControl HorizontalAlignment="Left"
+                                    SelectedValue="code">
+      <StackPanel Orientation="Horizontal">
+        <controls:CodexSegmentedButton Content="Preview"
+                                       Value="preview" />
+        <controls:CodexSegmentedButton Content="Code"
+                                       Value="code"
+                                       IsSelected="True" />
+        <controls:CodexSegmentedButton Content="Events"
+                                       Value="events" />
+      </StackPanel>
+    </controls:CodexSegmentedControl>
+    <TextBlock Text="ValueChanged: code is selected."
+               Opacity="0.72" />
+    <TextBlock Text="Clicked segment clears siblings, emits ValueChanged, and moves the indicator."
+               Opacity="0.72" />
+  </StackPanel>
+
+  <StackPanel Grid.Column="1"
+              Spacing="8">
+    <controls:CodexSegmentedControl HorizontalAlignment="Left"
+                                    SelectedValue="dark">
+      <StackPanel Orientation="Horizontal">
+        <controls:CodexSegmentedButton Content="Light"
+                                       Value="light" />
+        <controls:CodexSegmentedButton Content="Dark"
+                                       Value="dark"
+                                       IsSelected="True" />
+        <controls:CodexSegmentedButton Content="System"
+                                       Value="system"
+                                       IsEnabled="False" />
+      </StackPanel>
+    </controls:CodexSegmentedControl>
+    <TextBlock Text="Disabled segments keep the current selected value."
+               Opacity="0.72" />
+  </StackPanel>
+
+  <StackPanel Grid.Row="1"
+              Spacing="8">
+    <controls:CodexSegmentedControl HorizontalAlignment="Left"
+                                    SelectedValue="24h">
+      <StackPanel Orientation="Horizontal">
+        <controls:CodexSegmentedButton Content="1h"
+                                       Value="1h" />
+        <controls:CodexSegmentedButton Content="24h"
+                                       Value="24h"
+                                       IsSelected="True" />
+        <controls:CodexSegmentedButton Content="7d"
+                                       Value="7d" />
+        <controls:CodexSegmentedButton Content="30d"
+                                       Value="30d" />
+      </StackPanel>
+    </controls:CodexSegmentedControl>
+    <TextBlock Text="Layout updates remeasure the selected segment bounds."
+               Opacity="0.72" />
+  </StackPanel>
+
+  <StackPanel Grid.Row="1"
+              Grid.Column="1"
+              Spacing="8">
+    <controls:CodexSegmentedControl HorizontalAlignment="Left"
+                                    SelectedValue="auto">
+      <StackPanel Orientation="Horizontal">
+        <controls:CodexSegmentedButton Content="Auto"
+                                       Value="auto"
+                                       IsSelected="True" />
+        <controls:CodexSegmentedButton Content="Manual"
+                                       Value="manual" />
+        <controls:CodexSegmentedButton Content="Off"
+                                       Value="off"
+                                       IsEnabled="False" />
+      </StackPanel>
+    </controls:CodexSegmentedControl>
+    <TextBlock Text="Command-backed segments can keep selection external."
+               Opacity="0.72" />
+  </StackPanel>
+</Grid>

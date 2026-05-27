@@ -1,0 +1,410 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexMenubar">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="Padding" Value="4" />
+    <Setter Property="MinHeight" Value="38" />
+    <Setter Property="ClipToBounds" Value="False" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="2" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexMenubar">
+        <Border x:Name="PART_Root"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <ItemsPresenter x:Name="PART_ItemsPresenter" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.vertical">
+    <Setter Property="MinWidth" Value="168" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Vertical"
+                    Spacing="2" />
+      </ItemsPanelTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.horizontal">
+    <Setter Property="MinWidth" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.loop">
+    <Setter Property="ClipToBounds" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.loading">
+    <Setter Property="Opacity" Value="0.84" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.open /template/ Border#PART_Root">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar MenuItem">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="MinHeight" Value="32" />
+    <Setter Property="Padding" Value="6,6" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Spacing="2" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem">
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexMenubarItem">
+        <Panel>
+          <Border x:Name="PART_ItemRoot"
+                  MinHeight="{TemplateBinding MinHeight}"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}"
+                  RenderTransform="none">
+            <Grid x:Name="PART_ItemGrid"
+                  ColumnDefinitions="22,*,Auto,16">
+              <Grid x:Name="PART_Indicator"
+                    Grid.Column="0"
+                    Width="16"
+                    Height="16"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <PathIcon x:Name="PART_Check"
+                          Width="13"
+                          Height="13"
+                          Foreground="{TemplateBinding Foreground}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Opacity="0"
+                          RenderTransform="scale(0.82)"
+                          Data="M4 10L8 14L16 5L17.5 6.5L8 17L2.5 11.5Z" />
+                <PathIcon x:Name="PART_Radio"
+                          Width="8"
+                          Height="8"
+                          Foreground="{TemplateBinding Foreground}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Opacity="0"
+                          RenderTransform="scale(0.82)"
+                          Data="M8 2C4.686 2 2 4.686 2 8C2 11.314 4.686 14 8 14C11.314 14 14 11.314C14 4.686 11.314 2 8 2Z" />
+              </Grid>
+
+              <ContentPresenter x:Name="PART_Icon"
+                                Grid.Column="0"
+                                Content="{TemplateBinding Icon}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+
+              <ContentPresenter x:Name="PART_Content"
+                                Grid.Column="1"
+                                Margin="4,0"
+                                Content="{TemplateBinding Header}"
+                                ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Center" />
+
+              <TextBlock x:Name="PART_Shortcut"
+                         Grid.Column="2"
+                         Text="{TemplateBinding Shortcut}"
+                         IsVisible="{TemplateBinding HasShortcut}"
+                         FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                         Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                         VerticalAlignment="Center" />
+
+              <PathIcon x:Name="PART_SubMenuArrow"
+                        Grid.Column="3"
+                        Width="13"
+                        Height="13"
+                        Margin="8,0,0,0"
+                        Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Opacity="0"
+                        RenderTransform="none"
+                        Data="M5 3L9 7L5 11L3.8 9.8L6.6 7L3.8 4.2Z" />
+            </Grid>
+          </Border>
+
+          <Popup x:Name="PART_Popup"
+                 WindowManagerAddShadowHint="False"
+                 IsOpen="{TemplateBinding IsSubMenuOpen, Mode=TwoWay}"
+                 PlacementTarget="PART_ItemRoot"
+                 Placement="RightEdgeAlignedTop"
+                 IsLightDismissEnabled="False"
+                 InheritsTransform="True">
+            <Border x:Name="PART_MenuSurface"
+                    MinWidth="176"
+                    MaxHeight="360"
+                    Margin="4,0,0,0"
+                    Padding="4"
+                    Background="{DynamicResource CodexSwitch.PopoverBrush}"
+                    BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                    Opacity="0"
+                    RenderTransform="translate(-6px, 0px) scale(0.96)"
+                    RenderTransformOrigin="0%,0%">
+              <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                            VerticalScrollBarVisibility="Auto"
+                            IsScrollChainingEnabled="False">
+                <ItemsPresenter x:Name="PART_MenuItemsPresenter"
+                                ItemsPanel="{TemplateBinding ItemsPanel}" />
+              </ScrollViewer>
+            </Border>
+          </Popup>
+        </Panel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem.top-level">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="MinHeight" Value="30" />
+    <Setter Property="Padding" Value="10,5" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarMenu,
+                   controls|CodexMenubar controls|CodexMenubarCheckboxItem.menubar-checkbox-item,
+                   controls|CodexMenubar controls|CodexMenubarRadioItem.menubar-radio-item">
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem.top-level /template/ Panel Border#PART_ItemRoot Grid#PART_ItemGrid Grid#PART_Indicator,
+                   controls|CodexMenubar controls|CodexMenubarItem.top-level /template/ Panel Border#PART_ItemRoot Grid#PART_ItemGrid ContentPresenter#PART_Icon,
+                   controls|CodexMenubar controls|CodexMenubarItem.top-level /template/ Panel Border#PART_ItemRoot Grid#PART_ItemGrid TextBlock#PART_Shortcut,
+                   controls|CodexMenubar controls|CodexMenubarItem.top-level /template/ Panel Border#PART_ItemRoot Grid#PART_ItemGrid PathIcon#PART_SubMenuArrow">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem.top-level /template/ Panel Border#PART_ItemRoot ContentPresenter#PART_Content">
+    <Setter Property="Margin" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem.top-level /template/ Panel Popup#PART_Popup">
+    <Setter Property="Placement" Value="BottomEdgeAlignedLeft" />
+    <Setter Property="IsLightDismissEnabled" Value="True" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem.top-level /template/ Panel Popup#PART_Popup Border#PART_MenuSurface">
+    <Setter Property="MinWidth" Value="208" />
+    <Setter Property="Margin" Value="0,6,0,0" />
+    <Setter Property="RenderTransform" Value="translate(0px, -6px) scale(0.96)" />
+    <Setter Property="RenderTransformOrigin" Value="0%,0%" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.vertical controls|CodexMenubarItem.top-level /template/ Panel Popup#PART_Popup">
+    <Setter Property="Placement" Value="RightEdgeAlignedTop" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.vertical controls|CodexMenubarItem.top-level /template/ Panel Popup#PART_Popup Border#PART_MenuSurface">
+    <Setter Property="Margin" Value="6,0,0,0" />
+    <Setter Property="RenderTransform" Value="translate(-6px, 0px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem /template/ Panel Border#PART_ItemRoot,
+                   controls|CodexMenubar controls|CodexMenubarItem /template/ Panel Popup#PART_Popup Border#PART_MenuSurface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem /template/ Panel Border#PART_ItemRoot PathIcon#PART_Check,
+                   controls|CodexMenubar controls|CodexMenubarItem /template/ Panel Border#PART_ItemRoot PathIcon#PART_Radio,
+                   controls|CodexMenubar controls|CodexMenubarItem /template/ Panel Border#PART_ItemRoot PathIcon#PART_SubMenuArrow">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexMenubar MenuItem:pointerover">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar MenuItem:pointerover /template/ Panel Border#PART_ItemRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar MenuItem:pressed /template/ Panel Border#PART_ItemRoot">
+    <Setter Property="RenderTransform" Value="none" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar MenuItem:focus-visible">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar MenuItem:focus-visible /template/ Panel Border#PART_ItemRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar MenuItem:selected">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar MenuItem:selected /template/ Panel Border#PART_ItemRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem.open /template/ Panel Border#PART_ItemRoot,
+                   controls|CodexMenubar controls|CodexMenubarItem:open /template/ Panel Border#PART_ItemRoot,
+                   controls|CodexMenubar controls|CodexMenubarItem.active-menu /template/ Panel Border#PART_ItemRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem.open /template/ Panel Popup#PART_Popup Border#PART_MenuSurface,
+                   controls|CodexMenubar controls|CodexMenubarItem:open /template/ Panel Popup#PART_Popup Border#PART_MenuSurface">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem.has-items.menu-content-item /template/ Panel Border#PART_ItemRoot PathIcon#PART_SubMenuArrow">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem.is-check.is-checked /template/ Panel Border#PART_ItemRoot PathIcon#PART_Check,
+                   controls|CodexMenubar controls|CodexMenubarItem.is-check:checked /template/ Panel Border#PART_ItemRoot PathIcon#PART_Check">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem.is-radio.is-checked /template/ Panel Border#PART_ItemRoot PathIcon#PART_Radio,
+                   controls|CodexMenubar controls|CodexMenubarItem.is-radio:checked /template/ Panel Border#PART_ItemRoot PathIcon#PART_Radio">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarItem:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.size-sm controls|CodexMenubarItem">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="MinHeight" Value="28" />
+    <Setter Property="Padding" Value="6,4" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.size-sm controls|CodexMenubarItem.top-level">
+    <Setter Property="Padding" Value="8,4" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.size-lg controls|CodexMenubarItem">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+    <Setter Property="MinHeight" Value="36" />
+    <Setter Property="Padding" Value="8,8" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.size-lg controls|CodexMenubarItem.top-level">
+    <Setter Property="Padding" Value="12,7" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar.size-icon controls|CodexMenubarItem.top-level">
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarSeparator">
+    <Setter Property="Height" Value="1" />
+    <Setter Property="Margin" Value="6,4" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexMenubarSeparator">
+        <Border Height="{TemplateBinding Height}"
+                Margin="{TemplateBinding Margin}"
+                Background="{TemplateBinding Background}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexMenubar controls|CodexMenubarGroup">
+    <Setter Property="Margin" Value="0,4,0,0" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexMenubarGroup">
+        <StackPanel x:Name="PART_Group"
+                    Margin="{TemplateBinding Margin}">
+          <ContentPresenter x:Name="PART_GroupHeader"
+                            Content="{TemplateBinding Header}"
+                            Margin="8,6,8,4"
+                            FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                            FontWeight="SemiBold"
+                            Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+          <ItemsPresenter x:Name="PART_GroupItems"
+                          ItemsPanel="{TemplateBinding ItemsPanel}" />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexMenubarLabel">
+    <Setter Property="Padding" Value="8,6,8,4" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexMenubarLabel">
+        <ContentPresenter x:Name="PART_Label"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                          Padding="{TemplateBinding Padding}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

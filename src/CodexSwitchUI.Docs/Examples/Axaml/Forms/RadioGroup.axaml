@@ -1,0 +1,11 @@
+<controls:CodexRadioGroup xmlns="https://github.com/avaloniaui"
+                          xmlns:controls="using:CodexSwitchUI.Controls"
+                          RadioGroupName="docs-radio-group-routing"
+                          SelectedValue="fast">
+  <controls:CodexRadioGroupItem Value="fast"
+                                Content="Use fastest healthy provider" />
+  <controls:CodexRadioGroupItem Value="cost"
+                                Content="Prefer lowest cost" />
+  <controls:CodexRadioGroupItem Value="pin"
+                                Content="Pin selected provider" />
+</controls:CodexRadioGroup>

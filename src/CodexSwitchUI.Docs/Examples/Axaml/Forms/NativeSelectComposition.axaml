@@ -1,0 +1,37 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexField Label="Department"
+                       Description="OptGroup headers are rendered as disabled native-select rows.">
+    <controls:CodexNativeSelect SelectedIndex="1"
+                                MinWidth="280">
+      <controls:CodexNativeSelectOptGroup Label="Engineering" />
+      <controls:CodexNativeSelectOption Value="frontend"
+                                        Content="Frontend" />
+      <controls:CodexNativeSelectOption Value="backend"
+                                        Content="Backend" />
+      <controls:CodexNativeSelectOption Value="devops"
+                                        Content="DevOps" />
+      <controls:CodexNativeSelectOptGroup Label="Sales" />
+      <controls:CodexNativeSelectOption Value="rep"
+                                        Content="Sales Rep" />
+      <controls:CodexNativeSelectOption Value="director"
+                                        Content="Sales Director" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+
+  <controls:CodexInputGroup Intent="Warning"
+                            Size="Small">
+    <controls:CodexInputGroupAddon Content="Route" />
+    <controls:CodexNativeSelect SelectedIndex="2"
+                                MinWidth="150">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Select route" />
+      <controls:CodexNativeSelectOption Value="primary"
+                                        Content="Primary" />
+      <controls:CodexNativeSelectOption Value="fallback"
+                                        Content="Fallback" />
+    </controls:CodexNativeSelect>
+    <controls:CodexInputGroupButton Content="Apply" />
+  </controls:CodexInputGroup>
+</StackPanel>

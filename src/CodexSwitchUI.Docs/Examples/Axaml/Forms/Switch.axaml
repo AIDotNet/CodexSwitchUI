@@ -1,0 +1,13 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexField Label="Streaming"
+                       Description="Checked thumb motion follows the Web switch transition.">
+    <controls:CodexSwitch IsChecked="True" />
+  </controls:CodexField>
+
+  <controls:CodexField Label="Fallback routing">
+    <controls:CodexSwitch Intent="Warning"
+                          Size="Large" />
+  </controls:CodexField>
+</StackPanel>

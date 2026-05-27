@@ -1,0 +1,59 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="16">
+  <controls:CodexMenubar Size="Small"
+                         Loop="True">
+    <controls:CodexMenubarMenu Header="File"
+                                IsSubMenuOpen="True">
+      <controls:CodexMenubarItem Header="Active item"
+                                 Shortcut="Cmd+T"
+                                 IsActive="True" />
+      <controls:CodexMenubarCheckboxItem Header="Checked item"
+                                         IsChecked="True" />
+      <controls:CodexMenubarRadioItem Header="Radio item"
+                                      IsChecked="True" />
+      <controls:CodexMenubarSeparator />
+      <controls:CodexMenubarItem Header="Open submenu"
+                                 IsSubMenuOpen="True">
+        <controls:CodexMenubarItem Header="JSON" />
+        <controls:CodexMenubarItem Header="Markdown"
+                                   IsEnabled="False" />
+      </controls:CodexMenubarItem>
+    </controls:CodexMenubarMenu>
+    <controls:CodexMenubarMenu Header="Disabled"
+                                IsEnabled="False">
+      <controls:CodexMenubarItem Header="Unavailable command" />
+    </controls:CodexMenubarMenu>
+  </controls:CodexMenubar>
+
+  <controls:CodexMenubar Grid.Column="1"
+                         IsLoading="True">
+    <controls:CodexMenubarMenu Header="File">
+      <controls:CodexMenubarItem Header="Loading suppresses activation" />
+    </controls:CodexMenubarMenu>
+    <controls:CodexMenubarMenu Header="View">
+      <controls:CodexMenubarCheckboxItem Header="Locked checked"
+                                         IsChecked="True" />
+    </controls:CodexMenubarMenu>
+  </controls:CodexMenubar>
+
+  <controls:CodexMenubar Grid.Row="1"
+                         Orientation="Vertical"
+                         Size="Small">
+    <controls:CodexMenubarMenu Header="Profiles"
+                                IsSubMenuOpen="True">
+      <controls:CodexMenubarRadioItem Header="Balanced"
+                                      IsChecked="True" />
+      <controls:CodexMenubarRadioItem Header="Reasoning" />
+      <controls:CodexMenubarSeparator />
+      <controls:CodexMenubarItem Header="Edit profiles" />
+    </controls:CodexMenubarMenu>
+    <controls:CodexMenubarMenu Header="Window">
+      <controls:CodexMenubarItem Header="Minimize" />
+      <controls:CodexMenubarItem Header="Zoom" />
+    </controls:CodexMenubarMenu>
+  </controls:CodexMenubar>
+</Grid>

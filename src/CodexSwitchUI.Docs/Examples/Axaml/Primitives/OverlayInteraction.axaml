@@ -1,0 +1,105 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Dismiss and reopen"
+                       Description="Buttons, Escape, and outside pointer converge through the overlay dismiss command.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Overlay is open with Escape and outside-pointer dismissal enabled." />
+        <Grid Height="188">
+          <primitives:CodexOverlay IsOpen="True"
+                                   CloseOnEscape="True"
+                                   DismissOnOutsidePointer="True"
+                                   HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center">
+            <controls:CodexCard Width="260"
+                                Title="Dismissible layer"
+                                Description="Shared dismiss path for buttons, Escape, and outside pointer.">
+              <controls:CodexButton Content="Dismiss"
+                                    Size="Small"
+                                    Variant="Secondary" />
+            </controls:CodexCard>
+          </primitives:CodexOverlay>
+        </Grid>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Reopen"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Toggle scrim"
+                                Size="Small"
+                                Variant="Ghost" />
+          <controls:CodexButton Content="Manual policy"
+                                Size="Small"
+                                Variant="Ghost" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Manual policy"
+                       Description="Host-managed layers can disable Escape and outside-pointer dismissal.">
+    <controls:CodexField.Content>
+      <Grid Height="160">
+        <primitives:CodexOverlay IsOpen="True"
+                                 CloseOnEscape="False"
+                                 DismissOnOutsidePointer="False"
+                                 HorizontalContentAlignment="Center"
+                                 VerticalContentAlignment="Center">
+          <controls:CodexCard Width="230"
+                              Title="Manual close"
+                              Description="Close policy is owned by the host.">
+            <controls:CodexButton Content="Apply"
+                                  Size="Small" />
+          </controls:CodexCard>
+        </primitives:CodexOverlay>
+      </Grid>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="No scrim"
+                       Description="The content layer can stay open while scrim rendering is disabled.">
+    <controls:CodexField.Content>
+      <Grid Height="150">
+        <primitives:CodexOverlay IsOpen="True"
+                                 IsScrimVisible="False"
+                                 HorizontalContentAlignment="Center"
+                                 VerticalContentAlignment="Center">
+          <controls:CodexCard Width="220"
+                              Title="Inline layer"
+                              Description="Scrim slot removed.">
+            <controls:CodexButton Content="Continue"
+                                  Size="Small" />
+          </controls:CodexCard>
+        </primitives:CodexOverlay>
+      </Grid>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Closed state"
+                       Description="Closed overlays keep the primitive mounted while disabling hit testing.">
+    <controls:CodexField.Content>
+      <Grid Height="150">
+        <primitives:CodexOverlay IsOpen="False"
+                                 HorizontalContentAlignment="Center"
+                                 VerticalContentAlignment="Center">
+          <controls:CodexCard Width="220"
+                              Title="Closed"
+                              Description="Opacity transitions to zero.">
+            <controls:CodexButton Content="Hidden"
+                                  Size="Small" />
+          </controls:CodexCard>
+        </primitives:CodexOverlay>
+      </Grid>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

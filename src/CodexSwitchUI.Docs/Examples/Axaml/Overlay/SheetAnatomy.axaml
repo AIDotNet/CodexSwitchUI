@@ -1,0 +1,49 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexSheet Title="Edit provider"
+                       Description="Header, body, close control, and action footer mirror SheetContent composition."
+                       Side="Right"
+                       IsOpen="True"
+                       Width="360">
+    <controls:CodexSheet.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexField Label="Display name">
+          <controls:CodexTextBox Text="OpenAI" />
+        </controls:CodexField>
+        <controls:CodexField Label="Notes">
+          <controls:CodexTextarea MinHeight="72"
+                                  Text="Primary production route." />
+        </controls:CodexField>
+        <controls:CodexSeparator />
+      </StackPanel>
+    </controls:CodexSheet.Content>
+    <controls:CodexSheet.Action>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8"
+                  HorizontalAlignment="Right">
+        <controls:CodexButton Content="Cancel"
+                              Variant="Secondary"
+                              Size="Small" />
+        <controls:CodexButton Content="Save"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexSheet.Action>
+  </controls:CodexSheet>
+
+  <controls:CodexSheet Grid.Column="1"
+                       Title="Compact sheet"
+                       Description="Close content can expose the keyboard affordance while the footer stays optional."
+                       Side="Bottom"
+                       IsOpen="True"
+                       CloseContent="Esc">
+    <StackPanel Spacing="8">
+      <controls:CodexBadge Content="manual review"
+                           Variant="Warning" />
+      <primitives:CodexText Role="Muted"
+                            Text="Bottom sheets work for focused action groups and mobile-sized workflows." />
+    </StackPanel>
+  </controls:CodexSheet>
+</Grid>

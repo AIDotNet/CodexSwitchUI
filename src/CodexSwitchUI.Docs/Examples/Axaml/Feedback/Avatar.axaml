@@ -1,0 +1,17 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Orientation="Horizontal"
+            Spacing="12">
+  <controls:CodexAvatar Fallback="CS"
+                        ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                        IsStatusVisible="True" />
+  <controls:CodexAvatar Fallback="AI"
+                        ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                        Variant="Default"
+                        StatusVariant="Warning"
+                        IsStatusVisible="True"
+                        Size="Large" />
+  <controls:CodexAvatar Fallback="OP"
+                        Variant="Outline"
+                        Size="Small" />
+</StackPanel>

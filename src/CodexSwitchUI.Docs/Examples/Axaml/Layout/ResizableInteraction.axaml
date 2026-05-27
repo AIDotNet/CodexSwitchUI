@@ -1,0 +1,32 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="16">
+  <controls:CodexResizablePanelGroup Width="640"
+                                     Height="220"
+                                     Orientation="Horizontal">
+    <controls:CodexResizablePanel DefaultSize="30"
+                                  MinSize="20"
+                                  MaxSize="60">
+      <TextBlock Text="Focus the handle, then use Left or Right." />
+    </controls:CodexResizablePanel>
+    <controls:CodexResizableHandle WithHandle="True" />
+    <controls:CodexResizablePanel DefaultSize="70"
+                                  MinSize="35">
+      <TextBlock Text="LayoutChanged publishes the new percentages." />
+    </controls:CodexResizablePanel>
+  </controls:CodexResizablePanelGroup>
+
+  <controls:CodexResizablePanelGroup Width="640"
+                                     Height="220"
+                                     Orientation="Vertical">
+    <controls:CodexResizablePanel DefaultSize="40"
+                                  MinSize="25">
+      <TextBlock Text="Use Up or Down for vertical resizing." />
+    </controls:CodexResizablePanel>
+    <controls:CodexResizableHandle WithHandle="True" />
+    <controls:CodexResizablePanel DefaultSize="60"
+                                  MinSize="30">
+      <TextBlock Text="PageUp, PageDown, Home, and End share the same resize path." />
+    </controls:CodexResizablePanel>
+  </controls:CodexResizablePanelGroup>
+</StackPanel>

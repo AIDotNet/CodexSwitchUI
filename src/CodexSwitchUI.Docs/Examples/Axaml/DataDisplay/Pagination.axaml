@@ -1,0 +1,12 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="16">
+  <controls:CodexPagination Page="4"
+                            PageCount="18"
+                            SiblingCount="1"
+                            BoundaryCount="1" />
+  <controls:CodexPagination Page="8"
+                            PageCount="18"
+                            IsLoading="True"
+                            Size="Small" />
+</StackPanel>

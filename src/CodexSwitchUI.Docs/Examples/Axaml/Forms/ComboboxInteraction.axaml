@@ -1,0 +1,65 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Auto highlight"
+                       Description="Arrow keys move the highlighted item; Enter commits it and reports keyboard source metadata.">
+    <controls:CodexCombobox Text="n"
+                            IsOpen="True"
+                            AutoHighlight="True"
+                            MinWidth="240">
+      <x:String>Next.js</x:String>
+      <x:String>SvelteKit</x:String>
+      <x:String>Nuxt.js</x:String>
+      <x:String>Remix</x:String>
+      <x:String>Astro</x:String>
+    </controls:CodexCombobox>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Clear button"
+                       Description="Clear resets selected value and input text while reporting clear source metadata.">
+    <controls:CodexCombobox SelectedItem="SvelteKit"
+                            IsClearVisible="True"
+                            MinWidth="240">
+      <x:String>Next.js</x:String>
+      <x:String>SvelteKit</x:String>
+      <x:String>Nuxt.js</x:String>
+      <x:String>Remix</x:String>
+      <x:String>Astro</x:String>
+    </controls:CodexCombobox>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Manual close"
+                       Description="CloseOnSelect can be disabled for batch review flows.">
+    <controls:CodexCombobox Text="re"
+                            IsOpen="True"
+                            CloseOnSelect="False"
+                            MinWidth="240">
+      <x:String>Next.js</x:String>
+      <x:String>SvelteKit</x:String>
+      <x:String>Nuxt.js</x:String>
+      <x:String>Remix</x:String>
+      <x:String>Astro</x:String>
+    </controls:CodexCombobox>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Loading"
+                       Description="Loading suppresses open and selection changes.">
+    <controls:CodexCombobox IsLoading="True"
+                            LoadingContent="Loading frameworks..."
+                            MinWidth="240">
+      <x:String>Next.js</x:String>
+      <x:String>SvelteKit</x:String>
+      <x:String>Nuxt.js</x:String>
+      <x:String>Remix</x:String>
+      <x:String>Astro</x:String>
+    </controls:CodexCombobox>
+  </controls:CodexField>
+</Grid>

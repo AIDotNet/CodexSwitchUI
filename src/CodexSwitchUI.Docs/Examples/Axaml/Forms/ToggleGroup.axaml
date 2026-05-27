@@ -1,0 +1,32 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexField Label="Text alignment"
+                       Description="Single-value groups clear sibling pressed items.">
+    <controls:CodexToggleGroup Variant="Outline"
+                               Spacing="0"
+                               SelectedValue="center">
+      <controls:CodexToggleGroupItem Content="Left"
+                                     Value="left" />
+      <controls:CodexToggleGroupItem Content="Center"
+                                     Value="center" />
+      <controls:CodexToggleGroupItem Content="Right"
+                                     Value="right" />
+    </controls:CodexToggleGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Label="Formatting"
+                       Description="Multiple-value groups keep independent pressed states.">
+    <controls:CodexToggleGroup Type="Multiple"
+                               Variant="Outline">
+      <controls:CodexToggleGroupItem Content="Bold"
+                                     Value="bold"
+                                     IsPressed="True" />
+      <controls:CodexToggleGroupItem Content="Italic"
+                                     Value="italic"
+                                     IsPressed="True" />
+      <controls:CodexToggleGroupItem Content="Underline"
+                                     Value="underline" />
+    </controls:CodexToggleGroup>
+  </controls:CodexField>
+</StackPanel>

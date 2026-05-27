@@ -1,0 +1,19 @@
+<controls:CodexContextMenu xmlns="https://github.com/avaloniaui"
+                           xmlns:controls="using:CodexSwitchUI.Controls"
+                           Classes="context-menu-open"
+                           Placement="Right"
+                           MinWidth="220">
+  <controls:CodexContextMenuLabel Content="Session" />
+  <controls:CodexContextMenuItem Header="Open in new window"
+                                 Shortcut="Cmd+O"
+                                 IsActive="True" />
+  <controls:CodexContextMenuItem Header="Pinned"
+                                 ToggleType="CheckBox"
+                                 IsChecked="True" />
+  <controls:CodexContextMenuSeparator />
+  <controls:CodexContextMenuItem Header="Move to"
+                                 IsSubMenuOpen="True">
+    <controls:CodexContextMenuItem Header="Archive" />
+    <controls:CodexContextMenuItem Header="Favorites" />
+  </controls:CodexContextMenuItem>
+</controls:CodexContextMenu>

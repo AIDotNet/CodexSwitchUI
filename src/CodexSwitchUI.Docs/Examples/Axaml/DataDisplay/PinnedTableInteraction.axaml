@@ -1,0 +1,87 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            x:CompileBindings="False"
+            Spacing="12">
+  <primitives:CodexText Role="Muted"
+                        Text="Horizontal body scroll synchronizes the middle header." />
+  <controls:CodexPinnedTable Width="650"
+                             Height="220"
+                             StartColumnWidth="150"
+                             EndColumnWidth="132"
+                             MiddleMinWidth="620"
+                             ItemsSource="{Binding ProviderRows}"
+                             TransitionKey="providers-live">
+    <controls:CodexPinnedTable.StartHeader>
+      <controls:CodexTableHead Content="Provider" />
+    </controls:CodexPinnedTable.StartHeader>
+
+    <controls:CodexPinnedTable.MiddleHeader>
+      <Grid ColumnDefinitions="1.5*,*,*,*">
+        <controls:CodexTableHead Content="Model" />
+        <controls:CodexTableHead Grid.Column="1"
+                                 Content="Tokens"
+                                 Alignment="Right" />
+        <controls:CodexTableHead Grid.Column="2"
+                                 Content="Cost"
+                                 Alignment="Right" />
+        <controls:CodexTableHead Grid.Column="3"
+                                 Content="Fallback" />
+      </Grid>
+    </controls:CodexPinnedTable.MiddleHeader>
+
+    <controls:CodexPinnedTable.EndHeader>
+      <controls:CodexTableHead Content="Status"
+                               Alignment="Right" />
+    </controls:CodexPinnedTable.EndHeader>
+
+    <controls:CodexPinnedTable.StartCellTemplate>
+      <DataTemplate>
+        <controls:CodexTableRow IsSelected="{Binding IsActive}">
+          <controls:CodexTableCell Content="{Binding Name}" />
+        </controls:CodexTableRow>
+      </DataTemplate>
+    </controls:CodexPinnedTable.StartCellTemplate>
+
+    <controls:CodexPinnedTable.MiddleCellTemplate>
+      <DataTemplate>
+        <controls:CodexTableRow IsSelected="{Binding IsActive}">
+          <Grid ColumnDefinitions="1.5*,*,*,*">
+            <controls:CodexTableCell Content="{Binding Model}" />
+            <controls:CodexTableCell Grid.Column="1"
+                                     Content="{Binding Tokens}"
+                                     Alignment="Right" />
+            <controls:CodexTableCell Grid.Column="2"
+                                     Content="{Binding Cost}"
+                                     Alignment="Right" />
+            <controls:CodexTableCell Grid.Column="3"
+                                     Content="{Binding Fallback}" />
+          </Grid>
+        </controls:CodexTableRow>
+      </DataTemplate>
+    </controls:CodexPinnedTable.MiddleCellTemplate>
+
+    <controls:CodexPinnedTable.EndCellTemplate>
+      <DataTemplate>
+        <controls:CodexTableRow IsSelected="{Binding IsActive}">
+          <controls:CodexTableCell Alignment="Right">
+            <controls:CodexBadge Content="{Binding Status}"
+                                 Variant="Secondary"
+                                 HorizontalAlignment="Right" />
+          </controls:CodexTableCell>
+        </controls:CodexTableRow>
+      </DataTemplate>
+    </controls:CodexPinnedTable.EndCellTemplate>
+  </controls:CodexPinnedTable>
+
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexButton Content="Refresh data"
+                          Size="Small"
+                          Variant="Secondary" />
+    <controls:CodexButton Content="Toggle density"
+                          Size="Small"
+                          Variant="Ghost" />
+  </StackPanel>
+</StackPanel>

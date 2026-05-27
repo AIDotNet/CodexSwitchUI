@@ -1,0 +1,46 @@
+<controls:CodexChartContainer xmlns="https://github.com/avaloniaui"
+                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                              xmlns:controls="using:CodexSwitchUI.Controls"
+                              Width="660"
+                              x:CompileBindings="False"
+                              Title="Line chart anatomy"
+                              Description="Grid, area fill, smoothed line, dots, active point, tooltip, and footer stay component-owned.">
+  <controls:CodexChartContainer.Legend>
+    <controls:CodexChartLegend>
+      <controls:CodexChartLegendItem Content="Tokens"
+                                     Value="71.5K"
+                                     IndicatorStyle="Line"
+                                     IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+      <controls:CodexChartLegendItem Content="Cache hit"
+                                     Value="67%"
+                                     IndicatorStyle="Dot"
+                                     IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+    </controls:CodexChartLegend>
+  </controls:CodexChartContainer.Legend>
+
+  <controls:CodexChartContainer.Tooltip>
+    <controls:CodexChartTooltipContent Label="Active point"
+                                       IndicatorStyle="Line">
+      <controls:CodexChartTooltipItem Content="Value"
+                                      Value="12.8K"
+                                      IndicatorStyle="Line"
+                                      IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    </controls:CodexChartTooltipContent>
+  </controls:CodexChartContainer.Tooltip>
+
+  <controls:CodexChartContainer.Footer>
+    <StackPanel Orientation="Horizontal"
+                Spacing="10">
+      <controls:CodexBadge Content="ItemsSource"
+                           Variant="Secondary" />
+      <controls:CodexBadge Content="ActivePointChanged"
+                           Variant="Outline" />
+      <controls:CodexBadge Content="AnimationDuration"
+                           Variant="Outline" />
+    </StackPanel>
+  </controls:CodexChartContainer.Footer>
+
+  <controls:CodexLineChart Width="580"
+                           ActiveIndex="3"
+                           ItemsSource="{Binding LineChartBurstItems}" />
+</controls:CodexChartContainer>

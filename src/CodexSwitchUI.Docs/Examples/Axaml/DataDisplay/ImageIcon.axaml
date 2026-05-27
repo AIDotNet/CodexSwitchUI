@@ -1,0 +1,42 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*,*"
+      ColumnSpacing="14">
+  <controls:CodexCard Title="OpenAI"
+                      Description="Resource icon">
+    <StackPanel Spacing="10">
+      <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                               Width="40"
+                               Height="40" />
+      <TextBlock Text="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                 TextWrapping="Wrap"
+                 Opacity="0.72" />
+    </StackPanel>
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="1"
+                      Title="Claude"
+                      Description="Provider identity">
+    <StackPanel Spacing="10">
+      <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                               Width="40"
+                               Height="40" />
+      <TextBlock Text="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                 TextWrapping="Wrap"
+                 Opacity="0.72" />
+    </StackPanel>
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="2"
+                      Title="Codex"
+                      Description="App route">
+    <StackPanel Spacing="10">
+      <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/codex-color.png"
+                               Width="40"
+                               Height="40" />
+      <TextBlock Text="avares://CodexSwitchUI.Docs/Assets/icons/codex-color.png"
+                 TextWrapping="Wrap"
+                 Opacity="0.72" />
+    </StackPanel>
+  </controls:CodexCard>
+</Grid>

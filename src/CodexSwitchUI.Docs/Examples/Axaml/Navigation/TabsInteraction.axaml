@@ -1,0 +1,102 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <StackPanel Spacing="8">
+    <controls:CodexTabs SelectedIndex="1"
+                        SelectedValue="code">
+      <controls:CodexTabItem Header="Preview"
+                             Value="preview">
+        <primitives:CodexText Text="Preview content"
+                              Role="Muted" />
+      </controls:CodexTabItem>
+      <controls:CodexTabItem Header="Code"
+                             Value="code">
+        <primitives:CodexText Text="Arrow keys move selection."
+                              Role="Muted" />
+      </controls:CodexTabItem>
+      <controls:CodexTabItem Header="Disabled"
+                             Value="disabled"
+                             IsEnabled="False">
+        <primitives:CodexText Text="Skipped by navigation."
+                              Role="Muted" />
+      </controls:CodexTabItem>
+      <controls:CodexTabItem Header="Events"
+                             Value="events">
+        <primitives:CodexText Text="End selects the final enabled tab."
+                              Role="Muted" />
+      </controls:CodexTabItem>
+    </controls:CodexTabs>
+    <primitives:CodexText Text="ValueChanged updates this status."
+                          Role="Muted" />
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexButton Content="Preview"
+                            Size="Small"
+                            Variant="Secondary" />
+      <controls:CodexButton Content="Events"
+                            Size="Small"
+                            Variant="Secondary" />
+    </StackPanel>
+  </StackPanel>
+
+  <StackPanel Grid.Column="1"
+              Spacing="8">
+    <controls:CodexTabs Variant="Line"
+                        ActivationMode="Manual"
+                        SelectedValue="home">
+      <controls:CodexTabItem Header="Home"
+                             Value="home" />
+      <controls:CodexTabItem Header="State"
+                             Value="state" />
+      <controls:CodexTabItem Header="Disabled"
+                             Value="disabled"
+                             IsEnabled="False" />
+      <controls:CodexTabItem Header="End"
+                             Value="end" />
+    </controls:CodexTabs>
+    <primitives:CodexText Text="Manual activation keeps value on home until Enter or Space."
+                          Role="Muted" />
+  </StackPanel>
+
+  <controls:CodexTabs Grid.Row="1"
+                      Orientation="Vertical"
+                      SelectedIndex="1"
+                      SelectedValue="selected">
+    <controls:CodexTabItem Header="Up"
+                           Value="up" />
+    <controls:CodexTabItem Header="Selected"
+                           Value="selected" />
+    <controls:CodexTabItem Header="Disabled"
+                           Value="disabled"
+                           IsEnabled="False" />
+    <controls:CodexTabItem Header="Down"
+                           Value="down" />
+  </controls:CodexTabs>
+
+  <controls:CodexTabs Grid.Row="1"
+                      Grid.Column="1"
+                      Size="Small"
+                      IsLoop="False"
+                      SelectedIndex="0"
+                      SelectedValue="first">
+    <controls:CodexTabItem Header="Enter"
+                           Value="first">
+      <controls:CodexButton Content="Activated"
+                            Size="Small" />
+    </controls:CodexTabItem>
+    <controls:CodexTabItem Header="Space"
+                           Value="second">
+      <primitives:CodexText Text="Space follows the same selection path."
+                            Role="Muted" />
+    </controls:CodexTabItem>
+    <controls:CodexTabItem Header="Boundary"
+                           Value="boundary">
+      <primitives:CodexText Text="Loop disabled stops at the boundary."
+                            Role="Muted" />
+    </controls:CodexTabItem>
+  </controls:CodexTabs>
+</Grid>

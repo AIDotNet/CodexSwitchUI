@@ -1,0 +1,77 @@
+<controls:CodexSidebarProvider xmlns="https://github.com/avaloniaui"
+                               xmlns:controls="using:CodexSwitchUI.Controls">
+  <Grid ColumnDefinitions="260,Auto,*"
+        ColumnSpacing="10"
+        Height="360">
+    <controls:CodexSidebar Variant="Inset"
+                           Collapsible="Offcanvas">
+      <StackPanel>
+        <controls:CodexSidebarHeader>
+          <StackPanel Spacing="2">
+            <TextBlock Text="CodexSwitch"
+                       FontWeight="SemiBold" />
+            <TextBlock Text="Workspace"
+                       Opacity="0.72" />
+          </StackPanel>
+        </controls:CodexSidebarHeader>
+
+        <controls:CodexSidebarContent>
+          <StackPanel Spacing="14">
+            <controls:CodexSidebarGroup>
+              <StackPanel Spacing="5">
+                <controls:CodexSidebarGroupLabel Content="Platform" />
+                <controls:CodexSidebarMenuButton Content="Providers"
+                                                 Icon="P"
+                                                 Badge="12"
+                                                 IsActive="True" />
+                <controls:CodexSidebarMenuButton Content="Sessions"
+                                                 Icon="S"
+                                                 Badge="Live" />
+                <controls:CodexSidebarMenuButton Content="Usage"
+                                                 Icon="U" />
+              </StackPanel>
+            </controls:CodexSidebarGroup>
+
+            <controls:CodexSidebarGroup>
+              <StackPanel Spacing="5">
+                <controls:CodexSidebarGroupLabel Content="Settings" />
+                <controls:CodexSidebarMenuButton Content="Routing"
+                                                 Icon="R" />
+                <controls:CodexSidebarMenuButton Content="Security"
+                                                 Icon="L"
+                                                 IsEnabled="False" />
+              </StackPanel>
+            </controls:CodexSidebarGroup>
+          </StackPanel>
+        </controls:CodexSidebarContent>
+
+        <controls:CodexSidebarFooter>
+          <controls:CodexButton Content="New provider"
+                                Size="Small"
+                                HorizontalAlignment="Stretch" />
+        </controls:CodexSidebarFooter>
+      </StackPanel>
+    </controls:CodexSidebar>
+
+    <controls:CodexSidebarRail Grid.Column="1" />
+
+    <controls:CodexSidebarInset Grid.Column="2">
+      <controls:CodexSection Title="Sidebar provider"
+                             Description="Trigger, rail, and inset share provider state.">
+        <controls:CodexSection.Actions>
+          <controls:CodexSidebarTrigger Content="Toggle" />
+        </controls:CodexSection.Actions>
+        <Grid ColumnDefinitions="*,*"
+              ColumnSpacing="12">
+          <controls:CodexStatCard Label="State"
+                                  Value="expanded"
+                                  Detail="Provider" />
+          <controls:CodexStatCard Grid.Column="1"
+                                  Label="Mode"
+                                  Value="inset"
+                                  Detail="variant" />
+        </Grid>
+      </controls:CodexSection>
+    </controls:CodexSidebarInset>
+  </Grid>
+</controls:CodexSidebarProvider>

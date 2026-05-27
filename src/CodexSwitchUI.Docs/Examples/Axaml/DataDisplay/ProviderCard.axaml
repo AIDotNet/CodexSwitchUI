@@ -1,0 +1,22 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="10">
+  <controls:CodexProviderCard Header="OpenAI"
+                              Meta="Active"
+                              Description="Primary Responses route"
+                              Icon="O"
+                              Status="Healthy"
+                              Usage="42.7K"
+                              IsActive="True" />
+  <controls:CodexProviderCard Header="Claude"
+                              Meta="Ready"
+                              Description="Fallback route"
+                              Icon="C"
+                              Status="Healthy"
+                              Usage="7.1K" />
+  <controls:CodexProviderCard Header="Local proxy"
+                              Description="Disabled until credentials are added"
+                              Icon="L"
+                              Status="Locked"
+                              IsEnabled="False" />
+</StackPanel>

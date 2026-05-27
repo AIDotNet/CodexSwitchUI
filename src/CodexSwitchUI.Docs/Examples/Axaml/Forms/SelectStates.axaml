@@ -1,0 +1,48 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Selected">
+    <controls:CodexSelect SelectedIndex="1"
+                          MinWidth="220">
+      <x:String>OpenAI</x:String>
+      <x:String>Claude</x:String>
+      <x:String>Responses</x:String>
+    </controls:CodexSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Warning"
+                       Message="Fallback provider selected."
+                       Intent="Warning">
+    <controls:CodexSelect SelectedIndex="1"
+                          Intent="Warning"
+                          MinWidth="220">
+      <x:String>Primary</x:String>
+      <x:String>Fallback</x:String>
+    </controls:CodexSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Small">
+    <controls:CodexSelect SelectedIndex="0"
+                          Size="Small"
+                          MinWidth="220">
+      <x:String>Small</x:String>
+      <x:String>Medium</x:String>
+    </controls:CodexSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled">
+    <controls:CodexSelect SelectedIndex="0"
+                          IsEnabled="False"
+                          MinWidth="220">
+      <x:String>Locked</x:String>
+    </controls:CodexSelect>
+  </controls:CodexField>
+</Grid>

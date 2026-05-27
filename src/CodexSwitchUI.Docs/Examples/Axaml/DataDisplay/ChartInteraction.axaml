@@ -1,0 +1,72 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            x:CompileBindings="False"
+            Spacing="12">
+  <primitives:CodexText Role="Muted"
+                        Text="Host state can refresh data, open or close the tooltip, change legend orientation, switch indicator geometry, and adjust density." />
+
+  <controls:CodexChartContainer Width="640"
+                                Title="Interactive chart"
+                                Description="Chart helpers keep Web-style config surfaces mounted while chart data changes."
+                                IsRefreshing="True"
+                                TransitionKey="chart-burst">
+    <controls:CodexChartContainer.Legend>
+      <controls:CodexChartLegend Orientation="Vertical">
+        <controls:CodexChartLegendItem Content="Desktop"
+                                       Value="7,324"
+                                       IndicatorStyle="Square"
+                                       IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+        <controls:CodexChartLegendItem Content="Mobile"
+                                       Value="7,250"
+                                       IndicatorStyle="Square"
+                                       IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+      </controls:CodexChartLegend>
+    </controls:CodexChartContainer.Legend>
+
+    <controls:CodexChartContainer.Tooltip>
+      <controls:CodexChartTooltipContent Label="Burst dataset"
+                                         IndicatorStyle="Square">
+        <controls:CodexChartTooltipItem Content="Desktop"
+                                        Value="51.2K"
+                                        IndicatorStyle="Square"
+                                        IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+        <controls:CodexChartTooltipItem Content="Mobile"
+                                        Value="21.9K"
+                                        IndicatorStyle="Square"
+                                        IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+      </controls:CodexChartTooltipContent>
+    </controls:CodexChartContainer.Tooltip>
+
+    <controls:CodexUsagePieChart Width="500"
+                                 Height="250"
+                                 TotalLabel="Tokens"
+                                 TotalValue="90.4K"
+                                 ItemsSource="{Binding UsageBurstItems}" />
+
+    <controls:CodexChartContainer.Footer>
+      <primitives:CodexText Role="Muted"
+                            Text="TransitionKey changes on data, tooltip, legend, indicator, and density updates." />
+    </controls:CodexChartContainer.Footer>
+  </controls:CodexChartContainer>
+
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexButton Content="Refresh data"
+                          Size="Small"
+                          Variant="Secondary" />
+    <controls:CodexButton Content="Toggle tooltip"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Toggle legend"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Indicator"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Density"
+                          Size="Small"
+                          Variant="Ghost" />
+  </StackPanel>
+</StackPanel>

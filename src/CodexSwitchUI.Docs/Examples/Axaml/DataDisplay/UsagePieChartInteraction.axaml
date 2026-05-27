@@ -1,0 +1,56 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      x:CompileBindings="False"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <controls:CodexField Label="Hover and refresh"
+                       Description="Pointer hover animates slice emphasis and tooltip position.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Move the pointer across slices to reveal ActiveItemChanged and the interpolated tooltip." />
+        <controls:CodexUsagePieChart Width="460"
+                                     Height="240"
+                                     TotalLabel="Tokens"
+                                     TotalValue="71.5K"
+                                     ItemsSource="{Binding UsageItems}" />
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Refresh data"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Toggle density"
+                                Size="Small"
+                                Variant="Ghost" />
+          <controls:CodexButton Content="Reduce motion"
+                                Size="Small"
+                                Variant="Ghost" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Empty and compact guard"
+                       Description="Empty data and reduced motion stay chart-owned.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="12">
+        <controls:CodexUsagePieChart Width="340"
+                                     Height="178"
+                                     IsCompact="True"
+                                     TotalLabel="Tokens"
+                                     TotalValue="0"
+                                     ItemsSource="{Binding EmptyUsageItems}" />
+        <controls:CodexUsagePieChart Width="340"
+                                     Height="178"
+                                     IsCompact="True"
+                                     TotalLabel="Requests"
+                                     TotalValue="1.2K"
+                                     AnimationDuration="0:0:0"
+                                     ItemsSource="{Binding CompactUsageItems}" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,37 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexSection Title="Heading only">
+    <TextBlock Text="Content renders below the header."
+               TextWrapping="Wrap" />
+  </controls:CodexSection>
+
+  <controls:CodexSection Grid.Column="1"
+                         Title="With action">
+    <controls:CodexSection.Actions>
+      <controls:CodexButton Content="Save"
+                            Size="Small" />
+    </controls:CodexSection.Actions>
+    <TextBlock Text="Action stays at the trailing edge."
+               TextWrapping="Wrap" />
+  </controls:CodexSection>
+
+  <controls:CodexSection Grid.Row="1"
+                         Description="Description-only section keeps header spacing compact.">
+    <controls:CodexBadge Content="Compact"
+                         Variant="Secondary" />
+  </controls:CodexSection>
+
+  <controls:CodexSection Grid.Row="1"
+                         Grid.Column="1"
+                         Title="Dense content"
+                         Description="Body can hold a nested component.">
+    <controls:CodexProviderCard Header="Local provider"
+                                Description="Selected provider row"
+                                Icon="L"
+                                IsActive="True" />
+  </controls:CodexSection>
+</Grid>

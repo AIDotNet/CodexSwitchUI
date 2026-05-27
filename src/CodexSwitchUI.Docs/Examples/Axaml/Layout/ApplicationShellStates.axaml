@@ -1,0 +1,30 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <StackPanel Spacing="8">
+    <controls:CodexSidebarGroupLabel Content="Menu states" />
+    <controls:CodexSidebarMenuButton Content="Active with badge"
+                                     IsActive="True"
+                                     Badge="AX" />
+    <controls:CodexSidebarMenuButton Content="Default" />
+    <controls:CodexSidebarMenuButton Content="Disabled"
+                                     IsEnabled="False" />
+    <controls:CodexSidebarMenuSubButton Content="Nested active"
+                                        IsActive="True" />
+  </StackPanel>
+
+  <controls:CodexSection Grid.Column="1"
+                         Title="Action section"
+                         Description="Trailing actions stay aligned.">
+    <controls:CodexSection.Actions>
+      <controls:CodexIconButton Content="+"
+                                IsRound="True" />
+    </controls:CodexSection.Actions>
+    <controls:CodexCard Title="Stable content"
+                        Description="No shell rebuild is needed when selection changes.">
+      <TextBlock Text="Theme resources and slot classes handle visual updates."
+                 TextWrapping="Wrap" />
+    </controls:CodexCard>
+  </controls:CodexSection>
+</Grid>

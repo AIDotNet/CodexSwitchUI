@@ -1,0 +1,7 @@
+<controls:CodexTabs xmlns="https://github.com/avaloniaui"
+                    xmlns:controls="using:CodexSwitchUI.Controls"
+                    SelectedIndex="0">
+  <controls:CodexTabItem Header="Preview" />
+  <controls:CodexTabItem Header="Code" />
+  <controls:CodexTabItem Header="States" />
+</controls:CodexTabs>

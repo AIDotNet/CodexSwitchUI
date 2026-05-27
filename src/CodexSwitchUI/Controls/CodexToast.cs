@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
@@ -24,8 +25,17 @@ public class CodexToast : CodexFrame
     public static readonly StyledProperty<ICommand?> CloseCommandProperty =
         AvaloniaProperty.Register<CodexToast, ICommand?>(nameof(CloseCommand));
 
+    public static readonly StyledProperty<ICommand?> DismissCommandProperty =
+        AvaloniaProperty.Register<CodexToast, ICommand?>(nameof(DismissCommand));
+
+    public static readonly StyledProperty<bool> IsOpenProperty =
+        AvaloniaProperty.Register<CodexToast, bool>(nameof(IsOpen), true);
+
     public static readonly StyledProperty<bool> IsCloseVisibleProperty =
         AvaloniaProperty.Register<CodexToast, bool>(nameof(IsCloseVisible), true);
+
+    public static readonly StyledProperty<bool> CloseOnEscapeProperty =
+        AvaloniaProperty.Register<CodexToast, bool>(nameof(CloseOnEscape), true);
 
     public static readonly StyledProperty<CodexControlVariant> VariantProperty =
         AvaloniaProperty.Register<CodexToast, CodexControlVariant>(nameof(Variant), CodexControlVariant.Default);
@@ -57,12 +67,15 @@ public class CodexToast : CodexFrame
         ActionProperty.Changed.AddClassHandler<CodexToast>((toast, _) => toast.SyncSlotStates());
         IconProperty.Changed.AddClassHandler<CodexToast>((toast, _) => toast.SyncSlotStates());
         CloseContentProperty.Changed.AddClassHandler<CodexToast>((toast, _) => toast.SyncSlotStates());
+        IsOpenProperty.Changed.AddClassHandler<CodexToast>((toast, _) => toast.SyncOpenState());
         IsCloseVisibleProperty.Changed.AddClassHandler<CodexToast>((toast, _) => toast.SyncSlotStates());
     }
 
     public CodexToast()
     {
+        DismissCommand = new CodexDismissCommand(Dismiss);
         SyncClasses();
+        SyncOpenState();
         SyncSlotStates();
     }
 
@@ -102,10 +115,28 @@ public class CodexToast : CodexFrame
         set => SetValue(CloseCommandProperty, value);
     }
 
+    public ICommand? DismissCommand
+    {
+        get => GetValue(DismissCommandProperty);
+        private set => SetValue(DismissCommandProperty, value);
+    }
+
+    public bool IsOpen
+    {
+        get => GetValue(IsOpenProperty);
+        set => SetValue(IsOpenProperty, value);
+    }
+
     public bool IsCloseVisible
     {
         get => GetValue(IsCloseVisibleProperty);
         set => SetValue(IsCloseVisibleProperty, value);
+    }
+
+    public bool CloseOnEscape
+    {
+        get => GetValue(CloseOnEscapeProperty);
+        set => SetValue(CloseOnEscapeProperty, value);
     }
 
     public CodexControlVariant Variant
@@ -125,6 +156,39 @@ public class CodexToast : CodexFrame
     public bool HasAction => GetValue(HasActionProperty);
 
     public bool HasIcon => GetValue(HasIconProperty);
+
+    public bool Dismiss()
+    {
+        if (!IsOpen)
+        {
+            return false;
+        }
+
+        IsOpen = false;
+
+        if (CloseCommand?.CanExecute(null) == true)
+        {
+            CloseCommand.Execute(null);
+        }
+
+        return true;
+    }
+
+    internal bool TryHandleDismissKey(Key key)
+    {
+        return key == Key.Escape && CloseOnEscape && Dismiss();
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (TryHandleDismissKey(e.Key))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        base.OnKeyDown(e);
+    }
 
     private void SyncSlotStates()
     {
@@ -151,6 +215,12 @@ public class CodexToast : CodexFrame
     private void SyncClasses()
     {
         CodexClassSync.SetVariant(Classes, Variant);
+    }
+
+    private void SyncOpenState()
+    {
+        Classes.Set("open", IsOpen);
+        Classes.Set("closed", !IsOpen);
     }
 
     private static bool HasValue(object? value)

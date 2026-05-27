@@ -1,0 +1,49 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Keyboard focus"
+                       Description="Keyboard focus shows the shared focus-visible ring and caret color.">
+    <controls:CodexTextBox Text="OpenAI"
+                           CaretIndex="6"
+                           SelectionStart="0"
+                           SelectionEnd="6"
+                           MinWidth="260" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Pointer focus"
+                       Description="Pointer focus keeps the ring hidden while preserving caret and selection behavior.">
+    <controls:CodexTextBox PlaceholderText="Provider alias"
+                           InnerLeftContent="cs://"
+                           InnerRightContent=".local"
+                           MinWidth="260" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Validation feedback"
+                       Message="Endpoint must be absolute."
+                       Intent="Error">
+    <controls:CodexTextBox Text="/v1/chat/completions"
+                           Intent="Error"
+                           SelectionStart="0"
+                           SelectionEnd="3"
+                           MinWidth="260" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Read-only and disabled"
+                       Description="Read-only keeps selection available; disabled blocks input.">
+    <StackPanel Spacing="10">
+      <controls:CodexTextBox Text="https://api.openai.com/v1"
+                             IsReadOnly="True"
+                             MinWidth="260" />
+      <controls:CodexTextBox Text="Locked"
+                             IsEnabled="False"
+                             MinWidth="260" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

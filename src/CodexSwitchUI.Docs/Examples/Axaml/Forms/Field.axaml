@@ -1,0 +1,17 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexField Label="API key"
+                       Description="Stored locally."
+                       Message="Required before saving."
+                       IsRequired="True"
+                       Intent="Error">
+    <controls:CodexTextBox PasswordChar="*"
+                           PlaceholderText="sk-..." />
+  </controls:CodexField>
+
+  <controls:CodexField Label="Default model"
+                       Description="Used when a route does not override the model.">
+    <controls:CodexTextBox Text="gpt-5" />
+  </controls:CodexField>
+</StackPanel>

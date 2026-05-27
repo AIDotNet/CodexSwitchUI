@@ -1,0 +1,21 @@
+<controls:CodexDropdownButton xmlns="https://github.com/avaloniaui"
+                              xmlns:controls="using:CodexSwitchUI.Controls"
+                              Content="Actions"
+                              IsOpen="True"
+                              IsArrowVisible="True"
+                              Align="Start">
+  <controls:CodexDropdownButton.DropDownContent>
+    <StackPanel Width="188"
+                Spacing="6">
+      <controls:CodexButton Content="Rename"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+      <controls:CodexButton Content="Duplicate"
+                            Variant="Ghost"
+                            HorizontalAlignment="Stretch" />
+      <controls:CodexButton Content="Delete"
+                            Variant="Destructive"
+                            HorizontalAlignment="Stretch" />
+    </StackPanel>
+  </controls:CodexDropdownButton.DropDownContent>
+</controls:CodexDropdownButton>

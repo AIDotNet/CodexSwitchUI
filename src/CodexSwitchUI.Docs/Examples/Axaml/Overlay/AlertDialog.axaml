@@ -1,0 +1,18 @@
+<controls:CodexAlertDialog xmlns="https://github.com/avaloniaui"
+                           xmlns:controls="using:CodexSwitchUI.Controls"
+                           xmlns:primitives="using:CodexSwitchUI.Primitives"
+                           IsOpen="True"
+                           Title="Delete provider?"
+                           Description="This action cannot be undone. Requests will stop routing through this provider."
+                           Media="!"
+                           ActionContent="Delete provider"
+                           ActionVariant="Destructive">
+  <controls:CodexAlertDialog.Trigger>
+    <controls:CodexButton Content="Delete provider"
+                          Variant="Destructive"
+                          Size="Small" />
+  </controls:CodexAlertDialog.Trigger>
+  <primitives:CodexText Text="AlertDialog requires an explicit response; outside pointer does not close it by default."
+                        Role="Muted"
+                        TextWrapping="Wrap" />
+</controls:CodexAlertDialog>

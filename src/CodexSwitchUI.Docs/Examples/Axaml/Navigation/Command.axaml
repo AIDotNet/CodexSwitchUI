@@ -1,0 +1,23 @@
+<controls:CodexCommand xmlns="https://github.com/avaloniaui"
+                       xmlns:controls="using:CodexSwitchUI.Controls"
+                       Placeholder="Search commands..."
+                       Width="420">
+  <controls:CodexCommandList>
+    <controls:CodexCommandGroup Header="Providers">
+      <controls:CodexCommandItem Content="Switch to OpenAI"
+                                 Icon="O"
+                                 Shortcut="Cmd+1"
+                                 IsActive="True" />
+      <controls:CodexCommandItem Content="Switch to Claude"
+                                 Icon="C"
+                                 Shortcut="Cmd+2" />
+    </controls:CodexCommandGroup>
+
+    <controls:CodexCommandGroup Header="Actions">
+      <controls:CodexCommandItem Content="Refresh usage"
+                                 Icon="R" />
+      <controls:CodexCommandItem Content="Open settings"
+                                 Icon="S" />
+    </controls:CodexCommandGroup>
+  </controls:CodexCommandList>
+</controls:CodexCommand>

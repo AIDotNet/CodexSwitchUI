@@ -1,0 +1,17 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="8">
+  <controls:CodexField Label="Framework"
+                       Description="Filter a predefined list and commit a selected item.">
+    <controls:CodexCombobox PlaceholderText="Select a framework"
+                            SelectedItem="Next.js"
+                            MinWidth="280">
+      <x:String>Next.js</x:String>
+      <x:String>SvelteKit</x:String>
+      <x:String>Nuxt.js</x:String>
+      <x:String>Remix</x:String>
+      <x:String>Astro</x:String>
+    </controls:CodexCombobox>
+  </controls:CodexField>
+</StackPanel>

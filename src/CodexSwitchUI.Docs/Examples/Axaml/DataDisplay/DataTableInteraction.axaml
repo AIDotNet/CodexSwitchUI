@@ -1,0 +1,132 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            Spacing="12">
+  <primitives:CodexText Role="Muted"
+                        Text="Filter, sort, column visibility, row selection, row actions, and pagination all leave the table scaffold mounted." />
+
+  <Grid ColumnDefinitions="*,Auto">
+    <controls:CodexTextBox Width="260"
+                           Text="failed"
+                           PlaceholderText="Filter emails..." />
+    <controls:CodexDropdownButton Grid.Column="1"
+                                  Content="Columns"
+                                  Size="Small"
+                                  Variant="Outline"
+                                  IsOpen="True"
+                                  Align="End">
+      <controls:CodexDropdownButton.DropDownContent>
+        <StackPanel Width="184"
+                    Spacing="8">
+          <controls:CodexCheckBox Content="Status"
+                                  IsChecked="True" />
+          <controls:CodexCheckBox Content="Email"
+                                  IsChecked="True" />
+          <controls:CodexCheckBox Content="Amount"
+                                  IsChecked="False" />
+          <controls:CodexCheckBox Content="Actions"
+                                  IsChecked="True" />
+        </StackPanel>
+      </controls:CodexDropdownButton.DropDownContent>
+    </controls:CodexDropdownButton>
+  </Grid>
+
+  <controls:CodexTable IsStriped="True"
+                       IsHoverable="True"
+                       IsCompact="True"
+                       TransitionKey="payments-interaction-filtered">
+    <StackPanel>
+      <controls:CodexTableHeader>
+        <Grid ColumnDefinitions="42,1.05*,2.1*,0,86">
+          <controls:CodexTableHead Alignment="Center">
+            <controls:CodexCheckBox />
+          </controls:CodexTableHead>
+          <controls:CodexTableHead Grid.Column="1"
+                                   Content="Status" />
+          <controls:CodexTableHead Grid.Column="2"
+                                   Content="Email" />
+          <controls:CodexTableHead Grid.Column="3"
+                                   Content="Amount desc"
+                                   Alignment="Right"
+                                   IsVisible="False" />
+          <controls:CodexTableHead Grid.Column="4"
+                                   Content="Actions"
+                                   Alignment="Right" />
+        </Grid>
+      </controls:CodexTableHeader>
+
+      <controls:CodexTableBody>
+        <controls:CodexTableRow IsSelected="True">
+          <Grid ColumnDefinitions="42,1.05*,2.1*,0,86">
+            <controls:CodexTableCell Alignment="Center">
+              <controls:CodexCheckBox IsChecked="True" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="1">
+              <controls:CodexBadge Content="failed"
+                                   Variant="Destructive" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="2">
+              <primitives:CodexText Text="carmella@example.com" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="3"
+                                     Content="$721.00"
+                                     Alignment="Right"
+                                     IsVisible="False" />
+            <controls:CodexTableCell Grid.Column="4"
+                                     Alignment="Right">
+              <controls:CodexDropdownButton Content="..."
+                                            Size="Small"
+                                            Variant="Ghost"
+                                            IsOpen="True"
+                                            Align="End">
+                <controls:CodexDropdownButton.DropDownContent>
+                  <StackPanel Width="188"
+                              Spacing="6">
+                    <controls:CodexButton Content="Copy payment ID"
+                                          Variant="Ghost"
+                                          HorizontalAlignment="Stretch" />
+                    <controls:CodexButton Content="View customer"
+                                          Variant="Ghost"
+                                          HorizontalAlignment="Stretch" />
+                    <controls:CodexButton Content="View details"
+                                          Variant="Ghost"
+                                          HorizontalAlignment="Stretch" />
+                  </StackPanel>
+                </controls:CodexDropdownButton.DropDownContent>
+              </controls:CodexDropdownButton>
+            </controls:CodexTableCell>
+          </Grid>
+        </controls:CodexTableRow>
+      </controls:CodexTableBody>
+
+      <controls:CodexTableCaption Content="TransitionKey changes on filter, sort, visibility, and pagination events." />
+    </StackPanel>
+  </controls:CodexTable>
+
+  <Grid ColumnDefinitions="*,Auto">
+    <primitives:CodexText Role="Muted"
+                          Text="1 of 5 row(s) selected." />
+    <controls:CodexPagination Grid.Column="1"
+                              Page="2"
+                              PageCount="3"
+                              IsCompact="True"
+                              ShowFirstLast="False"
+                              Size="Small" />
+  </Grid>
+
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexButton Content="Filter failed"
+                          Size="Small"
+                          Variant="Secondary" />
+    <controls:CodexButton Content="Sort amount"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Toggle amount"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Next page"
+                          Size="Small"
+                          Variant="Ghost" />
+  </StackPanel>
+</StackPanel>

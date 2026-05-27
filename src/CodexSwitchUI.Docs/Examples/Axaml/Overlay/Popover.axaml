@@ -1,0 +1,27 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            Spacing="14">
+  <controls:CodexPopover Title="Usage window"
+                         Description="Popover content uses the same dismiss and focus-return contract as overlays."
+                         IsOpen="True"
+                         IsArrowVisible="True">
+    <controls:CodexPopover.Trigger>
+      <controls:CodexButton Content="Trigger"
+                            Size="Small" />
+    </controls:CodexPopover.Trigger>
+
+    <StackPanel Spacing="8">
+      <primitives:CodexText Text="24h remaining"
+                            Role="Subtitle" />
+      <primitives:CodexText Text="Close on Escape or outside pointer when enabled."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </StackPanel>
+
+    <controls:CodexPopover.Action>
+      <controls:CodexButton Content="Open usage"
+                            Size="Small" />
+    </controls:CodexPopover.Action>
+  </controls:CodexPopover>
+</StackPanel>

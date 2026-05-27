@@ -1,0 +1,31 @@
+<controls:CodexDialog xmlns="https://github.com/avaloniaui"
+                      xmlns:controls="using:CodexSwitchUI.Controls"
+                      xmlns:primitives="using:CodexSwitchUI.Primitives"
+                      Title="Delete provider?"
+                      Description="Dialog dismissal uses Escape, outside pointer, close button, and focus return."
+                      IsOpen="True">
+  <controls:CodexDialog.Trigger>
+    <controls:CodexButton Content="Delete provider"
+                          Size="Small"
+                          Variant="Destructive" />
+  </controls:CodexDialog.Trigger>
+
+  <StackPanel Spacing="10">
+    <primitives:CodexText Text="The close path is centralized through DismissCommand."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+    <controls:CodexField Label="Reason">
+      <controls:CodexTextBox PlaceholderText="Optional audit note" />
+    </controls:CodexField>
+  </StackPanel>
+
+  <controls:CodexDialog.Action>
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexButton Content="Cancel"
+                            Variant="Secondary" />
+      <controls:CodexButton Content="Delete"
+                            Variant="Destructive" />
+    </StackPanel>
+  </controls:CodexDialog.Action>
+</controls:CodexDialog>

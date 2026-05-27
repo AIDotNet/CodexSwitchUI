@@ -1,0 +1,22 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="12">
+  <primitives:CodexText Text="Title"
+                        Role="Title" />
+  <primitives:CodexText Grid.Column="1"
+                        Text="Subtitle"
+                        Role="Subtitle" />
+  <primitives:CodexText Grid.Row="1"
+                        Text="Body copy wraps inside the component."
+                        Role="Body" />
+  <primitives:CodexText Grid.Row="1"
+                        Grid.Column="1"
+                        Text="Muted helper text"
+                        Role="Muted" />
+  <primitives:CodexText Grid.Row="2"
+                        Text="Code role"
+                        Role="Code" />
+</Grid>

@@ -1,0 +1,105 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <controls:CodexField Label="Scroll metrics"
+                       Description="Scroll events update offset, scrolling, and boundary classes.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Offset: top." />
+        <controls:CodexScrollArea Type="Scroll"
+                                  IsInsetContent="True"
+                                  Width="320"
+                                  Height="190"
+                                  VerticalScrollBarVisibility="Auto">
+          <StackPanel Spacing="8">
+            <controls:CodexButton Content="OpenAI"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Claude"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Gemini"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Local proxy"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Fallback"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Archive"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Usage"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Settings"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+          </StackPanel>
+        </controls:CodexScrollArea>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Top"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Bottom"
+                                Size="Small"
+                                Variant="Secondary" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Hover and disabled guard"
+                       Description="Hover scrollbars and disabled content preserve layout.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="12">
+        <controls:CodexScrollArea Type="Hover"
+                                  IsInsetContent="True"
+                                  Width="300"
+                                  Height="120"
+                                  VerticalScrollBarVisibility="Auto">
+          <StackPanel Spacing="8">
+            <controls:CodexButton Content="Hover"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Reveals"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="On pointer"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Without layout shift"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+          </StackPanel>
+        </controls:CodexScrollArea>
+        <controls:CodexScrollArea Type="Always"
+                                  IsEnabled="False"
+                                  Width="300"
+                                  Height="120"
+                                  VerticalScrollBarVisibility="Auto">
+          <StackPanel Spacing="8">
+            <controls:CodexButton Content="Disabled"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Keeps"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="Boundary"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+            <controls:CodexButton Content="State"
+                                  Variant="Ghost"
+                                  HorizontalAlignment="Stretch" />
+          </StackPanel>
+        </controls:CodexScrollArea>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

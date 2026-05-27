@@ -1,0 +1,21 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexField Label="Temperature"
+                       Description="Pointer and keyboard changes update the same native value.">
+    <controls:CodexSlider Minimum="0"
+                          Maximum="2"
+                          Value="0.7"
+                          TickFrequency="0.1"
+                          MinWidth="320" />
+  </controls:CodexField>
+
+  <controls:CodexField Label="Context budget">
+    <controls:CodexSlider Minimum="4"
+                          Maximum="128"
+                          Value="64"
+                          Size="Large"
+                          Intent="Success"
+                          MinWidth="320" />
+  </controls:CodexField>
+</StackPanel>

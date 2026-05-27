@@ -1,0 +1,67 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexDrawer Title="Bottom drawer"
+                        Description="Open bottom direction."
+                        Direction="Bottom"
+                        IsOpen="True"
+                        Size="Small">
+    <controls:CodexDrawer.Trigger>
+      <controls:CodexButton Content="Open bottom drawer"
+                            Size="Small" />
+    </controls:CodexDrawer.Trigger>
+    <StackPanel Spacing="8">
+      <controls:CodexBadge Content="bottom"
+                           Variant="Secondary" />
+      <TextBlock Text="Open drawer surface." />
+    </StackPanel>
+  </controls:CodexDrawer>
+
+  <controls:CodexDrawer Grid.Column="1"
+                        Title="Right drawer"
+                        Description="Open side direction."
+                        Direction="Right"
+                        IsOpen="True"
+                        Size="Small">
+    <controls:CodexDrawer.Trigger>
+      <controls:CodexButton Content="Open right drawer"
+                            Size="Small" />
+    </controls:CodexDrawer.Trigger>
+    <StackPanel Spacing="8">
+      <controls:CodexBadge Content="right"
+                           Variant="Secondary" />
+      <TextBlock Text="Open drawer surface." />
+    </StackPanel>
+  </controls:CodexDrawer>
+
+  <controls:CodexDrawer Grid.Row="1"
+                        Title="Closed top"
+                        Description="Closed exit state."
+                        Direction="Top"
+                        IsOpen="False"
+                        Size="Small">
+    <controls:CodexDrawer.Trigger>
+      <controls:CodexButton Content="Open closed top"
+                            Size="Small" />
+    </controls:CodexDrawer.Trigger>
+    <TextBlock Text="Closed exit state." />
+  </controls:CodexDrawer>
+
+  <controls:CodexDrawer Grid.Row="1"
+                        Grid.Column="1"
+                        Title="Drag ready"
+                        Description="Drag-dismiss-ready state after crossing threshold."
+                        Direction="Left"
+                        IsOpen="True"
+                        Size="Small"
+                        DragDismissThreshold="96">
+    <controls:CodexDrawer.Trigger>
+      <controls:CodexButton Content="Open drag-ready drawer"
+                            Size="Small" />
+    </controls:CodexDrawer.Trigger>
+    <TextBlock Text="The handle state highlights once DragOffset crosses the threshold." />
+  </controls:CodexDrawer>
+</Grid>

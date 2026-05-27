@@ -1,0 +1,18 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Orientation="Horizontal"
+            Spacing="8">
+  <controls:CodexBadge Content="Default" />
+  <controls:CodexBadge Content="Outline"
+                       Variant="Outline" />
+  <controls:CodexBadge Content="Success"
+                       Variant="Success"
+                       IsStatusVisible="True" />
+  <controls:CodexBadge Content="Warning"
+                       Variant="Warning"
+                       IsStatusVisible="True" />
+  <controls:CodexBadge Content="Small"
+                       Size="Small" />
+  <controls:CodexBadge Content="Large"
+                       Size="Large" />
+</StackPanel>

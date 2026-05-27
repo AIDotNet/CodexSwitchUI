@@ -1,0 +1,21 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Orientation="Horizontal"
+            Spacing="8">
+  <controls:CodexButton Content="Default" />
+  <controls:CodexButton Content="Secondary"
+                        Variant="Secondary" />
+  <controls:CodexButton Content="Outline"
+                        Variant="Outline" />
+  <controls:CodexButton Content="Ghost"
+                        Variant="Ghost" />
+  <controls:CodexButton Content="Link"
+                        Variant="Link" />
+  <controls:CodexButton Content="Delete"
+                        Variant="Destructive" />
+  <controls:CodexButton Content="Saving"
+                        IsLoading="True"
+                        LoadingContent="Saving" />
+  <controls:CodexButton Content="Disabled"
+                        IsEnabled="False" />
+</StackPanel>

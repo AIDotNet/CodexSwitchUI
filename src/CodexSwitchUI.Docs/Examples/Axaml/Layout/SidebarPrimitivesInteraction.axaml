@@ -1,0 +1,108 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="300,*"
+      ColumnSpacing="18">
+  <controls:CodexSidebar>
+    <StackPanel>
+      <controls:CodexSidebarHeader>
+        <StackPanel Spacing="2">
+          <TextBlock Text="Sidebar primitives"
+                     FontWeight="SemiBold" />
+          <TextBlock Text="Active route: Active routes."
+                     Opacity="0.72" />
+        </StackPanel>
+      </controls:CodexSidebarHeader>
+
+      <controls:CodexSidebarContent>
+        <StackPanel Spacing="16">
+          <controls:CodexSidebarGroup>
+            <StackPanel Spacing="6">
+              <Grid ColumnDefinitions="*,Auto">
+                <controls:CodexSidebarGroupLabel Content="Providers" />
+                <controls:CodexSidebarGroupAction Grid.Column="1"
+                                                  Content="+" />
+              </Grid>
+
+              <Grid ColumnDefinitions="*,Auto">
+                <controls:CodexSidebarMenuButton Content="Active routes"
+                                                 Icon="P"
+                                                 IsActive="True">
+                  <controls:CodexSidebarMenuButton.Badge>
+                    <controls:CodexSidebarMenuBadge Content="12" />
+                  </controls:CodexSidebarMenuButton.Badge>
+                </controls:CodexSidebarMenuButton>
+                <controls:CodexSidebarMenuAction Grid.Column="1"
+                                                 Content="..."
+                                                 IsShowOnHover="True" />
+              </Grid>
+
+              <controls:CodexSidebarMenuButton Content="Usage"
+                                               Icon="U"
+                                               Badge="Live" />
+              <controls:CodexSidebarMenuButton Content="Disabled route"
+                                               Icon="D"
+                                               Badge="Locked"
+                                               IsEnabled="False" />
+            </StackPanel>
+          </controls:CodexSidebarGroup>
+
+          <controls:CodexSidebarGroup>
+            <StackPanel Spacing="6">
+              <controls:CodexSidebarGroupLabel Content="Nested" />
+              <controls:CodexSidebarMenuSub>
+                <controls:CodexSidebarMenuSubItem>
+                  <controls:CodexSidebarMenuSubButton Content="Routing"
+                                                      IsActive="True" />
+                </controls:CodexSidebarMenuSubItem>
+                <controls:CodexSidebarMenuSubItem>
+                  <controls:CodexSidebarMenuSubButton Content="Security" />
+                </controls:CodexSidebarMenuSubItem>
+                <controls:CodexSidebarMenuSubItem>
+                  <controls:CodexSidebarMenuSubButton Content="Billing"
+                                                      IsEnabled="False" />
+                </controls:CodexSidebarMenuSubItem>
+              </controls:CodexSidebarMenuSub>
+            </StackPanel>
+          </controls:CodexSidebarGroup>
+        </StackPanel>
+      </controls:CodexSidebarContent>
+
+      <controls:CodexSidebarFooter>
+        <controls:CodexButton Content="Footer action"
+                              Size="Small"
+                              HorizontalAlignment="Stretch" />
+      </controls:CodexSidebarFooter>
+    </StackPanel>
+  </controls:CodexSidebar>
+
+  <controls:CodexSection Grid.Column="1"
+                         Title="Primitive event contract"
+                         Description="Menu buttons, row actions, badges, and nested buttons update independently.">
+    <controls:CodexSection.Actions>
+      <controls:CodexButton Content="Open"
+                            Size="Small"
+                            Variant="Outline" />
+    </controls:CodexSection.Actions>
+    <Grid ColumnDefinitions="*,*"
+          RowDefinitions="Auto,Auto"
+          ColumnSpacing="12"
+          RowSpacing="12">
+      <controls:CodexStatCard Label="Selection"
+                              Value="Sibling clear"
+                              Detail="IsActive" />
+      <controls:CodexStatCard Grid.Column="1"
+                              Label="Badge"
+                              Value="Refresh"
+                              Detail="slot" />
+      <controls:CodexStatCard Grid.Row="1"
+                              Label="Action"
+                              Value="Hover row"
+                              Detail="show-on-hover" />
+      <controls:CodexStatCard Grid.Row="1"
+                              Grid.Column="1"
+                              Label="Nested"
+                              Value="SubButton"
+                              Detail="active" />
+    </Grid>
+  </controls:CodexSection>
+</Grid>

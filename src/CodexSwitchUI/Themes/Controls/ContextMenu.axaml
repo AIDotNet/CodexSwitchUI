@@ -18,10 +18,10 @@
     <Setter Property="FocusAdorner" Value="{x:Null}" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="ItemsPanel">
@@ -56,13 +56,13 @@
     <Setter Property="Opacity" Value="0.84" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu /template/ Border#PART_Surface, controls|CodexContextMenu MenuItem /template/ Border#PART_SubMenuSurface">
+  <Style Selector="controls|CodexContextMenu /template/ Border#PART_Surface, controls|CodexContextMenu controls|CodexContextMenuItem /template/ Panel Popup#PART_Popup Border#PART_SubMenuSurface">
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -110,11 +110,11 @@
     </Setter>
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="Template">
@@ -331,71 +331,71 @@
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem /template/ Border#PART_ItemRoot">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem /template/ Panel Border#PART_ItemRoot">
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem /template/ PathIcon#PART_Check, controls|CodexContextMenu MenuItem /template/ PathIcon#PART_Radio, controls|CodexContextMenu MenuItem /template/ PathIcon#PART_SubMenuArrow">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem /template/ Panel Border#PART_ItemRoot PathIcon#PART_Check, controls|CodexContextMenu controls|CodexContextMenuItem /template/ Panel Border#PART_ItemRoot PathIcon#PART_Radio, controls|CodexContextMenu controls|CodexContextMenuItem /template/ Panel Border#PART_ItemRoot PathIcon#PART_SubMenuArrow">
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem:pointerover">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem:pointerover">
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem:pointerover /template/ Border#PART_ItemRoot">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem:pointerover /template/ Panel Border#PART_ItemRoot">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem:pressed /template/ Border#PART_ItemRoot">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem:pressed /template/ Panel Border#PART_ItemRoot">
     <Setter Property="RenderTransform" Value="scale(0.985)" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem:focus /template/ Border#PART_ItemRoot">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem:focus-visible /template/ Panel Border#PART_ItemRoot">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem:selected">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem:selected">
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem:selected /template/ Border#PART_ItemRoot">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem:selected /template/ Panel Border#PART_ItemRoot">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem:open /template/ Border#PART_ItemRoot">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem:open /template/ Panel Border#PART_ItemRoot">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem:open /template/ PathIcon#PART_SubMenuArrow">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem:open /template/ Panel Border#PART_ItemRoot PathIcon#PART_SubMenuArrow">
     <Setter Property="Opacity" Value="1" />
     <Setter Property="RenderTransform" Value="scale(1.08)" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem:checked /template/ PathIcon#PART_Check">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem:checked /template/ Panel Border#PART_ItemRoot PathIcon#PART_Check">
     <Setter Property="Opacity" Value="1" />
     <Setter Property="RenderTransform" Value="scale(1)" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.is-radio:checked /template/ PathIcon#PART_Check">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.is-radio:checked /template/ Panel Border#PART_ItemRoot PathIcon#PART_Check">
     <Setter Property="Opacity" Value="0" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.is-radio:checked /template/ PathIcon#PART_Radio">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.is-radio:checked /template/ Panel Border#PART_ItemRoot PathIcon#PART_Radio">
     <Setter Property="Opacity" Value="1" />
     <Setter Property="RenderTransform" Value="scale(1)" />
   </Style>
@@ -404,81 +404,81 @@
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.active /template/ Border#PART_ItemRoot">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.active /template/ Panel Border#PART_ItemRoot">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.inset /template/ Border#PART_ItemRoot">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.inset /template/ Panel Border#PART_ItemRoot">
     <Setter Property="Padding" Value="30,6,8,6" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.has-submenu /template/ PathIcon#PART_SubMenuArrow">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.has-submenu /template/ Panel Border#PART_ItemRoot PathIcon#PART_SubMenuArrow">
     <Setter Property="Opacity" Value="1" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-top /template/ Popup#PART_Popup">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-top /template/ Panel Popup#PART_Popup">
     <Setter Property="Placement" Value="TopEdgeAlignedLeft" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-top /template/ Border#PART_SubMenuSurface">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-top /template/ Panel Popup#PART_Popup Border#PART_SubMenuSurface">
     <Setter Property="Margin" Value="0,0,0,4" />
     <Setter Property="RenderTransform" Value="translate(0px, 8px) scale(0.95)" />
     <Setter Property="RenderTransformOrigin" Value="0%,100%" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-left /template/ Popup#PART_Popup">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-left /template/ Panel Popup#PART_Popup">
     <Setter Property="Placement" Value="LeftEdgeAlignedTop" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-left /template/ Border#PART_SubMenuSurface">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-left /template/ Panel Popup#PART_Popup Border#PART_SubMenuSurface">
     <Setter Property="Margin" Value="0,0,4,0" />
     <Setter Property="RenderTransform" Value="translate(8px, 0px) scale(0.95)" />
     <Setter Property="RenderTransformOrigin" Value="100%,0%" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-right /template/ Popup#PART_Popup">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-right /template/ Panel Popup#PART_Popup">
     <Setter Property="Placement" Value="RightEdgeAlignedTop" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-right /template/ Border#PART_SubMenuSurface">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-right /template/ Panel Popup#PART_Popup Border#PART_SubMenuSurface">
     <Setter Property="Margin" Value="4,0,0,0" />
     <Setter Property="RenderTransform" Value="translate(-8px, 0px) scale(0.95)" />
     <Setter Property="RenderTransformOrigin" Value="0%,0%" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-bottom /template/ Popup#PART_Popup">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-bottom /template/ Panel Popup#PART_Popup">
     <Setter Property="Placement" Value="BottomEdgeAlignedLeft" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-bottom /template/ Border#PART_SubMenuSurface">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-side-bottom /template/ Panel Popup#PART_Popup Border#PART_SubMenuSurface">
     <Setter Property="Margin" Value="0,4,0,0" />
     <Setter Property="RenderTransform" Value="translate(0px, -8px) scale(0.95)" />
     <Setter Property="RenderTransformOrigin" Value="0%,0%" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-open /template/ Border#PART_SubMenuSurface">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.submenu-open /template/ Panel Popup#PART_Popup Border#PART_SubMenuSurface">
     <Setter Property="Opacity" Value="1" />
     <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu MenuItem:disabled">
+  <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem:disabled">
     <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu.size-sm MenuItem">
+  <Style Selector="controls|CodexContextMenu.size-sm controls|CodexContextMenuItem">
     <Setter Property="MinHeight" Value="28" />
     <Setter Property="Padding" Value="6,4" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu.size-lg MenuItem">
+  <Style Selector="controls|CodexContextMenu.size-lg controls|CodexContextMenuItem">
     <Setter Property="MinHeight" Value="38" />
     <Setter Property="Padding" Value="8,8" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
   </Style>
 
-  <Style Selector="controls|CodexContextMenu.size-icon MenuItem">
+  <Style Selector="controls|CodexContextMenu.size-icon controls|CodexContextMenuItem">
     <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
     <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
     <Setter Property="Padding" Value="0" />
@@ -511,8 +511,8 @@
     <Setter Property="Padding" Value="8,6" />
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="Template">
@@ -538,7 +538,7 @@
     <Setter Property="HorizontalContentAlignment" Value="Right" />
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="Template">
@@ -556,7 +556,7 @@
     <Setter Property="Margin" Value="0" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="ItemsPanel">

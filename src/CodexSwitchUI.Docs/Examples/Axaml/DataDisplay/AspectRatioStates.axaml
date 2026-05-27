@@ -1,0 +1,96 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Video"
+                       Description="Default shadcn-style 16:9 media frame.">
+    <controls:CodexAspectRatio Ratio="1.7777777778"
+                               Width="320">
+      <Border Background="{DynamicResource CodexSwitch.MutedBrush}">
+        <Grid>
+          <Border Width="6"
+                  HorizontalAlignment="Left"
+                  Background="{DynamicResource CodexSwitch.PrimaryBrush}" />
+          <StackPanel Margin="22,16,16,16"
+                      Spacing="8"
+                      VerticalAlignment="Bottom">
+            <controls:CodexBadge Content="16:9"
+                                 Variant="Secondary"
+                                 HorizontalAlignment="Left" />
+            <primitives:CodexText Text="Route preview"
+                                  Role="Subtitle" />
+            <primitives:CodexText Text="Selected provider hero"
+                                  Role="Muted"
+                                  TextWrapping="Wrap" />
+          </StackPanel>
+        </Grid>
+      </Border>
+    </controls:CodexAspectRatio>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Square"
+                       Description="Square cards expose the ratio-square state.">
+    <controls:CodexAspectRatio Ratio="1"
+                               Width="210">
+      <Border Background="{DynamicResource CodexSwitch.MutedBrush}">
+        <Grid>
+          <Border Width="6"
+                  HorizontalAlignment="Left"
+                  Background="{DynamicResource CodexSwitch.RingBrush}" />
+          <StackPanel Margin="22,16,16,16"
+                      Spacing="8"
+                      VerticalAlignment="Bottom">
+            <controls:CodexBadge Content="1:1"
+                                 Variant="Secondary"
+                                 HorizontalAlignment="Left" />
+            <primitives:CodexText Text="Avatar crop"
+                                  Role="Subtitle" />
+            <primitives:CodexText Text="Square content slot"
+                                  Role="Muted"
+                                  TextWrapping="Wrap" />
+          </StackPanel>
+        </Grid>
+      </Border>
+    </controls:CodexAspectRatio>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Portrait"
+                       Description="Portrait layout keeps height driven by ratio.">
+    <controls:CodexAspectRatio Ratio="0.5625"
+                               Width="150">
+      <Border Background="{DynamicResource CodexSwitch.MutedBrush}">
+        <Grid>
+          <Border Width="6"
+                  HorizontalAlignment="Left"
+                  Background="{DynamicResource CodexSwitch.SuccessBrush}" />
+          <StackPanel Margin="22,16,16,16"
+                      Spacing="8"
+                      VerticalAlignment="Bottom">
+            <controls:CodexBadge Content="9:16"
+                                 Variant="Secondary"
+                                 HorizontalAlignment="Left" />
+            <primitives:CodexText Text="Mobile card"
+                                  Role="Subtitle" />
+            <primitives:CodexText Text="Tall media frame"
+                                  Role="Muted"
+                                  TextWrapping="Wrap" />
+          </StackPanel>
+        </Grid>
+      </Border>
+    </controls:CodexAspectRatio>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Empty"
+                       Description="No content renders RatioText while preserving measured size.">
+    <controls:CodexAspectRatio Ratio="1.3333333333"
+                               Width="260"
+                               Size="Small" />
+  </controls:CodexField>
+</Grid>

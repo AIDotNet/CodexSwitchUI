@@ -1,9 +1,18 @@
 using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
+using Avalonia.Controls.Primitives;
+using Avalonia.Input;
+using Avalonia.VisualTree;
+using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
+[PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexBadge : CodexFrame
 {
+    private ICommand? _subscribedCommand;
+
     public static readonly StyledProperty<CodexControlVariant> VariantProperty =
         AvaloniaProperty.Register<CodexBadge, CodexControlVariant>(nameof(Variant), CodexControlVariant.Default);
 
@@ -16,18 +25,33 @@ public class CodexBadge : CodexFrame
     public static readonly StyledProperty<bool> IsStatusVisibleProperty =
         AvaloniaProperty.Register<CodexBadge, bool>(nameof(IsStatusVisible));
 
+    public static readonly StyledProperty<bool> IsInteractiveProperty =
+        AvaloniaProperty.Register<CodexBadge, bool>(nameof(IsInteractive));
+
+    public static readonly StyledProperty<ICommand?> CommandProperty =
+        AvaloniaProperty.Register<CodexBadge, ICommand?>(nameof(Command));
+
+    public static readonly StyledProperty<object?> CommandParameterProperty =
+        AvaloniaProperty.Register<CodexBadge, object?>(nameof(CommandParameter));
+
     static CodexBadge()
     {
         VariantProperty.Changed.AddClassHandler<CodexBadge>((badge, _) => badge.SyncClasses());
         SizeProperty.Changed.AddClassHandler<CodexBadge>((badge, _) => badge.SyncClasses());
         StatusVariantProperty.Changed.AddClassHandler<CodexBadge>((badge, _) => badge.SyncClasses());
         IsStatusVisibleProperty.Changed.AddClassHandler<CodexBadge>((badge, _) => badge.SyncClasses());
+        IsInteractiveProperty.Changed.AddClassHandler<CodexBadge>((badge, _) => badge.SyncClasses());
+        CommandProperty.Changed.AddClassHandler<CodexBadge>((badge, args) => badge.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        CommandParameterProperty.Changed.AddClassHandler<CodexBadge>((badge, _) => badge.SyncClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexBadge>((badge, _) => badge.SyncClasses());
     }
 
     public CodexBadge()
     {
         SyncClasses();
     }
+
+    public event EventHandler<CodexBadgeActivatedEventArgs>? Activated;
 
     public CodexControlVariant Variant
     {
@@ -53,12 +77,134 @@ public class CodexBadge : CodexFrame
         set => SetValue(IsStatusVisibleProperty, value);
     }
 
+    public bool IsInteractive
+    {
+        get => GetValue(IsInteractiveProperty);
+        set => SetValue(IsInteractiveProperty, value);
+    }
+
+    public ICommand? Command
+    {
+        get => GetValue(CommandProperty);
+        set => SetValue(CommandProperty, value);
+    }
+
+    public object? CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
+    }
+
+    public bool CanActivate => IsEnabled
+                               && (IsInteractive || Command is not null)
+                               && (Command?.CanExecute(CommandParameter) ?? true);
+
+    public bool TryActivate()
+    {
+        if (!CanActivate)
+        {
+            return false;
+        }
+
+        Command?.Execute(CommandParameter);
+        Activated?.Invoke(this, new CodexBadgeActivatedEventArgs(CommandParameter));
+        return true;
+    }
+
+    protected override void OnGotFocus(FocusChangedEventArgs e)
+    {
+        base.OnGotFocus(e);
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, CodexFocusVisible.FromFocusChange(e));
+    }
+
+    protected override void OnLostFocus(FocusChangedEventArgs e)
+    {
+        base.OnLostFocus(e);
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        base.OnPointerPressed(e);
+
+        if (CanActivate && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            Focus(NavigationMethod.Pointer, KeyModifiers.None);
+        }
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        base.OnPointerReleased(e);
+
+        if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased
+            && TryActivate())
+        {
+            e.Handled = true;
+        }
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (e.Key is (Key.Enter or Key.Space) && TryActivate())
+        {
+            e.Handled = true;
+            return;
+        }
+
+        base.OnKeyDown(e);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
     private void SyncClasses()
     {
         CodexClassSync.SetVariant(Classes, Variant);
         CodexClassSync.SetSize(Classes, Size);
         SetStatusVariantClasses();
+        var hasActivation = IsInteractive || Command is not null;
         Classes.Set("status-visible", IsStatusVisible);
+        Classes.Set("interactive", hasActivation);
+        Classes.Set("can-activate", CanActivate);
+        Classes.Set("command-blocked", hasActivation && !CanActivate);
+        SetCurrentValue(FocusableProperty, hasActivation && IsEnabled);
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncClasses();
     }
 
     private void SetStatusVariantClasses()
@@ -72,4 +218,9 @@ public class CodexBadge : CodexFrame
         Classes.Set("status-success", StatusVariant == CodexControlVariant.Success);
         Classes.Set("status-warning", StatusVariant == CodexControlVariant.Warning);
     }
+}
+
+public sealed class CodexBadgeActivatedEventArgs(object? commandParameter) : EventArgs
+{
+    public object? CommandParameter { get; } = commandParameter;
 }

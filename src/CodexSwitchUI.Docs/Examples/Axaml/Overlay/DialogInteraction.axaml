@@ -1,0 +1,104 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <StackPanel Spacing="10">
+    <primitives:CodexText Role="Muted"
+                          Text="OpenChanged: dialog starts closed." />
+    <controls:CodexDialog Title="Delete provider?"
+                          Description="DismissCommand, Escape, outside pointer, and close button share one close path.">
+      <controls:CodexDialog.Trigger>
+        <controls:CodexButton Content="Open delete dialog"
+                              Size="Small" />
+      </controls:CodexDialog.Trigger>
+
+      <StackPanel Spacing="10">
+        <controls:CodexAlert Icon="!"
+                             Title="This action affects routing."
+                             Description="The overlay remains mounted so exit classes can animate."
+                             Variant="Warning" />
+        <controls:CodexField Label="Audit note">
+          <controls:CodexTextarea MinHeight="76"
+                                  PlaceholderText="Optional reason" />
+        </controls:CodexField>
+      </StackPanel>
+      <controls:CodexDialog.Action>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Cancel"
+                                Variant="Outline"
+                                Size="Small" />
+          <controls:CodexButton Content="Delete"
+                                Variant="Destructive"
+                                Size="Small" />
+        </StackPanel>
+      </controls:CodexDialog.Action>
+    </controls:CodexDialog>
+    <controls:CodexButton Content="Dismiss command"
+                          Variant="Secondary"
+                          Size="Small" />
+  </StackPanel>
+
+  <controls:CodexDialog Grid.Column="1"
+                        Title="Manual close policy"
+                        Description="Escape and outside pointer are disabled; host code owns dismissal."
+                        IsOpen="True"
+                        CloseOnEscape="False"
+                        DismissOnOutsidePointer="False"
+                        IsCloseVisible="False">
+    <StackPanel Spacing="8">
+      <controls:CodexBadge Content="manual"
+                           Variant="Outline" />
+      <primitives:CodexText Text="CloseOnEscape=false and DismissOnOutsidePointer=false."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </StackPanel>
+    <controls:CodexDialog.Action>
+      <controls:CodexButton Content="Apply"
+                            Size="Small" />
+    </controls:CodexDialog.Action>
+  </controls:CodexDialog>
+
+  <StackPanel Grid.Row="1"
+              Spacing="10">
+    <controls:CodexDialog Title="Closed exit state"
+                          Description="Closed class drives exit styling while the surface remains inspectable."
+                          IsOpen="False">
+      <primitives:CodexText Text="Reopen to exercise the open class and action row."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+      <controls:CodexDialog.Action>
+        <controls:CodexButton Content="Confirm"
+                              Size="Small" />
+      </controls:CodexDialog.Action>
+    </controls:CodexDialog>
+    <controls:CodexButton Content="Toggle closed sample"
+                          Variant="Secondary"
+                          Size="Small" />
+  </StackPanel>
+
+  <controls:CodexDialog Grid.Row="1"
+                        Grid.Column="1"
+                        Title="Action close surface"
+                        Description="Action buttons stay slotted while the close control routes through Dismiss."
+                        IsOpen="True"
+                        CloseContent="Esc">
+    <primitives:CodexText Text="Close content can mirror the keyboard dismissal affordance."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+    <controls:CodexDialog.Action>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="Keep"
+                              Variant="Secondary"
+                              Size="Small" />
+        <controls:CodexButton Content="Archive"
+                              Variant="Destructive"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexDialog.Action>
+  </controls:CodexDialog>
+</Grid>

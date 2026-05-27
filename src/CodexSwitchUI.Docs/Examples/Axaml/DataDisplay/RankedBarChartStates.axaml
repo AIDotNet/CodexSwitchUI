@@ -1,0 +1,10 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexRankedBarChart Width="360"
+                                MaxVisibleItems="3" />
+  <controls:CodexRankedBarChart Grid.Column="1"
+                                Width="360"
+                                IsCompact="True" />
+</Grid>

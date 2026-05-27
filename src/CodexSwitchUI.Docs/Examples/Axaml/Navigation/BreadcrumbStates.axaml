@@ -1,0 +1,70 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="18"
+      RowSpacing="16">
+  <controls:CodexBreadcrumb Size="Small"
+                            Label="Small breadcrumb">
+    <controls:CodexBreadcrumbList Size="Small">
+      <controls:CodexBreadcrumbItem>
+        <controls:CodexBreadcrumbLink Content="Home"
+                                      Size="Small" />
+      </controls:CodexBreadcrumbItem>
+      <controls:CodexBreadcrumbSeparator Size="Small" />
+      <controls:CodexBreadcrumbItem IsCurrent="True">
+        <controls:CodexBreadcrumbPage Content="Usage"
+                                      Size="Small" />
+      </controls:CodexBreadcrumbItem>
+    </controls:CodexBreadcrumbList>
+  </controls:CodexBreadcrumb>
+
+  <controls:CodexBreadcrumb Grid.Column="1"
+                            Size="Large"
+                            Label="Large breadcrumb">
+    <controls:CodexBreadcrumbList Size="Large">
+      <controls:CodexBreadcrumbItem>
+        <controls:CodexBreadcrumbLink Content="Providers"
+                                      Size="Large" />
+      </controls:CodexBreadcrumbItem>
+      <controls:CodexBreadcrumbSeparator Content="/"
+                                         Size="Large" />
+      <controls:CodexBreadcrumbItem IsCurrent="True">
+        <controls:CodexBreadcrumbPage Content="Routing"
+                                      Size="Large" />
+      </controls:CodexBreadcrumbItem>
+    </controls:CodexBreadcrumbList>
+  </controls:CodexBreadcrumb>
+
+  <controls:CodexBreadcrumb Grid.Row="1"
+                            Label="Collapsed breadcrumb">
+    <controls:CodexBreadcrumbList>
+      <controls:CodexBreadcrumbItem>
+        <controls:CodexBreadcrumbLink Content="Home" />
+      </controls:CodexBreadcrumbItem>
+      <controls:CodexBreadcrumbSeparator />
+      <controls:CodexBreadcrumbItem>
+        <controls:CodexBreadcrumbEllipsis Label="More sections" />
+      </controls:CodexBreadcrumbItem>
+      <controls:CodexBreadcrumbSeparator />
+      <controls:CodexBreadcrumbItem IsCurrent="True">
+        <controls:CodexBreadcrumbPage Content="Breadcrumb" />
+      </controls:CodexBreadcrumbItem>
+    </controls:CodexBreadcrumbList>
+  </controls:CodexBreadcrumb>
+
+  <controls:CodexBreadcrumb Grid.Row="1"
+                            Grid.Column="1"
+                            IsEnabled="False"
+                            Label="Disabled host">
+    <controls:CodexBreadcrumbList>
+      <controls:CodexBreadcrumbItem>
+        <controls:CodexBreadcrumbLink Content="Workspace" />
+      </controls:CodexBreadcrumbItem>
+      <controls:CodexBreadcrumbSeparator />
+      <controls:CodexBreadcrumbItem IsCurrent="True">
+        <controls:CodexBreadcrumbPage Content="Disabled" />
+      </controls:CodexBreadcrumbItem>
+    </controls:CodexBreadcrumbList>
+  </controls:CodexBreadcrumb>
+</Grid>

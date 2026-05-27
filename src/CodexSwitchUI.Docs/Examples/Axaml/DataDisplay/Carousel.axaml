@@ -1,0 +1,47 @@
+<controls:CodexCarousel xmlns="https://github.com/avaloniaui"
+                         xmlns:controls="using:CodexSwitchUI.Controls"
+                         xmlns:primitives="using:CodexSwitchUI.Primitives"
+                         SelectedIndex="1"
+                         Loop="True"
+                         MinWidth="360"
+                         MaxWidth="560">
+  <controls:CodexCarouselItem Width="280"
+                              MinHeight="160">
+    <controls:CodexCard Title="Model routing"
+                        Description="Primary route">
+      <primitives:CodexText Text="gpt-5"
+                            Role="Subtitle" />
+      <controls:CodexCard.Footer>
+        <controls:CodexBadge Content="active"
+                             Variant="Success"
+                             HorizontalAlignment="Left" />
+      </controls:CodexCard.Footer>
+    </controls:CodexCard>
+  </controls:CodexCarouselItem>
+  <controls:CodexCarouselItem Width="280"
+                              MinHeight="160">
+    <controls:CodexCard Title="Fallback"
+                        Description="Warm standby">
+      <primitives:CodexText Text="Claude Sonnet"
+                            Role="Subtitle" />
+      <controls:CodexCard.Footer>
+        <controls:CodexBadge Content="active"
+                             Variant="Secondary"
+                             HorizontalAlignment="Left" />
+      </controls:CodexCard.Footer>
+    </controls:CodexCard>
+  </controls:CodexCarouselItem>
+  <controls:CodexCarouselItem Width="280"
+                              MinHeight="160">
+    <controls:CodexCard Title="Budget guard"
+                        Description="Monthly cap">
+      <primitives:CodexText Text="72%"
+                            Role="Subtitle" />
+      <controls:CodexCard.Footer>
+        <controls:CodexBadge Content="active"
+                             Variant="Warning"
+                             HorizontalAlignment="Left" />
+      </controls:CodexCard.Footer>
+    </controls:CodexCard>
+  </controls:CodexCarouselItem>
+</controls:CodexCarousel>

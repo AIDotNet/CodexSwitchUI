@@ -1,0 +1,9 @@
+<controls:CodexField xmlns="https://github.com/avaloniaui"
+                     xmlns:controls="using:CodexSwitchUI.Controls"
+                     Label="Deployment date"
+                     Description="Popover-triggered selection reuses the Calendar primitive and keeps the code sample local to this case.">
+  <controls:CodexDatePicker DisplayDate="2026-05-01"
+                            SelectedDate="2026-05-20"
+                            MinWidth="280"
+                            HorizontalAlignment="Left" />
+</controls:CodexField>

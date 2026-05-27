@@ -1,0 +1,21 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexAlert Icon="i"
+                       Title="Default"
+                       Description="Neutral alert with description text." />
+  <controls:CodexAlert Icon="!"
+                       Title="Warning"
+                       Description="Fallback routing is active."
+                       Variant="Warning">
+    <controls:CodexAlert.Action>
+      <controls:CodexButton Content="Review"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexAlert.Action>
+  </controls:CodexAlert>
+  <controls:CodexAlert Icon="x"
+                       Title="Destructive"
+                       Description="The selected provider failed validation."
+                       Variant="Destructive" />
+</StackPanel>

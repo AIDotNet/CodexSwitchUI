@@ -1,0 +1,34 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexToast Icon="i"
+                       Title="Default"
+                       Description="Open toast with action slot."
+                       CloseContent="Close">
+    <controls:CodexToast.Action>
+      <controls:CodexButton Content="Undo"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexToast.Action>
+  </controls:CodexToast>
+
+  <controls:CodexToast Grid.Column="1"
+                       Title="Success"
+                       Description="Provider saved."
+                       Variant="Success" />
+
+  <controls:CodexToast Grid.Row="1"
+                       Title="Warning"
+                       Description="Fallback routing is active."
+                       Variant="Warning" />
+
+  <controls:CodexToast Grid.Row="1"
+                       Grid.Column="1"
+                       Title="Closed"
+                       Description="Closed class drives exit styling."
+                       Variant="Destructive"
+                       IsOpen="False" />
+</Grid>

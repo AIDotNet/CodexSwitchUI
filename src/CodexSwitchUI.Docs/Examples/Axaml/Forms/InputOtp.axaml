@@ -1,0 +1,20 @@
+<controls:CodexField xmlns="https://github.com/avaloniaui"
+                     xmlns:controls="using:CodexSwitchUI.Controls"
+                     Label="Verification code"
+                     Description="Paste or type the six digit code sent to your email.">
+  <controls:CodexInputOtp Text="123456"
+                          MaxLength="6"
+                          Pattern="^[0-9]$">
+    <controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSlot Index="0" />
+      <controls:CodexInputOtpSlot Index="1" />
+      <controls:CodexInputOtpSlot Index="2" />
+    </controls:CodexInputOtpGroup>
+    <controls:CodexInputOtpSeparator />
+    <controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSlot Index="3" />
+      <controls:CodexInputOtpSlot Index="4" />
+      <controls:CodexInputOtpSlot Index="5" />
+    </controls:CodexInputOtpGroup>
+  </controls:CodexInputOtp>
+</controls:CodexField>

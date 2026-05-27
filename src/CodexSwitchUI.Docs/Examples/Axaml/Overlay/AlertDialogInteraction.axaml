@@ -1,0 +1,65 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <StackPanel Spacing="10">
+    <primitives:CodexText Text="Cancel and action commands update host state; Escape restores focus to the trigger."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+    <controls:CodexAlertDialog Title="Delete route?"
+                               Description="Escape closes and requests focus return, outside pointer is ignored by default."
+                               Media="!"
+                               ActionContent="Delete route"
+                               ActionVariant="Destructive">
+      <controls:CodexAlertDialog.Trigger>
+        <controls:CodexButton Content="Open alert dialog"
+                              Size="Small" />
+      </controls:CodexAlertDialog.Trigger>
+      <primitives:CodexText Text="The least-destructive cancel action receives focus when mounted."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexAlertDialog>
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexButton Content="Run cancel command"
+                            Size="Small"
+                            Variant="Secondary" />
+      <controls:CodexButton Content="Run action command"
+                            Size="Small"
+                            Variant="Destructive" />
+    </StackPanel>
+  </StackPanel>
+
+  <StackPanel Grid.Column="1"
+              Spacing="10">
+    <controls:CodexAlertDialog Title="Async confirmation"
+                               Description="CloseOnAction=false keeps the dialog open while the host completes work."
+                               IsOpen="True"
+                               CloseOnAction="False"
+                               IsActionLoading="True"
+                               ActionContent="Uploading">
+      <controls:CodexAlertDialog.Trigger>
+        <controls:CodexButton Content="Open async confirmation"
+                              Size="Small"
+                              Variant="Secondary" />
+      </controls:CodexAlertDialog.Trigger>
+      <primitives:CodexText Text="The action command is blocked while loading is true."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexAlertDialog>
+    <controls:CodexButton Content="Clear loading"
+                          Size="Small"
+                          Variant="Secondary"
+                          HorizontalAlignment="Left" />
+    <controls:CodexAlertDialog Title="Manual outside policy"
+                               Description="Outside pointer dismissal can be enabled for non-critical variants."
+                               IsOpen="True"
+                               DismissOnOutsidePointer="True"
+                               ActionContent="Continue">
+      <primitives:CodexText Text="This sample opts into regular Dialog outside-pointer dismissal."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexAlertDialog>
+  </StackPanel>
+</Grid>

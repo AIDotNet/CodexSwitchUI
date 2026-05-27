@@ -1,0 +1,74 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Load event"
+                       Description="Changing Path reloads avares resources and raises ImageLoaded with old/new path context.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="ImageLoaded: openai.png loaded; old path was none." />
+        <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                                 Width="48"
+                                 Height="48" />
+        <controls:CodexButton Content="Switch provider"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Error event"
+                       Description="Missing paths clear Source, set IsMissing, and raise ImageLoadFailed.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="ImageLoadFailed: missing-provider.png - Image asset was not found."
+                              TextWrapping="Wrap" />
+        <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/missing-provider.png"
+                                 Width="48"
+                                 Height="48" />
+        <primitives:CodexText Role="Muted"
+                              Text="Source remains empty for missing assets."
+                              TextWrapping="Wrap" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Size handoff"
+                       Description="Width and height changes preserve the same bitmap source.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Size: 32px; HasSource=True." />
+        <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                                 Width="32"
+                                 Height="32" />
+        <controls:CodexButton Content="Toggle size"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled host composition"
+                       Description="Icons remain legible inside disabled provider actions.">
+    <controls:CodexField.Content>
+      <controls:CodexButton Content="Open provider"
+                            IsEnabled="False">
+        <controls:CodexButton.LeadingIcon>
+          <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/codex-color.png"
+                                   Width="24"
+                                   Height="24" />
+        </controls:CodexButton.LeadingIcon>
+      </controls:CodexButton>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,58 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexBadge Content="Default" />
+    <controls:CodexBadge Content="Secondary"
+                         Variant="Secondary" />
+    <controls:CodexBadge Content="Destructive"
+                         Variant="Destructive" />
+    <controls:CodexBadge Content="Outline"
+                         Variant="Outline" />
+    <controls:CodexBadge Content="Ghost"
+                         Variant="Ghost" />
+  </StackPanel>
+
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexBadge Variant="Secondary">
+      <StackPanel Orientation="Horizontal"
+                  Spacing="4">
+        <TextBlock Text="ok" />
+        <TextBlock Text="Verified" />
+      </StackPanel>
+    </controls:CodexBadge>
+    <controls:CodexBadge Variant="Outline">
+      <StackPanel Orientation="Horizontal"
+                  Spacing="4">
+        <controls:CodexSpinner Size="Small"
+                               Label="Generating" />
+        <TextBlock Text="Generating" />
+      </StackPanel>
+    </controls:CodexBadge>
+    <controls:CodexBadge Variant="Link">
+      <StackPanel Orientation="Horizontal"
+                  Spacing="4">
+        <TextBlock Text="Open link" />
+        <TextBlock Text="open" />
+      </StackPanel>
+    </controls:CodexBadge>
+  </StackPanel>
+
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexBadge Content="Healthy"
+                         Variant="Success"
+                         StatusVariant="Success"
+                         IsStatusVisible="True" />
+    <controls:CodexBadge Content="Fallback"
+                         Variant="Warning"
+                         StatusVariant="Warning"
+                         IsStatusVisible="True" />
+    <controls:CodexBadge Content="Blocked"
+                         Variant="Destructive"
+                         StatusVariant="Destructive"
+                         IsStatusVisible="True" />
+  </StackPanel>
+</StackPanel>

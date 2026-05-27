@@ -1,0 +1,92 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <StackPanel Spacing="10">
+    <primitives:CodexText Role="Muted"
+                          Text="OpenChanged: popover starts closed." />
+    <controls:CodexPopover Title="Usage window"
+                           Description="DismissCommand, Escape, and outside pointer share one close path."
+                           IsArrowVisible="True">
+      <controls:CodexPopover.Trigger>
+        <controls:CodexButton Content="Usage trigger"
+                              Size="Small" />
+      </controls:CodexPopover.Trigger>
+
+      <StackPanel Spacing="8">
+        <controls:CodexProgress Minimum="0"
+                                Maximum="100"
+                                Value="72"
+                                Variant="Warning" />
+        <primitives:CodexText Text="72% of the monthly budget is used."
+                              Role="Muted"
+                              TextWrapping="Wrap" />
+      </StackPanel>
+      <controls:CodexPopover.Action>
+        <controls:CodexButton Content="Open billing"
+                              Size="Small" />
+      </controls:CodexPopover.Action>
+    </controls:CodexPopover>
+    <controls:CodexButton Content="Dismiss command"
+                          Variant="Secondary"
+                          Size="Small" />
+  </StackPanel>
+
+  <controls:CodexPopover Grid.Column="1"
+                         Title="Persistent panel"
+                         Description="Escape and outside pointer are disabled for manual host control."
+                         IsOpen="True"
+                         CloseOnEscape="False"
+                         DismissOnOutsidePointer="False"
+                         IsCloseVisible="False">
+    <StackPanel Spacing="8">
+      <controls:CodexBadge Content="manual"
+                           Variant="Outline" />
+      <primitives:CodexText Text="The host controls open state and focus restoration."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </StackPanel>
+    <controls:CodexPopover.Action>
+      <controls:CodexButton Content="Apply"
+                            Size="Small" />
+    </controls:CodexPopover.Action>
+  </controls:CodexPopover>
+
+  <StackPanel Grid.Row="1"
+              Spacing="10">
+    <controls:CodexPopover Title="Closed popover"
+                           Description="Closed class stays mounted for exit styling."
+                           IsOpen="False">
+      <primitives:CodexText Text="Toggle open state without replacing the surface."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexPopover>
+    <controls:CodexButton Content="Toggle closed sample"
+                          Variant="Secondary"
+                          Size="Small" />
+  </StackPanel>
+
+  <controls:CodexPopover Grid.Row="1"
+                         Grid.Column="1"
+                         Title="Action content"
+                         Description="Action slot remains mounted while close content routes through Dismiss."
+                         IsOpen="True"
+                         CloseContent="Esc">
+    <primitives:CodexText Text="Popover body can contain any Codex component."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+    <controls:CodexPopover.Action>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="Later"
+                              Variant="Secondary"
+                              Size="Small" />
+        <controls:CodexButton Content="Open"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexPopover.Action>
+  </controls:CodexPopover>
+</Grid>

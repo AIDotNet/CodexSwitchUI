@@ -1,0 +1,221 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexResizablePanelGroup">
+    <Setter Property="MinWidth" Value="280" />
+    <Setter Property="MinHeight" Value="180" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="ClipToBounds" Value="True" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanelGroup.resizable-panel-group.horizontal">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanelGroup.resizable-panel-group.vertical">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanelGroup.dragging">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanelGroup.size-sm">
+    <Setter Property="MinHeight" Value="140" />
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanelGroup.size-lg">
+    <Setter Property="MinHeight" Value="240" />
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanelGroup.size-icon">
+    <Setter Property="MinWidth" Value="180" />
+    <Setter Property="MinHeight" Value="120" />
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanel">
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexResizablePanel">
+        <Border x:Name="PART_PanelRoot"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter x:Name="PART_PanelContent"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanel.resizable-panel.horizontal,
+                   controls|CodexResizablePanel.resizable-panel.vertical">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanel.collapsed">
+    <Setter Property="Opacity" Value="0.68" />
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanel.first /template/ Border#PART_PanelRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.MutedBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexResizablePanel /template/ Border#PART_PanelRoot">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle">
+    <Setter Property="Width" Value="8" />
+    <Setter Property="MinWidth" Value="8" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="Focusable" Value="True" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexResizableHandle">
+        <Grid x:Name="PART_HandleRoot"
+              Background="Transparent">
+          <Border x:Name="PART_HandleTrack"
+                  Width="1"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Stretch"
+                  Background="{TemplateBinding Background}" />
+          <Border x:Name="PART_HandleGrip"
+                  Width="14"
+                  Height="22"
+                  CornerRadius="{DynamicResource CodexSwitch.RadiusSm}"
+                  Background="{DynamicResource CodexSwitch.CardBrush}"
+                  BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                  BorderThickness="1"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Opacity="0" />
+          <Border x:Name="PART_FocusRing"
+                  Width="18"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Stretch"
+                  BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                  BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                  CornerRadius="{DynamicResource CodexSwitch.RadiusSm}"
+                  IsHitTestVisible="False"
+                  Opacity="0" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle.resizable-handle.horizontal,
+                   controls|CodexResizableHandle.resizable-handle.vertical">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle /template/ Border#PART_HandleGrip,
+                   controls|CodexResizableHandle /template/ Border#PART_FocusRing,
+                   controls|CodexResizableHandle /template/ Border#PART_HandleTrack">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle.vertical">
+    <Setter Property="Width" Value="NaN" />
+    <Setter Property="MinWidth" Value="0" />
+    <Setter Property="Height" Value="8" />
+    <Setter Property="MinHeight" Value="8" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle.vertical /template/ Border#PART_HandleTrack">
+    <Setter Property="Width" Value="NaN" />
+    <Setter Property="Height" Value="1" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle.vertical /template/ Border#PART_HandleGrip">
+    <Setter Property="Width" Value="22" />
+    <Setter Property="Height" Value="14" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle.vertical /template/ Border#PART_FocusRing">
+    <Setter Property="Width" Value="NaN" />
+    <Setter Property="Height" Value="18" />
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle.with-handle /template/ Border#PART_HandleGrip,
+                   controls|CodexResizableHandle:pointerover /template/ Border#PART_HandleGrip,
+                   controls|CodexResizableHandle.dragging /template/ Border#PART_HandleGrip">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle:pointerover /template/ Border#PART_HandleTrack,
+                   controls|CodexResizableHandle.dragging /template/ Border#PART_HandleTrack">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle:focus-visible /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle.size-sm">
+    <Setter Property="Width" Value="6" />
+    <Setter Property="MinWidth" Value="6" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle.size-lg">
+    <Setter Property="Width" Value="12" />
+    <Setter Property="MinWidth" Value="12" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle.size-icon">
+    <Setter Property="Width" Value="6" />
+    <Setter Property="MinWidth" Value="6" />
+  </Style>
+
+  <Style Selector="controls|CodexResizableHandle:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+</Styles>

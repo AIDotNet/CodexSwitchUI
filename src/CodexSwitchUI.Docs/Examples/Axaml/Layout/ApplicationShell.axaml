@@ -1,0 +1,67 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="260,*"
+      ColumnSpacing="18"
+      Height="360">
+  <controls:CodexSidebar>
+    <StackPanel>
+      <controls:CodexSidebarHeader>
+        <StackPanel Spacing="2">
+          <TextBlock Text="CodexSwitch"
+                     FontWeight="SemiBold" />
+          <TextBlock Text="Workspace shell"
+                     Opacity="0.72" />
+        </StackPanel>
+      </controls:CodexSidebarHeader>
+
+      <controls:CodexSidebarContent>
+        <StackPanel Spacing="14">
+          <controls:CodexSidebarGroup>
+            <StackPanel Spacing="5">
+              <controls:CodexSidebarGroupLabel Content="Platform" />
+              <controls:CodexSidebarMenuButton Content="Providers"
+                                               IsActive="True"
+                                               Badge="12" />
+              <controls:CodexSidebarMenuButton Content="Sessions"
+                                               Badge="Live" />
+              <controls:CodexSidebarMenuButton Content="Usage" />
+            </StackPanel>
+          </controls:CodexSidebarGroup>
+
+          <controls:CodexSidebarGroup>
+            <StackPanel Spacing="5">
+              <controls:CodexSidebarGroupLabel Content="Settings" />
+              <controls:CodexSidebarMenuButton Content="Routing" />
+              <controls:CodexSidebarMenuButton Content="Security"
+                                               IsEnabled="False" />
+            </StackPanel>
+          </controls:CodexSidebarGroup>
+        </StackPanel>
+      </controls:CodexSidebarContent>
+
+      <controls:CodexSidebarFooter>
+        <controls:CodexButton Content="New provider"
+                              Size="Small"
+                              HorizontalAlignment="Stretch" />
+      </controls:CodexSidebarFooter>
+    </StackPanel>
+  </controls:CodexSidebar>
+
+  <controls:CodexSection Grid.Column="1"
+                         Title="Providers"
+                         Description="Section action and content slots stay stable while navigation changes.">
+    <controls:CodexSection.Actions>
+      <controls:CodexButton Content="Add"
+                            Size="Small" />
+    </controls:CodexSection.Actions>
+    <StackPanel Spacing="10">
+      <controls:CodexProviderCard Header="OpenAI"
+                                  Description="Primary route"
+                                  Icon="O"
+                                  IsActive="True" />
+      <controls:CodexProviderCard Header="Claude"
+                                  Description="Fallback route"
+                                  Icon="C" />
+    </StackPanel>
+  </controls:CodexSection>
+</Grid>

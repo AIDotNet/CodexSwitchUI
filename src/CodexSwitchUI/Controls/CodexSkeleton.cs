@@ -4,13 +4,14 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using CodexSwitchUI.Themes;
 
 namespace CodexSwitchUI.Controls;
 
 public class CodexSkeleton : CodexFrame
 {
     private static readonly TimeSpan FrameInterval = TimeSpan.FromMilliseconds(16);
-    private static readonly TimeSpan DefaultPulseDuration = TimeSpan.FromSeconds(2);
+    private static readonly TimeSpan DefaultPulseDuration = CodexSwitchThemeOptions.ShadcnDefault.SkeletonShimmerDuration;
 
     public static readonly StyledProperty<bool> IsAnimatedProperty =
         AvaloniaProperty.Register<CodexSkeleton, bool>(nameof(IsAnimated), true);

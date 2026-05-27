@@ -1,0 +1,86 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Value and events"
+                       Description="Buttons mutate the same root value that pointer and keyboard selection update.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="ValueChanged exposes old/new item, index, and value metadata." />
+        <controls:CodexRadioGroup SelectedValue="balanced">
+          <controls:CodexRadioGroupItem Value="balanced"
+                                        Content="Balanced" />
+          <controls:CodexRadioGroupItem Value="reasoning"
+                                        Content="Reasoning" />
+          <controls:CodexRadioGroupItem Value="latency"
+                                        Content="Low latency" />
+        </controls:CodexRadioGroup>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Cycle value"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Toggle orientation"
+                                Size="Small"
+                                Variant="Ghost" />
+          <controls:CodexButton Content="Toggle loading"
+                                Size="Small"
+                                Variant="Ghost" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Loop disabled"
+                       Description="Root state flows to item value, checked, disabled, and keyboard behavior.">
+    <controls:CodexField.Content>
+      <controls:CodexRadioGroup IsLoop="False"
+                                SelectedValue="first">
+        <controls:CodexRadioGroupItem Value="first"
+                                      Content="First boundary" />
+        <controls:CodexRadioGroupItem Value="middle"
+                                      Content="Middle" />
+        <controls:CodexRadioGroupItem Value="last"
+                                      Content="Last boundary" />
+      </controls:CodexRadioGroup>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Disabled option"
+                       Description="Root state flows to item value, checked, disabled, and keyboard behavior.">
+    <controls:CodexField.Content>
+      <controls:CodexRadioGroup SelectedValue="primary">
+        <controls:CodexRadioGroupItem Value="primary"
+                                      Content="Primary route" />
+        <controls:CodexRadioGroupItem Value="blocked"
+                                      Content="Disabled route"
+                                      IsEnabled="False" />
+        <controls:CodexRadioGroupItem Value="fallback"
+                                      Content="Fallback route" />
+      </controls:CodexRadioGroup>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Horizontal keys"
+                       Description="Root state flows to item value, checked, disabled, and keyboard behavior.">
+    <controls:CodexField.Content>
+      <controls:CodexRadioGroup Orientation="Horizontal"
+                                SelectedValue="left">
+        <controls:CodexRadioGroupItem Value="left"
+                                      Content="Left" />
+        <controls:CodexRadioGroupItem Value="center"
+                                      Content="Center" />
+        <controls:CodexRadioGroupItem Value="right"
+                                      Content="Right" />
+      </controls:CodexRadioGroup>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

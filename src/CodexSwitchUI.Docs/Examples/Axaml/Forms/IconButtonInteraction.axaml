@@ -1,0 +1,73 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Toolbar actions"
+                       Description="Icon-only actions keep square geometry across pointer and keyboard activation.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Toolbar action: none" />
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexIconButton Content="p"
+                                    IsRound="True"
+                                    Variant="Secondary" />
+          <controls:CodexIconButton Content=">"
+                                    LoadingContent="..." />
+          <controls:CodexIconButton Content="..."
+                                    Variant="Ghost" />
+          <controls:CodexIconButton Content="x"
+                                    Variant="Destructive" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Round and focus-visible"
+                       Description="Round geometry changes shape only; behavior stays shared.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexIconButton Content="+"
+                                IsRound="True" />
+      <controls:CodexIconButton Content="i"
+                                IsRound="True"
+                                Variant="Secondary" />
+      <controls:CodexIconButton Content="?"
+                                IsRound="True"
+                                Variant="Ghost" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Loading suppression"
+                       Description="Loading icon buttons keep fixed toolbar geometry.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexIconButton Content=">"
+                                IsLoading="True"
+                                LoadingContent="..." />
+      <controls:CodexIconButton Content="*"
+                                Variant="Secondary"
+                                IsLoading="True" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled guard"
+                       Description="Disabled icon actions stay aligned with enabled toolbar buttons.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexIconButton Content="i"
+                                IsEnabled="False" />
+      <controls:CodexIconButton Content="x"
+                                Variant="Destructive"
+                                IsEnabled="False" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

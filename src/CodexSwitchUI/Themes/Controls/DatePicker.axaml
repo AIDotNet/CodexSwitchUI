@@ -1,0 +1,290 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexDatePicker">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingMd}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BackgroundBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.InputBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="MaxPopupHeight" Value="380" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexDatePicker">
+        <Grid>
+          <Border x:Name="PART_InputGroup"
+                  MinHeight="{TemplateBinding MinHeight}"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}" />
+          <Border x:Name="PART_FocusRing"
+                  BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                  BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  IsHitTestVisible="False"
+                  Opacity="0" />
+
+          <Grid ColumnDefinitions="*,Auto,Auto">
+            <Button x:Name="PART_Trigger"
+                    Grid.Column="0"
+                    MinHeight="{TemplateBinding MinHeight}"
+                    Padding="{TemplateBinding Padding}"
+                    Content="{TemplateBinding DisplayText}"
+                    Foreground="{TemplateBinding Foreground}"
+                    FontFamily="{TemplateBinding FontFamily}"
+                    FontSize="{TemplateBinding FontSize}"
+                    HorizontalContentAlignment="Stretch"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    FocusAdorner="{x:Null}">
+              <Button.Template>
+                <ControlTemplate TargetType="Button">
+                  <Border x:Name="PART_TriggerSurface"
+                          Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}">
+                    <Grid ColumnDefinitions="Auto,*"
+                          ColumnSpacing="8"
+                          VerticalAlignment="Center">
+                      <PathIcon x:Name="PART_CalendarIcon"
+                                Width="14"
+                                Height="14"
+                                Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                                Data="M3 2H5V4H11V2H13V4H15C16.1 4 17 4.9 17 6V15C17 16.1 16.1 17 15 17H3C1.9 17 1 16.1 1 15V6C1 4.9 1.9 4 3 4H3V2ZM3 8V15H15V8H3ZM5 10H7V12H5V10Z" />
+                      <TextBlock x:Name="PART_Text"
+                                 Grid.Column="1"
+                                 Text="{TemplateBinding Content}"
+                                 Foreground="{TemplateBinding Foreground}"
+                                 FontFamily="{TemplateBinding FontFamily}"
+                                 FontSize="{TemplateBinding FontSize}"
+                                 TextTrimming="CharacterEllipsis"
+                                 VerticalAlignment="Center" />
+                    </Grid>
+                  </Border>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+
+            <Button x:Name="PART_Clear"
+                    Grid.Column="1"
+                    Width="28"
+                    Height="28"
+                    Padding="0"
+                    Margin="0,0,2,0"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    FocusAdorner="{x:Null}"
+                    IsVisible="{TemplateBinding HasClearButton}">
+              <Button.Template>
+                <ControlTemplate TargetType="Button">
+                  <Border x:Name="PART_ClearSurface"
+                          Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          CornerRadius="{DynamicResource CodexSwitch.RadiusSm}">
+                    <PathIcon x:Name="PART_ClearIcon"
+                              Width="12"
+                              Height="12"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                              Data="M3.4 2L2 3.4L6.6 8L2 12.6L3.4 14L8 9.4L12.6 14L14 12.6L9.4 8L14 3.4L12.6 2L8 6.6Z" />
+                  </Border>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+
+            <Border x:Name="PART_ChevronSlot"
+                    Grid.Column="2"
+                    Width="32"
+                    VerticalAlignment="Stretch">
+              <PathIcon x:Name="PART_Chevron"
+                        Width="14"
+                        Height="14"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                        RenderTransform="none"
+                        Data="M7 10L12 5L10.6 3.6L7 7.2L3.4 3.6L2 5L7 10Z" />
+            </Border>
+          </Grid>
+
+          <Popup x:Name="PART_Popup"
+                 WindowManagerAddShadowHint="False"
+                 IsOpen="{TemplateBinding IsOpen, Mode=TwoWay}"
+                 MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                 MaxHeight="{TemplateBinding MaxPopupHeight}"
+                 PlacementTarget="PART_InputGroup"
+                 Placement="Bottom"
+                 IsLightDismissEnabled="True"
+                 InheritsTransform="True">
+            <Border x:Name="PART_PopupBorder"
+                    Margin="0,6,0,0"
+                    Padding="0"
+                    Background="{DynamicResource CodexSwitch.PopoverBrush}"
+                    BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                    Opacity="0"
+                    RenderTransform="scale(0.98)">
+              <Grid>
+                <controls:CodexCalendar x:Name="PART_Calendar"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        SelectionMode="{TemplateBinding SelectionMode}"
+                                        SelectedDate="{TemplateBinding SelectedDate, Mode=TwoWay}"
+                                        RangeStart="{TemplateBinding RangeStart, Mode=TwoWay}"
+                                        RangeEnd="{TemplateBinding RangeEnd, Mode=TwoWay}"
+                                        DisplayDate="{TemplateBinding DisplayDate, Mode=TwoWay}"
+                                        MinDate="{TemplateBinding MinDate}"
+                                        MaxDate="{TemplateBinding MaxDate}"
+                                        FirstDayOfWeek="{TemplateBinding FirstDayOfWeek}"
+                                        ShowOutsideDays="{TemplateBinding ShowOutsideDays}"
+                                        ShowWeekNumbers="{TemplateBinding ShowWeekNumbers}"
+                                        Intent="{TemplateBinding Intent}"
+                                        Size="{TemplateBinding Size}" />
+                <Border x:Name="PART_Loading"
+                        Background="{DynamicResource CodexSwitch.PopoverBrush}"
+                        CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                        IsVisible="{TemplateBinding IsLoading}"
+                        Opacity="0.92">
+                  <TextBlock Text="Loading..."
+                             Margin="18"
+                             Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                             FontFamily="{TemplateBinding FontFamily}"
+                             FontSize="{TemplateBinding FontSize}"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center" />
+                </Border>
+              </Grid>
+            </Border>
+          </Popup>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker /template/ Border#PART_InputGroup,
+                   controls|CodexDatePicker /template/ Border#PART_FocusRing,
+                   controls|CodexDatePicker /template/ Border#PART_PopupBorder">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker:pointerover /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.open /template/ Border#PART_InputGroup,
+                   controls|CodexDatePicker:focus-visible /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker:focus-visible /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.open /template/ Border#PART_PopupBorder">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.closed /template/ Border#PART_PopupBorder">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="RenderTransform" Value="scale(0.98)" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.open /template/ PathIcon#PART_Chevron">
+    <Setter Property="RenderTransform" Value="rotate(180deg)" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.placeholder-visible /template/ TextBlock#PART_Text">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.date-picker /template/ Border#PART_InputGroup">
+    <Setter Property="RenderTransform" Value="none" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.has-selection /template/ PathIcon#PART_CalendarIcon">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.single /template/ TextBlock#PART_Text,
+                   controls|CodexDatePicker.range /template/ TextBlock#PART_Text">
+    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.range-complete /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.has-clear /template/ Button#PART_Clear">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.close-on-select /template/ Border#PART_PopupBorder,
+                   controls|CodexDatePicker.close-on-escape /template/ Border#PART_PopupBorder">
+    <Setter Property="RenderTransformOrigin" Value="50%,0%" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.loading">
+    <Setter Property="Opacity" Value="0.82" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.intent-error /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.intent-success /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.intent-warning /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.size-sm">
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightSm}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingSm}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.size-lg">
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightLg}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingLg}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexDatePicker.size-icon">
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="0,0,0,0" />
+  </Style>
+</Styles>

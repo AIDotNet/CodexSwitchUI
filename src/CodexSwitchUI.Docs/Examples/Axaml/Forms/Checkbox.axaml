@@ -1,0 +1,12 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexCheckBox Content="Enable provider routing"
+                          IsChecked="True" />
+  <controls:CodexCheckBox Content="Sync archived sessions"
+                          IsThreeState="True"
+                          IsChecked="{x:Null}" />
+  <controls:CodexCheckBox Content="Delete stale cache"
+                          Intent="Error" />
+</StackPanel>

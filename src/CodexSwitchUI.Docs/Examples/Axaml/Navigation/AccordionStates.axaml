@@ -1,0 +1,65 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexAccordion IsCollapsible="False">
+    <controls:CodexAccordionItem Value="single-open"
+                                 Header="Single open item"
+                                 IsOpen="True">
+      <primitives:CodexText Text="Opening another item closes this section."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexAccordionItem>
+    <controls:CodexAccordionItem Value="single-next"
+                                 Header="Sibling item">
+      <primitives:CodexText Text="Single mode keeps only one content region open."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexAccordionItem>
+  </controls:CodexAccordion>
+
+  <controls:CodexAccordion Grid.Column="1"
+                           Type="Multiple">
+    <controls:CodexAccordionItem Value="multi-a"
+                                 Header="Multiple routing"
+                                 IsOpen="True">
+      <primitives:CodexText Text="Multiple mode keeps this item open."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexAccordionItem>
+    <controls:CodexAccordionItem Value="multi-b"
+                                 Header="Multiple billing"
+                                 IsOpen="True">
+      <primitives:CodexText Text="Independent items can stay expanded together."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexAccordionItem>
+  </controls:CodexAccordion>
+
+  <controls:CodexAccordion Grid.Row="1"
+                           IsCollapsible="True"
+                           Size="Small"
+                           AnimationDuration="0:0:0">
+    <controls:CodexAccordionItem Value="compact"
+                                 Header="Reduced motion"
+                                 IsOpen="True">
+      <primitives:CodexText Text="Zero-duration content snaps to final height."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexAccordionItem>
+  </controls:CodexAccordion>
+
+  <controls:CodexAccordion Grid.Row="1"
+                           Grid.Column="1"
+                           IsEnabled="False">
+    <controls:CodexAccordionItem Value="disabled"
+                                 Header="Disabled accordion">
+      <primitives:CodexText Text="Disabled root suppresses trigger toggles."
+                            Role="Muted"
+                            TextWrapping="Wrap" />
+    </controls:CodexAccordionItem>
+  </controls:CodexAccordion>
+</Grid>

@@ -1,0 +1,27 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <controls:CodexField Label="Popup anatomy"
+                       Description="Trigger, selected content, chevron, popup, item, and disabled item share the CodexSelect contract.">
+    <controls:CodexSelect SelectedIndex="1"
+                          IsDropDownOpen="True"
+                          MinWidth="250">
+      <ComboBoxItem Content="OpenAI" />
+      <ComboBoxItem Content="Claude" />
+      <ComboBoxItem Content="Responses" />
+      <ComboBoxItem Content="Disabled route"
+                    IsEnabled="False" />
+    </controls:CodexSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Placeholder field"
+                       Description="No selection keeps placeholder-visible until ValueChanged commits a value.">
+    <controls:CodexSelect PlaceholderText="Select provider"
+                          MinWidth="250">
+      <ComboBoxItem Content="Primary" />
+      <ComboBoxItem Content="Fallback" />
+    </controls:CodexSelect>
+  </controls:CodexField>
+</Grid>

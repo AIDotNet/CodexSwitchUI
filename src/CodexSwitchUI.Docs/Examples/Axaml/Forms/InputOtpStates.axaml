@@ -1,0 +1,82 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Digits only"
+                       Description="Pattern rejects non-digit input.">
+    <controls:CodexInputOtp Text="2048"
+                            MaxLength="4"
+                            Pattern="^[0-9]$">
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="0" />
+        <controls:CodexInputOtpSlot Index="1" />
+        <controls:CodexInputOtpSlot Index="2" />
+        <controls:CodexInputOtpSlot Index="3" />
+      </controls:CodexInputOtpGroup>
+    </controls:CodexInputOtp>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Alphanumeric"
+                       Description="Letters and digits are accepted.">
+    <controls:CodexInputOtp Text="A1B2C3"
+                            MaxLength="6"
+                            Pattern="^[A-Za-z0-9]$">
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="0" />
+        <controls:CodexInputOtpSlot Index="1" />
+        <controls:CodexInputOtpSlot Index="2" />
+      </controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSeparator />
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="3" />
+        <controls:CodexInputOtpSlot Index="4" />
+        <controls:CodexInputOtpSlot Index="5" />
+      </controls:CodexInputOtpGroup>
+    </controls:CodexInputOtp>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Invalid"
+                       Intent="Error"
+                       Message="The verification code is incorrect.">
+    <controls:CodexInputOtp Text="000000"
+                            IsInvalid="True"
+                            Intent="Error"
+                            MaxLength="6">
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="0" />
+        <controls:CodexInputOtpSlot Index="1" />
+        <controls:CodexInputOtpSlot Index="2" />
+      </controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSeparator />
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="3" />
+        <controls:CodexInputOtpSlot Index="4" />
+        <controls:CodexInputOtpSlot Index="5" />
+      </controls:CodexInputOtpGroup>
+    </controls:CodexInputOtp>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled">
+    <controls:CodexInputOtp Text="123456"
+                            IsEnabled="False"
+                            MaxLength="6">
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="0" />
+        <controls:CodexInputOtpSlot Index="1" />
+        <controls:CodexInputOtpSlot Index="2" />
+      </controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSeparator />
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="3" />
+        <controls:CodexInputOtpSlot Index="4" />
+        <controls:CodexInputOtpSlot Index="5" />
+      </controls:CodexInputOtpGroup>
+    </controls:CodexInputOtp>
+  </controls:CodexField>
+</Grid>

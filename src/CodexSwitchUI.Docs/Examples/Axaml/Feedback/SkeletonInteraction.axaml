@@ -1,0 +1,39 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <StackPanel Spacing="12">
+    <controls:CodexSkeleton Width="64"
+                            Height="64"
+                            CornerRadius="32"
+                            PulseDuration="0:0:2"
+                            ShimmerHighOpacity="0.22" />
+    <controls:CodexSkeleton Width="280"
+                            Height="18"
+                            PulseLowOpacity="0.48"
+                            PulseHighOpacity="1" />
+    <controls:CodexSkeleton Width="360"
+                            Height="18"
+                            PulseLowOpacity="0.48"
+                            PulseHighOpacity="1" />
+    <controls:CodexSkeleton Width="220"
+                            Height="18"
+                            PulseLowOpacity="0.48"
+                            PulseHighOpacity="1" />
+  </StackPanel>
+
+  <StackPanel Grid.Column="1"
+              Spacing="12">
+    <controls:CodexSkeleton Width="360"
+                            Height="110"
+                            CornerRadius="8"
+                            IsAnimated="False" />
+    <controls:CodexSkeleton Width="180"
+                            Height="18"
+                            IsAnimated="False" />
+    <primitives:CodexText Text="Static skeletons are the reduced-motion fallback while preserving layout."
+                          Role="Muted"
+                          TextWrapping="Wrap" />
+  </StackPanel>
+</Grid>

@@ -1,0 +1,25 @@
+<controls:CodexMenu xmlns="https://github.com/avaloniaui"
+                    xmlns:controls="using:CodexSwitchUI.Controls"
+                    MinWidth="260"
+                    IsLoading="True">
+  <controls:CodexMenuGroup Header="Provider">
+    <controls:CodexMenuItem Header="New provider"
+                            Shortcut="Ctrl+N"
+                            IsActive="True" />
+    <controls:CodexMenuItem Header="Duplicate route"
+                            Shortcut="Ctrl+D" />
+    <controls:CodexMenuItem Header="Export">
+      <controls:CodexMenuItem Header="JSON" />
+      <controls:CodexMenuItem Header="Markdown" />
+    </controls:CodexMenuItem>
+  </controls:CodexMenuGroup>
+
+  <controls:CodexMenuSeparator />
+
+  <controls:CodexMenuGroup Header="Async results">
+    <controls:CodexMenuLoading Content="Loading providers..." />
+    <controls:CodexMenuEmpty Content="No archived providers." />
+    <controls:CodexMenuItem Header="Delete provider"
+                            IsEnabled="False" />
+  </controls:CodexMenuGroup>
+</controls:CodexMenu>

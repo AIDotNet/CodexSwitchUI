@@ -1,0 +1,65 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <StackPanel Spacing="10">
+    <TextBlock Text="Drag 48px settles; drag 128px dismisses." />
+    <controls:CodexDrawer Title="Route actions"
+                          Description="Handle drag and shared DismissCommand route through the same open state."
+                          Direction="Bottom"
+                          IsOpen="True">
+      <controls:CodexDrawer.Trigger>
+        <controls:CodexButton Content="Open drawer"
+                              Size="Small" />
+      </controls:CodexDrawer.Trigger>
+      <StackPanel Spacing="8">
+        <controls:CodexCheckBox Content="Include fallback providers"
+                                IsChecked="True" />
+        <controls:CodexAlert Title="Drag threshold"
+                             Description="Crossing DragDismissThreshold sets drag-dismiss-ready."
+                             Variant="Secondary" />
+      </StackPanel>
+      <controls:CodexDrawer.Action>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8">
+          <controls:CodexButton Content="Cancel"
+                                Variant="Secondary"
+                                Size="Small" />
+          <controls:CodexButton Content="Submit"
+                                Size="Small" />
+        </StackPanel>
+      </controls:CodexDrawer.Action>
+    </controls:CodexDrawer>
+  </StackPanel>
+
+  <controls:CodexDrawer Grid.Column="1"
+                        Title="Manual drawer"
+                        Description="Escape, outside pointer, and handle close can be disabled for form flows."
+                        Direction="Right"
+                        Width="360"
+                        CloseOnEscape="False"
+                        DismissOnOutsidePointer="False"
+                        CloseOnDragDismiss="False"
+                        IsOpen="True">
+    <controls:CodexDrawer.Trigger>
+      <controls:CodexButton Content="Open manual drawer"
+                            Size="Small" />
+    </controls:CodexDrawer.Trigger>
+    <TextBlock Text="Host code decides when this drawer closes." />
+  </controls:CodexDrawer>
+
+  <controls:CodexDrawer Grid.Row="1"
+                        Title="Closed exit"
+                        Description="Closed class preserves direction-specific slide motion."
+                        Direction="Left"
+                        IsOpen="False">
+    <controls:CodexDrawer.Trigger>
+      <controls:CodexButton Content="Open closed drawer"
+                            Size="Small" />
+    </controls:CodexDrawer.Trigger>
+    <TextBlock Text="Snapshots verify the mounted closed state." />
+  </controls:CodexDrawer>
+</Grid>

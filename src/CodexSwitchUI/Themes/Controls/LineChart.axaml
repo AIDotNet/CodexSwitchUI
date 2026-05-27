@@ -1,0 +1,80 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexLineChart">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.CardForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="MutedForeground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="GridBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="LineBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="AreaBrush" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="DotBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="ActiveDotBrush" Value="{DynamicResource CodexSwitch.PrimaryBrush}" />
+    <Setter Property="TooltipBackground" Value="{DynamicResource CodexSwitch.PopoverBrush}" />
+    <Setter Property="TooltipForeground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="TooltipBorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="AnimationDuration" Value="{DynamicResource CodexSwitch.MotionDurationSlow}" />
+    <Setter Property="ClipToBounds" Value="True" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="LineBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="AreaBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexLineChart:pointerover">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexLineChart.has-active-point">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexLineChart.compact">
+    <Setter Property="Padding" Value="12" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeXs}" />
+  </Style>
+
+  <Style Selector="controls|CodexLineChart.line-only">
+    <Setter Property="AreaBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexLineChart.no-grid">
+    <Setter Property="GridBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexLineChart.size-sm">
+    <Setter Property="Padding" Value="12" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeXs}" />
+  </Style>
+
+  <Style Selector="controls|CodexLineChart.size-lg">
+    <Setter Property="Padding" Value="18" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+  </Style>
+
+  <Style Selector="controls|CodexLineChart.size-icon">
+    <Setter Property="Padding" Value="10" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeXs}" />
+  </Style>
+
+  <Style Selector="controls|CodexLineChart.empty">
+    <Setter Property="LineBrush" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="AreaBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexLineChart:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+</Styles>

@@ -1,0 +1,14 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            Spacing="10">
+  <primitives:CodexText Text="Title role"
+                        Role="Title" />
+  <primitives:CodexText Text="Subtitle role"
+                        Role="Subtitle" />
+  <primitives:CodexText Text="Body role keeps readable line height for product copy."
+                        Role="Body" />
+  <primitives:CodexText Text="Muted role is used for helper text and metadata."
+                        Role="Muted" />
+  <primitives:CodexText Text="code-role: var(--motion-default)"
+                        Role="Code" />
+</StackPanel>

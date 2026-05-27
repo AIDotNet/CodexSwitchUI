@@ -1,0 +1,38 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexCommandDialog Placeholder="Open command..."
+                               IsOpen="True"
+                               CloseOnItemSelected="True">
+    <controls:CodexCommandDialog.Trigger>
+      <controls:CodexButton Content="Open command menu"
+                            Size="Small" />
+    </controls:CodexCommandDialog.Trigger>
+    <controls:CodexCommandList>
+      <controls:CodexCommandGroup Header="Open">
+        <controls:CodexCommandItem Content="Switch provider"
+                                   Icon="P"
+                                   Shortcut="Enter"
+                                   IsActive="True" />
+        <controls:CodexCommandItem Content="Disabled command"
+                                   Icon="D"
+                                   IsEnabled="False" />
+      </controls:CodexCommandGroup>
+    </controls:CodexCommandList>
+  </controls:CodexCommandDialog>
+
+  <controls:CodexCommandDialog Grid.Column="1"
+                               Placeholder="Loading command..."
+                               IsOpen="True"
+                               IsLoading="True"
+                               CloseOnItemSelected="False">
+    <controls:CodexCommandDialog.Trigger>
+      <controls:CodexButton Content="Open loading menu"
+                            Size="Small" />
+    </controls:CodexCommandDialog.Trigger>
+    <controls:CodexCommandList>
+      <controls:CodexCommandLoading Content="Loading command results..." />
+    </controls:CodexCommandList>
+  </controls:CodexCommandDialog>
+</Grid>

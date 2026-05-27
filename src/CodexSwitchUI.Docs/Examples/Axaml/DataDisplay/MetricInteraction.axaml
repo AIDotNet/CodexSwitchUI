@@ -1,0 +1,85 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Refresh update"
+                       Description="Value, detail, icon, and accent slots update without replacing the stat card.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Refresh metric values from the host data model." />
+        <controls:CodexStatCard Label="Tokens"
+                                Detail="+18% from yesterday"
+                                AccentBrush="{DynamicResource CodexSwitch.PrimaryBrush}">
+          <controls:CodexStatCard.Value>
+            <primitives:CodexText Role="Subtitle"
+                                  Text="42.7K" />
+          </controls:CodexStatCard.Value>
+          <controls:CodexStatCard.Icon>
+            <controls:CodexBadge Content="API"
+                                 Variant="Secondary" />
+          </controls:CodexStatCard.Icon>
+        </controls:CodexStatCard>
+        <controls:CodexButton Content="Refresh metrics"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Detail toggle"
+                       Description="Metric detail presence stays class-driven.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexMetric Label="Latency"
+                              Detail="p95 response time">
+          <controls:CodexMetric.Value>
+            <primitives:CodexText Role="Subtitle"
+                                  Text="284ms" />
+          </controls:CodexMetric.Value>
+        </controls:CodexMetric>
+        <controls:CodexButton Content="Toggle detail"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Icon swap"
+                       Description="Stat icons can be badges, avatars, or provider identity surfaces.">
+    <controls:CodexField.Content>
+      <controls:CodexStatCard Label="Owner"
+                              Detail="Primary route">
+        <controls:CodexStatCard.Value>
+          <primitives:CodexText Role="Subtitle"
+                                Text="OpenAI" />
+        </controls:CodexStatCard.Value>
+        <controls:CodexStatCard.Icon>
+          <controls:CodexAvatar Fallback="OP"
+                                Size="Small"
+                                IsStatusVisible="True" />
+        </controls:CodexStatCard.Icon>
+      </controls:CodexStatCard>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Compact metric"
+                       Description="Compact metrics preserve detail and value hierarchy inside dense dashboards.">
+    <controls:CodexField.Content>
+      <controls:CodexMetric Label="Fallbacks"
+                            Detail="Last hour">
+        <controls:CodexMetric.Value>
+          <primitives:CodexText Role="Subtitle"
+                                Text="7" />
+        </controls:CodexMetric.Value>
+      </controls:CodexMetric>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

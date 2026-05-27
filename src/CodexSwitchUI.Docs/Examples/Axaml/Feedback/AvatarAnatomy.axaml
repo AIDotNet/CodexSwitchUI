@@ -1,0 +1,54 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Avatar"
+                       Description="Root avatar with fallback initials and a status badge.">
+    <controls:CodexAvatar Fallback="CN"
+                          Variant="Secondary"
+                          StatusVariant="Success"
+                          IsStatusVisible="True" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Avatar badge"
+                       Description="Status badge can change tone independently from the avatar surface.">
+    <controls:CodexAvatar Fallback="PP"
+                          Variant="Outline"
+                          StatusVariant="Warning"
+                          IsStatusVisible="True"
+                          Size="Large" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Avatar group"
+                       Description="Grouped avatars overlap like the Web AvatarGroup composition.">
+    <controls:CodexAvatarGroup Size="Medium"
+                               Overlap="12">
+      <controls:CodexAvatar Fallback="CN"
+                            Variant="Default" />
+      <controls:CodexAvatar Fallback="LR"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Warning" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Avatar group count"
+                       Description="AvatarGroupCount occupies the final slot for overflow members.">
+    <controls:CodexAvatarGroup Size="Medium"
+                               Overlap="12">
+      <controls:CodexAvatar Fallback="CN"
+                            Variant="Default" />
+      <controls:CodexAvatar Fallback="LR"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+      <controls:CodexAvatarGroupCount Count="3" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+</Grid>

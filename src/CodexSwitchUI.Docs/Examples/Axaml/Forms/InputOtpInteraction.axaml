@@ -1,0 +1,86 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Paste path"
+                       Description="Pasted text is filtered and fills the slots from the active index.">
+    <controls:CodexInputOtp Text="491826"
+                            MaxLength="6"
+                            Pattern="^[0-9]$"
+                            ActiveIndex="5">
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="0" />
+        <controls:CodexInputOtpSlot Index="1" />
+        <controls:CodexInputOtpSlot Index="2" />
+      </controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSeparator />
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="3" />
+        <controls:CodexInputOtpSlot Index="4" />
+        <controls:CodexInputOtpSlot Index="5" />
+      </controls:CodexInputOtpGroup>
+    </controls:CodexInputOtp>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Active slot"
+                       Description="Clicking a slot moves the active index without creating per-slot text boxes.">
+    <controls:CodexInputOtp Text="12"
+                            MaxLength="6"
+                            ActiveIndex="2">
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="0" />
+        <controls:CodexInputOtpSlot Index="1" />
+        <controls:CodexInputOtpSlot Index="2" />
+      </controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSeparator />
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="3" />
+        <controls:CodexInputOtpSlot Index="4" />
+        <controls:CodexInputOtpSlot Index="5" />
+      </controls:CodexInputOtpGroup>
+    </controls:CodexInputOtp>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Backspace and delete"
+                       Description="Backspace removes the previous slot; Delete removes the active slot.">
+    <controls:CodexInputOtp Text="13579"
+                            MaxLength="6"
+                            ActiveIndex="4">
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="0" />
+        <controls:CodexInputOtpSlot Index="1" />
+        <controls:CodexInputOtpSlot Index="2" />
+      </controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSeparator />
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="3" />
+        <controls:CodexInputOtpSlot Index="4" />
+        <controls:CodexInputOtpSlot Index="5" />
+      </controls:CodexInputOtpGroup>
+    </controls:CodexInputOtp>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Warning">
+    <controls:CodexInputOtp Text="123"
+                            Intent="Warning"
+                            MaxLength="6">
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="0" />
+        <controls:CodexInputOtpSlot Index="1" />
+        <controls:CodexInputOtpSlot Index="2" />
+      </controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSeparator />
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="3" />
+        <controls:CodexInputOtpSlot Index="4" />
+        <controls:CodexInputOtpSlot Index="5" />
+      </controls:CodexInputOtpGroup>
+    </controls:CodexInputOtp>
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,52 @@
+<controls:CodexCommand xmlns="https://github.com/avaloniaui"
+                       xmlns:controls="using:CodexSwitchUI.Controls"
+                       Placeholder="Search a long command list..."
+                       Width="460"
+                       LoopNavigation="True">
+  <controls:CodexCommandList MaxHeight="190">
+    <controls:CodexCommandGroup Header="Projects">
+      <controls:CodexCommandItem Content="Open workspace"
+                                 Icon="W"
+                                 Shortcut="Cmd+O"
+                                 IsActive="True" />
+      <controls:CodexCommandItem Content="Search files"
+                                 Icon="F"
+                                 Shortcut="Cmd+P" />
+      <controls:CodexCommandItem Content="New branch"
+                                 Icon="B"
+                                 Shortcut="Cmd+B" />
+      <controls:CodexCommandItem Content="Sync repository"
+                                 Icon="S"
+                                 Shortcut="Cmd+Shift+S" />
+    </controls:CodexCommandGroup>
+
+    <controls:CodexCommandSeparator />
+
+    <controls:CodexCommandGroup Header="Agents">
+      <controls:CodexCommandItem Content="Run review agent"
+                                 Icon="R"
+                                 Shortcut="Cmd+Shift+R" />
+      <controls:CodexCommandItem Content="Start docs agent"
+                                 Icon="D" />
+      <controls:CodexCommandItem Content="Open test agent"
+                                 Icon="T" />
+      <controls:CodexCommandItem Content="Stop current run"
+                                 Icon="X"
+                                 Shortcut="Esc" />
+    </controls:CodexCommandGroup>
+
+    <controls:CodexCommandSeparator />
+
+    <controls:CodexCommandGroup Header="Settings">
+      <controls:CodexCommandItem Content="Switch theme"
+                                 Icon="M"
+                                 Shortcut="Cmd+J" />
+      <controls:CodexCommandItem Content="Open keyboard shortcuts"
+                                 Icon="K" />
+      <controls:CodexCommandItem Content="Provider routing"
+                                 Icon="P" />
+      <controls:CodexCommandItem Content="Usage limits"
+                                 Icon="U" />
+    </controls:CodexCommandGroup>
+  </controls:CodexCommandList>
+</controls:CodexCommand>

@@ -1,0 +1,36 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexSplitButton Content="Open actions"
+                             IsOpen="True">
+    <controls:CodexSplitButton.DropDownContent>
+      <StackPanel Width="180"
+                  Spacing="6">
+        <controls:CodexButton Content="Run"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+        <controls:CodexButton Content="Schedule"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+      </StackPanel>
+    </controls:CodexSplitButton.DropDownContent>
+  </controls:CodexSplitButton>
+
+  <controls:CodexSplitButton Grid.Column="1"
+                             Content="Closed actions"
+                             DropDownContent="Closed state keeps content available." />
+
+  <controls:CodexSplitButton Grid.Row="1"
+                             Content="Loading"
+                             IsLoading="True"
+                             DropDownContent="Loading suppresses both paths." />
+
+  <controls:CodexSplitButton Grid.Row="1"
+                             Grid.Column="1"
+                             Content="Disabled"
+                             IsEnabled="False"
+                             DropDownContent="Disabled trigger never opens." />
+</Grid>

@@ -1,0 +1,38 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexField Label="Range calendar"
+                       Description="RangeStart and RangeEnd render edge and middle-day selection states.">
+    <controls:CodexCalendar DisplayDate="2026-01-01"
+                            SelectionMode="Range"
+                            RangeStart="2026-01-20"
+                            RangeEnd="2026-01-27"
+                            ActiveDate="2026-01-27"
+                            HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Label="Date picker composition"
+                       Description="Date Picker stays a Popover plus Calendar composition, matching shadcn.">
+    <StackPanel Spacing="10">
+      <controls:CodexButton Content="May 20, 2026"
+                            Variant="Outline"
+                            HorizontalAlignment="Left" />
+
+      <controls:CodexPopover Title="Schedule deployment"
+                             Description="The Calendar primitive can sit inside overlay content without page-local state styling."
+                             IsOpen="True"
+                             IsCloseVisible="False">
+        <controls:CodexCalendar DisplayDate="2026-05-01"
+                                SelectedDate="2026-05-20"
+                                ActiveDate="2026-05-20"
+                                Size="Small"
+                                HorizontalAlignment="Left" />
+
+        <controls:CodexPopover.Action>
+          <controls:CodexButton Content="Apply"
+                                Size="Small" />
+        </controls:CodexPopover.Action>
+      </controls:CodexPopover>
+    </StackPanel>
+  </controls:CodexField>
+</StackPanel>

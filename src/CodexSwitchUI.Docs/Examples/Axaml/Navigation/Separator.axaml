@@ -1,0 +1,14 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="16">
+  <TextBlock Text="Section heading" />
+  <controls:CodexSeparator />
+  <StackPanel Orientation="Horizontal"
+              Spacing="14">
+    <TextBlock Text="Left" />
+    <controls:CodexSeparator Orientation="Vertical"
+                             Size="Large"
+                             Height="48" />
+    <TextBlock Text="Right" />
+  </StackPanel>
+</StackPanel>

@@ -1,0 +1,59 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexFieldSet Legend="Notifications"
+                          Description="FieldSet groups related controls with a shared legend and description.">
+    <controls:CodexField Orientation="Horizontal"
+                         Label="Email"
+                         Description="Delivery summaries and alerts.">
+      <controls:CodexSwitch IsChecked="True" />
+    </controls:CodexField>
+    <controls:CodexField Orientation="Horizontal"
+                         Label="Push"
+                         Description="Immediate desktop notifications.">
+      <controls:CodexSwitch />
+    </controls:CodexField>
+  </controls:CodexFieldSet>
+
+  <controls:CodexFieldGroup Grid.Column="1"
+                            Orientation="Responsive">
+    <controls:CodexField Label="Name"
+                         Description="Shown in provider lists.">
+      <controls:CodexTextBox Text="OpenAI"
+                             MinWidth="220" />
+    </controls:CodexField>
+    <controls:CodexField Label="Endpoint"
+                         Description="Requests route through this URL.">
+      <controls:CodexTextBox Text="https://api.openai.com"
+                             MinWidth="220" />
+    </controls:CodexField>
+  </controls:CodexFieldGroup>
+
+  <controls:CodexField Grid.Row="1"
+                       IsInvalid="True"
+                       Orientation="Horizontal"
+                       Label="Choice card"
+                       Description="Horizontal field layout keeps label and control aligned."
+                       Message="This mirrors shadcn Field orientation paths.">
+    <controls:CodexCheckBox IsChecked="True" />
+  </controls:CodexField>
+
+  <StackPanel Grid.Row="1"
+              Grid.Column="1"
+              Spacing="12">
+    <controls:CodexFieldContent>
+      <StackPanel Spacing="3">
+        <controls:CodexFieldTitle Content="Schema validation" />
+        <controls:CodexFieldDescription Content="FieldError can show one message or multiple issues." />
+      </StackPanel>
+    </controls:CodexFieldContent>
+    <controls:CodexFieldSeparator Content="Validation" />
+    <controls:CodexFieldError Message="Enter a valid endpoint before saving.">
+      <TextBlock Text="Protocol must be https." />
+      <TextBlock Text="Host cannot be empty." />
+    </controls:CodexFieldError>
+  </StackPanel>
+</Grid>

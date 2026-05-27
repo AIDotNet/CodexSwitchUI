@@ -1,0 +1,15 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Orientation="Horizontal"
+            Spacing="8">
+  <controls:CodexBadge Content="Active" />
+  <controls:CodexBadge Content="Fallback"
+                       Variant="Warning"
+                       IsStatusVisible="True" />
+  <controls:CodexBadge Content="Draft"
+                       Variant="Secondary"
+                       Size="Small" />
+  <controls:CodexBadge Content="Blocked"
+                       Variant="Destructive"
+                       IsStatusVisible="True" />
+</StackPanel>

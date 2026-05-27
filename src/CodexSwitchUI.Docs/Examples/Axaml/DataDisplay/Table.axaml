@@ -1,0 +1,45 @@
+<controls:CodexTable xmlns="https://github.com/avaloniaui"
+                     xmlns:controls="using:CodexSwitchUI.Controls"
+                     IsStriped="True"
+                     IsHoverable="True">
+  <StackPanel>
+    <controls:CodexTableHeader>
+      <Grid ColumnDefinitions="1.4*,*,*,*">
+        <controls:CodexTableHead Content="Model" />
+        <controls:CodexTableHead Grid.Column="1"
+                                 Content="Protocol" />
+        <controls:CodexTableHead Grid.Column="2"
+                                 Content="Tokens"
+                                 Alignment="Right" />
+        <controls:CodexTableHead Grid.Column="3"
+                                 Content="State" />
+      </Grid>
+    </controls:CodexTableHeader>
+
+    <controls:CodexTableRow IsSelected="True">
+      <Grid ColumnDefinitions="1.4*,*,*,*">
+        <controls:CodexTableCell Content="gpt-5" />
+        <controls:CodexTableCell Grid.Column="1"
+                                 Content="Responses" />
+        <controls:CodexTableCell Grid.Column="2"
+                                 Content="42.7K"
+                                 Alignment="Right" />
+        <controls:CodexTableCell Grid.Column="3"
+                                 Content="Active" />
+      </Grid>
+    </controls:CodexTableRow>
+
+    <controls:CodexTableRow>
+      <Grid ColumnDefinitions="1.4*,*,*,*">
+        <controls:CodexTableCell Content="claude-sonnet" />
+        <controls:CodexTableCell Grid.Column="1"
+                                 Content="Claude" />
+        <controls:CodexTableCell Grid.Column="2"
+                                 Content="18.3K"
+                                 Alignment="Right" />
+        <controls:CodexTableCell Grid.Column="3"
+                                 Content="Fallback" />
+      </Grid>
+    </controls:CodexTableRow>
+  </StackPanel>
+</controls:CodexTable>

@@ -1,0 +1,63 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="16">
+  <StackPanel Spacing="10">
+    <TextBlock Text="ItemSelected: ready." />
+    <controls:CodexMenubar Loop="True">
+      <controls:CodexMenubarMenu Header="File"
+                                  IsSubMenuOpen="True">
+        <controls:CodexMenubarItem Header="New tab"
+                                   Shortcut="Cmd+T" />
+        <controls:CodexMenubarItem Header="New window"
+                                   Shortcut="Cmd+N" />
+        <controls:CodexMenubarSeparator />
+        <controls:CodexMenubarItem Header="Share">
+          <controls:CodexMenubarItem Header="Copy link" />
+          <controls:CodexMenubarItem Header="Export markdown" />
+        </controls:CodexMenubarItem>
+      </controls:CodexMenubarMenu>
+      <controls:CodexMenubarMenu Header="Edit">
+        <controls:CodexMenubarItem Header="Undo"
+                                   Shortcut="Cmd+Z" />
+        <controls:CodexMenubarItem Header="Redo"
+                                   Shortcut="Shift+Cmd+Z" />
+      </controls:CodexMenubarMenu>
+      <controls:CodexMenubarMenu Header="View">
+        <controls:CodexMenubarCheckboxItem Header="Compact mode"
+                                           IsChecked="True" />
+        <controls:CodexMenubarCheckboxItem Header="Show full URLs" />
+      </controls:CodexMenubarMenu>
+    </controls:CodexMenubar>
+  </StackPanel>
+
+  <controls:CodexMenubar Grid.Column="1"
+                         Size="Small"
+                         Loop="True">
+    <controls:CodexMenubarMenu Header="File">
+      <controls:CodexMenubarItem Header="New tab" />
+    </controls:CodexMenubarMenu>
+    <controls:CodexMenubarMenu Header="View"
+                                IsSubMenuOpen="True">
+      <controls:CodexMenubarCheckboxItem Header="Open-on-hover handoff"
+                                         IsChecked="True" />
+    </controls:CodexMenubarMenu>
+    <controls:CodexMenubarMenu Header="Profiles">
+      <controls:CodexMenubarRadioItem Header="Balanced"
+                                      IsChecked="True" />
+      <controls:CodexMenubarRadioItem Header="Reasoning" />
+    </controls:CodexMenubarMenu>
+  </controls:CodexMenubar>
+
+  <controls:CodexMenubar Grid.Row="1"
+                         IsLoading="True">
+    <controls:CodexMenubarMenu Header="File">
+      <controls:CodexMenubarItem Header="Blocked while loading" />
+    </controls:CodexMenubarMenu>
+    <controls:CodexMenubarMenu Header="View">
+      <controls:CodexMenubarCheckboxItem Header="Disabled activation path" />
+    </controls:CodexMenubarMenu>
+  </controls:CodexMenubar>
+</Grid>

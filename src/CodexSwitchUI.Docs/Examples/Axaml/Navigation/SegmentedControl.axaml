@@ -1,0 +1,14 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexSegmentedControl HorizontalAlignment="Left">
+    <StackPanel Orientation="Horizontal">
+      <controls:CodexSegmentedButton Content="Preview"
+                                     IsSelected="True" />
+      <controls:CodexSegmentedButton Content="Code" />
+      <controls:CodexSegmentedButton Content="Events" />
+    </StackPanel>
+  </controls:CodexSegmentedControl>
+  <TextBlock Text="The moving indicator tracks the selected segment after layout."
+             Opacity="0.72" />
+</StackPanel>

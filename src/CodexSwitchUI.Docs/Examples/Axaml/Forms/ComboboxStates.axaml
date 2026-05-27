@@ -1,0 +1,61 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Open search"
+                       Description="Input text opens the popup and filters items.">
+    <controls:CodexCombobox Text="n"
+                            IsOpen="True"
+                            AutoHighlight="True"
+                            MinWidth="240">
+      <x:String>Next.js</x:String>
+      <x:String>SvelteKit</x:String>
+      <x:String>Nuxt.js</x:String>
+      <x:String>Remix</x:String>
+      <x:String>Astro</x:String>
+    </controls:CodexCombobox>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Warning intent"
+                       Message="Fallback framework is currently selected."
+                       Intent="Warning">
+    <controls:CodexCombobox SelectedItem="Nuxt.js"
+                            Intent="Warning"
+                            MinWidth="240">
+      <x:String>Next.js</x:String>
+      <x:String>SvelteKit</x:String>
+      <x:String>Nuxt.js</x:String>
+      <x:String>Remix</x:String>
+      <x:String>Astro</x:String>
+    </controls:CodexCombobox>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Empty"
+                       Description="No matching option keeps the popup mounted.">
+    <controls:CodexCombobox Text="zz"
+                            IsOpen="True"
+                            EmptyContent="No frameworks found."
+                            MinWidth="240">
+      <x:String>Next.js</x:String>
+      <x:String>SvelteKit</x:String>
+      <x:String>Nuxt.js</x:String>
+      <x:String>Remix</x:String>
+      <x:String>Astro</x:String>
+    </controls:CodexCombobox>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled">
+    <controls:CodexCombobox SelectedItem="Locked"
+                            IsEnabled="False"
+                            MinWidth="240">
+      <x:String>Locked</x:String>
+    </controls:CodexCombobox>
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,17 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexProgress Minimum="0"
+                          Maximum="100"
+                          Value="68"
+                          MinWidth="360" />
+  <controls:CodexProgress Minimum="0"
+                          Maximum="100"
+                          Value="42"
+                          Variant="Success"
+                          Size="Small"
+                          MinWidth="360" />
+  <controls:CodexProgress IsIndeterminate="True"
+                          Variant="Warning"
+                          MinWidth="360" />
+</StackPanel>

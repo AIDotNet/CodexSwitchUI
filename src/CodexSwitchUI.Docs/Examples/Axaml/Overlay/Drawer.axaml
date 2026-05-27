@@ -1,0 +1,43 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      Height="320">
+  <controls:CodexDrawer Title="Provider usage"
+                        Description="Drawer uses a handle, a scrollable body, and sticky footer actions."
+                        Direction="Bottom"
+                        IsOpen="True">
+    <controls:CodexDrawer.Trigger>
+      <controls:CodexButton Content="Open provider drawer"
+                            Size="Small" />
+    </controls:CodexDrawer.Trigger>
+    <StackPanel Spacing="10">
+      <controls:CodexField Label="Token budget">
+        <controls:CodexSlider Value="72"
+                              Minimum="0"
+                              Maximum="100" />
+      </controls:CodexField>
+      <controls:CodexField Label="Route">
+        <controls:CodexSelect SelectedIndex="0">
+          <ComboBoxItem Content="Balanced" />
+          <ComboBoxItem Content="Lowest latency" />
+          <ComboBoxItem Content="Lowest cost" />
+        </controls:CodexSelect>
+      </controls:CodexField>
+      <controls:CodexCheckBox Content="Include fallback providers"
+                              IsChecked="True" />
+      <controls:CodexAlert Title="Scrollable content"
+                           Description="Footer actions stay mounted while the body scrolls."
+                           Variant="Secondary" />
+    </StackPanel>
+    <controls:CodexDrawer.Action>
+      <StackPanel Orientation="Horizontal"
+                  HorizontalAlignment="Right"
+                  Spacing="8">
+        <controls:CodexButton Content="Cancel"
+                              Variant="Secondary"
+                              Size="Small" />
+        <controls:CodexButton Content="Submit"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexDrawer.Action>
+  </controls:CodexDrawer>
+</Grid>

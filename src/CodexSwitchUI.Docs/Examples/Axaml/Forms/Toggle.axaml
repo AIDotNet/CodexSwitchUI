@@ -1,0 +1,23 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexToggle Content="Bookmark"
+                          IsPressed="True" />
+    <controls:CodexToggle Content="Italic"
+                          Variant="Outline" />
+    <controls:CodexToggle Content="Compact"
+                          Size="Small" />
+  </StackPanel>
+
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexToggle Content="Disabled on"
+                          IsPressed="True"
+                          IsEnabled="False" />
+    <controls:CodexToggle Content="Icon"
+                          Size="Icon"
+                          Variant="Ghost" />
+  </StackPanel>
+</StackPanel>

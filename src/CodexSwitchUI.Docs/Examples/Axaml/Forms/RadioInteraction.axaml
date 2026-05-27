@@ -1,0 +1,63 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Sibling selection"
+                       Description="Pointer and keyboard selection clear the active sibling in the group.">
+    <StackPanel Spacing="10">
+      <controls:CodexRadio GroupName="radio-interaction-provider"
+                           Content="Fastest healthy provider"
+                           IsChecked="True" />
+      <controls:CodexRadio GroupName="radio-interaction-provider"
+                           Content="Lowest cost route" />
+      <controls:CodexRadio GroupName="radio-interaction-provider"
+                           Content="Pinned provider" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Keyboard traversal"
+                       Description="Arrow keys move through enabled options in the native group.">
+    <StackPanel Spacing="10">
+      <controls:CodexRadio GroupName="radio-interaction-model"
+                           Content="Balanced"
+                           IsChecked="True" />
+      <controls:CodexRadio GroupName="radio-interaction-model"
+                           Content="Reasoning" />
+      <controls:CodexRadio GroupName="radio-interaction-model"
+                           Content="Low latency"
+                           Size="Small" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Intent feedback"
+                       Description="Intent color follows the same checked dot animation.">
+    <StackPanel Spacing="10">
+      <controls:CodexRadio GroupName="radio-interaction-fallback"
+                           Content="Primary"
+                           Intent="Success"
+                           IsChecked="True" />
+      <controls:CodexRadio GroupName="radio-interaction-fallback"
+                           Content="Fallback"
+                           Intent="Warning" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled guard"
+                       Description="Disabled options keep the group selection unchanged.">
+    <StackPanel Spacing="10">
+      <controls:CodexRadio GroupName="radio-interaction-disabled"
+                           Content="Locked checked"
+                           IsChecked="True"
+                           IsEnabled="False" />
+      <controls:CodexRadio GroupName="radio-interaction-disabled"
+                           Content="Locked unchecked"
+                           IsEnabled="False" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

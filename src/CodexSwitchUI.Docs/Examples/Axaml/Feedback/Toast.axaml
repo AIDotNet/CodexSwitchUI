@@ -1,0 +1,19 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexToast Icon="i"
+                       Title="Routing updated"
+                       Description="Claude Sonnet is now the fallback provider."
+                       CloseContent="Close">
+    <controls:CodexToast.Action>
+      <controls:CodexButton Content="Undo"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexToast.Action>
+  </controls:CodexToast>
+
+  <controls:CodexToast Title="Request failed"
+                       Description="The selected provider returned a transient error."
+                       Variant="Destructive"
+                       IsOpen="False" />
+</StackPanel>

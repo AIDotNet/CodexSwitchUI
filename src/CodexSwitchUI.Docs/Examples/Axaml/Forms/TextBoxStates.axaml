@@ -1,0 +1,34 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Default">
+    <controls:CodexTextBox Text="OpenAI"
+                           MinWidth="240" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Read-only">
+    <controls:CodexTextBox Text="https://api.openai.com/v1"
+                           IsReadOnly="True"
+                           MinWidth="240" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Error"
+                       Message="A provider name is required."
+                       Intent="Error">
+    <controls:CodexTextBox Intent="Error"
+                           MinWidth="240" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled">
+    <controls:CodexTextBox Text="Locked"
+                           IsEnabled="False"
+                           MinWidth="240" />
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,30 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:echarts="using:CodexSwitchUI.ECharts.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            x:CompileBindings="False"
+            Spacing="10">
+  <primitives:CodexText Role="Muted"
+                        Text="Move across the plot to reveal the pointer marker and detailed tooltip." />
+  <echarts:CsUsageTrendChart Width="620"
+                             Height="300"
+                             Granularity="Hour"
+                             ItemsSource="{Binding UsageTrendItems}"
+                             RefreshingText="Refreshing usage" />
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexButton Content="Toggle refresh"
+                          Size="Small"
+                          Variant="Secondary" />
+    <controls:CodexButton Content="Switch granularity"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Refresh series"
+                          Size="Small"
+                          Variant="Ghost" />
+    <controls:CodexButton Content="Empty state"
+                          Size="Small"
+                          Variant="Ghost" />
+  </StackPanel>
+</StackPanel>

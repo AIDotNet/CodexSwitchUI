@@ -1,12 +1,11 @@
 using Avalonia;
-using Avalonia.Animation;
-using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Threading;
+using CodexSwitchUI.Tokens;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -21,8 +20,6 @@ public enum CodexTableCellAlignment
 
 public class CodexTable : ContentControl
 {
-    private static readonly TimeSpan ContentTransitionDuration = TimeSpan.FromMilliseconds(150);
-
     private Control? _contentPresenter;
     private TranslateTransform? _contentTransform;
     private int _transitionVersion;
@@ -93,16 +90,6 @@ public class CodexTable : ContentControl
         if (_contentPresenter is null)
             return;
 
-        _contentPresenter.Transitions =
-        [
-            new DoubleTransition
-            {
-                Property = OpacityProperty,
-                Duration = ContentTransitionDuration,
-                Easing = new CubicEaseOut()
-            }
-        ];
-
         _contentTransform = _contentPresenter.RenderTransform as TranslateTransform;
         if (_contentTransform is null)
         {
@@ -110,21 +97,23 @@ public class CodexTable : ContentControl
             _contentPresenter.RenderTransform = _contentTransform;
         }
 
-        _contentTransform.Transitions =
-        [
-            new DoubleTransition
-            {
-                Property = TranslateTransform.YProperty,
-                Duration = ContentTransitionDuration,
-                Easing = new CubicEaseOut()
-            }
-        ];
+        ApplyContentTransitionResources();
     }
 
     private void StartContentTransition()
     {
         if (_contentPresenter is null)
             return;
+
+        var duration = ApplyContentTransitionResources();
+        if (duration <= TimeSpan.Zero)
+        {
+            _contentPresenter.Opacity = 1;
+            if (_contentTransform is not null)
+                _contentTransform.Y = 0;
+
+            return;
+        }
 
         var version = ++_transitionVersion;
         _contentPresenter.Opacity = 0.72;
@@ -142,6 +131,23 @@ public class CodexTable : ContentControl
         }, DispatcherPriority.Render);
     }
 
+    private TimeSpan ApplyContentTransitionResources()
+    {
+        if (_contentPresenter is null)
+            return TimeSpan.Zero;
+
+        var duration = CodexMotion.ResolveDefaultDuration(_contentPresenter);
+        var easing = CodexMotion.ResolveEaseOut(_contentPresenter);
+        CodexMotion.ApplyOpacityTransition(_contentPresenter, duration, easing);
+
+        if (_contentTransform is not null)
+        {
+            CodexMotion.ApplyTranslateYTransition(_contentTransform, duration, easing);
+        }
+
+        return duration;
+    }
+
     private void SyncClasses()
     {
         Classes.Set("hoverable", IsHoverable);
@@ -152,8 +158,6 @@ public class CodexTable : ContentControl
 
 public class CodexPinnedTable : TemplatedControl
 {
-    private static readonly TimeSpan PageTransitionDuration = TimeSpan.FromMilliseconds(160);
-
     private ScrollViewer? _headerScrollViewer;
     private ScrollViewer? _bodyScrollViewer;
     private readonly List<Control> _transitionTargets = new();
@@ -352,6 +356,7 @@ public class CodexPinnedTable : TemplatedControl
         if (_bodyScrollViewer is not null)
             _bodyScrollViewer.ScrollChanged += OnBodyScrollChanged;
 
+        ApplyPageTransitionResources();
         SyncHeaderScroll();
     }
 
@@ -360,31 +365,11 @@ public class CodexPinnedTable : TemplatedControl
         if (target is null)
             return;
 
-        target.Transitions =
-        [
-            new DoubleTransition
-            {
-                Property = OpacityProperty,
-                Duration = PageTransitionDuration,
-                Easing = new CubicEaseOut()
-            }
-        ];
-
         if (target.RenderTransform is not TranslateTransform transform)
         {
             transform = new TranslateTransform();
             target.RenderTransform = transform;
         }
-
-        transform.Transitions =
-        [
-            new DoubleTransition
-            {
-                Property = TranslateTransform.YProperty,
-                Duration = PageTransitionDuration,
-                Easing = new CubicEaseOut()
-            }
-        ];
 
         _transitionTargets.Add(target);
     }
@@ -415,6 +400,19 @@ public class CodexPinnedTable : TemplatedControl
         if (_transitionTargets.Count == 0)
             return;
 
+        var duration = ApplyPageTransitionResources();
+        if (duration <= TimeSpan.Zero)
+        {
+            foreach (var target in _transitionTargets)
+            {
+                target.Opacity = 1;
+                if (target.RenderTransform is TranslateTransform transform)
+                    transform.Y = 0;
+            }
+
+            return;
+        }
+
         var version = ++_transitionVersion;
         foreach (var target in _transitionTargets)
         {
@@ -435,6 +433,26 @@ public class CodexPinnedTable : TemplatedControl
                     transform.Y = 0;
             }
         }, DispatcherPriority.Render);
+    }
+
+    private TimeSpan ApplyPageTransitionResources()
+    {
+        if (_transitionTargets.Count == 0)
+            return TimeSpan.Zero;
+
+        var duration = CodexMotion.ResolveDefaultDuration(this);
+        var easing = CodexMotion.ResolveEaseOut(this);
+
+        foreach (var target in _transitionTargets)
+        {
+            CodexMotion.ApplyOpacityTransition(target, duration, easing);
+            if (target.RenderTransform is TranslateTransform transform)
+            {
+                CodexMotion.ApplyTranslateYTransition(transform, duration, easing);
+            }
+        }
+
+        return duration;
     }
 
     private void SyncClasses()

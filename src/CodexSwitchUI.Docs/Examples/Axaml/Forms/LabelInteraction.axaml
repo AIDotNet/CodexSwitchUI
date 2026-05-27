@@ -1,0 +1,49 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Click target">
+    <StackPanel Orientation="Horizontal"
+                Spacing="10">
+      <controls:CodexCheckBox x:Name="termsTarget"
+                              IsChecked="True" />
+      <controls:CodexLabel Target="{Binding #termsTarget}"
+                           Content="Clicking this label focuses the checkbox" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Access key">
+    <StackPanel Spacing="6">
+      <controls:CodexLabel Content="_Provider"
+                           IsRequired="True" />
+      <controls:CodexTextBox Text="OpenAI" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Target disabled">
+    <StackPanel Orientation="Horizontal"
+                Spacing="10">
+      <controls:CodexCheckBox x:Name="disabledTarget"
+                              IsEnabled="False" />
+      <controls:CodexLabel Target="{Binding #disabledTarget}"
+                           Content="Disabled target uses muted opacity" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Validation label">
+    <StackPanel Spacing="6">
+      <controls:CodexLabel Content="Required endpoint"
+                           Intent="Error"
+                           IsRequired="True" />
+      <controls:CodexTextBox Intent="Error"
+                             PlaceholderText="https://api.example.com" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,96 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Slotted action event"
+                       Description="Action content remains outside the alert core but uses the same click path as Web.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Action idle. Click the slotted action to update the alert." />
+        <controls:CodexAlert Icon="!"
+                             Title="Fallback routing active"
+                             Description="The action slot uses a normal button event path while the alert keeps its layout stable."
+                             Variant="Warning">
+          <controls:CodexAlert.Action>
+            <controls:CodexButton Content="Acknowledge"
+                                  Size="Small"
+                                  Variant="Secondary" />
+          </controls:CodexAlert.Action>
+        </controls:CodexAlert>
+        <controls:CodexButton Content="Reset alert"
+                              Size="Small"
+                              Variant="Outline" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Rich content action"
+                       Description="Content and action slots stay mounted while action feedback updates outside the alert.">
+    <controls:CodexField.Content>
+      <controls:CodexAlert Icon="i"
+                           Title="Usage threshold reached"
+                           Description="Structured child content can live below the description.">
+        <StackPanel Spacing="6">
+          <controls:CodexProgress Value="86"
+                                  Variant="Warning" />
+          <primitives:CodexText Role="Muted"
+                                Text="86% of the monthly budget is currently reserved."
+                                TextWrapping="Wrap" />
+        </StackPanel>
+        <controls:CodexAlert.Action>
+          <controls:CodexButton Content="Inspect"
+                                Size="Small"
+                                Variant="Secondary" />
+        </controls:CodexAlert.Action>
+      </controls:CodexAlert>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Disabled action guard"
+                       Description="Disabled action controls remain visible but cannot emit activation.">
+    <controls:CodexField.Content>
+      <controls:CodexAlert Icon="x"
+                           Title="Provider unavailable"
+                           Description="Retry remains disabled until the health check recovers."
+                           Variant="Destructive">
+        <controls:CodexAlert.Action>
+          <controls:CodexButton Content="Retry"
+                                Size="Small"
+                                Variant="Outline"
+                                IsEnabled="False" />
+        </controls:CodexAlert.Action>
+      </controls:CodexAlert>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Dynamic slot presence"
+                       Description="Title, description, content, icon, and action classes update from component properties.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexAlert Icon="i"
+                             Title="Dynamic description"
+                             Description="Description is visible and contributes the has-description class.">
+          <primitives:CodexText Role="Muted"
+                                Text="Toggle the description to exercise slot presence changes."
+                                TextWrapping="Wrap" />
+          <controls:CodexAlert.Action>
+            <controls:CodexBadge Content="live"
+                                 Variant="Success"
+                                 IsStatusVisible="True" />
+          </controls:CodexAlert.Action>
+        </controls:CodexAlert>
+        <controls:CodexButton Content="Toggle description"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

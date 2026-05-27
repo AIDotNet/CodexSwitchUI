@@ -1,0 +1,15 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      Height="180">
+  <primitives:CodexOverlay IsOpen="True"
+                           HorizontalContentAlignment="Center"
+                           VerticalContentAlignment="Center">
+    <controls:CodexCard Width="260"
+                        Title="Overlay content"
+                        Description="Scrim, hit testing, and dismissal state are owned by the primitive.">
+      <controls:CodexButton Content="Dismiss"
+                            Size="Small" />
+    </controls:CodexCard>
+  </primitives:CodexOverlay>
+</Grid>

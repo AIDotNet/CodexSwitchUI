@@ -1,0 +1,55 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexItem Title="Keyboard activation"
+                      Description="Enter and Space activate interactive rows through the same command path."
+                      IsInteractive="True"
+                      IsSelected="True">
+    <controls:CodexItem.Media>
+      <controls:CodexItemMedia Content="K" />
+    </controls:CodexItem.Media>
+    <controls:CodexItem.Actions>
+      <controls:CodexButton Content="Selected"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexItem.Actions>
+  </controls:CodexItem>
+
+  <controls:CodexItem Grid.Column="1"
+                      Title="Action slot"
+                      Description="Nested action controls keep their own click path."
+                      IsInteractive="True">
+    <controls:CodexItem.Media>
+      <controls:CodexItemMedia Content="A" />
+    </controls:CodexItem.Media>
+    <controls:CodexItem.Actions>
+      <controls:CodexButton Content="Configure"
+                            Size="Small" />
+    </controls:CodexItem.Actions>
+  </controls:CodexItem>
+
+  <controls:CodexItem Grid.Row="1"
+                      Title="Command blocked"
+                      Description="CanActivate follows command state, disabled state, and loading state."
+                      IsInteractive="True"
+                      IsLoading="True">
+    <controls:CodexItem.Media>
+      <controls:CodexItemMedia Content="B"
+                               Variant="Warning" />
+    </controls:CodexItem.Media>
+  </controls:CodexItem>
+
+  <controls:CodexItemGroup Grid.Row="1"
+                           Grid.Column="1"
+                           Variant="Secondary"
+                           IsInset="True">
+    <controls:CodexItem Title="Grouped row"
+                        Description="Groups provide shared item rhythm." />
+    <controls:CodexItemSeparator />
+    <controls:CodexItem Title="Grouped row"
+                        Description="Separators stay outside row activation." />
+  </controls:CodexItemGroup>
+</Grid>

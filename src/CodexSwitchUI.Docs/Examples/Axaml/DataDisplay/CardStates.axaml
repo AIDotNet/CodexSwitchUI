@@ -1,0 +1,45 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexCard Title="Default"
+                      Description="Header, content, and footer.">
+    <TextBlock Text="42.7K tokens"
+               FontWeight="SemiBold" />
+    <controls:CodexCard.Footer>
+      <controls:CodexBadge Content="Synced"
+                           Variant="Secondary"
+                           HorizontalAlignment="Left" />
+    </controls:CodexCard.Footer>
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="1"
+                      IsInteractive="True"
+                      Title="Interactive"
+                      Description="Hover and focus states.">
+    <TextBlock Text="Interactive state opts into card motion."
+               TextWrapping="Wrap" />
+    <controls:CodexCard.Footer>
+      <controls:CodexButton Content="Open"
+                            Size="Small" />
+    </controls:CodexCard.Footer>
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Row="1"
+                      Title="Header only"
+                      Description="No content slot." />
+
+  <controls:CodexCard Grid.Row="1"
+                      Grid.Column="1"
+                      Title="Action footer">
+    <TextBlock Text="Footer action remains part of the card contract."
+               TextWrapping="Wrap" />
+    <controls:CodexCard.Footer>
+      <controls:CodexButton Content="Configure"
+                            Variant="Secondary"
+                            Size="Small" />
+    </controls:CodexCard.Footer>
+  </controls:CodexCard>
+</Grid>

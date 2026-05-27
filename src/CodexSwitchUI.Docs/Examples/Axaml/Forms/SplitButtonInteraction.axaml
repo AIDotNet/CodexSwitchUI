@@ -1,0 +1,75 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <TextBlock Text="OpenChanged: split menu starts open."
+             TextWrapping="Wrap" />
+
+  <Grid ColumnDefinitions="*,*"
+        RowDefinitions="Auto,Auto"
+        ColumnSpacing="14"
+        RowSpacing="14">
+    <controls:CodexSplitButton Content="Run sync"
+                               IsOpen="True"
+                               IsArrowVisible="True"
+                               Align="Start">
+      <controls:CodexSplitButton.DropDownContent>
+        <StackPanel Width="188"
+                    Spacing="6">
+          <controls:CodexButton Content="Run once"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+          <controls:CodexButton Content="Schedule"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+          <controls:CodexButton Content="Stop"
+                                Variant="Destructive"
+                                HorizontalAlignment="Stretch" />
+        </StackPanel>
+      </controls:CodexSplitButton.DropDownContent>
+    </controls:CodexSplitButton>
+
+    <controls:CodexSplitButton Grid.Column="1"
+                               Content="Keep open"
+                               IsOpen="True"
+                               CloseOnItemSelected="False">
+      <controls:CodexSplitButton.DropDownContent>
+        <StackPanel Width="190"
+                    Spacing="6">
+          <controls:CodexButton Content="Preview"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+          <controls:CodexButton Content="Copy command"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+        </StackPanel>
+      </controls:CodexSplitButton.DropDownContent>
+    </controls:CodexSplitButton>
+
+    <controls:CodexSplitButton Grid.Row="1"
+                               Content="Loading"
+                               IsLoading="True"
+                               DropDownContent="Loading blocks the primary action and menu trigger." />
+
+    <controls:CodexSplitButton Grid.Row="1"
+                               Grid.Column="1"
+                               Content="End aligned"
+                               IsOpen="True"
+                               Align="End"
+                               Variant="Secondary">
+      <controls:CodexSplitButton.DropDownContent>
+        <StackPanel Width="188"
+                    Spacing="6">
+          <controls:CodexButton Content="Rename"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+          <controls:CodexButton Content="Duplicate"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+          <controls:CodexButton Content="Archive"
+                                Variant="Ghost"
+                                HorizontalAlignment="Stretch" />
+        </StackPanel>
+      </controls:CodexSplitButton.DropDownContent>
+    </controls:CodexSplitButton>
+  </Grid>
+</StackPanel>

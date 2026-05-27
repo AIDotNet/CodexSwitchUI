@@ -1,0 +1,68 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Default">
+    <controls:CodexButtonGroup Variant="Outline">
+      <controls:CodexButton Content="Copy" />
+      <controls:CodexButton Content="Paste" />
+      <controls:CodexButton Content="Cut" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Icon">
+    <controls:CodexButtonGroup Size="Icon"
+                               Variant="Secondary">
+      <controls:CodexIconButton Content="-" />
+      <controls:CodexIconButton Content="+" />
+      <controls:CodexIconButton Content="..." />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Vertical">
+    <controls:CodexButtonGroup Orientation="Vertical"
+                               Variant="Outline">
+      <controls:CodexButton Content="Today" />
+      <controls:CodexButton Content="This week" />
+      <controls:CodexButton Content="This month" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Separator">
+    <controls:CodexButtonGroup>
+      <controls:CodexButton Content="Copy"
+                            Variant="Secondary" />
+      <controls:CodexButtonGroupSeparator />
+      <controls:CodexButton Content="Paste"
+                            Variant="Secondary" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="2"
+                       Label="Text">
+    <controls:CodexButtonGroup>
+      <controls:CodexButtonGroupText Content="Mode" />
+      <controls:CodexButton Content="Preview"
+                            Variant="Outline" />
+      <controls:CodexButton Content="Code"
+                            Variant="Outline" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="2"
+                       Grid.Column="1"
+                       Label="Disabled">
+    <controls:CodexButtonGroup IsEnabled="False"
+                               Variant="Outline">
+      <controls:CodexButton Content="Locked" />
+      <controls:CodexButton Content="Queue" />
+      <controls:CodexButton Content="Run" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+</Grid>

@@ -13,117 +13,226 @@
     <Setter Property="MaxWidth" Value="320" />
     <Setter Property="ClipToBounds" Value="False" />
     <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+    <Setter Property="RenderTransformOrigin" Value="50%,50%" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="Template">
       <ControlTemplate TargetType="controls:CodexPopover">
-        <Border x:Name="PART_Surface"
-                MinWidth="{TemplateBinding MinWidth}"
-                MaxWidth="{TemplateBinding MaxWidth}"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="{TemplateBinding CornerRadius}"
-                Padding="{TemplateBinding Padding}">
-          <Grid RowDefinitions="Auto,Auto,Auto"
-                ColumnDefinitions="*,Auto"
-                RowSpacing="12"
-                ColumnSpacing="8">
-            <StackPanel x:Name="PART_Header"
+        <Grid x:Name="PART_Root"
+              RowDefinitions="Auto,Auto"
+              ClipToBounds="False">
+          <ContentPresenter x:Name="PART_Trigger"
+                            Grid.Row="0"
+                            Content="{TemplateBinding Trigger}"
+                            ContentTemplate="{TemplateBinding TriggerTemplate}"
+                            HorizontalAlignment="Left"
+                            IsVisible="{TemplateBinding HasTrigger}" />
+
+          <Grid Grid.Row="1"
+                ClipToBounds="False">
+            <Border x:Name="PART_Surface"
+                    MinWidth="{TemplateBinding MinWidth}"
+                    MaxWidth="{TemplateBinding MaxWidth}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    Padding="{TemplateBinding Padding}">
+              <Grid RowDefinitions="Auto,Auto,Auto"
+                    ColumnDefinitions="*,Auto"
+                    RowSpacing="12"
+                    ColumnSpacing="8">
+                <StackPanel x:Name="PART_Header"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Spacing="4"
+                            IsVisible="{TemplateBinding HasHeader}">
+                  <TextBlock x:Name="PART_Title"
+                             Text="{TemplateBinding Title}"
+                             IsVisible="{TemplateBinding HasTitle}"
+                             Foreground="{TemplateBinding Foreground}"
+                             FontFamily="{TemplateBinding FontFamily}"
+                             FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                             FontWeight="SemiBold"
+                             TextWrapping="Wrap" />
+                  <TextBlock x:Name="PART_Description"
+                             Text="{TemplateBinding Description}"
+                             IsVisible="{TemplateBinding HasDescription}"
+                             Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                             FontFamily="{TemplateBinding FontFamily}"
+                             FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                             TextWrapping="Wrap" />
+                </StackPanel>
+
+                <Button x:Name="PART_Close"
                         Grid.Row="0"
-                        Grid.Column="0"
-                        Spacing="4"
-                        IsVisible="{TemplateBinding HasHeader}">
-              <TextBlock x:Name="PART_Title"
-                         Text="{TemplateBinding Title}"
-                         IsVisible="{TemplateBinding HasTitle}"
-                         Foreground="{TemplateBinding Foreground}"
-                         FontFamily="{TemplateBinding FontFamily}"
-                         FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
-                         FontWeight="SemiBold"
-                         TextWrapping="Wrap" />
-              <TextBlock x:Name="PART_Description"
-                         Text="{TemplateBinding Description}"
-                         IsVisible="{TemplateBinding HasDescription}"
-                         Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
-                         FontFamily="{TemplateBinding FontFamily}"
-                         FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
-                         TextWrapping="Wrap" />
-            </StackPanel>
+                        Grid.Column="1"
+                        Width="26"
+                        Height="26"
+                        Padding="0"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        BorderThickness="0"
+                        Command="{TemplateBinding DismissCommand}"
+                        FocusAdorner="{x:Null}"
+                        IsVisible="{TemplateBinding IsCloseVisible}">
+                  <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                      <Border x:Name="PART_CloseSurface"
+                              Background="{TemplateBinding Background}"
+                              CornerRadius="{DynamicResource CodexSwitch.RadiusSm}">
+                        <Grid>
+                          <PathIcon x:Name="PART_CloseIcon"
+                                    Width="11"
+                                    Height="11"
+                                    Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Data="M3.4 2L2 3.4L6.6 8L2 12.6L3.4 14L8 9.4L12.6 14L14 12.6L9.4 8L14 3.4L12.6 2L8 6.6Z" />
+                          <ContentPresenter x:Name="PART_CloseContent"
+                                            Content="{TemplateBinding Content}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            IsVisible="False" />
+                        </Grid>
+                      </Border>
+                    </ControlTemplate>
+                  </Button.Template>
+                  <ContentControl Content="{TemplateBinding CloseContent}" />
+                </Button>
 
-            <Button x:Name="PART_Close"
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Width="26"
-                    Height="26"
-                    Padding="0"
-                    Background="Transparent"
-                    BorderBrush="Transparent"
-                    BorderThickness="0"
-                    Command="{TemplateBinding CloseCommand}"
-                    FocusAdorner="{x:Null}"
-                    IsVisible="{TemplateBinding IsCloseVisible}">
-              <Button.Template>
-                <ControlTemplate TargetType="Button">
-                  <Border x:Name="PART_CloseSurface"
-                          Background="{TemplateBinding Background}"
-                          CornerRadius="{DynamicResource CodexSwitch.RadiusSm}">
-                    <Grid>
-                      <PathIcon x:Name="PART_CloseIcon"
-                                Width="11"
-                                Height="11"
-                                Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Data="M3.4 2L2 3.4L6.6 8L2 12.6L3.4 14L8 9.4L12.6 14L14 12.6L9.4 8L14 3.4L12.6 2L8 6.6Z" />
-                      <ContentPresenter x:Name="PART_CloseContent"
-                                        Content="{TemplateBinding Content}"
-                                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        IsVisible="False" />
-                    </Grid>
-                  </Border>
-                </ControlTemplate>
-              </Button.Template>
-              <ContentControl Content="{TemplateBinding CloseContent}" />
-            </Button>
+                <ContentPresenter x:Name="PART_Content"
+                                  Grid.Row="1"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="2"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  IsVisible="{TemplateBinding HasContent}" />
 
-            <ContentPresenter x:Name="PART_Content"
-                              Grid.Row="1"
-                              Grid.Column="0"
-                              Grid.ColumnSpan="2"
-                              Content="{TemplateBinding Content}"
-                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                              IsVisible="{TemplateBinding HasContent}" />
+                <ContentPresenter x:Name="PART_Action"
+                                  Grid.Row="2"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="2"
+                                  Content="{TemplateBinding Action}"
+                                  IsVisible="{TemplateBinding HasAction}"
+                                  HorizontalAlignment="Right" />
+              </Grid>
+            </Border>
 
-            <ContentPresenter x:Name="PART_Action"
-                              Grid.Row="2"
-                              Grid.Column="0"
-                              Grid.ColumnSpan="2"
-                              Content="{TemplateBinding Action}"
-                              IsVisible="{TemplateBinding HasAction}"
-                              HorizontalAlignment="Right" />
+            <Border x:Name="PART_Arrow"
+                    Width="10"
+                    Height="10"
+                    Background="{TemplateBinding Background}"
+                    IsVisible="{TemplateBinding IsArrowVisible}"
+                    RenderTransform="rotate(45deg)"
+                    RenderTransformOrigin="50%,50%" />
           </Grid>
-        </Border>
+        </Grid>
       </ControlTemplate>
     </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexPopover.has-trigger /template/ Border#PART_Surface">
+    <Setter Property="Margin" Value="0,8,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.closed /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="IsHitTestVisible" Value="False" />
+    <Setter Property="RenderTransform" Value="translate(0px, -4px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.open /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="IsHitTestVisible" Value="True" />
+    <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.closed.side-top /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(0px, 4px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.closed.side-bottom /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(0px, -4px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.closed.side-left /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(4px, 0px) scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.closed.side-right /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="translate(-4px, 0px) scale(0.96)" />
   </Style>
 
   <Style Selector="controls|CodexPopover /template/ Border#PART_Surface">
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexPopover.align-start /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.align-center /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.align-end /template/ Border#PART_Surface">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover /template/ Border#PART_Arrow">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexPopover.open.has-arrow /template/ Border#PART_Arrow">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.side-top /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+    <Setter Property="Margin" Value="0,0,0,-5" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.side-bottom /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Top" />
+    <Setter Property="Margin" Value="0,3,0,0" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.side-left /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="0,0,-5,0" />
+  </Style>
+
+  <Style Selector="controls|CodexPopover.side-right /template/ Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="-5,0,0,0" />
   </Style>
 
   <Style Selector="controls|CodexPopover:pointerover /template/ Border#PART_Surface">

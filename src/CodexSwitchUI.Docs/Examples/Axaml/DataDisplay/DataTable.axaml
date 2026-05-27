@@ -1,0 +1,158 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            Spacing="12">
+  <Grid ColumnDefinitions="*,Auto">
+    <controls:CodexTextBox Width="260"
+                           PlaceholderText="Filter emails..." />
+    <controls:CodexDropdownButton Grid.Column="1"
+                                  Content="Columns"
+                                  Size="Small"
+                                  Variant="Outline"
+                                  Align="End">
+      <controls:CodexDropdownButton.DropDownContent>
+        <StackPanel Width="184"
+                    Spacing="8">
+          <controls:CodexCheckBox Content="Status"
+                                  IsChecked="True" />
+          <controls:CodexCheckBox Content="Email"
+                                  IsChecked="True" />
+          <controls:CodexCheckBox Content="Amount"
+                                  IsChecked="True" />
+          <controls:CodexCheckBox Content="Actions"
+                                  IsChecked="True" />
+        </StackPanel>
+      </controls:CodexDropdownButton.DropDownContent>
+    </controls:CodexDropdownButton>
+  </Grid>
+
+  <controls:CodexTable IsStriped="True"
+                       IsHoverable="True"
+                       TransitionKey="payments-default">
+    <StackPanel>
+      <controls:CodexTableHeader>
+        <Grid ColumnDefinitions="42,1.05*,2.1*,*,86">
+          <controls:CodexTableHead Alignment="Center">
+            <controls:CodexCheckBox />
+          </controls:CodexTableHead>
+          <controls:CodexTableHead Grid.Column="1"
+                                   Content="Status" />
+          <controls:CodexTableHead Grid.Column="2"
+                                   Content="Email" />
+          <controls:CodexTableHead Grid.Column="3"
+                                   Content="Amount"
+                                   Alignment="Right" />
+          <controls:CodexTableHead Grid.Column="4" />
+        </Grid>
+      </controls:CodexTableHeader>
+
+      <controls:CodexTableBody>
+        <controls:CodexTableRow IsSelected="True">
+          <Grid ColumnDefinitions="42,1.05*,2.1*,*,86">
+            <controls:CodexTableCell Alignment="Center">
+              <controls:CodexCheckBox IsChecked="True" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="1">
+              <controls:CodexBadge Content="success"
+                                   Variant="Success" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="2">
+              <primitives:CodexText Text="ken99@example.com" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="3"
+                                     Alignment="Right">
+              <primitives:CodexText Text="$316.00" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="4"
+                                     Alignment="Right">
+              <controls:CodexDropdownButton Content="..."
+                                            Size="Small"
+                                            Variant="Ghost"
+                                            Align="End">
+                <controls:CodexDropdownButton.DropDownContent>
+                  <StackPanel Width="188"
+                              Spacing="6">
+                    <controls:CodexButton Content="Copy payment ID"
+                                          Variant="Ghost"
+                                          HorizontalAlignment="Stretch" />
+                    <controls:CodexButton Content="View customer"
+                                          Variant="Ghost"
+                                          HorizontalAlignment="Stretch" />
+                    <controls:CodexButton Content="View details"
+                                          Variant="Ghost"
+                                          HorizontalAlignment="Stretch" />
+                  </StackPanel>
+                </controls:CodexDropdownButton.DropDownContent>
+              </controls:CodexDropdownButton>
+            </controls:CodexTableCell>
+          </Grid>
+        </controls:CodexTableRow>
+
+        <controls:CodexTableRow>
+          <Grid ColumnDefinitions="42,1.05*,2.1*,*,86">
+            <controls:CodexTableCell Alignment="Center">
+              <controls:CodexCheckBox />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="1">
+              <controls:CodexBadge Content="processing"
+                                   Variant="Warning" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="2">
+              <primitives:CodexText Text="abe45@example.com" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="3"
+                                     Alignment="Right">
+              <primitives:CodexText Text="$242.00" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="4"
+                                     Alignment="Right">
+              <controls:CodexDropdownButton Content="..."
+                                            Size="Small"
+                                            Variant="Ghost" />
+            </controls:CodexTableCell>
+          </Grid>
+        </controls:CodexTableRow>
+
+        <controls:CodexTableRow>
+          <Grid ColumnDefinitions="42,1.05*,2.1*,*,86">
+            <controls:CodexTableCell Alignment="Center">
+              <controls:CodexCheckBox />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="1">
+              <controls:CodexBadge Content="failed"
+                                   Variant="Destructive" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="2">
+              <primitives:CodexText Text="carmella@example.com" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="3"
+                                     Alignment="Right">
+              <primitives:CodexText Text="$721.00" />
+            </controls:CodexTableCell>
+            <controls:CodexTableCell Grid.Column="4"
+                                     Alignment="Right">
+              <controls:CodexDropdownButton Content="..."
+                                            Size="Small"
+                                            Variant="Ghost" />
+            </controls:CodexTableCell>
+          </Grid>
+        </controls:CodexTableRow>
+      </controls:CodexTableBody>
+
+      <controls:CodexTableCaption Content="Payments table composed from Table, Input, Dropdown, Checkbox, and Pagination primitives." />
+    </StackPanel>
+  </controls:CodexTable>
+
+  <Grid ColumnDefinitions="*,Auto">
+    <primitives:CodexText Role="Muted"
+                          Text="1 of 5 row(s) selected." />
+    <controls:CodexPagination Grid.Column="1"
+                              Page="1"
+                              PageCount="3"
+                              BoundaryCount="1"
+                              SiblingCount="1"
+                              IsCompact="True"
+                              ShowFirstLast="False"
+                              Size="Small" />
+  </Grid>
+</StackPanel>

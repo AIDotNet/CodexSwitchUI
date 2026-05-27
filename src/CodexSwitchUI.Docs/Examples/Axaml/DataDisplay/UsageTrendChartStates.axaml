@@ -1,0 +1,18 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:echarts="using:CodexSwitchUI.ECharts.Controls"
+            x:CompileBindings="False"
+            Spacing="16">
+  <echarts:CsUsageTrendChart Width="620"
+                             Height="280"
+                             Granularity="Hour"
+                             ItemsSource="{Binding UsageTrendItems}"
+                             IsRefreshing="True"
+                             RefreshingText="Refreshing usage" />
+
+  <echarts:CsUsageTrendChart Width="620"
+                             Height="220"
+                             Granularity="Day"
+                             ItemsSource="{Binding EmptyUsageTrendItems}"
+                             EmptyText="No usage records in this range" />
+</StackPanel>

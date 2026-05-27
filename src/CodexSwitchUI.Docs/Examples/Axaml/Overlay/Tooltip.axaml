@@ -1,0 +1,14 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="10">
+  <controls:CodexTooltip Content="Token usage refreshes every minute."
+                         Placement="Bottom"
+                         IsOpen="True"
+                         IsArrowVisible="True"
+                         Size="Small">
+    <controls:CodexTooltip.Trigger>
+      <controls:CodexButton Content="Hover target"
+                            HorizontalAlignment="Left" />
+    </controls:CodexTooltip.Trigger>
+  </controls:CodexTooltip>
+</StackPanel>

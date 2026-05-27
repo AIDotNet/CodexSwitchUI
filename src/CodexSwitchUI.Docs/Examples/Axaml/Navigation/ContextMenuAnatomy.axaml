@@ -1,0 +1,40 @@
+<controls:CodexContextMenu xmlns="https://github.com/avaloniaui"
+                           xmlns:controls="using:CodexSwitchUI.Controls"
+                           Classes="context-menu-open"
+                           Placement="Right"
+                           MinWidth="280">
+  <controls:CodexContextMenuGroup Header="Session">
+    <controls:CodexContextMenuItem IsActive="True">
+      <controls:CodexContextMenuItem.Header>
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBlock Text="Open in new window" />
+          <controls:CodexContextMenuShortcut Grid.Column="1"
+                                             Content="Cmd+O" />
+        </Grid>
+      </controls:CodexContextMenuItem.Header>
+    </controls:CodexContextMenuItem>
+
+    <controls:CodexContextMenuItem Header="Pinned"
+                                   Shortcut="P"
+                                   ToggleType="CheckBox"
+                                   IsChecked="True" />
+    <controls:CodexContextMenuItem Header="Mode A"
+                                   ToggleType="Radio"
+                                   IsChecked="True"
+                                   IsInset="True" />
+  </controls:CodexContextMenuGroup>
+
+  <controls:CodexContextMenuSeparator />
+
+  <controls:CodexContextMenuGroup Header="Move">
+    <controls:CodexContextMenuItem Header="Move to"
+                                   IsSubMenuOpen="True"
+                                   SubMenuPlacement="RightEdgeAlignedTop">
+      <controls:CodexContextMenuItem Header="Archive" />
+      <controls:CodexContextMenuItem Header="Favorites"
+                                     IsEnabled="False" />
+    </controls:CodexContextMenuItem>
+    <controls:CodexContextMenuItem Header="Delete"
+                                   IsEnabled="False" />
+  </controls:CodexContextMenuGroup>
+</controls:CodexContextMenu>

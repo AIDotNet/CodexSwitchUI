@@ -1,0 +1,87 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Host-driven status"
+                       Description="Host events update variant, status dot, and content without changing the badge template.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Badge status: healthy." />
+        <controls:CodexBadge Content="Healthy"
+                             Variant="Success"
+                             StatusVariant="Success"
+                             IsStatusVisible="True" />
+        <controls:CodexButton Content="Rotate status"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Count update"
+                       Description="Counters keep fixed badge chrome while text changes from the host model.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexBadge Content="2 routes"
+                             Variant="Secondary" />
+        <controls:CodexButton Content="Add route"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Density toggle"
+                       Description="Size classes change the same way Web density tokens do.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexBadge Content="Medium"
+                             Size="Medium"
+                             Variant="Outline" />
+        <controls:CodexButton Content="Toggle size"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled host composition"
+                       Description="Badges stay readable inside disabled command hosts.">
+    <controls:CodexField.Content>
+      <controls:CodexButton Content="Deploy"
+                            IsEnabled="False">
+        <controls:CodexButton.TrailingIcon>
+          <controls:CodexBadge Content="locked"
+                               Size="Small"
+                               Variant="Secondary" />
+        </controls:CodexButton.TrailingIcon>
+      </controls:CodexButton>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       Label="Link badge activation"
+                       Description="Interactive badges mirror the Web asChild/link case with focus, pointer, and keyboard activation.">
+    <controls:CodexField.Content>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="10">
+        <controls:CodexBadge Content="Open provider"
+                             Variant="Link"
+                             IsInteractive="True" />
+        <controls:CodexBadge Content="Command blocked"
+                             Variant="Outline"
+                             IsInteractive="True"
+                             IsEnabled="False" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,50 @@
+<controls:CodexChartContainer xmlns="https://github.com/avaloniaui"
+                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                              xmlns:controls="using:CodexSwitchUI.Controls"
+                              x:CompileBindings="False"
+                              Width="640"
+                              Title="Chart anatomy"
+                              Description="Header, body, legend config, tooltip content, and footer are separate slots.">
+  <controls:CodexChartContainer.Legend>
+    <controls:CodexChartLegend>
+      <controls:CodexChartLegendItem Content="Desktop"
+                                     Value="7,324"
+                                     IndicatorStyle="Line"
+                                     IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+      <controls:CodexChartLegendItem Content="Mobile"
+                                     Value="7,250"
+                                     IndicatorStyle="Line"
+                                     IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+    </controls:CodexChartLegend>
+  </controls:CodexChartContainer.Legend>
+
+  <controls:CodexChartContainer.Tooltip>
+    <controls:CodexChartTooltipContent Label="February"
+                                       IndicatorStyle="Line">
+      <controls:CodexChartTooltipItem Content="Desktop"
+                                      Value="2,486"
+                                      IndicatorStyle="Line"
+                                      IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+      <controls:CodexChartTooltipItem Content="Mobile"
+                                      Value="1,890"
+                                      IndicatorStyle="Line"
+                                      IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+    </controls:CodexChartTooltipContent>
+  </controls:CodexChartContainer.Tooltip>
+
+  <controls:CodexRankedBarChart Width="560"
+                                MaxVisibleItems="4"
+                                ItemsSource="{Binding RankedBurstItems}" />
+
+  <controls:CodexChartContainer.Footer>
+    <StackPanel Orientation="Horizontal"
+                Spacing="10">
+      <controls:CodexBadge Content="ChartContainer"
+                           Variant="Secondary" />
+      <controls:CodexBadge Content="ChartLegend"
+                           Variant="Outline" />
+      <controls:CodexBadge Content="ChartTooltip"
+                           Variant="Outline" />
+    </StackPanel>
+  </controls:CodexChartContainer.Footer>
+</controls:CodexChartContainer>

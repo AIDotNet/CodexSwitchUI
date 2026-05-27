@@ -12,17 +12,18 @@
     <Setter Property="MinHeight" Value="32" />
     <Setter Property="Padding" Value="10,6,32,6" />
     <Setter Property="ContentPadding" Value="0,6,0,0" />
+    <Setter Property="AnimationDuration" Value="{DynamicResource CodexSwitch.MotionDurationSlow}" />
     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="FocusAdorner" Value="{x:Null}" />
     <Setter Property="ClipToBounds" Value="False" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <ThicknessTransition Property="Padding" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
     <Setter Property="Template">
@@ -30,25 +31,25 @@
         <StackPanel x:Name="PART_Root"
                     Spacing="0">
           <Grid x:Name="PART_TriggerLayout">
-            <Button x:Name="PART_Trigger"
-                    MinHeight="{TemplateBinding MinHeight}"
-                    Padding="{TemplateBinding Padding}"
-                    Content="{TemplateBinding Header}"
-                    ContentTemplate="{TemplateBinding HeaderTemplate}"
-                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                    Background="{TemplateBinding Background}"
-                    Foreground="{TemplateBinding Foreground}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}"
-                    FontFamily="{TemplateBinding FontFamily}"
-                    FontSize="{TemplateBinding FontSize}"
-                    FocusAdorner="{x:Null}"
-                    IsEnabled="{TemplateBinding IsEnabled}"
-                    Cursor="Hand">
-              <Button.Template>
-                <ControlTemplate TargetType="Button">
+            <controls:CodexButton x:Name="PART_Trigger"
+                                  MinHeight="{TemplateBinding MinHeight}"
+                                  Padding="{TemplateBinding Padding}"
+                                  Content="{TemplateBinding Header}"
+                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  Background="{TemplateBinding Background}"
+                                  Foreground="{TemplateBinding Foreground}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  CornerRadius="{TemplateBinding CornerRadius}"
+                                  FontFamily="{TemplateBinding FontFamily}"
+                                  FontSize="{TemplateBinding FontSize}"
+                                  FocusAdorner="{x:Null}"
+                                  IsEnabled="{TemplateBinding IsEnabled}"
+                                  Cursor="Hand">
+              <controls:CodexButton.Template>
+                <ControlTemplate TargetType="controls:CodexButton">
                   <Grid MinHeight="{TemplateBinding MinHeight}">
                     <Border x:Name="PART_TriggerRoot"
                             MinHeight="{TemplateBinding MinHeight}"
@@ -74,8 +75,8 @@
                             Opacity="0" />
                   </Grid>
                 </ControlTemplate>
-              </Button.Template>
-            </Button>
+              </controls:CodexButton.Template>
+            </controls:CodexButton>
 
             <PathIcon x:Name="PART_Chevron"
                       Width="14"
@@ -107,32 +108,32 @@
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexCollapsible /template/ Button#PART_Trigger">
+  <Style Selector="controls|CodexCollapsible /template/ controls|CodexButton#PART_Trigger">
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexCollapsible /template/ Button#PART_Trigger /template/ Border#PART_TriggerRoot">
+  <Style Selector="controls|CodexCollapsible /template/ controls|CodexButton#PART_Trigger /template/ Border#PART_TriggerRoot">
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexCollapsible /template/ Button#PART_Trigger /template/ Border#PART_FocusRing">
+  <Style Selector="controls|CodexCollapsible /template/ controls|CodexButton#PART_Trigger /template/ Border#PART_FocusRing">
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -140,13 +141,13 @@
   <Style Selector="controls|CodexCollapsible /template/ PathIcon#PART_Chevron">
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationSlow}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexCollapsible:pointerover /template/ Button#PART_Trigger">
+  <Style Selector="controls|CodexCollapsible:pointerover /template/ controls|CodexButton#PART_Trigger">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
   </Style>
@@ -155,15 +156,15 @@
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexCollapsible /template/ Button#PART_Trigger:pressed /template/ Border#PART_TriggerRoot">
+  <Style Selector="controls|CodexCollapsible /template/ controls|CodexButton#PART_Trigger:pressed /template/ Border#PART_TriggerRoot">
     <Setter Property="RenderTransform" Value="scale(0.985)" />
   </Style>
 
-  <Style Selector="controls|CodexCollapsible /template/ Button#PART_Trigger:focus /template/ Border#PART_TriggerRoot">
+  <Style Selector="controls|CodexCollapsible /template/ controls|CodexButton#PART_Trigger:focus-visible /template/ Border#PART_TriggerRoot">
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
   </Style>
 
-  <Style Selector="controls|CodexCollapsible /template/ Button#PART_Trigger:focus /template/ Border#PART_FocusRing">
+  <Style Selector="controls|CodexCollapsible /template/ controls|CodexButton#PART_Trigger:focus-visible /template/ Border#PART_FocusRing">
     <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
   </Style>
 
@@ -179,7 +180,7 @@
     <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
   </Style>
 
-  <Style Selector="controls|CodexCollapsible:disabled /template/ Button#PART_Trigger">
+  <Style Selector="controls|CodexCollapsible:disabled /template/ controls|CodexButton#PART_Trigger">
     <Setter Property="Cursor" Value="Arrow" />
   </Style>
 

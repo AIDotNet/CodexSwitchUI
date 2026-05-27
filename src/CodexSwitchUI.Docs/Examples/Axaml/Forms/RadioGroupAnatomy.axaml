@@ -1,0 +1,20 @@
+<controls:CodexField xmlns="https://github.com/avaloniaui"
+                     xmlns:controls="using:CodexSwitchUI.Controls"
+                     Label="Route policy"
+                     Description="The root owns SelectedValue, RadioGroupName, orientation, loop, and item values.">
+  <controls:CodexField.Content>
+    <controls:CodexRadioGroup RadioGroupName="docs-radio-group-anatomy"
+                              SelectedValue="fallback"
+                              IsRequired="True">
+      <controls:CodexRadioGroupItem Value="primary"
+                                    Content="Primary only" />
+      <controls:CodexRadioGroupItem Value="fallback"
+                                    Content="Primary with fallback" />
+      <controls:CodexRadioGroupItem Value="manual"
+                                    Content="Manual approval" />
+      <controls:CodexRadioGroupItem Value="locked"
+                                    Content="Locked option"
+                                    IsEnabled="False" />
+    </controls:CodexRadioGroup>
+  </controls:CodexField.Content>
+</controls:CodexField>

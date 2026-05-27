@@ -1,0 +1,81 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Orientation and density"
+                       Description="Orientation and size classes update without replacing the separator.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="12">
+        <primitives:CodexText Role="Muted"
+                              Text="Separator is horizontal and medium." />
+        <controls:CodexSeparator Size="Medium" />
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Toggle orientation"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Cycle size"
+                                Size="Small"
+                                Variant="Ghost" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Vertical layout guard"
+                       Description="Vertical separators keep a stable explicit height inside toolbar rows.">
+    <controls:CodexField.Content>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="12">
+        <controls:CodexButton Content="Undo"
+                              Size="Small" />
+        <controls:CodexSeparator Orientation="Vertical"
+                                 Height="36" />
+        <controls:CodexButton Content="Redo"
+                              Size="Small"
+                              Variant="Secondary" />
+        <controls:CodexSeparator Orientation="Vertical"
+                                 Height="36"
+                                 Size="Large" />
+        <controls:CodexButton Content="Save"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Section divider"
+                       Description="Horizontal separators preserve surrounding text flow.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Subtitle"
+                              Text="Before divider" />
+        <controls:CodexSeparator Size="Small" />
+        <primitives:CodexText Role="Muted"
+                              Text="Metadata and helper content stay visually grouped." />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled host composition"
+                       Description="Separators remain visible inside disabled command clusters.">
+    <controls:CodexField.Content>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="10"
+                  IsEnabled="False">
+        <controls:CodexButton Content="Cut"
+                              Size="Small" />
+        <controls:CodexSeparator Orientation="Vertical"
+                                 Height="34" />
+        <controls:CodexButton Content="Paste"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

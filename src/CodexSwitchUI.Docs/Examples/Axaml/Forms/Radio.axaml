@@ -1,0 +1,12 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexRadio GroupName="routing"
+                       Content="Use fastest healthy provider"
+                       IsChecked="True" />
+  <controls:CodexRadio GroupName="routing"
+                       Content="Prefer lowest cost" />
+  <controls:CodexRadio GroupName="routing"
+                       Content="Pin selected provider"
+                       Intent="Warning" />
+</StackPanel>

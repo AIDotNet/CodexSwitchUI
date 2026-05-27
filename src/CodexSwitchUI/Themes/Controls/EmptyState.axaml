@@ -1,0 +1,221 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexEmptyState">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
+    <Setter Property="Padding" Value="28" />
+    <Setter Property="MinHeight" Value="180" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexEmptyState">
+        <Border x:Name="PART_Surface"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <StackPanel x:Name="PART_Layout"
+                      Spacing="12"
+                      MaxWidth="440"
+                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+            <Border x:Name="PART_IconShell"
+                    Width="48"
+                    Height="48"
+                    CornerRadius="{DynamicResource CodexSwitch.RadiusLg}"
+                    Background="{DynamicResource CodexSwitch.SecondaryBrush}"
+                    IsVisible="{TemplateBinding HasIcon}"
+                    HorizontalAlignment="Center">
+              <ContentPresenter x:Name="PART_Icon"
+                                Content="{TemplateBinding Icon}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center" />
+            </Border>
+
+            <StackPanel x:Name="PART_Header"
+                        Spacing="6"
+                        IsVisible="{TemplateBinding HasHeader}"
+                        HorizontalAlignment="Center">
+              <TextBlock x:Name="PART_Title"
+                         Text="{TemplateBinding Title}"
+                         IsVisible="{TemplateBinding HasTitle}"
+                         Foreground="{TemplateBinding Foreground}"
+                         FontFamily="{TemplateBinding FontFamily}"
+                         FontSize="18"
+                         FontWeight="SemiBold"
+                         TextAlignment="Center"
+                         TextWrapping="Wrap" />
+              <TextBlock x:Name="PART_Description"
+                         Text="{TemplateBinding Description}"
+                         IsVisible="{TemplateBinding HasDescription}"
+                         Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                         FontFamily="{TemplateBinding FontFamily}"
+                         FontSize="{DynamicResource CodexSwitch.FontSizeMd}"
+                         TextAlignment="Center"
+                         TextWrapping="Wrap" />
+            </StackPanel>
+
+            <ContentPresenter x:Name="PART_Content"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              IsVisible="{TemplateBinding HasContent}"
+                              HorizontalAlignment="Center" />
+
+            <StackPanel x:Name="PART_Actions"
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        IsVisible="{TemplateBinding HasActions}"
+                        HorizontalAlignment="Center">
+              <controls:CodexButton x:Name="PART_Action"
+                                    Content="{TemplateBinding Action}"
+                                    Size="{TemplateBinding Size}"
+                                    Variant="{TemplateBinding Variant}"
+                                    IsLoading="{TemplateBinding IsLoading}"
+                                    IsEnabled="{TemplateBinding CanExecuteAction}"
+                                    IsVisible="{TemplateBinding HasAction}" />
+              <controls:CodexButton x:Name="PART_SecondaryAction"
+                                    Content="{TemplateBinding SecondaryAction}"
+                                    Size="{TemplateBinding Size}"
+                                    Variant="Outline"
+                                    IsEnabled="{TemplateBinding CanExecuteSecondaryAction}"
+                                    IsVisible="{TemplateBinding HasSecondaryAction}" />
+            </StackPanel>
+          </StackPanel>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState /template/ Border#PART_Surface, controls|CodexEmptyState /template/ Border#PART_IconShell">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.loading">
+    <Setter Property="Opacity" Value="0.82" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState:not(.has-icon) /template/ Border#PART_IconShell">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState:not(.has-header) /template/ StackPanel#PART_Header">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState:not(.has-title) /template/ TextBlock#PART_Title">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState:not(.has-description) /template/ TextBlock#PART_Description">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState:not(.has-content) /template/ ContentPresenter#PART_Content">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState:not(.has-action) /template/ controls|CodexButton#PART_Action">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState:not(.has-secondary-action) /template/ controls|CodexButton#PART_SecondaryAction">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState:not(.has-actions) /template/ StackPanel#PART_Actions">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState:not(.can-action) /template/ controls|CodexButton#PART_Action, controls|CodexEmptyState:not(.can-secondary-action) /template/ controls|CodexButton#PART_SecondaryAction">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.size-sm">
+    <Setter Property="Padding" Value="20" />
+    <Setter Property="MinHeight" Value="140" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.size-sm /template/ Border#PART_IconShell">
+    <Setter Property="Width" Value="40" />
+    <Setter Property="Height" Value="40" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.size-lg">
+    <Setter Property="Padding" Value="36" />
+    <Setter Property="MinHeight" Value="220" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.size-lg /template/ Border#PART_IconShell">
+    <Setter Property="Width" Value="56" />
+    <Setter Property="Height" Value="56" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.size-icon">
+    <Setter Property="Padding" Value="12" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.size-icon /template/ Border#PART_IconShell">
+    <Setter Property="Width" Value="32" />
+    <Setter Property="Height" Value="32" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.variant-secondary /template/ Border#PART_IconShell">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.variant-outline /template/ Border#PART_Surface">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BackgroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.variant-ghost /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.variant-destructive /template/ Border#PART_IconShell">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.variant-success /template/ Border#PART_IconShell">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.variant-warning /template/ Border#PART_IconShell">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexEmptyState.variant-link /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+</Styles>

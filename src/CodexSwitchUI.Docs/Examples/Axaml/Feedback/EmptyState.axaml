@@ -1,0 +1,6 @@
+<controls:CodexEmptyState xmlns="https://github.com/avaloniaui"
+                          xmlns:controls="using:CodexSwitchUI.Controls"
+                          Title="No usage records"
+                          Description="Try another range or refresh provider data."
+                          Action="Refresh"
+                          SecondaryAction="Clear filter" />

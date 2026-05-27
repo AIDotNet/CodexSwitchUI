@@ -1,0 +1,70 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Selected value"
+                       Description="Root state flows to item value, checked, disabled, and keyboard behavior.">
+    <controls:CodexField.Content>
+      <controls:CodexRadioGroup SelectedValue="balanced">
+        <controls:CodexRadioGroupItem Value="balanced"
+                                      Content="Balanced" />
+        <controls:CodexRadioGroupItem Value="reasoning"
+                                      Content="Reasoning" />
+        <controls:CodexRadioGroupItem Value="latency"
+                                      Content="Low latency" />
+      </controls:CodexRadioGroup>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Horizontal"
+                       Description="Root state flows to item value, checked, disabled, and keyboard behavior.">
+    <controls:CodexField.Content>
+      <controls:CodexRadioGroup Orientation="Horizontal"
+                                SelectedValue="daily"
+                                Size="Small">
+        <controls:CodexRadioGroupItem Value="daily"
+                                      Content="Daily" />
+        <controls:CodexRadioGroupItem Value="weekly"
+                                      Content="Weekly" />
+        <controls:CodexRadioGroupItem Value="monthly"
+                                      Content="Monthly" />
+      </controls:CodexRadioGroup>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Required warning"
+                       Description="Root state flows to item value, checked, disabled, and keyboard behavior.">
+    <controls:CodexField.Content>
+      <controls:CodexRadioGroup IsRequired="True"
+                                Intent="Warning"
+                                SelectedValue="manual">
+        <controls:CodexRadioGroupItem Value="auto"
+                                      Content="Auto route" />
+        <controls:CodexRadioGroupItem Value="manual"
+                                      Content="Manual review" />
+        <controls:CodexRadioGroupItem Value="disabled"
+                                      Content="Disabled option"
+                                      IsEnabled="False" />
+      </controls:CodexRadioGroup>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Loading guard"
+                       Description="Root state flows to item value, checked, disabled, and keyboard behavior.">
+    <controls:CodexField.Content>
+      <controls:CodexRadioGroup IsLoading="True"
+                                SelectedValue="primary">
+        <controls:CodexRadioGroupItem Value="primary"
+                                      Content="Primary" />
+        <controls:CodexRadioGroupItem Value="fallback"
+                                      Content="Fallback" />
+      </controls:CodexRadioGroup>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

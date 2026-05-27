@@ -1,0 +1,203 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Selectable rows"
+                       Description="Pointer release selects one row, clears siblings, and updates the transition key.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Select a row to move the selected class and restart table content motion." />
+        <controls:CodexTable IsStriped="True"
+                             IsHoverable="True"
+                             TransitionKey="providers-initial">
+          <StackPanel>
+            <controls:CodexTableHeader>
+              <Grid ColumnDefinitions="1.4*,*,*,*">
+                <controls:CodexTableHead Content="Model" />
+                <controls:CodexTableHead Grid.Column="1"
+                                         Content="Protocol" />
+                <controls:CodexTableHead Grid.Column="2"
+                                         Content="Tokens"
+                                         Alignment="Right" />
+                <controls:CodexTableHead Grid.Column="3"
+                                         Content="State" />
+              </Grid>
+            </controls:CodexTableHeader>
+            <controls:CodexTableBody>
+              <controls:CodexTableRow IsSelected="True">
+                <Grid ColumnDefinitions="1.4*,*,*,*">
+                  <controls:CodexTableCell Content="gpt-5" />
+                  <controls:CodexTableCell Grid.Column="1"
+                                           Content="Responses" />
+                  <controls:CodexTableCell Grid.Column="2"
+                                           Content="42.7K"
+                                           Alignment="Right" />
+                  <controls:CodexTableCell Grid.Column="3"
+                                           Content="Primary" />
+                </Grid>
+              </controls:CodexTableRow>
+              <controls:CodexTableRow>
+                <Grid ColumnDefinitions="1.4*,*,*,*">
+                  <controls:CodexTableCell Content="claude-sonnet" />
+                  <controls:CodexTableCell Grid.Column="1"
+                                           Content="Claude" />
+                  <controls:CodexTableCell Grid.Column="2"
+                                           Content="18.3K"
+                                           Alignment="Right" />
+                  <controls:CodexTableCell Grid.Column="3"
+                                           Content="Fallback" />
+                </Grid>
+              </controls:CodexTableRow>
+              <controls:CodexTableRow IsEnabled="False">
+                <Grid ColumnDefinitions="1.4*,*,*,*">
+                  <controls:CodexTableCell Content="o4-mini" />
+                  <controls:CodexTableCell Grid.Column="1"
+                                           Content="Chat" />
+                  <controls:CodexTableCell Grid.Column="2"
+                                           Content="7.1K"
+                                           Alignment="Right" />
+                  <controls:CodexTableCell Grid.Column="3"
+                                           Content="Disabled" />
+                </Grid>
+              </controls:CodexTableRow>
+            </controls:CodexTableBody>
+            <controls:CodexTableCaption Content="Pointer row selection updates selected state without rebuilding table chrome." />
+          </StackPanel>
+        </controls:CodexTable>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Toggle density"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Toggle hover"
+                                Size="Small"
+                                Variant="Ghost" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Loading refresh surface"
+                       Description="Refresh actions can change TransitionKey while leaving the table scaffold mounted.">
+    <controls:CodexField.Content>
+      <controls:CodexTable IsCompact="True"
+                           IsStriped="True"
+                           TransitionKey="refreshing">
+        <StackPanel>
+          <controls:CodexTableHeader>
+            <Grid ColumnDefinitions="1.4*,*,*,*">
+              <controls:CodexTableHead Content="Model" />
+              <controls:CodexTableHead Grid.Column="1"
+                                       Content="Protocol" />
+              <controls:CodexTableHead Grid.Column="2"
+                                       Content="Tokens"
+                                       Alignment="Right" />
+              <controls:CodexTableHead Grid.Column="3"
+                                       Content="State" />
+            </Grid>
+          </controls:CodexTableHeader>
+          <controls:CodexTableRow IsSelected="True">
+            <Grid ColumnDefinitions="1.4*,*,*,*">
+              <controls:CodexTableCell Content="gpt-5" />
+              <controls:CodexTableCell Grid.Column="1"
+                                       Content="Responses" />
+              <controls:CodexTableCell Grid.Column="2"
+                                       Content="43.2K"
+                                       Alignment="Right" />
+              <controls:CodexTableCell Grid.Column="3"
+                                       Content="Refreshing" />
+            </Grid>
+          </controls:CodexTableRow>
+        </StackPanel>
+      </controls:CodexTable>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Disabled selection guard"
+                       Description="Disabled rows keep row geometry but do not become selected.">
+    <controls:CodexField.Content>
+      <controls:CodexTable IsHoverable="True">
+        <StackPanel>
+          <controls:CodexTableHeader>
+            <Grid ColumnDefinitions="1.4*,*,*,*">
+              <controls:CodexTableHead Content="Model" />
+              <controls:CodexTableHead Grid.Column="1"
+                                       Content="Protocol" />
+              <controls:CodexTableHead Grid.Column="2"
+                                       Content="Tokens"
+                                       Alignment="Right" />
+              <controls:CodexTableHead Grid.Column="3"
+                                       Content="State" />
+            </Grid>
+          </controls:CodexTableHeader>
+          <controls:CodexTableRow IsEnabled="False">
+            <Grid ColumnDefinitions="1.4*,*,*,*">
+              <controls:CodexTableCell Content="locked-model" />
+              <controls:CodexTableCell Grid.Column="1"
+                                       Content="Responses" />
+              <controls:CodexTableCell Grid.Column="2"
+                                       Content="0"
+                                       Alignment="Right" />
+              <controls:CodexTableCell Grid.Column="3"
+                                       Content="Disabled" />
+            </Grid>
+          </controls:CodexTableRow>
+        </StackPanel>
+      </controls:CodexTable>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Alignment and footer"
+                       Description="Cell alignment and footer rows stay stable while data refreshes.">
+    <controls:CodexField.Content>
+      <controls:CodexTable IsStriped="True">
+        <StackPanel>
+          <controls:CodexTableHeader>
+            <Grid ColumnDefinitions="1.4*,*,*,*">
+              <controls:CodexTableHead Content="Model" />
+              <controls:CodexTableHead Grid.Column="1"
+                                       Content="Protocol" />
+              <controls:CodexTableHead Grid.Column="2"
+                                       Content="Tokens"
+                                       Alignment="Right" />
+              <controls:CodexTableHead Grid.Column="3"
+                                       Content="State" />
+            </Grid>
+          </controls:CodexTableHeader>
+          <controls:CodexTableRow>
+            <Grid ColumnDefinitions="1.4*,*,*,*">
+              <controls:CodexTableCell Content="total" />
+              <controls:CodexTableCell Grid.Column="1"
+                                       Content="3 routes" />
+              <controls:CodexTableCell Grid.Column="2"
+                                       Content="69.1K"
+                                       Alignment="Right" />
+              <controls:CodexTableCell Grid.Column="3"
+                                       Content="Healthy" />
+            </Grid>
+          </controls:CodexTableRow>
+          <controls:CodexTableFooter>
+            <Grid ColumnDefinitions="1.4*,*,*,*">
+              <controls:CodexTableCell Content="Updated" />
+              <controls:CodexTableCell Grid.Column="1"
+                                       Content="just now" />
+              <controls:CodexTableCell Grid.Column="2"
+                                       Content="100%"
+                                       Alignment="Right" />
+              <controls:CodexTableCell Grid.Column="3"
+                                       Content="Ready" />
+            </Grid>
+          </controls:CodexTableFooter>
+        </StackPanel>
+      </controls:CodexTable>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,74 @@
+<controls:CodexTable xmlns="https://github.com/avaloniaui"
+                     xmlns:controls="using:CodexSwitchUI.Controls"
+                     IsHoverable="True">
+  <StackPanel>
+    <controls:CodexTableHeader>
+      <Grid ColumnDefinitions="1.4*,*,*,*">
+        <controls:CodexTableHead Content="Model" />
+        <controls:CodexTableHead Grid.Column="1"
+                                 Content="Protocol" />
+        <controls:CodexTableHead Grid.Column="2"
+                                 Content="Tokens"
+                                 Alignment="Right" />
+        <controls:CodexTableHead Grid.Column="3"
+                                 Content="State" />
+      </Grid>
+    </controls:CodexTableHeader>
+
+    <controls:CodexTableBody>
+      <controls:CodexTableRow IsSelected="True">
+        <Grid ColumnDefinitions="1.4*,*,*,*">
+          <controls:CodexTableCell Content="gpt-5" />
+          <controls:CodexTableCell Grid.Column="1"
+                                   Content="Responses" />
+          <controls:CodexTableCell Grid.Column="2"
+                                   Content="42.7K"
+                                   Alignment="Right" />
+          <controls:CodexTableCell Grid.Column="3"
+                                   Content="Primary" />
+        </Grid>
+      </controls:CodexTableRow>
+
+      <controls:CodexTableRow>
+        <Grid ColumnDefinitions="1.4*,*,*,*">
+          <controls:CodexTableCell Content="claude-sonnet" />
+          <controls:CodexTableCell Grid.Column="1"
+                                   Content="Claude" />
+          <controls:CodexTableCell Grid.Column="2"
+                                   Content="18.3K"
+                                   Alignment="Right" />
+          <controls:CodexTableCell Grid.Column="3"
+                                   Content="Fallback" />
+        </Grid>
+      </controls:CodexTableRow>
+
+      <controls:CodexTableRow IsEnabled="False">
+        <Grid ColumnDefinitions="1.4*,*,*,*">
+          <controls:CodexTableCell Content="o4-mini" />
+          <controls:CodexTableCell Grid.Column="1"
+                                   Content="Chat" />
+          <controls:CodexTableCell Grid.Column="2"
+                                   Content="7.1K"
+                                   Alignment="Right" />
+          <controls:CodexTableCell Grid.Column="3"
+                                   Content="Disabled" />
+        </Grid>
+      </controls:CodexTableRow>
+    </controls:CodexTableBody>
+
+    <controls:CodexTableFooter>
+      <Grid ColumnDefinitions="1.4*,*,*,*">
+        <controls:CodexTableCell Content="Total" />
+        <controls:CodexTableCell Grid.Column="1"
+                                 Content="3 routes" />
+        <controls:CodexTableCell Grid.Column="2"
+                                 Content="68.1K"
+                                 Alignment="Right" />
+        <controls:CodexTableCell Grid.Column="3"
+                                 Content="Healthy" />
+      </Grid>
+    </controls:CodexTableFooter>
+
+    <controls:CodexTableCaption Content="Provider routing metrics from the last 24 hours." />
+  </StackPanel>
+</controls:CodexTable>

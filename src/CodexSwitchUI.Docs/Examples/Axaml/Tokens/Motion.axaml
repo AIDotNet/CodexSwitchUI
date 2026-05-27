@@ -1,0 +1,34 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*,*"
+      ColumnSpacing="12">
+  <StackPanel Spacing="8">
+    <controls:CodexKbd Content="120ms"
+                       Size="Small" />
+    <primitives:CodexText Text="Fast"
+                          Role="Subtitle" />
+    <primitives:CodexText Text="focus and hover"
+                          Role="Muted" />
+  </StackPanel>
+
+  <StackPanel Grid.Column="1"
+              Spacing="8">
+    <controls:CodexKbd Content="150ms"
+                       Size="Small" />
+    <primitives:CodexText Text="Default"
+                          Role="Subtitle" />
+    <primitives:CodexText Text="surface and content"
+                          Role="Muted" />
+  </StackPanel>
+
+  <StackPanel Grid.Column="2"
+              Spacing="8">
+    <controls:CodexKbd Content="220ms"
+                       Size="Small" />
+    <primitives:CodexText Text="Slow"
+                          Role="Subtitle" />
+    <primitives:CodexText Text="overlay entrance"
+                          Role="Muted" />
+  </StackPanel>
+</Grid>

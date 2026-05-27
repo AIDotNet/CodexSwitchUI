@@ -1,0 +1,388 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexCombobox">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingMd}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BackgroundBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.InputBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="MaxPopupHeight" Value="320" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexCombobox">
+        <Grid>
+          <Border x:Name="PART_InputGroup"
+                  MinHeight="{TemplateBinding MinHeight}"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}" />
+          <Border x:Name="PART_FocusRing"
+                  BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                  BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                  CornerRadius="{TemplateBinding CornerRadius}"
+                  IsHitTestVisible="False"
+                  Opacity="0" />
+          <Grid ColumnDefinitions="*,Auto,Auto">
+            <controls:CodexTextBox x:Name="PART_Input"
+                                   Grid.Column="0"
+                                   Margin="1"
+                                   MinHeight="{TemplateBinding MinHeight}"
+                                   Padding="{TemplateBinding Padding}"
+                                   Background="Transparent"
+                                   BorderBrush="Transparent"
+                                   BorderThickness="0"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   PlaceholderForeground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                                   PlaceholderText="{TemplateBinding PlaceholderText}"
+                                   Text="{TemplateBinding Text, Mode=TwoWay}"
+                                   FocusAdorner="{x:Null}" />
+
+            <Button x:Name="PART_Clear"
+                    Grid.Column="1"
+                    Width="28"
+                    Height="28"
+                    Padding="0"
+                    Margin="0,0,2,0"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    FocusAdorner="{x:Null}"
+                    IsVisible="{TemplateBinding HasClearButton}">
+              <Button.Template>
+                <ControlTemplate TargetType="Button">
+                  <Border x:Name="PART_ClearSurface"
+                          Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          CornerRadius="{DynamicResource CodexSwitch.RadiusSm}">
+                    <PathIcon x:Name="PART_ClearIcon"
+                              Width="12"
+                              Height="12"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                              Data="M3.4 2L2 3.4L6.6 8L2 12.6L3.4 14L8 9.4L12.6 14L14 12.6L9.4 8L14 3.4L12.6 2L8 6.6Z" />
+                  </Border>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+
+            <Button x:Name="PART_Trigger"
+                    Grid.Column="2"
+                    Width="34"
+                    MinHeight="{TemplateBinding MinHeight}"
+                    Padding="0"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    FocusAdorner="{x:Null}">
+              <Button.Template>
+                <ControlTemplate TargetType="Button">
+                  <Border x:Name="PART_TriggerSurface"
+                          Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}">
+                    <PathIcon x:Name="PART_Chevron"
+                              Width="14"
+                              Height="14"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                              RenderTransform="none"
+                              Data="M7 10L12 5L10.6 3.6L7 7.2L3.4 3.6L2 5L7 10Z" />
+                  </Border>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
+          </Grid>
+
+          <Popup x:Name="PART_Popup"
+                 WindowManagerAddShadowHint="False"
+                 IsOpen="{TemplateBinding IsOpen, Mode=TwoWay}"
+                 MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                 MaxHeight="{TemplateBinding MaxPopupHeight}"
+                 PlacementTarget="PART_InputGroup"
+                 Placement="Bottom"
+                 IsLightDismissEnabled="True"
+                 InheritsTransform="True">
+            <Border x:Name="PART_PopupBorder"
+                    Margin="0,6,0,0"
+                    Padding="4"
+                    Background="{DynamicResource CodexSwitch.PopoverBrush}"
+                    BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                    Opacity="0"
+                    RenderTransform="scale(0.98)">
+              <Grid RowDefinitions="Auto,*">
+                <ContentPresenter x:Name="PART_Loading"
+                                  Grid.Row="0"
+                                  Content="{TemplateBinding LoadingContent}"
+                                  Margin="10,12"
+                                  Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                                  HorizontalAlignment="Center"
+                                  IsVisible="{TemplateBinding IsLoading}" />
+                <ContentPresenter x:Name="PART_Empty"
+                                  Grid.Row="0"
+                                  Content="{TemplateBinding EmptyContent}"
+                                  Margin="10,12"
+                                  Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                                  HorizontalAlignment="Center"
+                                  IsVisible="{TemplateBinding HasFilteredItems, Converter={x:Static BoolConverters.Not}}" />
+                <ScrollViewer x:Name="PART_Scroll"
+                              Grid.Row="1"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto"
+                              IsScrollChainingEnabled="False"
+                              IsVisible="{TemplateBinding HasFilteredItems}">
+                  <ItemsControl x:Name="PART_List"
+                                ItemsSource="{TemplateBinding FilteredItems}">
+                    <ItemsControl.ItemsPanel>
+                      <ItemsPanelTemplate>
+                        <StackPanel Spacing="2" />
+                      </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                  </ItemsControl>
+                </ScrollViewer>
+              </Grid>
+            </Border>
+          </Popup>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCombobox /template/ Border#PART_InputGroup,
+                   controls|CodexCombobox /template/ Border#PART_FocusRing,
+                   controls|CodexCombobox /template/ Border#PART_PopupBorder">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="BorderThickness" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCombobox /template/ Button#PART_Clear,
+                   controls|CodexCombobox /template/ Button#PART_Trigger">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCombobox /template/ PathIcon#PART_Chevron">
+    <Setter Property="Transitions">
+      <Transitions>
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCombobox /template/ controls|CodexTextBox#PART_Input /template/ Border#PART_BorderElement">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox /template/ controls|CodexTextBox#PART_Input /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox:pointerover /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox:focus-visible /template/ Border#PART_InputGroup,
+                   controls|CodexCombobox.open /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox:focus-visible /template/ Border#PART_FocusRing">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.open /template/ Border#PART_PopupBorder">
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.open /template/ PathIcon#PART_Chevron">
+    <Setter Property="RenderTransform" Value="rotate(180deg)" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.closed /template/ Border#PART_PopupBorder">
+    <Setter Property="Opacity" Value="0" />
+    <Setter Property="RenderTransform" Value="scale(0.98)" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.has-selection /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.InputBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.has-text /template/ controls|CodexTextBox#PART_Input">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.has-filtered-items /template/ ItemsControl#PART_List">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.loading /template/ Border#PART_InputGroup">
+    <Setter Property="Opacity" Value="0.88" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.empty /template/ ContentPresenter#PART_Empty">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.auto-highlight /template/ ItemsControl#PART_List">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.highlight-on-hover /template/ ItemsControl#PART_List">
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.close-on-select /template/ Border#PART_PopupBorder">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.has-clear /template/ Button#PART_Clear">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox:disabled /template/ Border#PART_InputGroup">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.MutedBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.size-sm">
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightSm}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingSm}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.size-lg">
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightLg}" />
+    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingLg}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.size-icon">
+    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.intent-error /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.intent-success /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCombobox.intent-warning /template/ Border#PART_InputGroup">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexComboboxItem">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="MinHeight" Value="34" />
+    <Setter Property="Padding" Value="8,7" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexComboboxItem">
+        <Border x:Name="PART_ItemRoot"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <Grid ColumnDefinitions="18,*">
+            <PathIcon x:Name="PART_Check"
+                      Width="14"
+                      Height="14"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Foreground="{DynamicResource CodexSwitch.PrimaryBrush}"
+                      Opacity="0"
+                      Data="M13.8 3.2L5.9 11.1L2.2 7.4L1 8.6L5.9 13.5L15 4.4Z" />
+            <ContentPresenter x:Name="PART_Content"
+                              Grid.Column="1"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexComboboxItem:pointerover,
+                   controls|CodexComboboxItem.highlighted,
+                   controls|CodexComboboxItem:focus-visible">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexComboboxItem:pointerover /template/ Border#PART_ItemRoot,
+                   controls|CodexComboboxItem.highlighted /template/ Border#PART_ItemRoot,
+                   controls|CodexComboboxItem:focus-visible /template/ Border#PART_ItemRoot">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexComboboxItem.selected /template/ PathIcon#PART_Check">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexComboboxItem:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+</Styles>

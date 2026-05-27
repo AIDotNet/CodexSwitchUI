@@ -1,0 +1,19 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexRadio GroupName="docs-radio-states"
+                       Content="Checked"
+                       IsChecked="True" />
+  <controls:CodexRadio GroupName="docs-radio-states"
+                       Content="Unchecked" />
+  <controls:CodexRadio GroupName="docs-radio-states"
+                       Content="Warning intent"
+                       Intent="Warning" />
+  <controls:CodexRadio GroupName="docs-radio-disabled"
+                       Content="Disabled checked"
+                       IsChecked="True"
+                       IsEnabled="False" />
+  <controls:CodexRadio GroupName="docs-radio-disabled"
+                       Content="Disabled unchecked"
+                       IsEnabled="False" />
+</StackPanel>

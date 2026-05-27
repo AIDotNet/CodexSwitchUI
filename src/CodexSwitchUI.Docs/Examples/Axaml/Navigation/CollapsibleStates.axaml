@@ -1,0 +1,22 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexCollapsible Header="Open disclosure"
+                             IsOpen="True">
+    <StackPanel Spacing="8">
+      <TextBlock Text="Open state keeps content mounted and measured."
+                 TextWrapping="Wrap" />
+      <controls:CodexButton Content="Apply"
+                            Size="Small"
+                            HorizontalAlignment="Left" />
+    </StackPanel>
+  </controls:CodexCollapsible>
+
+  <controls:CodexCollapsible Grid.Column="1"
+                             Header="Closed disclosure"
+                             IsOpen="False">
+    <TextBlock Text="Closed state animates height and opacity."
+               TextWrapping="Wrap" />
+  </controls:CodexCollapsible>
+</Grid>

@@ -1,0 +1,486 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexField">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexField">
+        <Border x:Name="PART_Root"
+                Padding="{TemplateBinding Padding}">
+          <Grid x:Name="PART_Layout"
+                ColumnDefinitions="Auto,*"
+                RowDefinitions="Auto,Auto,Auto,Auto"
+                RowSpacing="6">
+            <StackPanel x:Name="PART_LabelRow"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Orientation="Horizontal"
+                        Spacing="3"
+                        IsVisible="{TemplateBinding HasLabel}">
+              <controls:CodexLabel x:Name="PART_Label"
+                                    Content="{TemplateBinding Label}"
+                                    Intent="{TemplateBinding Intent}"
+                                    Size="{TemplateBinding Size}"
+                                    IsRequired="{TemplateBinding IsRequired}"
+                                    Foreground="{TemplateBinding Foreground}"
+                                    VerticalAlignment="Center" />
+            </StackPanel>
+
+            <ContentPresenter x:Name="PART_Control"
+                              Grid.Row="1"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+
+            <TextBlock x:Name="PART_Description"
+                       Grid.Row="2"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Text="{TemplateBinding Description}"
+                       IsVisible="{TemplateBinding HasDescription}"
+                       Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                       FontFamily="{TemplateBinding FontFamily}"
+                       FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                       TextWrapping="Wrap" />
+
+            <TextBlock x:Name="PART_Message"
+                       Grid.Row="3"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Text="{TemplateBinding Message}"
+                       IsVisible="{TemplateBinding HasMessage}"
+                       Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                       FontFamily="{TemplateBinding FontFamily}"
+                       FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                       TextWrapping="Wrap" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexField /template/ controls|CodexLabel#PART_Label">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexField /template/ TextBlock#PART_Description, controls|CodexField /template/ TextBlock#PART_Message">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexField.orientation-horizontal /template/ StackPanel#PART_LabelRow,
+                   controls|CodexField.orientation-responsive /template/ StackPanel#PART_LabelRow">
+    <Setter Property="Grid.ColumnSpan" Value="1" />
+    <Setter Property="Margin" Value="0,7,14,0" />
+  </Style>
+
+  <Style Selector="controls|CodexField.orientation-horizontal /template/ ContentPresenter#PART_Control,
+                   controls|CodexField.orientation-responsive /template/ ContentPresenter#PART_Control">
+    <Setter Property="Grid.Row" Value="0" />
+    <Setter Property="Grid.Column" Value="1" />
+    <Setter Property="Grid.ColumnSpan" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexField.orientation-horizontal /template/ TextBlock#PART_Description,
+                   controls|CodexField.orientation-responsive /template/ TextBlock#PART_Description">
+    <Setter Property="Grid.Row" Value="1" />
+    <Setter Property="Grid.Column" Value="1" />
+    <Setter Property="Grid.ColumnSpan" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexField.orientation-horizontal /template/ TextBlock#PART_Message,
+                   controls|CodexField.orientation-responsive /template/ TextBlock#PART_Message">
+    <Setter Property="Grid.Row" Value="2" />
+    <Setter Property="Grid.Column" Value="1" />
+    <Setter Property="Grid.ColumnSpan" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexField.size-sm /template/ Grid#PART_Layout">
+    <Setter Property="RowSpacing" Value="5" />
+  </Style>
+
+  <Style Selector="controls|CodexField.size-icon /template/ Grid#PART_Layout">
+    <Setter Property="RowSpacing" Value="4" />
+  </Style>
+
+  <Style Selector="controls|CodexField.size-sm /template/ controls|CodexLabel#PART_Label">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.size-sm /template/ TextBlock#PART_Description, controls|CodexField.size-sm /template/ TextBlock#PART_Message">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.size-icon /template/ controls|CodexLabel#PART_Label">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.size-icon /template/ TextBlock#PART_Description, controls|CodexField.size-icon /template/ TextBlock#PART_Message">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.size-lg /template/ Grid#PART_Layout">
+    <Setter Property="RowSpacing" Value="8" />
+  </Style>
+
+  <Style Selector="controls|CodexField.size-lg /template/ controls|CodexLabel#PART_Label">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.size-lg /template/ TextBlock#PART_Description, controls|CodexField.size-lg /template/ TextBlock#PART_Message">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.intent-error /template/ controls|CodexLabel#PART_Label">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.intent-error /template/ TextBlock#PART_Message,
+                   controls|CodexField.invalid /template/ TextBlock#PART_Message">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.invalid /template/ controls|CodexLabel#PART_Label">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.intent-success /template/ TextBlock#PART_Message">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.intent-warning /template/ TextBlock#PART_Message">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexField.has-label /template/ controls|CodexLabel#PART_Label, controls|CodexField.has-description /template/ TextBlock#PART_Description, controls|CodexField.has-message /template/ TextBlock#PART_Message">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexField.required /template/ controls|CodexLabel#PART_Label">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexField:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldGroup">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Vertical" Spacing="14" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexFieldGroup">
+        <ItemsPresenter x:Name="PART_ItemsPresenter" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldGroup.orientation-horizontal">
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Horizontal" Spacing="16" />
+      </ItemsPanelTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldGroup.orientation-responsive">
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <WrapPanel Orientation="Horizontal" ItemWidth="260" />
+      </ItemsPanelTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldGroup.size-sm">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldGroup.size-lg">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldGroup:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldGroup.field-group.has-items">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldSet">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Vertical" Spacing="14" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexFieldSet">
+        <StackPanel x:Name="PART_Root"
+                    Spacing="12">
+          <StackPanel x:Name="PART_Header"
+                      Spacing="4">
+            <ContentPresenter x:Name="PART_Legend"
+                              Content="{TemplateBinding Legend}"
+                              IsVisible="{TemplateBinding HasLegend}" />
+            <ContentPresenter x:Name="PART_Description"
+                              Content="{TemplateBinding Description}"
+                              IsVisible="{TemplateBinding HasDescription}" />
+          </StackPanel>
+          <ItemsPresenter x:Name="PART_ItemsPresenter" />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldSet.orientation-horizontal">
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Horizontal" Spacing="16" />
+      </ItemsPanelTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldSet.orientation-responsive">
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <WrapPanel Orientation="Horizontal" ItemWidth="280" />
+      </ItemsPanelTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldSet /template/ ContentPresenter#PART_Legend">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldSet /template/ ContentPresenter#PART_Description">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldSet.size-sm /template/ StackPanel#PART_Root">
+    <Setter Property="Spacing" Value="10" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldSet.size-lg /template/ StackPanel#PART_Root">
+    <Setter Property="Spacing" Value="16" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldSet:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldSet.field-set.has-legend">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldLegend">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexFieldLegend">
+        <ContentPresenter x:Name="PART_LegendContent"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldLegend.variant-label">
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldLegend.field-legend.has-content">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldContent">
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexFieldContent">
+        <StackPanel x:Name="PART_Content"
+                    Spacing="4">
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldContent.field-content.has-content">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldTitle">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexFieldTitle">
+        <ContentPresenter x:Name="PART_Title"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldTitle.field-title.has-content">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldDescription">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexFieldDescription">
+        <ContentPresenter x:Name="PART_DescriptionContent"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldDescription.field-description.has-content">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldSeparator">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexFieldSeparator">
+        <Grid x:Name="PART_SeparatorRoot"
+              ColumnDefinitions="*,Auto,*"
+              ColumnSpacing="10">
+          <Border x:Name="PART_StartLine"
+                  Height="1"
+                  VerticalAlignment="Center"
+                  Background="{DynamicResource CodexSwitch.BorderBrush}" />
+          <ContentPresenter x:Name="PART_Content"
+                            Grid.Column="1"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            IsVisible="{TemplateBinding HasContent}" />
+          <Border x:Name="PART_EndLine"
+                  Grid.Column="2"
+                  Height="1"
+                  VerticalAlignment="Center"
+                  Background="{DynamicResource CodexSwitch.BorderBrush}" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldSeparator.field-separator.has-content">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldSeparator.vertical /template/ Border#PART_StartLine,
+                   controls|CodexFieldSeparator.vertical /template/ Border#PART_EndLine">
+    <Setter Property="Width" Value="1" />
+    <Setter Property="Height" Value="40" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldError">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Vertical" Spacing="3" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexFieldError">
+        <StackPanel x:Name="PART_ErrorRoot"
+                    Spacing="4">
+          <TextBlock x:Name="PART_Message"
+                     Text="{TemplateBinding Message}"
+                     IsVisible="{TemplateBinding HasMessage}"
+                     Foreground="{TemplateBinding Foreground}"
+                     FontFamily="{TemplateBinding FontFamily}"
+                     FontSize="{TemplateBinding FontSize}"
+                     TextWrapping="Wrap" />
+          <ItemsPresenter x:Name="PART_ItemsPresenter"
+                          IsVisible="{TemplateBinding HasItems}" />
+        </StackPanel>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexFieldError.empty">
+    <Setter Property="Opacity" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexFieldError.field-error.has-message">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+</Styles>

@@ -1,0 +1,51 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexItem Title="Default"
+                      Description="Plain item row with media and action slot.">
+    <controls:CodexItem.Media>
+      <controls:CodexItemMedia Content="D" />
+    </controls:CodexItem.Media>
+    <controls:CodexItem.Actions>
+      <controls:CodexBadge Content="ready"
+                           Variant="Secondary" />
+    </controls:CodexItem.Actions>
+  </controls:CodexItem>
+
+  <controls:CodexItem Grid.Column="1"
+                      Title="Selected"
+                      Description="Selected item uses accent background and ring border."
+                      IsSelected="True"
+                      IsInteractive="True">
+    <controls:CodexItem.Media>
+      <controls:CodexItemMedia Content="S"
+                               Variant="Success" />
+    </controls:CodexItem.Media>
+  </controls:CodexItem>
+
+  <controls:CodexItem Grid.Row="1"
+                      Title="Loading"
+                      Description="Loading suppresses activation while preserving the row layout."
+                      IsInteractive="True"
+                      IsLoading="True">
+    <controls:CodexItem.Media>
+      <controls:CodexItemMedia Content="L"
+                               Variant="Warning" />
+    </controls:CodexItem.Media>
+  </controls:CodexItem>
+
+  <controls:CodexItem Grid.Row="1"
+                      Grid.Column="1"
+                      Title="Disabled"
+                      Description="Disabled rows reduce opacity and cannot activate."
+                      IsInteractive="True"
+                      IsEnabled="False">
+    <controls:CodexItem.Media>
+      <controls:CodexItemMedia Content="X"
+                               Variant="Destructive" />
+    </controls:CodexItem.Media>
+  </controls:CodexItem>
+</Grid>

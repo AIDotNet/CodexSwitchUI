@@ -1,0 +1,70 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexCommandDialog Placeholder="Search dialog commands..."
+                               SearchText="provider"
+                               IsOpen="True"
+                               LoopNavigation="True"
+                               CloseOnItemSelected="True">
+    <controls:CodexCommandDialog.Trigger>
+      <controls:CodexButton Content="Open provider commands"
+                            Size="Small" />
+    </controls:CodexCommandDialog.Trigger>
+    <controls:CodexCommandList MaxHeight="220">
+      <controls:CodexCommandGroup Header="Providers">
+        <controls:CodexCommandItem Content="Switch provider"
+                                   Value="provider"
+                                   Keywords="model route"
+                                   Icon="P"
+                                   Shortcut="Enter"
+                                   IsActive="True" />
+        <controls:CodexCommandItem Content="Provider preferences"
+                                   Value="preferences"
+                                   Keywords="provider settings"
+                                   Icon="S"
+                                   Shortcut="Cmd+," />
+        <controls:CodexCommandItem Content="Open logs"
+                                   Value="logs"
+                                   Keywords="diagnostics"
+                                   Icon="L" />
+      </controls:CodexCommandGroup>
+
+      <controls:CodexCommandSeparator AlwaysRender="True" />
+
+      <controls:CodexCommandGroup Header="Actions">
+        <controls:CodexCommandItem Content="Refresh models"
+                                   Value="refresh"
+                                   Keywords="provider reload"
+                                   Icon="R"
+                                   Shortcut="Cmd+R" />
+        <controls:CodexCommandItem Content="Disabled action"
+                                   Value="disabled"
+                                   Icon="D"
+                                   IsEnabled="False" />
+      </controls:CodexCommandGroup>
+    </controls:CodexCommandList>
+  </controls:CodexCommandDialog>
+
+  <controls:CodexCommandDialog Grid.Column="1"
+                               Placeholder="No matches..."
+                               SearchText="missing"
+                               IsOpen="True"
+                               CloseOnItemSelected="False">
+    <controls:CodexCommandDialog.Trigger>
+      <controls:CodexButton Content="Open empty command menu"
+                            Size="Small" />
+    </controls:CodexCommandDialog.Trigger>
+    <controls:CodexCommandList>
+      <controls:CodexCommandEmpty Content="No dialog command found." />
+      <controls:CodexCommandGroup Header="Filtered">
+        <controls:CodexCommandItem Content="Switch provider"
+                                   Value="provider"
+                                   Icon="P" />
+        <controls:CodexCommandItem Content="Refresh models"
+                                   Value="models"
+                                   Icon="R" />
+      </controls:CodexCommandGroup>
+    </controls:CodexCommandList>
+  </controls:CodexCommandDialog>
+</Grid>

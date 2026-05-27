@@ -6,10 +6,56 @@ using Avalonia.Platform;
 
 namespace CodexSwitchUI.Controls;
 
+public sealed class CodexImageIconLoadedEventArgs(string? path, string? oldPath, IImage source) : EventArgs
+{
+    public string? Path { get; } = path;
+
+    public string? OldPath { get; } = oldPath;
+
+    public IImage Source { get; } = source;
+}
+
+public sealed class CodexImageIconLoadFailedEventArgs(string? path, string? oldPath, string errorMessage) : EventArgs
+{
+    public string? Path { get; } = path;
+
+    public string? OldPath { get; } = oldPath;
+
+    public string ErrorMessage { get; } = errorMessage;
+}
+
 public class CodexImageIcon : Image
 {
     public static readonly StyledProperty<string?> PathProperty =
         AvaloniaProperty.Register<CodexImageIcon, string?>(nameof(Path));
+
+    public static readonly StyledProperty<bool> HasSourceProperty =
+        AvaloniaProperty.Register<CodexImageIcon, bool>(nameof(HasSource));
+
+    public static readonly StyledProperty<bool> IsMissingProperty =
+        AvaloniaProperty.Register<CodexImageIcon, bool>(nameof(IsMissing));
+
+    public static readonly StyledProperty<bool> IsEmptyProperty =
+        AvaloniaProperty.Register<CodexImageIcon, bool>(nameof(IsEmpty), true);
+
+    public static readonly StyledProperty<string?> LastLoadErrorProperty =
+        AvaloniaProperty.Register<CodexImageIcon, string?>(nameof(LastLoadError));
+
+    static CodexImageIcon()
+    {
+        PathProperty.Changed.AddClassHandler<CodexImageIcon>((icon, args) =>
+            icon.OnPathChanged(args.OldValue as string, args.NewValue as string));
+        SourceProperty.Changed.AddClassHandler<CodexImageIcon>((icon, _) => icon.SyncImageState());
+    }
+
+    public CodexImageIcon()
+    {
+        SyncImageState();
+    }
+
+    public event EventHandler<CodexImageIconLoadedEventArgs>? ImageLoaded;
+
+    public event EventHandler<CodexImageIconLoadFailedEventArgs>? ImageLoadFailed;
 
     public string? Path
     {
@@ -17,21 +63,54 @@ public class CodexImageIcon : Image
         set => SetValue(PathProperty, value);
     }
 
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        base.OnPropertyChanged(change);
+    public bool HasSource => GetValue(HasSourceProperty);
 
-        if (change.Property == PathProperty)
+    public bool IsMissing => GetValue(IsMissingProperty);
+
+    public bool IsEmpty => GetValue(IsEmptyProperty);
+
+    public string? LastLoadError => GetValue(LastLoadErrorProperty);
+
+    private void OnPathChanged(string? oldPath, string? newPath)
+    {
+        var result = TryLoad(newPath);
+
+        SetValue(LastLoadErrorProperty, result.ErrorMessage);
+        Source = result.Source;
+        SyncImageState();
+
+        if (result.Source is not null)
         {
-            Source = TryLoad(Path);
+            ImageLoaded?.Invoke(this, new CodexImageIconLoadedEventArgs(newPath, oldPath, result.Source));
+        }
+        else if (result.ErrorMessage is not null)
+        {
+            ImageLoadFailed?.Invoke(this, new CodexImageIconLoadFailedEventArgs(newPath, oldPath, result.ErrorMessage));
         }
     }
 
-    private static IImage? TryLoad(string? path)
+    private void SyncImageState()
+    {
+        var hasSource = Source is not null;
+        var isMissing = !string.IsNullOrWhiteSpace(Path) &&
+                        !hasSource &&
+                        !string.IsNullOrWhiteSpace(LastLoadError);
+
+        SetValue(HasSourceProperty, hasSource);
+        SetValue(IsMissingProperty, isMissing);
+        SetValue(IsEmptyProperty, !hasSource);
+
+        Classes.Set("image-icon", true);
+        Classes.Set("has-source", hasSource);
+        Classes.Set("missing-source", isMissing);
+        Classes.Set("empty-source", !hasSource);
+    }
+
+    private static ImageLoadResult TryLoad(string? path)
     {
         if (string.IsNullOrWhiteSpace(path))
         {
-            return null;
+            return ImageLoadResult.Empty;
         }
 
         try
@@ -40,20 +119,26 @@ public class CodexImageIcon : Image
                 string.Equals(uri.Scheme, "avares", StringComparison.OrdinalIgnoreCase))
             {
                 using var stream = AssetLoader.Open(uri);
-                return new Bitmap(stream);
+                return new ImageLoadResult(new Bitmap(stream), null);
             }
 
             if (!File.Exists(path))
             {
-                return null;
+                return new ImageLoadResult(null, "Image asset was not found.");
             }
 
-            return new Bitmap(path);
+            using var fileStream = File.OpenRead(path);
+            return new ImageLoadResult(new Bitmap(fileStream), null);
         }
-        catch
+        catch (Exception ex)
         {
-            return null;
+            return new ImageLoadResult(null, ex.Message);
         }
+    }
+
+    private sealed record ImageLoadResult(IImage? Source, string? ErrorMessage)
+    {
+        public static ImageLoadResult Empty { get; } = new(null, null);
     }
 }
 

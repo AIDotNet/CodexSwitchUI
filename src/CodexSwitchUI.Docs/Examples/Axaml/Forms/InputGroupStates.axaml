@@ -1,0 +1,72 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Inline start">
+    <controls:CodexInputGroup>
+      <controls:CodexInputGroupAddon Content="$" />
+      <controls:CodexInputGroupInput Text="42.00" />
+      <controls:CodexInputGroupAddon Align="InlineEnd"
+                                     Content="USD" />
+    </controls:CodexInputGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Inline end">
+    <controls:CodexInputGroup>
+      <controls:CodexInputGroupInput PlaceholderText="Enter password"
+                                     PasswordChar="*" />
+      <controls:CodexInputGroupAddon Align="InlineEnd"
+                                     Content="Show" />
+    </controls:CodexInputGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Block start">
+    <controls:CodexInputGroup MinWidth="300">
+      <controls:CodexInputGroupAddon Align="BlockStart"
+                                     Content="script.cs" />
+      <controls:CodexInputGroupTextarea Text="await agent.RunAsync();"
+                                        MinHeight="92" />
+    </controls:CodexInputGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Block end">
+    <controls:CodexInputGroup MinWidth="300">
+      <controls:CodexInputGroupTextarea PlaceholderText="Message"
+                                        MinHeight="92" />
+      <controls:CodexInputGroupAddon Align="BlockEnd">
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8"
+                    HorizontalAlignment="Right">
+          <controls:CodexInputGroupText Content="0/280" />
+          <controls:CodexInputGroupButton Content="Post" />
+        </StackPanel>
+      </controls:CodexInputGroupAddon>
+    </controls:CodexInputGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="2"
+                       Label="Error">
+    <controls:CodexInputGroup Intent="Error">
+      <controls:CodexInputGroupInput PlaceholderText="Required endpoint" />
+      <controls:CodexInputGroupAddon Align="InlineEnd"
+                                     Content="Invalid" />
+    </controls:CodexInputGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="2"
+                       Grid.Column="1"
+                       Label="Disabled">
+    <controls:CodexInputGroup IsEnabled="False">
+      <controls:CodexInputGroupAddon Content="cs://" />
+      <controls:CodexInputGroupInput Text="locked-route" />
+      <controls:CodexInputGroupAddon Align="InlineEnd"
+                                     Content=".local" />
+    </controls:CodexInputGroup>
+  </controls:CodexField>
+</Grid>

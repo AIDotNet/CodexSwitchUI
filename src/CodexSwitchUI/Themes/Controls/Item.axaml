@@ -1,0 +1,366 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CodexSwitchUI.Controls">
+  <Style Selector="controls|CodexItem">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="Padding" Value="12" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="FocusAdorner" Value="{x:Null}" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexItem">
+        <Border x:Name="PART_Surface"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <Grid RowDefinitions="Auto,Auto,Auto"
+                RowSpacing="8">
+            <ContentPresenter x:Name="PART_Header"
+                              Grid.Row="0"
+                              Content="{TemplateBinding Header}"
+                              IsVisible="{TemplateBinding HasHeader}" />
+
+            <Grid x:Name="PART_Body"
+                  Grid.Row="1"
+                  ColumnDefinitions="Auto,*,Auto"
+                  ColumnSpacing="12"
+                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+              <ContentPresenter x:Name="PART_Media"
+                                Grid.Column="0"
+                                Content="{TemplateBinding Media}"
+                                IsVisible="{TemplateBinding HasMedia}"
+                                VerticalAlignment="Top" />
+
+              <StackPanel x:Name="PART_Text"
+                          Grid.Column="1"
+                          Spacing="3"
+                          VerticalAlignment="Center">
+                <TextBlock x:Name="PART_Title"
+                           Text="{TemplateBinding Title}"
+                           IsVisible="{TemplateBinding HasTitle}"
+                           Foreground="{TemplateBinding Foreground}"
+                           FontFamily="{TemplateBinding FontFamily}"
+                           FontSize="{TemplateBinding FontSize}"
+                           FontWeight="SemiBold"
+                           TextWrapping="Wrap" />
+                <TextBlock x:Name="PART_Description"
+                           Text="{TemplateBinding Description}"
+                           IsVisible="{TemplateBinding HasDescription}"
+                           Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                           FontFamily="{TemplateBinding FontFamily}"
+                           FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                           TextWrapping="Wrap" />
+                <ContentPresenter x:Name="PART_Content"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  IsVisible="{TemplateBinding HasContent}" />
+              </StackPanel>
+
+              <ContentPresenter x:Name="PART_Actions"
+                                Grid.Column="2"
+                                Content="{TemplateBinding Actions}"
+                                IsVisible="{TemplateBinding HasActions}"
+                                VerticalAlignment="Center" />
+            </Grid>
+
+            <ContentPresenter x:Name="PART_Footer"
+                              Grid.Row="2"
+                              Content="{TemplateBinding Footer}"
+                              IsVisible="{TemplateBinding HasFooter}" />
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexItem /template/ Border#PART_Surface,
+                   controls|CodexItemMedia /template/ Border#PART_MediaRoot,
+                   controls|CodexItemGroup /template/ Border#PART_GroupSurface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="Padding" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexItem:disabled">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.interactive">
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.interactive:pointerover /template/ Border#PART_Surface">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.interactive:pressed /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="scale(0.99)" />
+  </Style>
+
+  <Style Selector="controls|CodexItem:focus-visible /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.selected /template/ Border#PART_Surface">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.loading /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="0.72" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.can-activate /template/ Border#PART_Surface">
+    <Setter Property="Opacity" Value="1" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.has-media /template/ ContentPresenter#PART_Media">
+    <Setter Property="IsVisible" Value="True" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.variant-outline /template/ Border#PART_Surface">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.variant-secondary /template/ Border#PART_Surface">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.variant-ghost /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.variant-destructive /template/ TextBlock#PART_Title">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.variant-success /template/ TextBlock#PART_Title">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.variant-warning /template/ TextBlock#PART_Title">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.variant-link /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.size-sm">
+    <Setter Property="Padding" Value="9" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.size-lg">
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.size-icon">
+    <Setter Property="Padding" Value="8" />
+  </Style>
+
+  <Style Selector="controls|CodexItemGroup">
+    <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Spacing="2" />
+      </ItemsPanelTemplate>
+    </Setter>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexItemGroup">
+        <Border x:Name="PART_GroupSurface"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <ItemsPresenter x:Name="PART_ItemsPresenter" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexItemGroup.variant-outline">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="Padding" Value="4" />
+  </Style>
+
+  <Style Selector="controls|CodexItemGroup.variant-secondary">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+    <Setter Property="Padding" Value="4" />
+  </Style>
+
+  <Style Selector="controls|CodexItemGroup.inset">
+    <Setter Property="Padding" Value="4,4,4,4" />
+  </Style>
+
+  <Style Selector="controls|CodexItemMedia">
+    <Setter Property="Width" Value="40" />
+    <Setter Property="Height" Value="40" />
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SecondaryBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusMd}" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexItemMedia">
+        <Border x:Name="PART_MediaRoot"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}">
+          <ContentPresenter x:Name="PART_MediaContent"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexItemMedia.size-sm">
+    <Setter Property="Width" Value="32" />
+    <Setter Property="Height" Value="32" />
+  </Style>
+
+  <Style Selector="controls|CodexItemMedia.size-lg">
+    <Setter Property="Width" Value="48" />
+    <Setter Property="Height" Value="48" />
+  </Style>
+
+  <Style Selector="controls|CodexItemMedia.size-icon">
+    <Setter Property="Width" Value="28" />
+    <Setter Property="Height" Value="28" />
+  </Style>
+
+  <Style Selector="controls|CodexItemMedia.variant-outline">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BackgroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItemMedia.variant-success">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.SuccessBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItemMedia.variant-warning">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.WarningBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItemMedia.variant-destructive">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexItemMedia.image /template/ Border#PART_MediaRoot">
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="ClipToBounds" Value="True" />
+  </Style>
+
+  <Style Selector="controls|CodexItemHeader,
+                   controls|CodexItemContent,
+                   controls|CodexItemActions">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexItemTitle">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <TextBlock Text="{TemplateBinding Content}"
+                   FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                   FontSize="{DynamicResource CodexSwitch.FontSizeMd}"
+                   FontWeight="SemiBold"
+                   Foreground="{DynamicResource CodexSwitch.ForegroundBrush}"
+                   TextWrapping="Wrap" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexItemDescription">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <TextBlock Text="{TemplateBinding Content}"
+                   FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                   FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                   Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                   TextWrapping="Wrap" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexItemActions">
+    <Setter Property="HorizontalAlignment" Value="Right" />
+  </Style>
+
+  <Style Selector="controls|CodexItemFooter">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <TextBlock Text="{TemplateBinding Content}"
+                   FontFamily="{DynamicResource CodexSwitch.FontFamily}"
+                   FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
+                   Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                   TextWrapping="Wrap" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexItemSeparator">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+    <Setter Property="Height" Value="1" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="controls:CodexItemSeparator">
+        <Border x:Name="PART_Separator"
+                Background="{TemplateBinding Background}"
+                Height="{TemplateBinding Height}"
+                Width="{TemplateBinding Width}" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexItemSeparator.vertical">
+    <Setter Property="Width" Value="1" />
+  </Style>
+</Styles>

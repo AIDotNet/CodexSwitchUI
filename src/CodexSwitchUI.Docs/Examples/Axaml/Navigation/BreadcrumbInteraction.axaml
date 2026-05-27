@@ -1,0 +1,110 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="18"
+      RowSpacing="16">
+  <controls:CodexField Label="Clickable ancestors"
+                       Description="Ancestor links raise LinkActivated while the page item remains non-interactive.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexBreadcrumb Label="Route breadcrumb">
+          <controls:CodexBreadcrumbList>
+            <controls:CodexBreadcrumbItem>
+              <controls:CodexBreadcrumbLink Content="Home"
+                                            Href="/" />
+            </controls:CodexBreadcrumbItem>
+            <controls:CodexBreadcrumbSeparator />
+            <controls:CodexBreadcrumbItem>
+              <controls:CodexBreadcrumbLink Content="Docs"
+                                            Href="/docs" />
+            </controls:CodexBreadcrumbItem>
+            <controls:CodexBreadcrumbSeparator />
+            <controls:CodexBreadcrumbItem IsCurrent="True">
+              <controls:CodexBreadcrumbPage Content="Breadcrumb" />
+            </controls:CodexBreadcrumbItem>
+          </controls:CodexBreadcrumbList>
+        </controls:CodexBreadcrumb>
+        <TextBlock Text="LinkActivated emits link, item, index, href, and content metadata."
+                   TextWrapping="Wrap" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Dropdown composition"
+                       Description="Collapsed breadcrumb items can compose with dropdown surfaces.">
+    <controls:CodexField.Content>
+      <controls:CodexBreadcrumb Label="Dropdown breadcrumb">
+        <controls:CodexBreadcrumbList>
+          <controls:CodexBreadcrumbItem>
+            <controls:CodexBreadcrumbLink Content="Home" />
+          </controls:CodexBreadcrumbItem>
+          <controls:CodexBreadcrumbSeparator />
+          <controls:CodexBreadcrumbItem>
+            <controls:CodexDropdownButton Content="..."
+                                          IsOpen="True"
+                                          Size="Small"
+                                          Variant="Ghost"
+                                          IsArrowVisible="False">
+              <controls:CodexDropdownButton.DropDownContent>
+                <StackPanel Width="168"
+                            Spacing="6">
+                  <controls:CodexButton Content="Components"
+                                        Variant="Ghost"
+                                        HorizontalAlignment="Stretch" />
+                  <controls:CodexButton Content="Navigation"
+                                        Variant="Ghost"
+                                        HorizontalAlignment="Stretch" />
+                </StackPanel>
+              </controls:CodexDropdownButton.DropDownContent>
+            </controls:CodexDropdownButton>
+          </controls:CodexBreadcrumbItem>
+          <controls:CodexBreadcrumbSeparator />
+          <controls:CodexBreadcrumbItem IsCurrent="True">
+            <controls:CodexBreadcrumbPage Content="Breadcrumb" />
+          </controls:CodexBreadcrumbItem>
+        </controls:CodexBreadcrumbList>
+      </controls:CodexBreadcrumb>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Current link guard"
+                       Description="Current links opt out of activation and use page foreground.">
+    <controls:CodexField.Content>
+      <controls:CodexBreadcrumb Label="Current link guard breadcrumb">
+        <controls:CodexBreadcrumbList>
+          <controls:CodexBreadcrumbItem>
+            <controls:CodexBreadcrumbLink Content="Components" />
+          </controls:CodexBreadcrumbItem>
+          <controls:CodexBreadcrumbSeparator />
+          <controls:CodexBreadcrumbItem IsCurrent="True">
+            <controls:CodexBreadcrumbLink Content="Breadcrumb"
+                                          IsCurrent="True" />
+          </controls:CodexBreadcrumbItem>
+        </controls:CodexBreadcrumbList>
+      </controls:CodexBreadcrumb>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled route"
+                       Description="Disabled ancestor links keep layout but suppress routing.">
+    <controls:CodexField.Content>
+      <controls:CodexBreadcrumb Label="Disabled route breadcrumb">
+        <controls:CodexBreadcrumbList>
+          <controls:CodexBreadcrumbItem>
+            <controls:CodexBreadcrumbLink Content="Settings"
+                                          IsEnabled="False" />
+          </controls:CodexBreadcrumbItem>
+          <controls:CodexBreadcrumbSeparator />
+          <controls:CodexBreadcrumbItem IsCurrent="True">
+            <controls:CodexBreadcrumbPage Content="Security" />
+          </controls:CodexBreadcrumbItem>
+        </controls:CodexBreadcrumbList>
+      </controls:CodexBreadcrumb>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

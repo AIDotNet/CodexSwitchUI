@@ -1,0 +1,97 @@
+<controls:CodexSidebarProvider xmlns="https://github.com/avaloniaui"
+                               xmlns:controls="using:CodexSwitchUI.Controls">
+  <Grid ColumnDefinitions="260,Auto,*"
+        ColumnSpacing="10"
+        Height="360">
+    <controls:CodexSidebar>
+      <StackPanel>
+        <controls:CodexSidebarHeader>
+          <StackPanel Spacing="2">
+            <TextBlock Text="CodexSwitch"
+                       FontWeight="SemiBold" />
+            <TextBlock Text="Anatomy"
+                       Opacity="0.72" />
+          </StackPanel>
+        </controls:CodexSidebarHeader>
+
+        <controls:CodexSidebarContent>
+          <StackPanel Spacing="14">
+            <controls:CodexSidebarGroup>
+              <StackPanel Spacing="5">
+                <controls:CodexSidebarGroupLabel Content="Platform" />
+                <controls:CodexSidebarMenuButton Content="Providers"
+                                                 Icon="P"
+                                                 Badge="12"
+                                                 IsActive="True" />
+                <controls:CodexSidebarMenuButton Content="Sessions"
+                                                 Icon="S" />
+              </StackPanel>
+            </controls:CodexSidebarGroup>
+
+            <controls:CodexSidebarGroup>
+              <StackPanel Spacing="5">
+                <controls:CodexSidebarGroupLabel Content="Nested" />
+                <controls:CodexSidebarMenuSub>
+                  <controls:CodexSidebarMenuSubItem>
+                    <controls:CodexSidebarMenuSubButton Content="Routing"
+                                                        IsActive="True" />
+                  </controls:CodexSidebarMenuSubItem>
+                  <controls:CodexSidebarMenuSubItem>
+                    <controls:CodexSidebarMenuSubButton Content="Security" />
+                  </controls:CodexSidebarMenuSubItem>
+                </controls:CodexSidebarMenuSub>
+              </StackPanel>
+            </controls:CodexSidebarGroup>
+          </StackPanel>
+        </controls:CodexSidebarContent>
+
+        <controls:CodexSidebarFooter>
+          <controls:CodexButton Content="Footer action"
+                                Size="Small"
+                                HorizontalAlignment="Stretch" />
+        </controls:CodexSidebarFooter>
+      </StackPanel>
+    </controls:CodexSidebar>
+
+    <controls:CodexSidebarRail Grid.Column="1" />
+
+    <controls:CodexSidebarInset Grid.Column="2">
+      <controls:CodexSection Title="Anatomy"
+                             Description="Provider state flows into trigger, rail, inset, and menu slots.">
+        <controls:CodexSection.Actions>
+          <controls:CodexSidebarTrigger Content="Toggle" />
+        </controls:CodexSection.Actions>
+        <Grid ColumnDefinitions="*,*,*"
+              RowDefinitions="Auto,Auto"
+              ColumnSpacing="10"
+              RowSpacing="10">
+          <controls:CodexStatCard Label="Provider"
+                                  Value="open"
+                                  Detail="state" />
+          <controls:CodexStatCard Grid.Column="1"
+                                  Label="Sidebar"
+                                  Value="side"
+                                  Detail="variant" />
+          <controls:CodexStatCard Grid.Column="2"
+                                  Label="Trigger"
+                                  Value="click"
+                                  Detail="toggle" />
+          <controls:CodexStatCard Grid.Row="1"
+                                  Label="Rail"
+                                  Value="edge"
+                                  Detail="toggle" />
+          <controls:CodexStatCard Grid.Row="1"
+                                  Grid.Column="1"
+                                  Label="Inset"
+                                  Value="main"
+                                  Detail="content" />
+          <controls:CodexStatCard Grid.Row="1"
+                                  Grid.Column="2"
+                                  Label="Menu"
+                                  Value="active"
+                                  Detail="rows" />
+        </Grid>
+      </controls:CodexSection>
+    </controls:CodexSidebarInset>
+  </Grid>
+</controls:CodexSidebarProvider>

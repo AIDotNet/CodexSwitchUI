@@ -1,0 +1,81 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Sibling selection"
+                       Description="Pointer and keyboard activation keep one active row.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexProviderCard Header="OpenAI"
+                                    Meta="Active"
+                                    Description="Primary Responses route"
+                                    Icon="O"
+                                    Status="Healthy"
+                                    Usage="42.7K"
+                                    IsActive="True" />
+        <controls:CodexProviderCard Header="Claude"
+                                    Meta="Ready"
+                                    Description="Fallback route"
+                                    Icon="C"
+                                    Status="Healthy"
+                                    Usage="18.3K" />
+        <controls:CodexProviderCard Header="Gemini"
+                                    Meta="Ready"
+                                    Description="Cost-aware route"
+                                    Icon="G"
+                                    Status="Healthy"
+                                    Usage="7.1K" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Drag feedback"
+                       Description="Dragging suppresses hover emphasis without unmounting slots.">
+    <controls:CodexProviderCard Header="Dragging route"
+                                Description="Reordering provider priority"
+                                Icon="D"
+                                Status="Moving"
+                                Usage="4.2K"
+                                IsDragging="True" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Action and slot contract"
+                       Description="Leading, status, usage, and actions remain separate slots.">
+    <controls:CodexProviderCard Header="Local proxy"
+                                Meta="Ready"
+                                Description="Action slot remains mounted during row feedback."
+                                Icon="L">
+      <controls:CodexProviderCard.Leading>
+        <controls:CodexBadge Content="Default"
+                             Variant="Secondary" />
+      </controls:CodexProviderCard.Leading>
+      <controls:CodexProviderCard.Status>
+        <controls:CodexBadge Content="Healthy"
+                             Variant="Success" />
+      </controls:CodexProviderCard.Status>
+      <controls:CodexProviderCard.Usage>
+        <controls:CodexMetric Label="Tokens"
+                              Value="9.8K" />
+      </controls:CodexProviderCard.Usage>
+      <controls:CodexProviderCard.Actions>
+        <controls:CodexIconButton Content="..."
+                                  Variant="Ghost" />
+      </controls:CodexProviderCard.Actions>
+    </controls:CodexProviderCard>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled guard"
+                       Description="Disabled rows do not enter the sibling selection path.">
+    <controls:CodexProviderCard Header="Locked route"
+                                Description="Credentials are required before selection"
+                                Icon="L"
+                                Status="Locked"
+                                IsEnabled="False" />
+  </controls:CodexField>
+</Grid>

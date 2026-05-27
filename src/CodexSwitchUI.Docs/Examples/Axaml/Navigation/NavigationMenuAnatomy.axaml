@@ -1,0 +1,46 @@
+<controls:CodexNavigationMenu xmlns="https://github.com/avaloniaui"
+                              xmlns:controls="using:CodexSwitchUI.Controls"
+                              ActiveValue="learn">
+  <controls:CodexNavigationMenuItem Header="Learn"
+                                    Value="learn"
+                                    Icon="L"
+                                    ViewportWidth="460"
+                                    ViewportMinHeight="220">
+    <controls:CodexNavigationMenuContent Header="Learn"
+                                         Description="Trigger item opens content inside the shared viewport.">
+      <controls:CodexNavigationMenuLink Content="Getting started"
+                                        Description="Install and apply CodexSwitchUI."
+                                        Icon="G"
+                                        IsActive="True" />
+      <controls:CodexNavigationMenuLink Content="Theming"
+                                        Description="Token resources, dark mode, and custom palettes."
+                                        Icon="T" />
+      <controls:CodexNavigationMenuLink Content="Motion"
+                                        Description="Durations, easing, and reduced motion behavior."
+                                        Icon="M" />
+    </controls:CodexNavigationMenuContent>
+  </controls:CodexNavigationMenuItem>
+
+  <controls:CodexNavigationMenuItem Header="Components"
+                                    Value="components"
+                                    Icon="C"
+                                    ViewportWidth="520"
+                                    ViewportMinHeight="240">
+    <controls:CodexNavigationMenuContent Header="Components"
+                                         Description="Content groups can host rich links and active-route state.">
+      <controls:CodexNavigationMenuLink Content="Forms"
+                                        Description="Inputs, fields, commands, and selection controls."
+                                        Icon="F" />
+      <controls:CodexNavigationMenuLink Content="Overlay"
+                                        Description="Dialog, sheet, drawer, popover, tooltip, and hover card."
+                                        Icon="O" />
+      <controls:CodexNavigationMenuLink Content="Data display"
+                                        Description="Cards, items, tables, charts, and carousel."
+                                        Icon="D" />
+    </controls:CodexNavigationMenuContent>
+  </controls:CodexNavigationMenuItem>
+
+  <controls:CodexNavigationMenuItem Header="Docs"
+                                    Value="docs"
+                                    Icon="D" />
+</controls:CodexNavigationMenu>

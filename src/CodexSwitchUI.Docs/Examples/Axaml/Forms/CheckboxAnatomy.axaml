@@ -1,0 +1,76 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Root and label"
+                       Description="The check target can be paired with a CodexLabel for label-click focus and activation.">
+    <StackPanel Spacing="10">
+      <StackPanel Orientation="Horizontal"
+                  Spacing="10">
+        <controls:CodexCheckBox x:Name="routing"
+                                IsChecked="True" />
+        <controls:CodexLabel Target="{Binding #routing}"
+                             Content="Enable provider routing" />
+      </StackPanel>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="10">
+        <controls:CodexCheckBox x:Name="locked"
+                                IsEnabled="False" />
+        <controls:CodexLabel Target="{Binding #locked}"
+                             Content="Locked inherited setting" />
+      </StackPanel>
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Indicator states"
+                       Description="Checked, unchecked, and mixed states keep their own indicator visuals and motion.">
+    <StackPanel Spacing="10">
+      <controls:CodexCheckBox Content="Checked"
+                              IsChecked="True" />
+      <controls:CodexCheckBox Content="Unchecked" />
+      <controls:CodexCheckBox Content="Mixed"
+                              IsThreeState="True"
+                              IsChecked="{x:Null}" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexFieldSet Grid.Row="1"
+                          Legend="Column visibility"
+                          Description="Checkbox rows compose inside FieldSet and Field without page-local spacing.">
+    <controls:CodexField Orientation="Horizontal"
+                         Label="Status"
+                         Description="Show provider health.">
+      <controls:CodexCheckBox IsChecked="True" />
+    </controls:CodexField>
+    <controls:CodexField Orientation="Horizontal"
+                         Label="Cost"
+                         Description="Show estimated spend.">
+      <controls:CodexCheckBox IsChecked="True" />
+    </controls:CodexField>
+    <controls:CodexField Orientation="Horizontal"
+                         Label="Latency"
+                         Description="Disabled until telemetry is enabled.">
+      <controls:CodexCheckBox IsEnabled="False" />
+    </controls:CodexField>
+  </controls:CodexFieldSet>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Validation row"
+                       Description="Intent, required marker, message, and checkbox state stay component-owned."
+                       Message="At least one audit option is required."
+                       Intent="Warning"
+                       IsRequired="True">
+    <StackPanel Spacing="10">
+      <controls:CodexCheckBox Content="Include request payloads"
+                              Intent="Warning" />
+      <controls:CodexCheckBox Content="Include response metadata"
+                              Intent="Success"
+                              IsChecked="True" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

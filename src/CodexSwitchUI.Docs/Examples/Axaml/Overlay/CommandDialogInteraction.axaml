@@ -1,0 +1,76 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexCommandDialog Placeholder="Search commands..."
+                               IsOpen="True"
+                               CloseOnItemSelected="True">
+    <controls:CodexCommandDialog.Trigger>
+      <controls:CodexButton Content="Open command menu"
+                            Size="Small" />
+    </controls:CodexCommandDialog.Trigger>
+    <controls:CodexCommandList>
+      <controls:CodexCommandGroup Header="Close on select">
+        <controls:CodexCommandItem Content="Switch provider"
+                                   Icon="P"
+                                   Shortcut="Enter"
+                                   IsActive="True" />
+        <controls:CodexCommandItem Content="Refresh models"
+                                   Icon="R"
+                                   Shortcut="Cmd+R" />
+        <controls:CodexCommandItem Content="Disabled action"
+                                   Icon="D"
+                                   IsEnabled="False" />
+      </controls:CodexCommandGroup>
+    </controls:CodexCommandList>
+  </controls:CodexCommandDialog>
+
+  <controls:CodexCommandDialog Grid.Column="1"
+                               Placeholder="Loading command..."
+                               IsOpen="True"
+                               IsLoading="True"
+                               CloseOnItemSelected="True">
+    <controls:CodexCommandDialog.Trigger>
+      <controls:CodexButton Content="Open loading menu"
+                            Size="Small" />
+    </controls:CodexCommandDialog.Trigger>
+    <controls:CodexCommandList>
+      <controls:CodexCommandLoading Content="Loading command results..." />
+      <controls:CodexCommandEmpty Content="No commands available while loading." />
+    </controls:CodexCommandList>
+  </controls:CodexCommandDialog>
+
+  <controls:CodexCommandDialog Grid.Row="1"
+                               Placeholder="Manual close..."
+                               IsOpen="True"
+                               CloseOnItemSelected="False">
+    <controls:CodexCommandDialog.Trigger>
+      <controls:CodexButton Content="Open manual menu"
+                            Size="Small" />
+    </controls:CodexCommandDialog.Trigger>
+    <controls:CodexCommandList>
+      <controls:CodexCommandGroup Header="Manual">
+        <controls:CodexCommandItem Content="Copy command"
+                                   Icon="C"
+                                   Shortcut="Cmd+C" />
+        <controls:CodexCommandItem Content="Open logs"
+                                   Icon="L" />
+      </controls:CodexCommandGroup>
+    </controls:CodexCommandList>
+  </controls:CodexCommandDialog>
+
+  <controls:CodexCommandDialog Grid.Row="1"
+                               Grid.Column="1"
+                               Placeholder="Closed command..."
+                               IsOpen="False">
+    <controls:CodexCommandDialog.Trigger>
+      <controls:CodexButton Content="Open closed menu"
+                            Size="Small" />
+    </controls:CodexCommandDialog.Trigger>
+    <controls:CodexCommandList>
+      <controls:CodexCommandEmpty Content="Closed surface remains stateful." />
+    </controls:CodexCommandList>
+  </controls:CodexCommandDialog>
+</Grid>

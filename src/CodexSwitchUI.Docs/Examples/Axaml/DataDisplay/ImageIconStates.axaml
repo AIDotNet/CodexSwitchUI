@@ -1,0 +1,40 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*,*,*"
+      ColumnSpacing="12">
+  <controls:CodexCard Title="Small"
+                      Description="24px">
+    <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                             Width="24"
+                             Height="24" />
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="1"
+                      Title="Medium"
+                      Description="32px">
+    <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                             Width="32"
+                             Height="32" />
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="2"
+                      Title="Large"
+                      Description="48px">
+    <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/gemini.png"
+                             Width="48"
+                             Height="48" />
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="3"
+                      Title="Missing"
+                      Description="Empty Source">
+    <StackPanel Spacing="8">
+      <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/missing-provider.png"
+                               Width="40"
+                               Height="40" />
+      <TextBlock Text="Missing paths do not throw."
+                 TextWrapping="Wrap"
+                 Opacity="0.72" />
+    </StackPanel>
+  </controls:CodexCard>
+</Grid>

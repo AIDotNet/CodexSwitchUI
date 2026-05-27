@@ -1,0 +1,74 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <StackPanel Spacing="8">
+    <primitives:CodexText Role="Muted"
+                          Text="Right drawer" />
+    <Grid Height="178">
+      <controls:CodexSheet Title="Right drawer"
+                           Description="Edge-mounted drawer"
+                           Side="Right"
+                           IsOpen="True"
+                           Width="260">
+        <primitives:CodexText Role="Muted"
+                              Text="Side=Right; mounted=true." />
+      </controls:CodexSheet>
+    </Grid>
+  </StackPanel>
+
+  <StackPanel Grid.Column="1"
+              Spacing="8">
+    <primitives:CodexText Role="Muted"
+                          Text="Left navigation" />
+    <Grid Height="178">
+      <controls:CodexSheet Title="Left navigation"
+                           Description="Edge-mounted drawer"
+                           Side="Left"
+                           IsOpen="True"
+                           Width="260">
+        <primitives:CodexText Role="Muted"
+                              Text="Side=Left; mounted=true." />
+      </controls:CodexSheet>
+    </Grid>
+  </StackPanel>
+
+  <StackPanel Grid.Row="1"
+              Spacing="8">
+    <primitives:CodexText Role="Muted"
+                          Text="Bottom actions" />
+    <Grid Height="178">
+      <controls:CodexSheet Title="Bottom actions"
+                           Description="Edge-mounted drawer"
+                           Side="Bottom"
+                           IsOpen="True">
+        <primitives:CodexText Role="Muted"
+                              Text="Side=Bottom; mounted=true." />
+      </controls:CodexSheet>
+    </Grid>
+  </StackPanel>
+
+  <StackPanel Grid.Row="1"
+              Grid.Column="1"
+              Spacing="8">
+    <primitives:CodexText Role="Muted"
+                          Text="Closed top" />
+    <Grid Height="178">
+      <controls:CodexSheet Title="Closed top"
+                           Description="Closed edge state"
+                           Side="Top"
+                           IsOpen="False">
+        <controls:CodexSheet.Trigger>
+          <controls:CodexButton Content="Open sheet"
+                                Size="Small"
+                                Variant="Secondary" />
+        </controls:CodexSheet.Trigger>
+        <primitives:CodexText Role="Muted"
+                              Text="Side=Top; mounted=false." />
+      </controls:CodexSheet>
+    </Grid>
+  </StackPanel>
+</Grid>

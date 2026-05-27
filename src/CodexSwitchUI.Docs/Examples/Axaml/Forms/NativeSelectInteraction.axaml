@@ -1,0 +1,88 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Open list"
+                       Description="OpenChanged, ValueChanged, and popup-open are triggered without keeping offscreen popups mounted.">
+    <StackPanel Spacing="8">
+      <controls:CodexNativeSelect SelectedIndex="1"
+                                  MinWidth="240">
+        <controls:CodexNativeSelectOption Value=""
+                                          Content="Select provider" />
+        <controls:CodexNativeSelectOption Value="openai"
+                                          Content="OpenAI" />
+        <controls:CodexNativeSelectOption Value="claude"
+                                          Content="Claude" />
+        <controls:CodexNativeSelectOption Value="responses"
+                                          Content="Responses" />
+      </controls:CodexNativeSelect>
+      <TextBlock Text="Native select events update this status."
+                 TextWrapping="Wrap" />
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="Open"
+                              Size="Small"
+                              Variant="Secondary" />
+        <controls:CodexButton Content="Claude"
+                              Size="Small"
+                              Variant="Secondary" />
+        <controls:CodexButton Content="Close"
+                              Size="Small"
+                              Variant="Ghost" />
+      </StackPanel>
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Keyboard target"
+                       Description="Arrow keys and Enter stay on the native selection path.">
+    <controls:CodexNativeSelect SelectedIndex="2"
+                                MinWidth="240">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Select status" />
+      <controls:CodexNativeSelectOption Value="todo"
+                                        Content="Todo" />
+      <controls:CodexNativeSelectOption Value="in-progress"
+                                        Content="In Progress" />
+      <controls:CodexNativeSelectOption Value="done"
+                                        Content="Done" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Disabled option"
+                       Description="Disabled options remain visible but are skipped by selection.">
+    <controls:CodexNativeSelect SelectedIndex="1"
+                                MinWidth="240">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Select model" />
+      <controls:CodexNativeSelectOption Value="gpt-5"
+                                        Content="gpt-5" />
+      <controls:CodexNativeSelectOption Value="legacy"
+                                        Content="Legacy model"
+                                        IsEnabled="False" />
+      <controls:CodexNativeSelectOption Value="mini"
+                                        Content="gpt-5-mini" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Warning intent"
+                       Intent="Warning"
+                       Message="Fallback route is active.">
+    <controls:CodexNativeSelect SelectedIndex="2"
+                                Intent="Warning"
+                                Size="Small"
+                                MinWidth="240">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Select route" />
+      <controls:CodexNativeSelectOption Value="primary"
+                                        Content="Primary" />
+      <controls:CodexNativeSelectOption Value="fallback"
+                                        Content="Fallback" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+</Grid>

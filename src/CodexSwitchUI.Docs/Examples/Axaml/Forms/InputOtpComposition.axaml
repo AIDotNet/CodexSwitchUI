@@ -1,0 +1,57 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexField Label="Recovery code"
+                       Description="Slots can be regrouped for longer recovery codes.">
+    <controls:CodexInputOtp Text="12AB34CD"
+                            MaxLength="8"
+                            Pattern="^[A-Za-z0-9]$"
+                            Size="Small">
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="0" />
+        <controls:CodexInputOtpSlot Index="1" />
+      </controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSeparator />
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="2" />
+        <controls:CodexInputOtpSlot Index="3" />
+      </controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSeparator />
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="4" />
+        <controls:CodexInputOtpSlot Index="5" />
+      </controls:CodexInputOtpGroup>
+      <controls:CodexInputOtpSeparator />
+      <controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSlot Index="6" />
+        <controls:CodexInputOtpSlot Index="7" />
+      </controls:CodexInputOtpGroup>
+    </controls:CodexInputOtp>
+  </controls:CodexField>
+
+  <controls:CodexField Label="Verify your login"
+                       Description="Actions stay outside the input while the slots own the entry state.">
+    <StackPanel Spacing="10">
+      <controls:CodexInputOtp Text="987"
+                              MaxLength="6"
+                              Pattern="^[0-9]$">
+        <controls:CodexInputOtpGroup>
+          <controls:CodexInputOtpSlot Index="0" />
+          <controls:CodexInputOtpSlot Index="1" />
+          <controls:CodexInputOtpSlot Index="2" />
+        </controls:CodexInputOtpGroup>
+        <controls:CodexInputOtpSeparator />
+        <controls:CodexInputOtpGroup>
+          <controls:CodexInputOtpSlot Index="3" />
+          <controls:CodexInputOtpSlot Index="4" />
+          <controls:CodexInputOtpSlot Index="5" />
+        </controls:CodexInputOtpGroup>
+      </controls:CodexInputOtp>
+      <controls:CodexButtonGroup Size="Small"
+                                 Variant="Outline">
+        <controls:CodexButton Content="Resend Code" />
+        <controls:CodexButton Content="Verify" />
+      </controls:CodexButtonGroup>
+    </StackPanel>
+  </controls:CodexField>
+</StackPanel>

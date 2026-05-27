@@ -1,0 +1,91 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Default">
+    <controls:CodexCarousel MaxWidth="560">
+      <controls:CodexCarouselItem Width="260">
+        <controls:CodexCard Title="One"
+                            Description="Default rail">
+          <primitives:CodexText Text="1"
+                                Role="Subtitle" />
+        </controls:CodexCard>
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="260">
+        <controls:CodexCard Title="Two"
+                            Description="Selected state">
+          <primitives:CodexText Text="2"
+                                Role="Subtitle" />
+        </controls:CodexCard>
+      </controls:CodexCarouselItem>
+    </controls:CodexCarousel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Loop">
+    <controls:CodexCarousel SelectedIndex="2"
+                            Loop="True"
+                            MaxWidth="560">
+      <controls:CodexCarouselItem Width="240">
+        <controls:CodexCard Title="North"
+                            Description="Can wrap next" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="240">
+        <controls:CodexCard Title="South"
+                            Description="Middle slide" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="240">
+        <controls:CodexCard Title="West"
+                            Description="Loop edge" />
+      </controls:CodexCarouselItem>
+    </controls:CodexCarousel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Vertical">
+    <controls:CodexCarousel SelectedIndex="1"
+                            Orientation="Vertical"
+                            Size="Small"
+                            MaxWidth="340"
+                            MaxHeight="360">
+      <controls:CodexCarouselItem Width="280"
+                                  MinHeight="116">
+        <controls:CodexCard Title="Up"
+                            Description="Vertical rail" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="280"
+                                  MinHeight="116">
+        <controls:CodexCard Title="Selected"
+                            Description="Up/down keys" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="280"
+                                  MinHeight="116">
+        <controls:CodexCard Title="Down"
+                            Description="End boundary" />
+      </controls:CodexCarouselItem>
+    </controls:CodexCarousel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="No navigation">
+    <controls:CodexCarousel ShowNavigation="False"
+                            ShowStatus="False"
+                            Size="Large"
+                            MaxWidth="560">
+      <controls:CodexCarouselItem Width="320"
+                                  MinHeight="190">
+        <controls:CodexCard Title="Quiet rail"
+                            Description="Navigation hidden" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="320"
+                                  MinHeight="190">
+        <controls:CodexCard Title="Status hidden"
+                            Description="Keyboard still works" />
+      </controls:CodexCarouselItem>
+    </controls:CodexCarousel>
+  </controls:CodexField>
+</Grid>

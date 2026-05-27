@@ -1,0 +1,78 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="16">
+  <StackPanel Spacing="8">
+    <controls:CodexSidebarGroupLabel Content="Menu button states" />
+    <controls:CodexSidebarMenuButton Content="Active large"
+                                     Icon="A"
+                                     IsActive="True"
+                                     Size="Large">
+      <controls:CodexSidebarMenuButton.Badge>
+        <controls:CodexSidebarMenuBadge Content="ON" />
+      </controls:CodexSidebarMenuButton.Badge>
+    </controls:CodexSidebarMenuButton>
+    <controls:CodexSidebarMenuButton Content="Small default"
+                                     Icon="S"
+                                     Size="Small" />
+    <controls:CodexSidebarMenuButton Content="Disabled route"
+                                     Icon="D"
+                                     Badge="Locked"
+                                     IsEnabled="False" />
+  </StackPanel>
+
+  <StackPanel Grid.Column="1"
+              Spacing="8">
+    <controls:CodexSidebarGroupLabel Content="Actions and badges" />
+    <Grid ColumnDefinitions="*,Auto">
+      <controls:CodexSidebarMenuButton Content="Row action visible on hover"
+                                       Badge="3" />
+      <controls:CodexSidebarMenuAction Grid.Column="1"
+                                       Content="..."
+                                       IsShowOnHover="True" />
+    </Grid>
+    <controls:CodexSidebarGroupAction Content="+"
+                                      HorizontalAlignment="Left" />
+    <controls:CodexSidebarMenuBadge Content="SYNCED"
+                                    HorizontalAlignment="Left" />
+  </StackPanel>
+
+  <StackPanel Grid.Row="1"
+              Spacing="8">
+    <controls:CodexSidebarGroupLabel Content="Nested rows" />
+    <controls:CodexSidebarMenuSub>
+      <controls:CodexSidebarMenuSubItem>
+        <controls:CodexSidebarMenuSubButton Content="Active nested"
+                                            IsActive="True" />
+      </controls:CodexSidebarMenuSubItem>
+      <controls:CodexSidebarMenuSubItem>
+        <controls:CodexSidebarMenuSubButton Content="Default nested" />
+      </controls:CodexSidebarMenuSubItem>
+      <controls:CodexSidebarMenuSubItem>
+        <controls:CodexSidebarMenuSubButton Content="Disabled nested"
+                                            IsEnabled="False" />
+      </controls:CodexSidebarMenuSubItem>
+    </controls:CodexSidebarMenuSub>
+  </StackPanel>
+
+  <controls:CodexSidebar Grid.Row="1"
+                         Grid.Column="1">
+    <StackPanel>
+      <controls:CodexSidebarHeader>
+        <TextBlock Text="Header"
+                   FontWeight="SemiBold" />
+      </controls:CodexSidebarHeader>
+      <controls:CodexSidebarContent>
+        <TextBlock Text="Content can scroll independently inside the sidebar primitive."
+                   TextWrapping="Wrap"
+                   Opacity="0.72" />
+      </controls:CodexSidebarContent>
+      <controls:CodexSidebarFooter>
+        <controls:CodexButton Content="Footer action"
+                              Size="Small" />
+      </controls:CodexSidebarFooter>
+    </StackPanel>
+  </controls:CodexSidebar>
+</Grid>

@@ -281,6 +281,16 @@ public class CodexSonner : StackPanel
 
     private void ScheduleOpen(Guid id)
     {
+        if (CodexSonnerService.EnterDuration <= TimeSpan.Zero)
+        {
+            if (_toastVisuals.TryGetValue(id, out var visual) && !visual.Model.IsClosing)
+            {
+                OpenToastHost(visual.Host);
+            }
+
+            return;
+        }
+
         var timer = new DispatcherTimer
         {
             Interval = TimeSpan.FromMilliseconds(16)
@@ -681,6 +691,12 @@ public sealed class CodexSonnerToast : INotifyPropertyChanged
         StopDismissTimer();
         IsClosing = true;
 
+        if (exitDuration <= TimeSpan.Zero)
+        {
+            remove(this);
+            return;
+        }
+
         _dismissTimer = new DispatcherTimer
         {
             Interval = exitDuration
@@ -720,14 +736,24 @@ public sealed class CodexSonnerToast : INotifyPropertyChanged
 public static class CodexSonnerService
 {
     private static readonly ObservableCollection<CodexSonnerToast> MutableToasts = [];
+    private static TimeSpan? _enterDurationOverride;
+    private static TimeSpan? _exitDurationOverride;
 
     public static readonly ReadOnlyObservableCollection<CodexSonnerToast> Toasts = new(MutableToasts);
 
     public static TimeSpan DefaultDuration { get; set; } = TimeSpan.FromSeconds(4);
 
-    public static TimeSpan EnterDuration { get; set; } = TimeSpan.FromMilliseconds(180);
+    public static TimeSpan EnterDuration
+    {
+        get => _enterDurationOverride ?? CodexMotion.ResolveDefaultDuration();
+        set => _enterDurationOverride = value;
+    }
 
-    public static TimeSpan ExitDuration { get; set; } = TimeSpan.FromMilliseconds(160);
+    public static TimeSpan ExitDuration
+    {
+        get => _exitDurationOverride ?? CodexMotion.ResolveDefaultDuration();
+        set => _exitDurationOverride = value;
+    }
 
     public static int ToastLimit { get; set; } = 8;
 

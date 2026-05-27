@@ -1,0 +1,35 @@
+<controls:CodexResizablePanelGroup xmlns="https://github.com/avaloniaui"
+                                   xmlns:controls="using:CodexSwitchUI.Controls"
+                                   Width="680"
+                                   Height="300"
+                                   Orientation="Horizontal">
+  <controls:CodexResizablePanel DefaultSize="22"
+                                MinSize="16">
+    <StackPanel Spacing="8">
+      <TextBlock Text="Files"
+                 FontWeight="SemiBold" />
+      <controls:CodexBadge Content="12 changed"
+                           Variant="Secondary" />
+    </StackPanel>
+  </controls:CodexResizablePanel>
+
+  <controls:CodexResizableHandle WithHandle="True" />
+
+  <controls:CodexResizablePanel DefaultSize="48"
+                                MinSize="30">
+    <controls:CodexCard Title="Preview"
+                        Description="Resizable content panel"
+                        Content="The center panel owns the main reading surface." />
+  </controls:CodexResizablePanel>
+
+  <controls:CodexResizableHandle WithHandle="True" />
+
+  <controls:CodexResizablePanel DefaultSize="30"
+                                MinSize="18">
+    <StackPanel Spacing="8">
+      <TextBlock Text="Inspector"
+                 FontWeight="SemiBold" />
+      <controls:CodexKbd Content="Arrow keys" />
+    </StackPanel>
+  </controls:CodexResizablePanel>
+</controls:CodexResizablePanelGroup>

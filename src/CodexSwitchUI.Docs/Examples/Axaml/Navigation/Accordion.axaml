@@ -1,0 +1,28 @@
+<controls:CodexAccordion xmlns="https://github.com/avaloniaui"
+                         xmlns:controls="using:CodexSwitchUI.Controls"
+                         IsCollapsible="True">
+  <controls:CodexAccordionItem Value="routing"
+                               Header="Advanced routing"
+                               IsOpen="True">
+    <StackPanel Spacing="10">
+      <controls:CodexCheckBox Content="Prefer cached sessions"
+                              IsChecked="True" />
+      <controls:CodexCheckBox Content="Enable regional fallback" />
+      <controls:CodexButton Content="Apply"
+                            Size="Small"
+                            HorizontalAlignment="Left" />
+    </StackPanel>
+  </controls:CodexAccordionItem>
+
+  <controls:CodexAccordionItem Value="limits"
+                               Header="Rate limits">
+    <TextBlock Text="Define burst windows and retry behavior for shared providers."
+               TextWrapping="Wrap" />
+  </controls:CodexAccordionItem>
+
+  <controls:CodexAccordionItem Value="audit"
+                               Header="Audit events">
+    <TextBlock Text="Mirror provider changes into the workspace audit stream."
+               TextWrapping="Wrap" />
+  </controls:CodexAccordionItem>
+</controls:CodexAccordion>

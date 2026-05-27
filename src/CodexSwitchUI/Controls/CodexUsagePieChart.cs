@@ -4,9 +4,11 @@ using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using CodexSwitchUI.Themes;
 
 namespace CodexSwitchUI.Controls;
 
@@ -30,10 +32,26 @@ public sealed record CodexUsagePieChartItem(
     string DetailText = "",
     IBrush? AccentBrush = null) : ICodexUsagePieChartItem;
 
+public sealed class CodexUsagePieChartActiveItemChangedEventArgs(
+    int oldIndex,
+    int newIndex,
+    ICodexUsagePieChartItem? oldItem,
+    ICodexUsagePieChartItem? newItem)
+    : EventArgs
+{
+    public int OldIndex { get; } = oldIndex;
+
+    public int NewIndex { get; } = newIndex;
+
+    public ICodexUsagePieChartItem? OldItem { get; } = oldItem;
+
+    public ICodexUsagePieChartItem? NewItem { get; } = newItem;
+}
+
 public class CodexUsagePieChart : TemplatedControl
 {
     private static readonly TimeSpan AnimationFrameInterval = TimeSpan.FromMilliseconds(16);
-    private static readonly TimeSpan ChartAnimationDuration = TimeSpan.FromMilliseconds(520);
+    private static readonly TimeSpan DefaultAnimationDuration = CodexSwitchThemeOptions.ShadcnDefault.MotionDurationSlow;
     private const double HoverLerpFactor = 0.24d;
     private const double TooltipLerpFactor = 0.28d;
     private const double AnimationSnapThreshold = 0.002d;
@@ -42,12 +60,12 @@ public class CodexUsagePieChart : TemplatedControl
     private const double CenterTextHorizontalInset = 8d;
     private static readonly IBrush DefaultForegroundBrush = Brushes.Black;
     private static readonly IBrush DefaultMutedForegroundBrush = Brushes.Gray;
-    private static readonly IBrush DefaultTrackBrush = new SolidColorBrush(Color.FromArgb(28, 120, 120, 120));
-    private static readonly IBrush DefaultSliceBorderBrush = new SolidColorBrush(Color.FromArgb(120, 9, 9, 11));
-    private static readonly IBrush DefaultTooltipBackgroundBrush = new SolidColorBrush(Color.FromArgb(242, 24, 24, 27));
+    private static readonly IBrush DefaultTrackBrush = new ImmutableSolidColorBrush(Color.FromArgb(28, 120, 120, 120));
+    private static readonly IBrush DefaultSliceBorderBrush = new ImmutableSolidColorBrush(Color.FromArgb(120, 9, 9, 11));
+    private static readonly IBrush DefaultTooltipBackgroundBrush = new ImmutableSolidColorBrush(Color.FromArgb(242, 24, 24, 27));
     private static readonly IBrush DefaultTooltipForegroundBrush = Brushes.White;
-    private static readonly IBrush DefaultTooltipBorderBrush = new SolidColorBrush(Color.FromArgb(52, 255, 255, 255));
-    private static readonly IBrush EmptyTextBrush = new SolidColorBrush(Color.Parse("#9CA3AF"));
+    private static readonly IBrush DefaultTooltipBorderBrush = new ImmutableSolidColorBrush(Color.FromArgb(52, 255, 255, 255));
+    private static readonly IBrush EmptyTextBrush = new ImmutableSolidColorBrush(Color.Parse("#9CA3AF"));
     private static readonly IBrush[] Palette =
     [
         Brush("#60A5FA"),
@@ -94,6 +112,12 @@ public class CodexUsagePieChart : TemplatedControl
     public static readonly StyledProperty<bool> IsCompactProperty =
         AvaloniaProperty.Register<CodexUsagePieChart, bool>(nameof(IsCompact));
 
+    public static readonly StyledProperty<int> ActiveIndexProperty =
+        AvaloniaProperty.Register<CodexUsagePieChart, int>(nameof(ActiveIndex), -1);
+
+    public static readonly StyledProperty<TimeSpan> AnimationDurationProperty =
+        AvaloniaProperty.Register<CodexUsagePieChart, TimeSpan>(nameof(AnimationDuration), DefaultAnimationDuration);
+
     private ICodexUsagePieChartItem[] _items = [];
     private PieSlice[] _slices = [];
     private Geometry?[] _sliceGeometries = [];
@@ -108,7 +132,6 @@ public class CodexUsagePieChart : TemplatedControl
     private Rect _cachedTextLegendRect;
     private Point? _targetPointerPosition;
     private Point? _tooltipPosition;
-    private int _hoveredIndex = -1;
     private double _totalValue;
     private double _chartProgress = 1d;
     private double _hoverProgress;
@@ -132,6 +155,7 @@ public class CodexUsagePieChart : TemplatedControl
             TooltipBackgroundProperty,
             TooltipForegroundProperty,
             TooltipBorderBrushProperty,
+            ActiveIndexProperty,
             FontFamilyProperty,
             FontSizeProperty,
             FontStyleProperty,
@@ -150,6 +174,8 @@ public class CodexUsagePieChart : TemplatedControl
         TotalValueProperty.Changed.AddClassHandler<CodexUsagePieChart>((chart, _) => chart.MarkTextDirty());
         MutedForegroundProperty.Changed.AddClassHandler<CodexUsagePieChart>((chart, _) => chart.MarkTextDirty());
         TooltipForegroundProperty.Changed.AddClassHandler<CodexUsagePieChart>((chart, _) => chart.MarkTextDirty());
+        AnimationDurationProperty.Changed.AddClassHandler<CodexUsagePieChart>((chart, _) => chart.SyncChartAnimationDuration());
+        ActiveIndexProperty.Changed.AddClassHandler<CodexUsagePieChart>((chart, args) => chart.OnActiveIndexChanged(args));
         FontFamilyProperty.Changed.AddClassHandler<CodexUsagePieChart>((chart, _) => chart.MarkTextDirty());
         FontSizeProperty.Changed.AddClassHandler<CodexUsagePieChart>((chart, _) => chart.MarkTextDirty());
         FontStyleProperty.Changed.AddClassHandler<CodexUsagePieChart>((chart, _) => chart.MarkTextDirty());
@@ -167,6 +193,8 @@ public class CodexUsagePieChart : TemplatedControl
         PointerExited += OnPointerExited;
         SyncClasses();
     }
+
+    public event EventHandler<CodexUsagePieChartActiveItemChangedEventArgs>? ActiveItemChanged;
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
@@ -263,6 +291,27 @@ public class CodexUsagePieChart : TemplatedControl
         set => SetValue(IsCompactProperty, value);
     }
 
+    public int ActiveIndex
+    {
+        get => GetValue(ActiveIndexProperty);
+        set => SetValue(ActiveIndexProperty, value);
+    }
+
+    public TimeSpan AnimationDuration
+    {
+        get => GetValue(AnimationDurationProperty);
+        set => SetValue(AnimationDurationProperty, value);
+    }
+
+    public ICodexUsagePieChartItem? ActiveItem
+    {
+        get
+        {
+            EnsureItems();
+            return ActiveIndex >= 0 && ActiveIndex < _items.Length ? _items[ActiveIndex] : null;
+        }
+    }
+
     protected override Size MeasureOverride(Size availableSize)
     {
         EnsureItems();
@@ -336,14 +385,14 @@ public class CodexUsagePieChart : TemplatedControl
         }
 
         var hoverProgress = EaseOutCubic(_hoverProgress) * chartProgress;
-        if (_hoveredIndex >= 0 && _hoveredIndex < _slices.Length && hoverProgress > 0.01d)
+        if (ActiveIndex >= 0 && ActiveIndex < _slices.Length && hoverProgress > 0.01d)
         {
-            var slice = _slices[_hoveredIndex];
+            var slice = _slices[ActiveIndex];
             var hoverOuterRadius = outerRadius + 4d * hoverProgress;
             var hoverInnerRadius = Math.Max(1d, innerRadius - hoverProgress);
             var geometry = CreateDonutSlice(center, hoverOuterRadius, hoverInnerRadius, slice.StartAngle, slice.SweepAngle);
             using var opacity = context.PushOpacity(hoverProgress);
-            context.DrawGeometry(_items[_hoveredIndex].AccentBrush ?? ResolveAccent(_hoveredIndex), hoverPen, geometry);
+            context.DrawGeometry(_items[ActiveIndex].AccentBrush ?? ResolveAccent(ActiveIndex), hoverPen, geometry);
         }
 
         context.DrawEllipse(CenterFillBrush ?? SliceBorderBrush, null, center, innerRadius - 0.5d, innerRadius - 0.5d);
@@ -383,7 +432,7 @@ public class CodexUsagePieChart : TemplatedControl
             {
                 var item = _items[index];
                 var cache = _legendTextCaches[index];
-                if (index == _hoveredIndex && _hoverProgress > 0.01d)
+                if (index == ActiveIndex && _hoverProgress > 0.01d)
                 {
                     var rowRect = new Rect(legendRect.X - 6d, y - 4d, legendRect.Width + 8d, Math.Min(rowHeight - 2d, 35d));
                     using var hoverOpacity = context.PushOpacity(EaseOutCubic(_hoverProgress));
@@ -408,9 +457,9 @@ public class CodexUsagePieChart : TemplatedControl
 
     private void DrawTooltip(DrawingContext context, Rect bounds)
     {
-        if (_hoveredIndex < 0 ||
-            _hoveredIndex >= _items.Length ||
-            _hoveredIndex >= _tooltipTextCaches.Length ||
+        if (ActiveIndex < 0 ||
+            ActiveIndex >= _items.Length ||
+            ActiveIndex >= _tooltipTextCaches.Length ||
             _tooltipPosition is not { } pointer)
         {
             return;
@@ -420,8 +469,8 @@ public class CodexUsagePieChart : TemplatedControl
         if (opacity <= 0.01d)
             return;
 
-        var item = _items[_hoveredIndex];
-        var cache = _tooltipTextCaches[_hoveredIndex];
+        var item = _items[ActiveIndex];
+        var cache = _tooltipTextCaches[ActiveIndex];
         var x = pointer.X + 14d;
         var y = pointer.Y + 14d;
 
@@ -442,7 +491,7 @@ public class CodexUsagePieChart : TemplatedControl
             8d,
             8d);
 
-        var markerBrush = item.AccentBrush ?? ResolveAccent(_hoveredIndex);
+        var markerBrush = item.AccentBrush ?? ResolveAccent(ActiveIndex);
         context.DrawEllipse(markerBrush, null, new Point(rect.X + 12d, rect.Y + 15d), 4.5d, 4.5d);
         DrawTextLayout(context, cache.Label, new Point(rect.X + 23d, rect.Y + 8d));
         DrawTextLayout(context, cache.Value, new Point(rect.X + 12d, rect.Y + 10d + cache.Label.Height));
@@ -475,9 +524,9 @@ public class CodexUsagePieChart : TemplatedControl
 
         if (hoveredIndex >= 0)
         {
-            if (hoveredIndex != _hoveredIndex)
+            if (hoveredIndex != ActiveIndex)
             {
-                _hoveredIndex = hoveredIndex;
+                ActiveIndex = hoveredIndex;
                 _hoverProgress = Math.Min(_hoverProgress, 0.2d);
             }
 
@@ -555,10 +604,28 @@ public class CodexUsagePieChart : TemplatedControl
 
     private void StartChartAnimation()
     {
+        if (AnimationDuration <= TimeSpan.Zero)
+        {
+            _chartProgress = 1d;
+            StopAnimationTimer();
+            InvalidateVisual();
+            return;
+        }
+
         _chartAnimationStartedAt = DateTimeOffset.UtcNow;
         _chartProgress = 0d;
         StartAnimationTimer();
         InvalidateVisual();
+    }
+
+    private void SyncChartAnimationDuration()
+    {
+        if (AnimationDuration <= TimeSpan.Zero && _chartProgress < 1d)
+        {
+            _chartProgress = 1d;
+            StopAnimationTimer();
+            InvalidateVisual();
+        }
     }
 
     private void StartAnimationTimer()
@@ -587,7 +654,10 @@ public class CodexUsagePieChart : TemplatedControl
         if (_chartProgress < 1d)
         {
             var elapsed = DateTimeOffset.UtcNow - _chartAnimationStartedAt;
-            _chartProgress = Math.Clamp(elapsed.TotalMilliseconds / ChartAnimationDuration.TotalMilliseconds, 0d, 1d);
+            var duration = AnimationDuration.TotalMilliseconds;
+            _chartProgress = duration <= 0
+                ? 1d
+                : Math.Clamp(elapsed.TotalMilliseconds / duration, 0d, 1d);
             invalidated = true;
         }
 
@@ -615,7 +685,7 @@ public class CodexUsagePieChart : TemplatedControl
         if (_targetHoverProgress <= 0d && _hoverProgress <= AnimationSnapThreshold)
         {
             _hoverProgress = 0d;
-            _hoveredIndex = -1;
+            ActiveIndex = -1;
             _targetPointerPosition = null;
             _tooltipPosition = null;
         }
@@ -645,8 +715,8 @@ public class CodexUsagePieChart : TemplatedControl
         if (_observedItemsSource is not null)
             _observedItemsSource.CollectionChanged += OnObservedItemsSourceChanged;
 
-        ResetHover();
         MarkDataDirty();
+        ResetHover();
         StartChartAnimation();
         InvalidateMeasure();
     }
@@ -669,9 +739,34 @@ public class CodexUsagePieChart : TemplatedControl
         }, DispatcherPriority.Background);
     }
 
+    private void OnActiveIndexChanged(AvaloniaPropertyChangedEventArgs args)
+    {
+        EnsureItems();
+
+        var oldIndex = args.OldValue is int oldValue ? oldValue : -1;
+        var newIndex = ActiveIndex >= 0 && ActiveIndex < _items.Length ? ActiveIndex : -1;
+        if (ActiveIndex != newIndex)
+        {
+            SetCurrentValue(ActiveIndexProperty, newIndex);
+            return;
+        }
+
+        var oldItem = oldIndex >= 0 && oldIndex < _items.Length ? _items[oldIndex] : null;
+        var newItem = newIndex >= 0 && newIndex < _items.Length ? _items[newIndex] : null;
+        SyncClasses();
+        if (oldIndex != newIndex)
+        {
+            ActiveItemChanged?.Invoke(
+                this,
+                new CodexUsagePieChartActiveItemChangedEventArgs(oldIndex, newIndex, oldItem, newItem));
+        }
+
+        InvalidateVisual();
+    }
+
     private void ResetHover()
     {
-        _hoveredIndex = -1;
+        ActiveIndex = -1;
         _hoverProgress = 0d;
         _targetHoverProgress = 0d;
         _targetPointerPosition = null;
@@ -706,6 +801,7 @@ public class CodexUsagePieChart : TemplatedControl
         _itemsDirty = false;
         _geometryDirty = true;
         _textDirty = true;
+        SyncClasses();
     }
 
     private void EnsureGeometryCache(Rect pieRect)
@@ -810,7 +906,10 @@ public class CodexUsagePieChart : TemplatedControl
 
     private void SyncClasses()
     {
+        Classes.Set("usage-pie-chart", true);
         Classes.Set("compact", IsCompact);
+        Classes.Set("empty", _items.Length == 0 || _totalValue <= 0d);
+        Classes.Set("has-active-slice", ActiveIndex >= 0);
     }
 
     internal static CenterLabelLayout CalculateCenterLabelLayout(
@@ -970,7 +1069,7 @@ public class CodexUsagePieChart : TemplatedControl
 
     private static IBrush Brush(string value)
     {
-        return new SolidColorBrush(Color.Parse(value));
+        return new ImmutableSolidColorBrush(Color.Parse(value));
     }
 
     private static TextLayout CreateTextLayout(

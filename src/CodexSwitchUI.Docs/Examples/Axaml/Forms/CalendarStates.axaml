@@ -1,0 +1,47 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Selected">
+    <controls:CodexCalendar DisplayDate="2026-05-01"
+                            SelectedDate="2026-05-18"
+                            ActiveDate="2026-05-18"
+                            HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Hidden outside days">
+    <controls:CodexCalendar DisplayDate="2026-06-01"
+                            SelectedDate="2026-06-12"
+                            ActiveDate="2026-06-12"
+                            ShowOutsideDays="False"
+                            HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Week numbers">
+    <controls:CodexCalendar DisplayDate="2026-01-01"
+                            SelectedDate="2026-01-14"
+                            ActiveDate="2026-01-14"
+                            FirstDayOfWeek="Monday"
+                            ShowWeekNumbers="True"
+                            Size="Small"
+                            HorizontalAlignment="Left" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Bounded"
+                       Intent="Warning"
+                       Message="Dates outside the booking window are unavailable.">
+    <controls:CodexCalendar DisplayDate="2026-01-01"
+                            SelectedDate="2026-01-16"
+                            ActiveDate="2026-01-16"
+                            MinDate="2026-01-05"
+                            MaxDate="2026-01-25"
+                            Intent="Warning"
+                            HorizontalAlignment="Left" />
+  </controls:CodexField>
+</Grid>

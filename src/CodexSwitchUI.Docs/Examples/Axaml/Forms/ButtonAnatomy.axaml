@@ -1,0 +1,48 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexButton Content="Import config">
+    <controls:CodexButton.LeadingIcon>
+      <TextBlock Text="+" />
+    </controls:CodexButton.LeadingIcon>
+    <controls:CodexButton.TrailingIcon>
+      <controls:CodexKbd Content="Cmd+I"
+                         Size="Small" />
+    </controls:CodexButton.TrailingIcon>
+  </controls:CodexButton>
+
+  <controls:CodexButton Grid.Column="1"
+                        Content="Run once"
+                        Variant="Secondary">
+    <controls:CodexButton.LeadingIcon>
+      <TextBlock Text="&gt;" />
+    </controls:CodexButton.LeadingIcon>
+    <controls:CodexButton.TrailingIcon>
+      <TextBlock Text="Enter" />
+    </controls:CodexButton.TrailingIcon>
+  </controls:CodexButton>
+
+  <controls:CodexButton Grid.Row="1"
+                        Content="Saving"
+                        IsLoading="True"
+                        LoadingContent="Saving changes">
+    <controls:CodexButton.LeadingIcon>
+      <TextBlock Text="*" />
+    </controls:CodexButton.LeadingIcon>
+  </controls:CodexButton>
+
+  <StackPanel Grid.Row="1"
+              Grid.Column="1"
+              Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexButton Content="Cancel"
+                          Variant="Outline"
+                          Size="Small" />
+    <controls:CodexButton Content="Delete"
+                          Variant="Destructive"
+                          Size="Small" />
+  </StackPanel>
+</Grid>

@@ -10,10 +10,10 @@
     <Setter Property="FocusAdorner" Value="{x:Null}" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -28,57 +28,82 @@
                 BorderBrush="Transparent"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="{DynamicResource CodexSwitch.RadiusMd}">
-          <Track x:Name="PART_Track"
-                 Minimum="{TemplateBinding Minimum}"
-                 Maximum="{TemplateBinding Maximum}"
-                 Value="{TemplateBinding Value, Mode=TwoWay}"
-                 IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
-                 Orientation="Horizontal">
-            <Track.DecreaseButton>
-              <RepeatButton x:Name="PART_DecreaseButton"
-                            Background="{TemplateBinding Foreground}"
-                            Focusable="False">
-                <RepeatButton.Template>
-                  <ControlTemplate TargetType="RepeatButton">
-                    <Border Height="4"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="2"
-                            VerticalAlignment="Center" />
-                  </ControlTemplate>
-                </RepeatButton.Template>
-              </RepeatButton>
-            </Track.DecreaseButton>
-            <Track.IncreaseButton>
-              <RepeatButton x:Name="PART_IncreaseButton"
-                            Background="{TemplateBinding Background}"
-                            Focusable="False">
-                <RepeatButton.Template>
-                  <ControlTemplate TargetType="RepeatButton">
-                    <Border Height="4"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="2"
-                            VerticalAlignment="Center" />
-                  </ControlTemplate>
-                </RepeatButton.Template>
-              </RepeatButton>
-            </Track.IncreaseButton>
-            <Thumb x:Name="PART_Thumb"
-                   Width="20"
-                   Height="20"
-                   Background="{DynamicResource CodexSwitch.BackgroundBrush}"
-                   BorderBrush="{TemplateBinding BorderBrush}"
-                   BorderThickness="{TemplateBinding BorderThickness}"
-                   RenderTransform="none">
-              <Thumb.Template>
-                <ControlTemplate TargetType="Thumb">
-                  <Border Background="{TemplateBinding Background}"
-                          BorderBrush="{TemplateBinding BorderBrush}"
-                          BorderThickness="{TemplateBinding BorderThickness}"
-                          CornerRadius="10" />
-                </ControlTemplate>
-              </Thumb.Template>
-            </Thumb>
-          </Track>
+          <Grid ClipToBounds="True">
+            <Border x:Name="PART_TrackBackground"
+                    Height="4"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="2"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center" />
+            <Border x:Name="PART_TrackFill"
+                    Width="{Binding Bounds.X, ElementName=PART_Thumb}"
+                    Height="4"
+                    Background="{TemplateBinding Foreground}"
+                    CornerRadius="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center" />
+            <Track x:Name="PART_Track"
+                   Minimum="{TemplateBinding Minimum}"
+                   Maximum="{TemplateBinding Maximum}"
+                   Value="{TemplateBinding Value, Mode=TwoWay}"
+                   IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
+                   Orientation="Horizontal"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Center">
+              <Track.DecreaseButton>
+                <RepeatButton x:Name="PART_DecreaseButton"
+                              Background="{TemplateBinding Foreground}"
+                              Focusable="False"
+                              Opacity="0">
+                  <RepeatButton.Template>
+                    <ControlTemplate TargetType="RepeatButton">
+                      <Border Height="4"
+                              MinWidth="1"
+                              Background="{TemplateBinding Background}"
+                              CornerRadius="2"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center" />
+                    </ControlTemplate>
+                  </RepeatButton.Template>
+                </RepeatButton>
+              </Track.DecreaseButton>
+              <Track.IncreaseButton>
+                <RepeatButton x:Name="PART_IncreaseButton"
+                              Background="{TemplateBinding Background}"
+                              Focusable="False"
+                              Opacity="0">
+                  <RepeatButton.Template>
+                    <ControlTemplate TargetType="RepeatButton">
+                      <Border Height="4"
+                              MinWidth="1"
+                              Background="{TemplateBinding Background}"
+                              CornerRadius="2"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center" />
+                    </ControlTemplate>
+                  </RepeatButton.Template>
+                </RepeatButton>
+              </Track.IncreaseButton>
+              <Track.Thumb>
+                <Thumb x:Name="PART_Thumb"
+                       Width="20"
+                       Height="20"
+                       Background="{DynamicResource CodexSwitch.BackgroundBrush}"
+                       BorderBrush="{TemplateBinding BorderBrush}"
+                       BorderThickness="{TemplateBinding BorderThickness}"
+                       RenderTransform="none">
+                  <Thumb.Template>
+                    <ControlTemplate TargetType="Thumb">
+                      <Border Background="{TemplateBinding Background}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}"
+                              CornerRadius="10" />
+                    </ControlTemplate>
+                  </Thumb.Template>
+                </Thumb>
+              </Track.Thumb>
+            </Track>
+          </Grid>
         </Border>
       </ControlTemplate>
     </Setter>
@@ -94,57 +119,82 @@
                 BorderBrush="Transparent"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="{DynamicResource CodexSwitch.RadiusMd}">
-          <Track x:Name="PART_Track"
-                 Minimum="{TemplateBinding Minimum}"
-                 Maximum="{TemplateBinding Maximum}"
-                 Value="{TemplateBinding Value, Mode=TwoWay}"
-                 IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
-                 Orientation="Vertical">
-            <Track.DecreaseButton>
-              <RepeatButton x:Name="PART_DecreaseButton"
-                            Background="{TemplateBinding Foreground}"
-                            Focusable="False">
-                <RepeatButton.Template>
-                  <ControlTemplate TargetType="RepeatButton">
-                    <Border Width="4"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="2"
-                            HorizontalAlignment="Center" />
-                  </ControlTemplate>
-                </RepeatButton.Template>
-              </RepeatButton>
-            </Track.DecreaseButton>
-            <Track.IncreaseButton>
-              <RepeatButton x:Name="PART_IncreaseButton"
-                            Background="{TemplateBinding Background}"
-                            Focusable="False">
-                <RepeatButton.Template>
-                  <ControlTemplate TargetType="RepeatButton">
-                    <Border Width="4"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="2"
-                            HorizontalAlignment="Center" />
-                  </ControlTemplate>
-                </RepeatButton.Template>
-              </RepeatButton>
-            </Track.IncreaseButton>
-            <Thumb x:Name="PART_Thumb"
-                   Width="20"
-                   Height="20"
-                   Background="{DynamicResource CodexSwitch.BackgroundBrush}"
-                   BorderBrush="{TemplateBinding BorderBrush}"
-                   BorderThickness="{TemplateBinding BorderThickness}"
-                   RenderTransform="none">
-              <Thumb.Template>
-                <ControlTemplate TargetType="Thumb">
-                  <Border Background="{TemplateBinding Background}"
-                          BorderBrush="{TemplateBinding BorderBrush}"
-                          BorderThickness="{TemplateBinding BorderThickness}"
-                          CornerRadius="10" />
-                </ControlTemplate>
-              </Thumb.Template>
-            </Thumb>
-          </Track>
+          <Grid ClipToBounds="True">
+            <Border x:Name="PART_TrackBackground"
+                    Width="4"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Stretch" />
+            <Border x:Name="PART_TrackFill"
+                    Width="4"
+                    Height="{Binding Bounds.Y, ElementName=PART_Thumb}"
+                    Background="{TemplateBinding Foreground}"
+                    CornerRadius="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top" />
+            <Track x:Name="PART_Track"
+                   Minimum="{TemplateBinding Minimum}"
+                   Maximum="{TemplateBinding Maximum}"
+                   Value="{TemplateBinding Value, Mode=TwoWay}"
+                   IsDirectionReversed="{TemplateBinding IsDirectionReversed}"
+                   Orientation="Vertical"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Stretch">
+              <Track.DecreaseButton>
+                <RepeatButton x:Name="PART_DecreaseButton"
+                              Background="{TemplateBinding Foreground}"
+                              Focusable="False"
+                              Opacity="0">
+                  <RepeatButton.Template>
+                    <ControlTemplate TargetType="RepeatButton">
+                      <Border Width="4"
+                              MinHeight="1"
+                              Background="{TemplateBinding Background}"
+                              CornerRadius="2"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                  </RepeatButton.Template>
+                </RepeatButton>
+              </Track.DecreaseButton>
+              <Track.IncreaseButton>
+                <RepeatButton x:Name="PART_IncreaseButton"
+                              Background="{TemplateBinding Background}"
+                              Focusable="False"
+                              Opacity="0">
+                  <RepeatButton.Template>
+                    <ControlTemplate TargetType="RepeatButton">
+                      <Border Width="4"
+                              MinHeight="1"
+                              Background="{TemplateBinding Background}"
+                              CornerRadius="2"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Stretch" />
+                    </ControlTemplate>
+                  </RepeatButton.Template>
+                </RepeatButton>
+              </Track.IncreaseButton>
+              <Track.Thumb>
+                <Thumb x:Name="PART_Thumb"
+                       Width="20"
+                       Height="20"
+                       Background="{DynamicResource CodexSwitch.BackgroundBrush}"
+                       BorderBrush="{TemplateBinding BorderBrush}"
+                       BorderThickness="{TemplateBinding BorderThickness}"
+                       RenderTransform="none">
+                  <Thumb.Template>
+                    <ControlTemplate TargetType="Thumb">
+                      <Border Background="{TemplateBinding Background}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}"
+                              CornerRadius="10" />
+                    </ControlTemplate>
+                  </Thumb.Template>
+                </Thumb>
+              </Track.Thumb>
+            </Track>
+          </Grid>
         </Border>
       </ControlTemplate>
     </Setter>
@@ -153,8 +203,8 @@
   <Style Selector="controls|CodexSlider /template/ Border#PART_SliderRoot">
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <ThicknessTransition Property="BorderThickness" Duration="0:0:0.15" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <ThicknessTransition Property="BorderThickness" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -162,7 +212,7 @@
   <Style Selector="controls|CodexSlider /template/ RepeatButton#PART_DecreaseButton, controls|CodexSlider /template/ RepeatButton#PART_IncreaseButton">
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -170,11 +220,11 @@
   <Style Selector="controls|CodexSlider /template/ Thumb#PART_Thumb">
     <Setter Property="Transitions">
       <Transitions>
-        <BrushTransition Property="Background" Duration="0:0:0.15" />
-        <BrushTransition Property="BorderBrush" Duration="0:0:0.15" />
-        <DoubleTransition Property="Width" Duration="0:0:0.10" />
-        <DoubleTransition Property="Height" Duration="0:0:0.10" />
-        <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.10" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="BorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <DoubleTransition Property="Width" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <DoubleTransition Property="Height" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <TransformOperationsTransition Property="RenderTransform" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
   </Style>
@@ -188,7 +238,11 @@
     <Setter Property="RenderTransform" Value="scale(0.92)" />
   </Style>
 
-  <Style Selector="controls|CodexSlider:focus /template/ Border#PART_SliderRoot">
+  <Style Selector="controls|CodexSlider.dragging /template/ Thumb#PART_Thumb">
+    <Setter Property="RenderTransform" Value="scale(0.88)" />
+  </Style>
+
+  <Style Selector="controls|CodexSlider:focus-visible /template/ Border#PART_SliderRoot">
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
   </Style>
 

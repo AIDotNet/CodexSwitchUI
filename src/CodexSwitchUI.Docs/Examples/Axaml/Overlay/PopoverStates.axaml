@@ -1,0 +1,38 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexPopover Title="Open"
+                         Description="Open surface with action."
+                         IsOpen="True"
+                         Content="Open class drives the visible state.">
+    <controls:CodexPopover.Action>
+      <controls:CodexButton Content="Apply"
+                            Size="Small" />
+    </controls:CodexPopover.Action>
+  </controls:CodexPopover>
+
+  <controls:CodexPopover Grid.Column="1"
+                         Title="Closed"
+                         Description="Closed state remains mounted for exit styling."
+                         IsOpen="False"
+                         Content="Closed class drives exit styling." />
+
+  <controls:CodexPopover Grid.Row="1"
+                         Title="No close"
+                         Description="Close button can be suppressed."
+                         IsOpen="True"
+                         IsCloseVisible="False"
+                         Content="Dismiss can still be controlled externally." />
+
+  <controls:CodexPopover Grid.Row="1"
+                         Grid.Column="1"
+                         Title="Manual dismiss"
+                         Description="Escape and outside pointer can be disabled."
+                         IsOpen="True"
+                         CloseOnEscape="False"
+                         DismissOnOutsidePointer="False"
+                         Content="Manual control only." />
+</Grid>

@@ -1,0 +1,22 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexSegmentedControl HorizontalAlignment="Left">
+    <StackPanel Orientation="Horizontal">
+      <controls:CodexSegmentedButton Content="Light" />
+      <controls:CodexSegmentedButton Content="Dark"
+                                     IsSelected="True" />
+      <controls:CodexSegmentedButton Content="System" />
+    </StackPanel>
+  </controls:CodexSegmentedControl>
+
+  <controls:CodexSegmentedControl HorizontalAlignment="Left">
+    <StackPanel Orientation="Horizontal">
+      <controls:CodexSegmentedButton Content="Compact"
+                                     IsSelected="True" />
+      <controls:CodexSegmentedButton Content="Disabled"
+                                     IsEnabled="False" />
+      <controls:CodexSegmentedButton Content="Wide" />
+    </StackPanel>
+  </controls:CodexSegmentedControl>
+</StackPanel>

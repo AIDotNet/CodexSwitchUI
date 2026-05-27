@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Avalonia.Media.TextFormatting;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -19,28 +20,28 @@ public sealed class CsUsageTrendChart : Control
     private static readonly FontFamily ChartFontFamily = new(CodexSwitchFonts.DefaultFontFamily);
     private static readonly Typeface LabelTypeface = new(ChartFontFamily, FontStyle.Normal, FontWeight.Normal, FontStretch.Normal);
     private static readonly Typeface EmphasisTypeface = new(ChartFontFamily, FontStyle.Normal, FontWeight.SemiBold, FontStretch.Normal);
-    private static readonly IBrush PlotBackgroundBrush = Brush("#0AFFFFFF");
-    private static readonly IBrush AxisBrush = Brush("#8AA3A3A3");
-    private static readonly IBrush TooltipBackgroundBrush = Brush("#F0202023");
-    private static readonly IBrush TooltipTextBrush = Brush("#F5FFFFFF");
-    private static readonly IBrush TooltipMutedBrush = Brush("#AFA3A3A3");
-    private static readonly IBrush BreakdownTextBrush = Brush("#D7E0E0E0");
-    private static readonly IBrush MarkerBrush = Brush("#E8FFFFFF");
-    private static readonly IBrush CostBrush = Brush("#F472B6");
-    private static readonly IBrush EmptyTextBrush = Brush("#9CA3AF");
-    private static readonly IBrush RefreshOverlayBrush = Brush("#133B82F6");
-    private static readonly IBrush RefreshBarBrush = Brush("#8059A7FF");
-    private static readonly IBrush RefreshTextBrush = Brush("#B9D7EAFF");
-    private static readonly Pen PlotBorderPen = new(Brush("#12FFFFFF"), 1);
-    private static readonly Pen GridPen = new(Brush("#18FFFFFF"), 1);
-    private static readonly Pen VerticalGridPen = new(Brush("#0FFFFFFF"), 1);
-    private static readonly Pen TotalTokenPen = new(Brush("#B7D1FF"), 2);
-    private static readonly Pen CostPen = new(CostBrush, 2);
-    private static readonly Pen PointerLinePen = new(Brush("#44FFFFFF"), 1);
-    private static readonly Pen MarkerBorderPen = new(Brush("#2F81F7"), 2);
-    private static readonly Pen CostMarkerBorderPen = new(Brush("#22000000"), 1);
-    private static readonly Pen TooltipBorderPen = new(Brush("#33FFFFFF"), 1);
-    private static readonly Pen EmptyLinePen = new(Brush("#3B82F6"), 1.5);
+    private static readonly IImmutableBrush PlotBackgroundBrush = Brush("#0AFFFFFF");
+    private static readonly IImmutableBrush AxisBrush = Brush("#8AA3A3A3");
+    private static readonly IImmutableBrush TooltipBackgroundBrush = Brush("#F0202023");
+    private static readonly IImmutableBrush TooltipTextBrush = Brush("#F5FFFFFF");
+    private static readonly IImmutableBrush TooltipMutedBrush = Brush("#AFA3A3A3");
+    private static readonly IImmutableBrush BreakdownTextBrush = Brush("#D7E0E0E0");
+    private static readonly IImmutableBrush MarkerBrush = Brush("#E8FFFFFF");
+    private static readonly IImmutableBrush CostBrush = Brush("#F472B6");
+    private static readonly IImmutableBrush EmptyTextBrush = Brush("#9CA3AF");
+    private static readonly IImmutableBrush RefreshOverlayBrush = Brush("#133B82F6");
+    private static readonly IImmutableBrush RefreshBarBrush = Brush("#8059A7FF");
+    private static readonly IImmutableBrush RefreshTextBrush = Brush("#B9D7EAFF");
+    private static readonly IPen PlotBorderPen = Pen("#12FFFFFF", 1);
+    private static readonly IPen GridPen = Pen("#18FFFFFF", 1);
+    private static readonly IPen VerticalGridPen = Pen("#0FFFFFFF", 1);
+    private static readonly IPen TotalTokenPen = Pen("#B7D1FF", 2);
+    private static readonly IPen CostPen = new ImmutablePen(CostBrush, 2);
+    private static readonly IPen PointerLinePen = Pen("#44FFFFFF", 1);
+    private static readonly IPen MarkerBorderPen = Pen("#2F81F7", 2);
+    private static readonly IPen CostMarkerBorderPen = Pen("#22000000", 1);
+    private static readonly IPen TooltipBorderPen = Pen("#33FFFFFF", 1);
+    private static readonly IPen EmptyLinePen = Pen("#3B82F6", 1.5);
     private static readonly ChartSeries[] TokenSeries =
     [
         CreateSeries("input", "#60A5FA", point => point.InputTokens),
@@ -983,8 +984,8 @@ public sealed class CsUsageTrendChart : Control
         var color = Color.Parse(hexColor);
         return new ChartSeries(
             name,
-            new SolidColorBrush(color),
-            new SolidColorBrush(Color.FromArgb(58, color.R, color.G, color.B)),
+            new ImmutableSolidColorBrush(color),
+            new ImmutableSolidColorBrush(Color.FromArgb(58, color.R, color.G, color.B)),
             valueSelector);
     }
 
@@ -1004,9 +1005,14 @@ public sealed class CsUsageTrendChart : Control
         return array;
     }
 
-    private static IBrush Brush(string value)
+    private static IImmutableBrush Brush(string value)
     {
-        return new SolidColorBrush(Color.Parse(value));
+        return new ImmutableSolidColorBrush(Color.Parse(value));
+    }
+
+    private static IPen Pen(string value, double thickness)
+    {
+        return new ImmutablePen(Brush(value), thickness);
     }
 
     private static bool SameRect(Rect left, Rect right)

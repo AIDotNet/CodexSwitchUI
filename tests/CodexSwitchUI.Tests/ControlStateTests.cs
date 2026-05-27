@@ -1,6 +1,9 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using CodexSwitchUI.Controls;
 using Avalonia.Layout;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Xunit;
 
 namespace CodexSwitchUI.Tests;
@@ -12,32 +15,71 @@ public class ControlStateTests
         new("Button", "controls|CodexButton", () => new CodexButton(), (control, variant) => ((CodexButton)control).Variant = variant),
         new("Alert", "controls|CodexAlert", () => new CodexAlert(), (control, variant) => ((CodexAlert)control).Variant = variant),
         new("Badge", "controls|CodexBadge", () => new CodexBadge(), (control, variant) => ((CodexBadge)control).Variant = variant),
+        new("Item", "controls|CodexItem", () => new CodexItem(), (control, variant) => ((CodexItem)control).Variant = variant),
+        new("EmptyState", "controls|CodexEmptyState", () => new CodexEmptyState(), (control, variant) => ((CodexEmptyState)control).Variant = variant),
         new("Toast", "controls|CodexToast", () => new CodexToast(), (control, variant) => ((CodexToast)control).Variant = variant)
     ];
 
     private static readonly SizeCase[] SizeCases =
     [
         new("Button", "controls|CodexButton", () => new CodexButton(), (control, size) => ((CodexButton)control).Size = size),
+        new("DropdownButton", "controls|CodexDropdownButton", () => new CodexDropdownButton(), (control, size) => ((CodexDropdownButton)control).Size = size),
+        new("SplitButton", "controls|CodexSplitButton", () => new CodexSplitButton(), (control, size) => ((CodexSplitButton)control).Size = size),
+        new("Field", "controls|CodexField", () => new CodexField(), (control, size) => ((CodexField)control).Size = size),
         new("Input", "controls|CodexTextBox", () => new CodexTextBox(), (control, size) => ((CodexTextBox)control).Size = size),
+        new("Textarea", "controls|CodexTextarea", () => new CodexTextarea(), (control, size) => ((CodexTextarea)control).Size = size),
+        new("InputOtp", "controls|CodexInputOtp", () => new CodexInputOtp(), (control, size) => ((CodexInputOtp)control).Size = size),
         new("Select", "controls|CodexSelect", () => new CodexSelect(), (control, size) => ((CodexSelect)control).Size = size),
+        new("Combobox", "controls|CodexCombobox", () => new CodexCombobox(), (control, size) => ((CodexCombobox)control).Size = size),
+        new("NativeSelect", "controls|CodexNativeSelect", () => new CodexNativeSelect(), (control, size) => ((CodexNativeSelect)control).Size = size),
+        new("Calendar", "controls|CodexCalendar", () => new CodexCalendar(), (control, size) => ((CodexCalendar)control).Size = size),
+        new("DatePicker", "controls|CodexDatePicker", () => new CodexDatePicker(), (control, size) => ((CodexDatePicker)control).Size = size),
         new("Checkbox", "controls|CodexCheckBox", () => new CodexCheckBox(), (control, size) => ((CodexCheckBox)control).Size = size),
         new("Radio", "controls|CodexRadio", () => new CodexRadio(), (control, size) => ((CodexRadio)control).Size = size),
+        new("RadioGroup", "controls|CodexRadioGroup", () => new CodexRadioGroup(), (control, size) => ((CodexRadioGroup)control).Size = size),
         new("Switch", "controls|CodexSwitch", () => new CodexSwitch(), (control, size) => ((CodexSwitch)control).Size = size),
         new("Slider", "controls|CodexSlider", () => new CodexSlider(), (control, size) => ((CodexSlider)control).Size = size),
+        new("Pagination", "controls|CodexPagination", () => new CodexPagination(), (control, size) => ((CodexPagination)control).Size = size),
+        new("ScrollArea", "controls|CodexScrollArea", () => new CodexScrollArea(), (control, size) => ((CodexScrollArea)control).Size = size),
+        new("EmptyState", "controls|CodexEmptyState", () => new CodexEmptyState(), (control, size) => ((CodexEmptyState)control).Size = size),
+        new("Chart", "controls|CodexChartContainer", () => new CodexChartContainer(), (control, size) => ((CodexChartContainer)control).Size = size),
+        new("BarChart", "controls|CodexBarChart", () => new CodexBarChart(), (control, size) => ((CodexBarChart)control).Size = size),
+        new("LineChart", "controls|CodexLineChart", () => new CodexLineChart(), (control, size) => ((CodexLineChart)control).Size = size),
+        new("Item", "controls|CodexItem", () => new CodexItem(), (control, size) => ((CodexItem)control).Size = size),
+        new("AspectRatio", "controls|CodexAspectRatio", () => new CodexAspectRatio(), (control, size) => ((CodexAspectRatio)control).Size = size),
+        new("Carousel", "controls|CodexCarousel", () => new CodexCarousel(), (control, size) => ((CodexCarousel)control).Size = size),
+        new("Resizable", "controls|CodexResizablePanelGroup", () => new CodexResizablePanelGroup(), (control, size) => ((CodexResizablePanelGroup)control).Size = size),
         new("Tabs", "controls|CodexTabs", () => new CodexTabs(), (control, size) => ((CodexTabs)control).Size = size),
+        new("Tooltip", "controls|CodexTooltip", () => new CodexTooltip(), (control, size) => ((CodexTooltip)control).Size = size),
+        new("HoverCard", "controls|CodexHoverCard", () => new CodexHoverCard(), (control, size) => ((CodexHoverCard)control).Size = size),
+        new("AlertDialog", "controls|CodexAlertDialog", () => new CodexAlertDialog(), (control, size) => ((CodexAlertDialog)control).Size = size),
+        new("Drawer", "controls|CodexDrawer", () => new CodexDrawer(), (control, size) => ((CodexDrawer)control).Size = size),
+        new("Menubar", "controls|CodexMenubar", () => new CodexMenubar(), (control, size) => ((CodexMenubar)control).Size = size),
         new("Menu", "controls|CodexMenu", () => new CodexMenu(), (control, size) => ((CodexMenu)control).Size = size),
         new("ContextMenu", "controls|CodexContextMenu", () => new CodexContextMenu(), (control, size) => ((CodexContextMenu)control).Size = size),
+        new("Accordion", "controls|CodexAccordion", () => new CodexAccordion(), (control, size) => ((CodexAccordion)control).Size = size),
         new("Collapsible", "controls|CodexCollapsible", () => new CodexCollapsible(), (control, size) => ((CodexCollapsible)control).Size = size),
         new("Avatar", "controls|CodexAvatar", () => new CodexAvatar(), (control, size) => ((CodexAvatar)control).Size = size),
-        new("Separator", "controls|CodexSeparator", () => new CodexSeparator(), (control, size) => ((CodexSeparator)control).Size = size)
+        new("Avatar", "controls|CodexAvatarGroup", () => new CodexAvatarGroup(), (control, size) => ((CodexAvatarGroup)control).Size = size),
+        new("Avatar", "controls|CodexAvatarGroupCount", () => new CodexAvatarGroupCount(), (control, size) => ((CodexAvatarGroupCount)control).Size = size),
+        new("Separator", "controls|CodexSeparator", () => new CodexSeparator(), (control, size) => ((CodexSeparator)control).Size = size),
+        new("Kbd", "controls|CodexKbd", () => new CodexKbd(), (control, size) => ((CodexKbd)control).Size = size)
     ];
 
     private static readonly IntentCase[] IntentCases =
     [
+        new("Field", "controls|CodexField", () => new CodexField(), (control, intent) => ((CodexField)control).Intent = intent),
         new("Input", "controls|CodexTextBox", () => new CodexTextBox(), (control, intent) => ((CodexTextBox)control).Intent = intent),
+        new("Textarea", "controls|CodexTextarea", () => new CodexTextarea(), (control, intent) => ((CodexTextarea)control).Intent = intent),
+        new("InputOtp", "controls|CodexInputOtp", () => new CodexInputOtp(), (control, intent) => ((CodexInputOtp)control).Intent = intent),
         new("Select", "controls|CodexSelect", () => new CodexSelect(), (control, intent) => ((CodexSelect)control).Intent = intent),
+        new("Combobox", "controls|CodexCombobox", () => new CodexCombobox(), (control, intent) => ((CodexCombobox)control).Intent = intent),
+        new("NativeSelect", "controls|CodexNativeSelect", () => new CodexNativeSelect(), (control, intent) => ((CodexNativeSelect)control).Intent = intent),
+        new("Calendar", "controls|CodexCalendar", () => new CodexCalendar(), (control, intent) => ((CodexCalendar)control).Intent = intent),
+        new("DatePicker", "controls|CodexDatePicker", () => new CodexDatePicker(), (control, intent) => ((CodexDatePicker)control).Intent = intent),
         new("Checkbox", "controls|CodexCheckBox", () => new CodexCheckBox(), (control, intent) => ((CodexCheckBox)control).Intent = intent),
         new("Radio", "controls|CodexRadio", () => new CodexRadio(), (control, intent) => ((CodexRadio)control).Intent = intent),
+        new("RadioGroup", "controls|CodexRadioGroup", () => new CodexRadioGroup(), (control, intent) => ((CodexRadioGroup)control).Intent = intent),
         new("Switch", "controls|CodexSwitch", () => new CodexSwitch(), (control, intent) => ((CodexSwitch)control).Intent = intent),
         new("Slider", "controls|CodexSlider", () => new CodexSlider(), (control, intent) => ((CodexSlider)control).Intent = intent)
     ];
@@ -105,6 +147,33 @@ public class ControlStateTests
     }
 
     [Fact]
+    public void DirectionSyncsFlowDirectionAndClasses()
+    {
+        var direction = new CodexDirection();
+
+        Assert.Equal(Avalonia.Media.FlowDirection.LeftToRight, direction.FlowDirection);
+        Assert.Contains("direction-ltr", direction.Classes);
+        Assert.DoesNotContain("direction-rtl", direction.Classes);
+
+        var raised = false;
+        direction.DirectionChanged += (_, args) =>
+        {
+            raised = true;
+            Assert.Equal(CodexDirectionMode.LeftToRight, args.OldDirection);
+            Assert.Equal(CodexDirectionMode.RightToLeft, args.NewDirection);
+            Assert.Equal(Avalonia.Media.FlowDirection.RightToLeft, args.FlowDirection);
+        };
+
+        direction.Direction = CodexDirectionMode.RightToLeft;
+
+        Assert.True(raised);
+        Assert.True(direction.IsRightToLeft);
+        Assert.Equal(Avalonia.Media.FlowDirection.RightToLeft, direction.FlowDirection);
+        Assert.Contains("direction-rtl", direction.Classes);
+        Assert.DoesNotContain("direction-ltr", direction.Classes);
+    }
+
+    [Fact]
     public void SidebarAndSegmentedButtonsSelectExclusivelyOnClick()
     {
         var home = new CodexSideNavItem { Content = "Home", IsSelected = true };
@@ -149,6 +218,69 @@ public class ControlStateTests
     }
 
     [Fact]
+    public void SideNavPublishesWebStyleValueChangedOnSelection()
+    {
+        var root = FindRepositoryRoot();
+        var style = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "ApplicationShell.axaml"));
+        var source = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Controls", "CodexNavigationPrimitives.cs"));
+        var changes = new List<CodexSideNavValueChangedEventArgs>();
+        var home = new CodexSideNavItem { Content = "Home", Value = "home" };
+        var sessions = new CodexSideNavItem { Content = "Sessions", Value = "sessions" };
+        var disabled = new CodexSideNavItem { Content = "Disabled", Value = "disabled", IsEnabled = false };
+        var nav = new CodexSideNav
+        {
+            Content = new StackPanel
+            {
+                Children =
+                {
+                    home,
+                    sessions,
+                    disabled
+                }
+            }
+        };
+        nav.SelectedValue = "home";
+        nav.ValueChanged += (_, args) => changes.Add(args);
+
+        Assert.True(home.IsSelected);
+        Assert.False(sessions.IsSelected);
+        Assert.Contains("public class CodexSideNav : ContentControl", source);
+        Assert.Contains("SelectedValueProperty", source);
+        Assert.Contains("public event EventHandler<CodexSideNavValueChangedEventArgs>? ValueChanged;", source);
+        Assert.Contains("public static readonly StyledProperty<string?> ValueProperty", source);
+        Assert.Contains("ControlTemplate TargetType=\"controls:CodexSideNav\"", style);
+
+        InvokeClick(sessions);
+
+        Assert.False(home.IsSelected);
+        Assert.True(sessions.IsSelected);
+        Assert.Equal("sessions", nav.SelectedValue);
+        var clickChange = Assert.Single(changes);
+        Assert.Same(home, clickChange.OldItem);
+        Assert.Same(sessions, clickChange.NewItem);
+        Assert.Equal(0, clickChange.OldIndex);
+        Assert.Equal(1, clickChange.NewIndex);
+        Assert.Equal("home", clickChange.OldValue);
+        Assert.Equal("sessions", clickChange.NewValue);
+
+        InvokeClick(disabled);
+
+        Assert.True(sessions.IsSelected);
+        Assert.Equal("sessions", nav.SelectedValue);
+        Assert.Single(changes);
+
+        nav.SelectedValue = "home";
+
+        Assert.True(home.IsSelected);
+        Assert.False(sessions.IsSelected);
+        Assert.Equal(2, changes.Count);
+        Assert.Same(sessions, changes[1].OldItem);
+        Assert.Same(home, changes[1].NewItem);
+        Assert.Equal("sessions", changes[1].OldValue);
+        Assert.Equal("home", changes[1].NewValue);
+    }
+
+    [Fact]
     public void SegmentedControlOwnsAnimatedSelectionIndicator()
     {
         var root = FindRepositoryRoot();
@@ -164,6 +296,9 @@ public class ControlStateTests
         Assert.Contains("IndicatorWidthProperty", source);
         Assert.Contains("IndicatorHeightProperty", source);
         Assert.Contains("IndicatorMarginProperty", source);
+        Assert.Contains("SelectedValueProperty", source);
+        Assert.Contains("public event EventHandler<CodexSegmentedControlValueChangedEventArgs>? ValueChanged;", source);
+        Assert.Contains("public static readonly StyledProperty<string?> ValueProperty", source);
         Assert.Contains("UpdateSelectionIndicator()", source);
         Assert.Contains("QueueSelectionIndicatorUpdate()", source);
         Assert.Contains("PART_IndicatorHost", source);
@@ -179,6 +314,79 @@ public class ControlStateTests
         Assert.Contains("DoubleTransition Property=\"Width\"", style);
         Assert.Contains("DoubleTransition Property=\"Height\"", style);
         Assert.Contains("<Setter Property=\"Background\" Value=\"Transparent\" />", style);
+    }
+
+    [Fact]
+    public void SegmentedControlPublishesWebStyleValueChangedOnSelection()
+    {
+        var changes = new List<CodexSegmentedControlValueChangedEventArgs>();
+        var preview = new CodexSegmentedButton { Content = "Preview", Value = "preview" };
+        var code = new CodexSegmentedButton { Content = "Code", Value = "code", IsSelected = true };
+        var events = new CodexSegmentedButton { Content = "Events", Value = "events" };
+        var control = new CodexSegmentedControl
+        {
+            SelectedValue = "code",
+            Content = new StackPanel
+            {
+                Children =
+                {
+                    preview,
+                    code,
+                    events
+                }
+            }
+        };
+        control.ValueChanged += (_, args) => changes.Add(args);
+
+        InvokeClick(events);
+
+        Assert.False(preview.IsSelected);
+        Assert.False(code.IsSelected);
+        Assert.True(events.IsSelected);
+        Assert.Equal("events", control.SelectedValue);
+        var change = Assert.Single(changes);
+        Assert.Same(code, change.OldItem);
+        Assert.Same(events, change.NewItem);
+        Assert.Equal(1, change.OldIndex);
+        Assert.Equal(2, change.NewIndex);
+        Assert.Equal("code", change.OldValue);
+        Assert.Equal("events", change.NewValue);
+
+        control.SelectedValue = "preview";
+
+        Assert.True(preview.IsSelected);
+        Assert.False(events.IsSelected);
+        Assert.Equal(2, changes.Count);
+        Assert.Same(events, changes[1].OldItem);
+        Assert.Same(preview, changes[1].NewItem);
+        Assert.Equal("events", changes[1].OldValue);
+        Assert.Equal("preview", changes[1].NewValue);
+    }
+
+    [Fact]
+    public void SegmentedButtonsWithCommandsUseControlledSelection()
+    {
+        var executed = false;
+        var current = new CodexSegmentedButton { Content = "Current", IsSelected = true };
+        var controlled = new CodexSegmentedButton
+        {
+            Content = "Controlled",
+            Command = new TestCommand(() => executed = true)
+        };
+        _ = new StackPanel
+        {
+            Children =
+            {
+                current,
+                controlled
+            }
+        };
+
+        InvokeClick(controlled);
+
+        Assert.True(executed);
+        Assert.True(current.IsSelected);
+        Assert.False(controlled.IsSelected);
     }
 
     [Fact]
@@ -221,6 +429,122 @@ public class ControlStateTests
         Assert.True(anthropic.IsActive);
         Assert.DoesNotContain("active", openAi.Classes);
         Assert.Contains("active", anthropic.Classes);
+    }
+
+    [Fact]
+    public void LoadingCommandSuppressesItemActivationAndCommandExecution()
+    {
+        var executionCount = 0;
+        var active = new CodexCommandItem { Content = "Current", IsActive = true };
+        var target = new CodexCommandItem
+        {
+            Content = "Run",
+            Command = new TestCommand(() => executionCount++)
+        };
+        var command = new CodexCommand
+        {
+            IsLoading = true,
+            Content = new StackPanel
+            {
+                Children =
+                {
+                    active,
+                    target
+                }
+            }
+        };
+
+        InvokeClick(target);
+
+        Assert.Contains("loading", command.Classes);
+        Assert.Equal(0, executionCount);
+        Assert.True(active.IsActive);
+        Assert.False(target.IsActive);
+
+        command.IsLoading = false;
+        InvokeClick(target);
+
+        Assert.Equal(1, executionCount);
+        Assert.False(active.IsActive);
+        Assert.True(target.IsActive);
+    }
+
+    [Fact]
+    public void CommandFiltersKeyboardNavigatesAndPublishesSelection()
+    {
+        var executionCount = 0;
+        var selectedValues = new List<string?>();
+        var provider = new CodexCommandItem
+        {
+            Content = "Switch provider",
+            Value = "provider",
+            Keywords = "model route",
+            Command = new TestCommand(() => executionCount++)
+        };
+        var logs = new CodexCommandItem { Content = "Open logs", Value = "logs", Keywords = "diagnostics" };
+        var preferences = new CodexCommandItem
+        {
+            Content = "Provider preferences",
+            Value = "preferences",
+            Keywords = "provider settings",
+            Command = new TestCommand(() => executionCount++)
+        };
+        var separator = new CodexCommandSeparator();
+        var command = new CodexCommand
+        {
+            SearchText = "provider",
+            Content = new CodexCommandList
+            {
+                Items =
+                {
+                    new CodexCommandGroup
+                    {
+                        Header = "Results",
+                        Items =
+                        {
+                            provider,
+                            logs
+                        }
+                    },
+                    separator,
+                    new CodexCommandGroup
+                    {
+                        Header = "Settings",
+                        Items =
+                        {
+                            preferences
+                        }
+                    }
+                }
+            }
+        };
+        command.ItemSelected += (_, args) => selectedValues.Add(args.Value);
+        command.SearchText = "provider";
+
+        Assert.Contains("searching", command.Classes);
+        Assert.Contains("filtering", command.Classes);
+        Assert.Contains("has-results", command.Classes);
+        Assert.DoesNotContain("empty-results", command.Classes);
+        Assert.DoesNotContain("filtered-out", provider.Classes);
+        Assert.DoesNotContain("filtered-out", preferences.Classes);
+        Assert.Contains("filtered-out", logs.Classes);
+        Assert.Contains("filtered-out", separator.Classes);
+
+        Assert.True(provider.IsActive);
+        Assert.True(command.TryHandleNavigationKey(Key.Down));
+        Assert.True(preferences.IsActive);
+        Assert.True(command.TrySelectActiveItem());
+
+        Assert.Equal(1, executionCount);
+        Assert.Same(preferences, command.SelectedItem);
+        Assert.Equal(["preferences"], selectedValues);
+
+        command.SearchText = "missing";
+
+        Assert.Contains("empty-results", command.Classes);
+        Assert.Contains("filtered-out", provider.Classes);
+        Assert.Contains("filtered-out", preferences.Classes);
+        Assert.False(command.TryHandleNavigationKey(Key.Down));
     }
 
     [Fact]
@@ -437,4 +761,24 @@ public class ControlStateTests
     private sealed record SizeCase(string Component, string StyleSelector, Func<Control> Create, Action<Control, CodexControlSize> SetSize);
 
     private sealed record IntentCase(string Component, string StyleSelector, Func<Control> Create, Action<Control, CodexControlIntent> SetIntent);
+
+    private sealed class TestCommand(Action execute) : ICommand
+    {
+        public event EventHandler? CanExecuteChanged;
+
+        public bool CanExecute(object? parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object? parameter)
+        {
+            execute();
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
 }

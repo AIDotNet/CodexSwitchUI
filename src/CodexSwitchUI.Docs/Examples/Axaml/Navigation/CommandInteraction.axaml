@@ -1,0 +1,57 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexCommand Placeholder="Search providers...">
+    <controls:CodexCommandList>
+      <controls:CodexCommandGroup Header="Sibling selection">
+        <controls:CodexCommandItem Content="OpenAI"
+                                   Icon="O"
+                                   Shortcut="Enter" />
+        <controls:CodexCommandItem Content="Claude"
+                                   Icon="C"
+                                   Shortcut="Cmd+2"
+                                   IsActive="True" />
+        <controls:CodexCommandItem Content="Local"
+                                   Icon="L" />
+      </controls:CodexCommandGroup>
+    </controls:CodexCommandList>
+  </controls:CodexCommand>
+
+  <controls:CodexCommand Grid.Column="1"
+                         Placeholder="Loading suppresses selection..."
+                         IsLoading="True">
+    <controls:CodexCommandList>
+      <controls:CodexCommandGroup Header="Loading gate">
+        <controls:CodexCommandItem Content="Refresh usage"
+                                   Icon="R"
+                                   Shortcut="Cmd+R" />
+        <controls:CodexCommandItem Content="Open settings"
+                                   Icon="S" />
+      </controls:CodexCommandGroup>
+      <controls:CodexCommandLoading Content="Refreshing command results..." />
+    </controls:CodexCommandList>
+  </controls:CodexCommand>
+
+  <controls:CodexCard Grid.Row="1"
+                      Title="Input focus"
+                      Description="Keyboard focus shows the shared focus-visible path.">
+    <controls:CodexCommandInput PlaceholderText="Filter commands..."
+                                Text="provider" />
+  </controls:CodexCard>
+
+  <controls:CodexCommand Grid.Row="1"
+                         Grid.Column="1"
+                         Placeholder="No results">
+    <controls:CodexCommandList>
+      <controls:CodexCommandEmpty Content="No matching commands." />
+      <controls:CodexCommandGroup Header="Disabled results">
+        <controls:CodexCommandItem Content="Unavailable action"
+                                   Icon="X"
+                                   IsEnabled="False" />
+      </controls:CodexCommandGroup>
+    </controls:CodexCommandList>
+  </controls:CodexCommand>
+</Grid>

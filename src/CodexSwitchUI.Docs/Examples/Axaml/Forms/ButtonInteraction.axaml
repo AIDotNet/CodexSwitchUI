@@ -1,0 +1,75 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Activation and focus"
+                       Description="Pointer release, Enter, and Space share the same activation path.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Activation count: 0" />
+        <controls:CodexButton Content="Save changes"
+                              LeadingIcon="+">
+          <controls:CodexButton.TrailingIcon>
+            <controls:CodexKbd Content="Enter"
+                               Size="Small" />
+          </controls:CodexButton.TrailingIcon>
+        </controls:CodexButton>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Secondary"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Ghost"
+                                Variant="Ghost" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Loading suppression"
+                       Description="Loading state shows loading content and blocks activation.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexButton Content="Saving"
+                              IsLoading="True"
+                              LoadingContent="Saving changes"
+                              LeadingIcon="*" />
+        <controls:CodexButton Content="Toggle loading"
+                              Variant="Secondary"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Intent actions"
+                       Description="Intent variants keep pressed scale and focus-visible behavior.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexButton Content="Cancel"
+                            Variant="Outline"
+                            Size="Small" />
+      <controls:CodexButton Content="Delete"
+                            Variant="Destructive"
+                            Size="Small" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled guard"
+                       Description="Disabled buttons remove hit testing and use shared disabled opacity.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexButton Content="Disabled"
+                            IsEnabled="False" />
+      <controls:CodexButton Content="Locked delete"
+                            Variant="Destructive"
+                            IsEnabled="False" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

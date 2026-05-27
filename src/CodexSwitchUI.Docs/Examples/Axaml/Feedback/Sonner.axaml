@@ -1,0 +1,9 @@
+<Border xmlns="https://github.com/avaloniaui"
+        xmlns:controls="using:CodexSwitchUI.Controls"
+        MinHeight="180">
+  <controls:CodexSonner Position="TopRight"
+                        RichColors="True"
+                        Expand="True"
+                        VisibleToasts="2"
+                        Offset="0" />
+</Border>

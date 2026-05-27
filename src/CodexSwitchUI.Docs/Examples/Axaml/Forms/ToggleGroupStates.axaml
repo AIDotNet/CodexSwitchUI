@@ -1,0 +1,63 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Single">
+    <controls:CodexToggleGroup SelectedValue="center">
+      <controls:CodexToggleGroupItem Content="Left"
+                                     Value="left" />
+      <controls:CodexToggleGroupItem Content="Center"
+                                     Value="center" />
+      <controls:CodexToggleGroupItem Content="Right"
+                                     Value="right" />
+    </controls:CodexToggleGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Multiple">
+    <controls:CodexToggleGroup Type="Multiple"
+                               Variant="Outline">
+      <controls:CodexToggleGroupItem Content="Bold"
+                                     Value="bold"
+                                     IsPressed="True" />
+      <controls:CodexToggleGroupItem Content="Italic"
+                                     Value="italic"
+                                     IsPressed="True" />
+      <controls:CodexToggleGroupItem Content="Code"
+                                     Value="code" />
+    </controls:CodexToggleGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Vertical">
+    <controls:CodexToggleGroup Orientation="Vertical"
+                               Size="Small"
+                               Spacing="1"
+                               SelectedValue="list">
+      <controls:CodexToggleGroupItem Content="List"
+                                     Value="list" />
+      <controls:CodexToggleGroupItem Content="Grid"
+                                     Value="grid" />
+      <controls:CodexToggleGroupItem Content="Cards"
+                                     Value="cards" />
+    </controls:CodexToggleGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Connected and disabled">
+    <controls:CodexToggleGroup Variant="Outline"
+                               Spacing="0"
+                               SelectedValue="all">
+      <controls:CodexToggleGroupItem Content="All"
+                                     Value="all" />
+      <controls:CodexToggleGroupItem Content="Missed"
+                                     Value="missed" />
+      <controls:CodexToggleGroupItem Content="Locked"
+                                     Value="locked"
+                                     IsEnabled="False" />
+    </controls:CodexToggleGroup>
+  </controls:CodexField>
+</Grid>

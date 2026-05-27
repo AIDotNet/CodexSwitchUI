@@ -1,0 +1,42 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Provider name"
+                       Description="Visible in routing menus."
+                       Message="Use a short name for dense tables."
+                       IsRequired="True">
+    <controls:CodexTextBox Text="OpenAI"
+                           MinWidth="240" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Default route"
+                       Description="The child control can be any Codex input.">
+    <controls:CodexSelect SelectedIndex="0"
+                          MinWidth="240">
+      <ComboBoxItem Content="Primary" />
+      <ComboBoxItem Content="Fallback" />
+      <ComboBoxItem Content="Disabled" />
+    </controls:CodexSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Request notes"
+                       Description="Multiline controls inherit field spacing.">
+    <controls:CodexTextarea Text="stream: true&#x0a;reasoning: medium"
+                            MinHeight="92" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Validation"
+                       Message="Endpoint is required."
+                       Intent="Error">
+    <controls:CodexTextBox PlaceholderText="https://api.example.com"
+                           Intent="Error"
+                           MinWidth="240" />
+  </controls:CodexField>
+</Grid>

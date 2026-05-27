@@ -1,0 +1,60 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexCommand Placeholder="Search commands..."
+                         SearchText="provider"
+                         LoopNavigation="True">
+    <controls:CodexCommandList>
+      <controls:CodexCommandGroup Header="Results">
+        <controls:CodexCommandItem Content="Switch provider"
+                                   Value="provider"
+                                   Keywords="model route"
+                                   Icon="P"
+                                   Shortcut="Enter"
+                                   IsActive="True" />
+        <controls:CodexCommandItem Content="Refresh models"
+                                   Value="models"
+                                   Keywords="provider reload"
+                                   Icon="R"
+                                   Shortcut="Cmd+R" />
+        <controls:CodexCommandItem Content="Open logs"
+                                   Value="logs"
+                                   Keywords="diagnostics"
+                                   Icon="L" />
+      </controls:CodexCommandGroup>
+
+      <controls:CodexCommandSeparator AlwaysRender="True" />
+
+      <controls:CodexCommandGroup Header="Settings">
+        <controls:CodexCommandItem Content="Provider preferences"
+                                   Value="preferences"
+                                   Keywords="provider settings"
+                                   Icon="S"
+                                   Shortcut="Cmd+," />
+        <controls:CodexCommandItem Content="Billing"
+                                   Value="billing"
+                                   Keywords="usage invoice"
+                                   Icon="B" />
+      </controls:CodexCommandGroup>
+    </controls:CodexCommandList>
+  </controls:CodexCommand>
+
+  <controls:CodexCommand Grid.Column="1"
+                         Placeholder="Search commands..."
+                         SearchText="unknown">
+    <controls:CodexCommandList>
+      <controls:CodexCommandEmpty Content="No command found for unknown." />
+      <controls:CodexCommandGroup Header="Hidden by search">
+        <controls:CodexCommandItem Content="Switch provider"
+                                   Value="provider"
+                                   Keywords="model route"
+                                   Icon="P" />
+        <controls:CodexCommandItem Content="Refresh models"
+                                   Value="models"
+                                   Keywords="provider reload"
+                                   Icon="R" />
+      </controls:CodexCommandGroup>
+    </controls:CodexCommandList>
+  </controls:CodexCommand>
+</Grid>

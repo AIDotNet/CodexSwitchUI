@@ -1,0 +1,35 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Default">
+    <controls:CodexTextarea Text="stream: true"
+                            MinHeight="96" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Readonly">
+    <controls:CodexTextarea Text="request_id: cs_123"
+                            IsReadOnly="True"
+                            MinHeight="96" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Error"
+                       Message="Body cannot be empty."
+                       Intent="Error">
+    <controls:CodexTextarea Intent="Error"
+                            MinHeight="96" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled">
+    <controls:CodexTextarea Text="Locked"
+                            IsEnabled="False"
+                            Size="Large"
+                            MinHeight="96" />
+  </controls:CodexField>
+</Grid>

@@ -12,12 +12,24 @@
     <Setter Property="TooltipBorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
     <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
+    <Setter Property="AnimationDuration" Value="{DynamicResource CodexSwitch.MotionDurationSlow}" />
     <Setter Property="Transitions">
       <Transitions>
-        <DoubleTransition Property="Opacity" Duration="0:0:0.15" />
-        <BrushTransition Property="Foreground" Duration="0:0:0.15" />
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="TrackBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="SliceBorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="TooltipBorderBrush" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexUsagePieChart.has-active-slice">
+    <Setter Property="TooltipBorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexUsagePieChart.empty">
+    <Setter Property="TrackBrush" Value="{DynamicResource CodexSwitch.MutedBrush}" />
   </Style>
 
   <Style Selector="controls|CodexUsagePieChart.compact">

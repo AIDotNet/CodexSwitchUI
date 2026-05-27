@@ -1,0 +1,93 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Command path"
+                       Description="Previous and next buttons raise SelectionChanged with source, old/new index, and old/new item metadata.">
+    <StackPanel Spacing="10">
+      <controls:CodexCarousel MaxWidth="560">
+        <controls:CodexCarouselItem Width="260">
+          <controls:CodexCard Title="Start"
+                              Description="Previous disabled" />
+        </controls:CodexCarouselItem>
+        <controls:CodexCarouselItem Width="260">
+          <controls:CodexCard Title="Middle"
+                              Description="Arrow keys move here" />
+        </controls:CodexCarouselItem>
+        <controls:CodexCarouselItem Width="260">
+          <controls:CodexCard Title="End"
+                              Description="Next disabled" />
+        </controls:CodexCarouselItem>
+      </controls:CodexCarousel>
+      <TextBlock Text="SelectionChanged: source metadata distinguishes API, previous, next, first, last, and keyboard movement."
+                 TextWrapping="Wrap" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Keyboard path">
+    <controls:CodexCarousel SelectedIndex="1"
+                            MaxWidth="560">
+      <controls:CodexCarouselItem Width="260">
+        <controls:CodexCard Title="Home"
+                            Description="Home selects first" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="260">
+        <controls:CodexCard Title="Arrow"
+                            Description="Left/Right moves" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="260">
+        <controls:CodexCard Title="End"
+                            Description="End selects last" />
+      </controls:CodexCarouselItem>
+    </controls:CodexCarousel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Loop edge">
+    <controls:CodexCarousel SelectedIndex="2"
+                            Loop="True"
+                            MaxWidth="560">
+      <controls:CodexCarouselItem Width="260">
+        <controls:CodexCard Title="First"
+                            Description="Wrapped target" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="260">
+        <controls:CodexCard Title="Middle"
+                            Description="Loop stays enabled" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="260">
+        <controls:CodexCard Title="Last"
+                            Description="Next wraps" />
+      </controls:CodexCarouselItem>
+    </controls:CodexCarousel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Vertical commands">
+    <controls:CodexCarousel Orientation="Vertical"
+                            SelectedIndex="1"
+                            Size="Small"
+                            MaxWidth="340"
+                            MaxHeight="360">
+      <controls:CodexCarouselItem Width="280"
+                                  MinHeight="116">
+        <controls:CodexCard Title="Up"
+                            Description="Up/PageUp" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="280"
+                                  MinHeight="116">
+        <controls:CodexCard Title="Selected"
+                            Description="Current" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="280"
+                                  MinHeight="116">
+        <controls:CodexCard Title="Down"
+                            Description="Down/PageDown" />
+      </controls:CodexCarouselItem>
+    </controls:CodexCarousel>
+  </controls:CodexField>
+</Grid>

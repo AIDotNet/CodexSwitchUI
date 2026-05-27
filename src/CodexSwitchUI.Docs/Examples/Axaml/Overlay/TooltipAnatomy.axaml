@@ -1,0 +1,79 @@
+<controls:CodexTooltipProvider xmlns="https://github.com/avaloniaui"
+                               xmlns:controls="using:CodexSwitchUI.Controls"
+                               DelayDuration="0:0:0.7"
+                               SkipDelayDuration="0:0:0.3">
+  <Grid ColumnDefinitions="*,*"
+        RowDefinitions="Auto,Auto"
+        ColumnSpacing="16"
+        RowSpacing="14">
+    <controls:CodexField Label="Trigger and content"
+                         Description="Tooltip owns a trigger slot and a non-interactive content surface.">
+      <controls:CodexField.Content>
+        <controls:CodexTooltip Content="Add to library"
+                               Placement="Top"
+                               IsOpen="True"
+                               IsArrowVisible="True">
+          <controls:CodexTooltip.Trigger>
+            <controls:CodexButton Content="Hover" />
+          </controls:CodexTooltip.Trigger>
+        </controls:CodexTooltip>
+      </controls:CodexField.Content>
+    </controls:CodexField>
+
+    <controls:CodexField Grid.Column="1"
+                         Label="Side placement"
+                         Description="Side classes drive arrow position and entrance transform.">
+      <controls:CodexField.Content>
+        <controls:CodexTooltip Content="Right side"
+                               Placement="Right"
+                               IsOpen="True"
+                               IsArrowVisible="True"
+                               Size="Small">
+          <controls:CodexTooltip.Trigger>
+            <controls:CodexButton Content="Right"
+                                  Size="Small" />
+          </controls:CodexTooltip.Trigger>
+        </controls:CodexTooltip>
+      </controls:CodexField.Content>
+    </controls:CodexField>
+
+    <controls:CodexField Grid.Row="1"
+                         Label="Keyboard shortcut"
+                         Description="Content can host Kbd tokens without becoming interactive.">
+      <controls:CodexField.Content>
+        <controls:CodexTooltip Placement="Bottom"
+                               IsOpen="True"
+                               IsArrowVisible="True">
+          <controls:CodexTooltip.Trigger>
+            <controls:CodexButton Content="Save" />
+          </controls:CodexTooltip.Trigger>
+          <controls:CodexKbdGroup Size="Small">
+            <controls:CodexKbd Content="Cmd"
+                               Size="Small" />
+            <controls:CodexKbd Content="S"
+                               Size="Small" />
+          </controls:CodexKbdGroup>
+        </controls:CodexTooltip>
+      </controls:CodexField.Content>
+    </controls:CodexField>
+
+    <controls:CodexField Grid.Row="1"
+                         Grid.Column="1"
+                         Label="Disabled trigger wrapper"
+                         Description="A wrapper can receive hover/focus while the inner button stays disabled.">
+      <controls:CodexField.Content>
+        <controls:CodexTooltip Content="Provider is locked"
+                               Placement="Left"
+                               IsOpen="True"
+                               IsArrowVisible="True">
+          <controls:CodexTooltip.Trigger>
+            <Border>
+              <controls:CodexButton Content="Disabled"
+                                    IsEnabled="False" />
+            </Border>
+          </controls:CodexTooltip.Trigger>
+        </controls:CodexTooltip>
+      </controls:CodexField.Content>
+    </controls:CodexField>
+  </Grid>
+</controls:CodexTooltipProvider>

@@ -1,0 +1,44 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexStatCard Label="With icon"
+                          Detail="Healthy">
+    <controls:CodexStatCard.Value>
+      <TextBlock Text="99.4%"
+                 FontWeight="SemiBold" />
+    </controls:CodexStatCard.Value>
+    <controls:CodexStatCard.Icon>
+      <controls:CodexBadge Content="OK"
+                           Variant="Success" />
+    </controls:CodexStatCard.Icon>
+  </controls:CodexStatCard>
+
+  <controls:CodexStatCard Grid.Column="1"
+                          Label="No detail">
+    <controls:CodexStatCard.Value>
+      <TextBlock Text="18"
+                 FontWeight="SemiBold" />
+    </controls:CodexStatCard.Value>
+  </controls:CodexStatCard>
+
+  <controls:CodexMetric Grid.Row="1"
+                        Label="Compact"
+                        Detail="Monthly tokens">
+    <controls:CodexMetric.Value>
+      <TextBlock Text="1.2M"
+                 FontWeight="SemiBold" />
+    </controls:CodexMetric.Value>
+  </controls:CodexMetric>
+
+  <controls:CodexMetric Grid.Row="1"
+                        Grid.Column="1"
+                        Label="Inline no detail">
+    <controls:CodexMetric.Value>
+      <TextBlock Text="4"
+                 FontWeight="SemiBold" />
+    </controls:CodexMetric.Value>
+  </controls:CodexMetric>
+</Grid>

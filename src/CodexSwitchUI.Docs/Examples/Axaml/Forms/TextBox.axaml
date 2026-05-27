@@ -1,0 +1,14 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexField Label="Provider"
+                       Description="Keyboard focus uses the Web focus-visible contract.">
+    <controls:CodexTextBox MinWidth="280"
+                           PlaceholderText="OpenAI" />
+  </controls:CodexField>
+  <controls:CodexField Label="Read-only endpoint">
+    <controls:CodexTextBox MinWidth="280"
+                           Text="https://api.openai.com/v1"
+                           IsReadOnly="True" />
+  </controls:CodexField>
+</StackPanel>

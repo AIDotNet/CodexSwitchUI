@@ -1,0 +1,46 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Multiline input"
+                       Description="Enter inserts lines and wrapping stays inside the template scroll viewer.">
+    <controls:CodexTextarea Text="stream: true&#x0a;temperature: 0.7&#x0a;reasoning: medium"
+                            CaretIndex="22"
+                            SelectionStart="4"
+                            SelectionEnd="12"
+                            MinHeight="118" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Placeholder and scroll"
+                       Description="Empty text shows the placeholder; overflow uses the owned vertical scroll path.">
+    <controls:CodexTextarea PlaceholderText="Optional JSON payload"
+                            MinLines="5"
+                            MinHeight="132" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Validation feedback"
+                       Message="Request body cannot be empty."
+                       Intent="Error">
+    <controls:CodexTextarea Intent="Error"
+                            PlaceholderText="JSON body"
+                            MinHeight="118" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Read-only and disabled"
+                       Description="Read-only preserves text selection; disabled blocks editing and focus.">
+    <StackPanel Spacing="10">
+      <controls:CodexTextarea Text="request_id: cs_123&#x0a;status: complete"
+                              IsReadOnly="True"
+                              MinHeight="90" />
+      <controls:CodexTextarea Text="Locked"
+                              IsEnabled="False"
+                              MinHeight="90" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

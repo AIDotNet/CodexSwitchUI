@@ -1,0 +1,25 @@
+<controls:CodexScrollArea xmlns="https://github.com/avaloniaui"
+                          xmlns:controls="using:CodexSwitchUI.Controls"
+                          Type="Hover"
+                          IsInsetContent="True"
+                          Width="320"
+                          Height="190"
+                          VerticalScrollBarVisibility="Auto">
+  <StackPanel Spacing="8">
+    <controls:CodexButton Content="OpenAI"
+                          Variant="Ghost"
+                          HorizontalAlignment="Stretch" />
+    <controls:CodexButton Content="Claude"
+                          Variant="Ghost"
+                          HorizontalAlignment="Stretch" />
+    <controls:CodexButton Content="Gemini"
+                          Variant="Ghost"
+                          HorizontalAlignment="Stretch" />
+    <controls:CodexButton Content="Local proxy"
+                          Variant="Ghost"
+                          HorizontalAlignment="Stretch" />
+    <controls:CodexButton Content="Fallback"
+                          Variant="Ghost"
+                          HorizontalAlignment="Stretch" />
+  </StackPanel>
+</controls:CodexScrollArea>

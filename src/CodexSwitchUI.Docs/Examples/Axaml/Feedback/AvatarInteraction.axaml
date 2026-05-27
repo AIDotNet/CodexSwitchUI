@@ -1,0 +1,76 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Image lifecycle"
+                       Description="ImagePath changes publish LoadingStatusChanged before settling into loaded or error.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="LoadingStatusChanged: Loading -> Loaded (openai.png)" />
+        <controls:CodexAvatar Fallback="AI"
+                              ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                              Variant="Secondary"
+                              StatusVariant="Success"
+                              IsStatusVisible="True" />
+        <controls:CodexButton Content="Cycle image"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Fallback delay"
+                       Description="FallbackDelay mirrors Radix delayMs and prevents loading text flashes.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <primitives:CodexText Role="Muted"
+                              Text="Fallback is delayed while the avatar is loading."
+                              TextWrapping="Wrap" />
+        <controls:CodexAvatar Fallback="DL"
+                              Size="Large"
+                              IsStatusVisible="True"
+                              FallbackDelay="0:0:0.6"
+                              LoadingStatus="Loading" />
+        <controls:CodexButton Content="Resolve fallback"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Density toggle"
+                       Description="Size classes keep the same visual contract across compact and large rows.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexAvatar Fallback="LG"
+                              Size="Large"
+                              Variant="Default" />
+        <controls:CodexButton Content="Toggle size"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled host composition"
+                       Description="Avatars keep identity readable inside disabled command hosts.">
+    <controls:CodexField.Content>
+      <controls:CodexButton Content="Assign owner"
+                            IsEnabled="False">
+        <controls:CodexButton.LeadingIcon>
+          <controls:CodexAvatar Fallback="OP"
+                                Size="Small"
+                                IsStatusVisible="True" />
+        </controls:CodexButton.LeadingIcon>
+      </controls:CodexButton>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

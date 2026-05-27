@@ -1,0 +1,70 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Kbd group"
+                       Description="Grouped keys keep a compact shortcut rhythm.">
+    <controls:CodexField.Content>
+      <controls:CodexKbdGroup>
+        <controls:CodexKbd Content="Ctrl" />
+        <controls:CodexKbd Content="B" />
+      </controls:CodexKbdGroup>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Button slot"
+                       Description="Kbd can live inside a command button trailing slot.">
+    <controls:CodexField.Content>
+      <controls:CodexButton Content="Accept"
+                            Variant="Secondary">
+        <controls:CodexButton.TrailingIcon>
+          <controls:CodexKbd Content="Enter"
+                             Size="Small" />
+        </controls:CodexButton.TrailingIcon>
+      </controls:CodexButton>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Tooltip content"
+                       Description="Shortcut help can be rendered inside tooltip surfaces.">
+    <controls:CodexField.Content>
+      <StackPanel Spacing="8">
+        <controls:CodexButton Content="Save" />
+        <controls:CodexTooltip IsOpen="True"
+                               Placement="Bottom"
+                               IsArrowVisible="True"
+                               Size="Small">
+          <controls:CodexKbdGroup Size="Small">
+            <controls:CodexKbd Content="Cmd"
+                               Size="Small" />
+            <controls:CodexKbd Content="S"
+                               Size="Small" />
+          </controls:CodexKbdGroup>
+        </controls:CodexTooltip>
+      </StackPanel>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Input group addon"
+                       Description="Search fields can reserve the inline-end slot for shortcut hints.">
+    <controls:CodexField.Content>
+      <controls:CodexInputGroup MinWidth="300">
+        <controls:CodexInputGroupInput PlaceholderText="Search..." />
+        <controls:CodexInputGroupAddon Align="InlineEnd">
+          <controls:CodexKbdGroup Size="Small">
+            <controls:CodexKbd Content="Cmd"
+                               Size="Small" />
+            <controls:CodexKbd Content="K"
+                               Size="Small" />
+          </controls:CodexKbdGroup>
+        </controls:CodexInputGroupAddon>
+      </controls:CodexInputGroup>
+    </controls:CodexField.Content>
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,54 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            xmlns:primitives="using:CodexSwitchUI.Primitives"
+            Spacing="14">
+  <controls:CodexField Label="Card slides">
+    <controls:CodexCarousel SelectedIndex="1"
+                            MaxWidth="560">
+      <controls:CodexCarouselItem Width="300">
+        <controls:CodexCard Title="Usage"
+                            Description="Last 24 hours">
+          <primitives:CodexText Text="42.7K"
+                                Role="Subtitle" />
+        </controls:CodexCard>
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="300">
+        <controls:CodexCard Title="Requests"
+                            Description="Accepted">
+          <primitives:CodexText Text="918"
+                                Role="Subtitle" />
+        </controls:CodexCard>
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="300">
+        <controls:CodexCard Title="Cost"
+                            Description="Projected">
+          <primitives:CodexText Text="$18.20"
+                                Role="Subtitle" />
+        </controls:CodexCard>
+      </controls:CodexCarouselItem>
+    </controls:CodexCarousel>
+  </controls:CodexField>
+
+  <controls:CodexField Label="Variable item widths">
+    <controls:CodexCarousel SelectedIndex="2"
+                            Loop="True"
+                            MaxWidth="560">
+      <controls:CodexCarouselItem Width="360">
+        <controls:CodexCard Title="One half"
+                            Description="Wide card" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="220">
+        <controls:CodexCard Title="Compact"
+                            Description="Narrow card" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="300">
+        <controls:CodexCard Title="Selected"
+                            Description="Snap target" />
+      </controls:CodexCarouselItem>
+      <controls:CodexCarouselItem Width="240">
+        <controls:CodexCard Title="More"
+                            Description="Loop target" />
+      </controls:CodexCarouselItem>
+    </controls:CodexCarousel>
+  </controls:CodexField>
+</StackPanel>

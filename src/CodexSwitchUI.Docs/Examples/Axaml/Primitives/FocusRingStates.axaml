@@ -1,0 +1,22 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*,*"
+      ColumnSpacing="14">
+  <primitives:CodexFocusRing IsRingVisible="True">
+    <controls:CodexButton Content="Default" />
+  </primitives:CodexFocusRing>
+
+  <primitives:CodexFocusRing Grid.Column="1"
+                             IsRingVisible="True"
+                             RingThickness="4">
+    <controls:CodexButton Content="Thick"
+                          Variant="Secondary" />
+  </primitives:CodexFocusRing>
+
+  <primitives:CodexFocusRing Grid.Column="2"
+                             IsRingVisible="False">
+    <controls:CodexButton Content="Hidden"
+                          Variant="Ghost" />
+  </primitives:CodexFocusRing>
+</Grid>

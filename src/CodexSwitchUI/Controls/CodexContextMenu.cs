@@ -1,6 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Metadata;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
+using System.Collections.Specialized;
 
 namespace CodexSwitchUI.Controls;
 
@@ -22,8 +27,10 @@ public class CodexContextMenu : ContextMenu
 
     public CodexContextMenu()
     {
+        CodexMenuActivation.RegisterOwner(this);
         SyncClasses();
         SyncPlacementClasses();
+        ItemsView.CollectionChanged += OnItemsViewChanged;
     }
 
     public CodexControlSize Size
@@ -36,6 +43,34 @@ public class CodexContextMenu : ContextMenu
     {
         get => GetValue(IsLoadingProperty);
         set => SetValue(IsLoadingProperty, value);
+    }
+
+    protected override Control CreateContainerForItemOverride(object? item, int index, object? recycleKey)
+    {
+        return new CodexContextMenuItem();
+    }
+
+    protected override bool NeedsContainerOverride(object? item, int index, out object? recycleKey)
+    {
+        return NeedsContainer<CodexContextMenuItem>(item, out recycleKey);
+    }
+
+    protected override void PrepareContainerForItemOverride(Control container, object? item, int index)
+    {
+        base.PrepareContainerForItemOverride(container, item, index);
+        CodexMenuActivation.TrackOwner(container, this);
+    }
+
+    protected override void ClearContainerForItemOverride(Control element)
+    {
+        CodexMenuActivation.ClearOwner(element);
+        base.ClearContainerForItemOverride(element);
+    }
+
+    private void OnItemsViewChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        CodexMenuActivation.ClearItemOwners(e.OldItems);
+        CodexMenuActivation.TrackItemOwners(this);
     }
 
     private void SyncClasses()
@@ -73,8 +108,11 @@ public class CodexContextMenu : ContextMenu
     }
 }
 
+[PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexContextMenuItem : MenuItem
 {
+    private CodexMenuItemSelectSource? _pendingSelectSource;
+
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<CodexContextMenuItem, bool>(nameof(IsActive));
 
@@ -103,9 +141,13 @@ public class CodexContextMenuItem : MenuItem
 
     public CodexContextMenuItem()
     {
+        CodexMenuActivation.RegisterOwner(this);
         SyncClasses();
         SyncSubMenuPlacementClasses();
+        ItemsView.CollectionChanged += OnItemsViewChanged;
     }
+
+    public event EventHandler<CodexMenuItemSelectedEventArgs>? ItemSelected;
 
     public bool IsActive
     {
@@ -131,6 +173,169 @@ public class CodexContextMenuItem : MenuItem
     {
         get => GetValue(SubMenuPlacementProperty);
         set => SetValue(SubMenuPlacementProperty, value);
+    }
+
+    protected override void OnGotFocus(FocusChangedEventArgs e)
+    {
+        base.OnGotFocus(e);
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, CodexFocusVisible.FromFocusChange(e));
+    }
+
+    protected override void OnLostFocus(FocusChangedEventArgs e)
+    {
+        base.OnLostFocus(e);
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerEntered(PointerEventArgs e)
+    {
+        base.OnPointerEntered(e);
+        CodexMenuActivation.RequestPointerSubMenuOpen(this);
+    }
+
+    protected override void OnPointerExited(PointerEventArgs e)
+    {
+        base.OnPointerExited(e);
+        CodexMenuActivation.RequestPointerSubMenuClose(this);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        if (!CodexMenuActivation.CanActivate(this))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        _pendingSelectSource = CodexMenuItemSelectSource.Pointer;
+        try
+        {
+            base.OnPointerReleased(e);
+        }
+        finally
+        {
+            ClearPendingSelectSourceLater(CodexMenuItemSelectSource.Pointer);
+        }
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (TryHandleSubMenuKey(e.Key))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        if (TryHandleSiblingNavigationKey(e.Key))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        if (CodexMenuActivation.IsActivationKey(e.Key) && !CodexMenuActivation.CanActivate(this))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        var tracksKeyboardSelect = CodexMenuActivation.IsActivationKey(e.Key);
+        if (tracksKeyboardSelect)
+        {
+            _pendingSelectSource = CodexMenuItemSelectSource.Keyboard;
+        }
+
+        try
+        {
+            base.OnKeyDown(e);
+        }
+        finally
+        {
+            if (tracksKeyboardSelect)
+            {
+                ClearPendingSelectSourceLater(CodexMenuItemSelectSource.Keyboard);
+            }
+        }
+    }
+
+    internal bool TryHandleSubMenuKey(Key key)
+    {
+        return CodexMenuActivation.TryHandleSubMenuKey(this, key, openOnDown: false);
+    }
+
+    internal bool TryHandleSiblingNavigationKey(Key key)
+    {
+        return CodexMenuActivation.TryHandleSiblingNavigationKey(this, key);
+    }
+
+    internal bool TryCloseOnSelect()
+    {
+        return CodexMenuActivation.TryCloseOnSelect(this);
+    }
+
+    protected override void OnClick(RoutedEventArgs e)
+    {
+        if (!CodexMenuActivation.CanActivate(this))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        var source = _pendingSelectSource ?? CodexMenuItemSelectSource.Programmatic;
+        _pendingSelectSource = null;
+        var shouldCloseOnSelect = CodexMenuActivation.ShouldCloseOnSelect(this);
+        base.OnClick(e);
+        var didCloseOnSelect = false;
+
+        if (shouldCloseOnSelect)
+        {
+            didCloseOnSelect = CodexMenuActivation.TryCloseOnSelect(this);
+        }
+
+        if (!HasSubMenu)
+        {
+            ItemSelected?.Invoke(this, new CodexMenuItemSelectedEventArgs(this, source, didCloseOnSelect));
+        }
+    }
+
+    protected override void PrepareContainerForItemOverride(Control container, object? item, int index)
+    {
+        base.PrepareContainerForItemOverride(container, item, index);
+        CodexMenuActivation.TrackOwner(container, this);
+    }
+
+    protected override void ClearContainerForItemOverride(Control element)
+    {
+        CodexMenuActivation.ClearOwner(element);
+        base.ClearContainerForItemOverride(element);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        CodexMenuActivation.CancelPointerSubMenuRequests(this);
+        base.OnDetachedFromVisualTree(e);
+    }
+
+    private void OnItemsViewChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        CodexMenuActivation.ClearItemOwners(e.OldItems);
+        CodexMenuActivation.TrackItemOwners(this);
+    }
+
+    private void ClearPendingSelectSourceLater(CodexMenuItemSelectSource source)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (_pendingSelectSource == source)
+            {
+                _pendingSelectSource = null;
+            }
+        });
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

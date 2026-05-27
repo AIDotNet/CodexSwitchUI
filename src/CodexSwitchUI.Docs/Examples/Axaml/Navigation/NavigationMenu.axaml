@@ -1,0 +1,30 @@
+<controls:CodexNavigationMenu xmlns="https://github.com/avaloniaui"
+                              xmlns:controls="using:CodexSwitchUI.Controls">
+  <controls:CodexNavigationMenuItem Header="Overview"
+                                    Icon="O"
+                                    IsOpen="True"
+                                    ViewportWidth="360">
+    <controls:CodexNavigationMenuContent Header="Overview"
+                                         Description="Entry points for component usage.">
+      <controls:CodexNavigationMenuLink Content="Getting started"
+                                        Description="Install and apply the theme."
+                                        IsActive="True" />
+      <controls:CodexNavigationMenuLink Content="Motion tokens"
+                                        Description="Shared duration and easing scale." />
+    </controls:CodexNavigationMenuContent>
+  </controls:CodexNavigationMenuItem>
+
+  <controls:CodexNavigationMenuItem Header="Components"
+                                    Icon="C"
+                                    ViewportWidth="420">
+    <controls:CodexNavigationMenuContent Header="Components"
+                                         Description="Forms, overlays, feedback, and data display.">
+      <controls:CodexNavigationMenuLink Content="Forms"
+                                        Description="Inputs and actions."
+                                        Icon="F" />
+      <controls:CodexNavigationMenuLink Content="Overlay"
+                                        Description="Dialog, popover, tooltip."
+                                        Icon="O" />
+    </controls:CodexNavigationMenuContent>
+  </controls:CodexNavigationMenuItem>
+</controls:CodexNavigationMenu>

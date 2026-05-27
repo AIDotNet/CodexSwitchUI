@@ -1,0 +1,41 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexEmptyState Title="Action requested"
+                            Description="Primary and secondary buttons route through the component action path."
+                            Icon="i"
+                            Action="Refresh"
+                            SecondaryAction="Clear filter"
+                            MinHeight="190" />
+
+  <controls:CodexEmptyState Grid.Column="1"
+                            Title="Loading gate"
+                            Description="Loading suppresses both action paths and lowers surface opacity."
+                            Icon="..."
+                            IsLoading="True"
+                            Action="Refreshing"
+                            SecondaryAction="Cancel"
+                            MinHeight="190" />
+
+  <controls:CodexEmptyState Grid.Row="1"
+                            Title="Disabled surface"
+                            Description="Disabled state keeps slots visible but blocks action execution."
+                            Icon="!"
+                            IsEnabled="False"
+                            Action="Retry"
+                            SecondaryAction="Dismiss"
+                            MinHeight="190" />
+
+  <controls:CodexEmptyState Grid.Row="1"
+                            Grid.Column="1"
+                            Title="Semantic recovery"
+                            Description="Warning and success variants keep the same action contract."
+                            Icon="?"
+                            Variant="Warning"
+                            Action="Inspect"
+                            SecondaryAction="Ignore"
+                            MinHeight="190" />
+</Grid>
