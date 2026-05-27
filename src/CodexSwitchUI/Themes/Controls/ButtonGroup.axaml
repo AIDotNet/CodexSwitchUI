@@ -32,7 +32,8 @@
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="{TemplateBinding CornerRadius}">
-          <ItemsPresenter x:Name="PART_ItemsPresenter" />
+          <ItemsPresenter x:Name="PART_ItemsPresenter"
+                          ItemsPanel="{TemplateBinding ItemsPanel}" />
         </Border>
       </ControlTemplate>
     </Setter>

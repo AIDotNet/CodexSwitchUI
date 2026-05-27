@@ -64,7 +64,8 @@
                     CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
                     IsHitTestVisible="False"
                     Opacity="0">
-              <ItemsPresenter x:Name="PART_ItemsPresenter" />
+              <ItemsPresenter x:Name="PART_ItemsPresenter"
+                              ItemsPanel="{TemplateBinding ItemsPanel}" />
             </Border>
           </StackPanel>
         </Border>
