@@ -38,6 +38,7 @@ public class NavigationDataComponentTests
         Assert.Equal(2, changes[0].NewIndex);
         Assert.Equal("general", changes[0].OldValue);
         Assert.Equal("advanced", changes[0].NewValue);
+        Assert.Equal(CodexTabsValueChangeSource.Keyboard, changes[0].Source);
 
         Assert.True(tabs.TryHandleSelectionKey(Key.Right));
         Assert.Equal(0, tabs.SelectedIndex);
@@ -68,6 +69,63 @@ public class NavigationDataComponentTests
     }
 
     [Fact]
+    public void TabsValueChangedPublishesSourceMetadataAndPrimaryPointerRelease()
+    {
+        var changes = new List<CodexTabsValueChangedEventArgs>();
+        var preview = new CodexTabItem { Header = "Preview", Value = "preview" };
+        var code = new CodexTabItem { Header = "Code", Value = "code" };
+        var disabled = new CodexTabItem { Header = "Disabled", Value = "disabled", IsEnabled = false };
+        var tabs = new CodexTabs
+        {
+            SelectedIndex = 0,
+            Items =
+            {
+                preview,
+                code,
+                disabled
+            }
+        };
+        tabs.ValueChanged += (_, args) => changes.Add(args);
+
+        Assert.False(code.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(code.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.Equal(0, tabs.SelectedIndex);
+
+        Assert.True(code.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+
+        Assert.Equal(1, tabs.SelectedIndex);
+        Assert.Equal("code", tabs.SelectedValue);
+        var pointerChange = Assert.Single(changes);
+        Assert.Same(preview, pointerChange.OldItem);
+        Assert.Same(code, pointerChange.NewItem);
+        Assert.Equal(0, pointerChange.OldIndex);
+        Assert.Equal(1, pointerChange.NewIndex);
+        Assert.Equal("preview", pointerChange.OldValue);
+        Assert.Equal("code", pointerChange.NewValue);
+        Assert.Equal(CodexTabsValueChangeSource.Pointer, pointerChange.Source);
+
+        changes.Clear();
+        Assert.True(preview.TryHandleActivationKey(Key.Enter));
+
+        var keyboardChange = Assert.Single(changes);
+        Assert.Equal("code", keyboardChange.OldValue);
+        Assert.Equal("preview", keyboardChange.NewValue);
+        Assert.Equal(CodexTabsValueChangeSource.Keyboard, keyboardChange.Source);
+
+        changes.Clear();
+        tabs.SelectedValue = "code";
+
+        var programmaticChange = Assert.Single(changes);
+        Assert.Equal("preview", programmaticChange.OldValue);
+        Assert.Equal("code", programmaticChange.NewValue);
+        Assert.Equal(CodexTabsValueChangeSource.Programmatic, programmaticChange.Source);
+
+        Assert.False(disabled.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal("code", tabs.SelectedValue);
+        Assert.Single(changes);
+    }
+
+    [Fact]
     public void CarouselNavigationLoopAndKeyboardMirrorWebSlideSelection()
     {
         var changes = new List<CodexCarouselSelectionChangedEventArgs>();
@@ -92,10 +150,20 @@ public class NavigationDataComponentTests
         Assert.Equal("Slide 1 of 3", carousel.StatusText);
         Assert.False(carousel.CanGoPrevious);
         Assert.True(carousel.CanGoNext);
+        Assert.Contains("at-start", carousel.Classes);
+        Assert.DoesNotContain("at-end", carousel.Classes);
+        Assert.Contains("previous-disabled", carousel.Classes);
+        Assert.DoesNotContain("next-disabled", carousel.Classes);
+        Assert.False(carousel.PreviousCommand.CanExecute(null));
+        Assert.True(carousel.NextCommand.CanExecute(null));
 
         Assert.True(carousel.GoNext());
         Assert.Equal(1, carousel.SelectedIndex);
         Assert.Equal("Slide 2 of 3", carousel.StatusText);
+        Assert.DoesNotContain("at-start", carousel.Classes);
+        Assert.DoesNotContain("at-end", carousel.Classes);
+        Assert.DoesNotContain("previous-disabled", carousel.Classes);
+        Assert.DoesNotContain("next-disabled", carousel.Classes);
         var nextChange = Assert.Single(changes);
         Assert.Equal(0, nextChange.OldIndex);
         Assert.Equal(1, nextChange.NewIndex);
@@ -108,14 +176,23 @@ public class NavigationDataComponentTests
         Assert.Equal(CodexCarouselSelectionChangeSource.Keyboard, changes[1].Source);
         Assert.Same(three, changes[1].NewItem);
         Assert.False(carousel.CanGoNext);
+        Assert.Contains("at-end", carousel.Classes);
+        Assert.Contains("next-disabled", carousel.Classes);
+        Assert.DoesNotContain("previous-disabled", carousel.Classes);
 
         Assert.False(carousel.GoNext());
         carousel.Loop = true;
+        Assert.Contains("at-end", carousel.Classes);
+        Assert.DoesNotContain("next-disabled", carousel.Classes);
+        Assert.True(carousel.NextCommand.CanExecute(null));
         Assert.True(carousel.GoNext());
         Assert.Equal(0, carousel.SelectedIndex);
         Assert.Equal(CodexCarouselSelectionChangeSource.Next, changes[2].Source);
         Assert.True(carousel.CanGoPrevious);
         Assert.True(carousel.CanGoNext);
+        Assert.Contains("at-start", carousel.Classes);
+        Assert.DoesNotContain("previous-disabled", carousel.Classes);
+        Assert.DoesNotContain("next-disabled", carousel.Classes);
 
         carousel.Orientation = Orientation.Vertical;
         Assert.True(carousel.TryHandleNavigationKey(Key.Down));
@@ -188,14 +265,68 @@ public class NavigationDataComponentTests
     }
 
     [Fact]
+    public void ResizableHandlePointerDragStartsAndEndsOnlyForPrimaryPointer()
+    {
+        var left = new CodexResizablePanel { DefaultSize = 30, MinSize = 20, MaxSize = 60, Content = "Left" };
+        var right = new CodexResizablePanel { DefaultSize = 70, MinSize = 35, Content = "Right" };
+        var handle = new CodexResizableHandle { WithHandle = true };
+        var group = new CodexResizablePanelGroup
+        {
+            Children =
+            {
+                left,
+                handle,
+                right
+            }
+        };
+
+        Assert.False(handle.TryBeginResize(PointerUpdateKind.RightButtonPressed, new Point(10, 0), group));
+        Assert.False(group.IsDragging);
+        Assert.False(handle.IsDragging);
+        Assert.DoesNotContain("dragging", group.Classes);
+        Assert.DoesNotContain("dragging", handle.Classes);
+
+        Assert.False(handle.TryBeginResize(PointerUpdateKind.MiddleButtonPressed, new Point(12, 0), group));
+        Assert.False(group.IsDragging);
+        Assert.False(handle.IsDragging);
+
+        Assert.True(handle.TryBeginResize(PointerUpdateKind.LeftButtonPressed, new Point(16, 0), group));
+        Assert.True(group.IsDragging);
+        Assert.True(handle.IsDragging);
+        Assert.Contains("dragging", group.Classes);
+        Assert.Contains("dragging", handle.Classes);
+
+        Assert.False(handle.TryEndResize(PointerUpdateKind.RightButtonReleased, group));
+        Assert.True(group.IsDragging);
+        Assert.True(handle.IsDragging);
+
+        Assert.False(handle.TryEndResize(PointerUpdateKind.MiddleButtonReleased, group));
+        Assert.True(group.IsDragging);
+        Assert.True(handle.IsDragging);
+
+        Assert.True(handle.TryEndResize(PointerUpdateKind.LeftButtonReleased, group));
+        Assert.False(group.IsDragging);
+        Assert.False(handle.IsDragging);
+        Assert.DoesNotContain("dragging", group.Classes);
+        Assert.DoesNotContain("dragging", handle.Classes);
+        Assert.False(handle.TryEndResize(PointerUpdateKind.LeftButtonReleased, group));
+
+        handle.IsEnabled = false;
+        Assert.False(handle.TryBeginResize(PointerUpdateKind.LeftButtonPressed, new Point(20, 0), group));
+        Assert.False(group.IsDragging);
+        Assert.False(handle.IsDragging);
+    }
+
+    [Fact]
     public void BreadcrumbCompositionMirrorsWebPathLinksAndCurrentPageGuard()
     {
         var routeCount = 0;
+        var homeCommand = new TestCommand(() => routeCount++);
         var home = new CodexBreadcrumbLink
         {
             Content = "Home",
             Href = "/",
-            Command = new TestCommand(() => routeCount++)
+            Command = homeCommand
         };
         var currentLink = new CodexBreadcrumbLink
         {
@@ -253,6 +384,8 @@ public class NavigationDataComponentTests
         Assert.Contains("current", item.Classes);
         Assert.Contains("breadcrumb-link", home.Classes);
         Assert.Contains("has-href", home.Classes);
+        Assert.Contains("can-activate", home.Classes);
+        Assert.DoesNotContain("command-blocked", home.Classes);
         Assert.Contains("breadcrumb-page", page.Classes);
         Assert.Contains("current", page.Classes);
         Assert.Contains("size-lg", page.Classes);
@@ -270,6 +403,21 @@ public class NavigationDataComponentTests
         Assert.Equal(0, activation.Index);
         Assert.Equal("/", activation.Href);
         Assert.Equal("Home", activation.Content);
+        Assert.Equal(CodexBreadcrumbLinkActivationSource.Programmatic, activation.Source);
+
+        homeCommand.CanExecuteValue = false;
+        homeCommand.RaiseCanExecuteChanged();
+
+        Assert.False(home.TryActivate());
+        Assert.Equal(1, routeCount);
+        Assert.Single(activations);
+        Assert.Contains("command-blocked", home.Classes);
+        Assert.DoesNotContain("can-activate", home.Classes);
+
+        homeCommand.CanExecuteValue = true;
+        homeCommand.RaiseCanExecuteChanged();
+        Assert.Contains("can-activate", home.Classes);
+        Assert.DoesNotContain("command-blocked", home.Classes);
 
         Assert.False(currentLink.TryActivate());
         Assert.Equal(1, routeCount);
@@ -279,6 +427,99 @@ public class NavigationDataComponentTests
         Assert.False(home.TryActivate());
         Assert.Equal(1, routeCount);
         Assert.Single(activations);
+    }
+
+    [Fact]
+    public void BreadcrumbLinkActivationUsesPrimaryReleaseAndSourceMetadata()
+    {
+        var routeCount = 0;
+        var docs = new CodexBreadcrumbLink
+        {
+            Content = "Docs",
+            Href = "/docs",
+            Command = new TestCommand(() => routeCount++)
+        };
+        var components = new CodexBreadcrumbLink
+        {
+            Content = "Components",
+            Href = "/components",
+            Command = new TestCommand(() => routeCount++)
+        };
+        var api = new CodexBreadcrumbLink
+        {
+            Content = "API",
+            Href = "/api",
+            Command = new TestCommand(() => routeCount++)
+        };
+        var current = new CodexBreadcrumbLink
+        {
+            Content = "Breadcrumb",
+            IsCurrent = true,
+            Command = new TestCommand(() => routeCount++)
+        };
+        var blockedCommand = new TestCommand(() => routeCount++)
+        {
+            CanExecuteValue = false
+        };
+        var blocked = new CodexBreadcrumbLink
+        {
+            Content = "Blocked",
+            Href = "/blocked",
+            Command = blockedCommand
+        };
+        var breadcrumb = new CodexBreadcrumb
+        {
+            Content = new CodexBreadcrumbList
+            {
+                Items =
+                {
+                    new CodexBreadcrumbItem { Content = docs },
+                    new CodexBreadcrumbSeparator(),
+                    new CodexBreadcrumbItem { Content = components },
+                    new CodexBreadcrumbSeparator(),
+                    new CodexBreadcrumbItem { Content = api },
+                    new CodexBreadcrumbSeparator(),
+                    new CodexBreadcrumbItem { Content = blocked },
+                    new CodexBreadcrumbSeparator(),
+                    new CodexBreadcrumbItem { IsCurrent = true, Content = current }
+                }
+            }
+        };
+        var activations = new List<CodexBreadcrumbLinkActivatedEventArgs>();
+        breadcrumb.LinkActivated += (_, args) => activations.Add(args);
+
+        Assert.False(docs.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(docs.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.Equal(0, routeCount);
+        Assert.Empty(activations);
+
+        Assert.True(docs.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+
+        Assert.Equal(1, routeCount);
+        var pointerActivation = Assert.Single(activations);
+        Assert.Same(docs, pointerActivation.Link);
+        Assert.Equal("/docs", pointerActivation.Href);
+        Assert.Equal(CodexBreadcrumbLinkActivationSource.Pointer, pointerActivation.Source);
+
+        InvokeButtonClick(components);
+
+        Assert.Equal(2, routeCount);
+        Assert.Equal(2, activations.Count);
+        Assert.Same(components, activations[1].Link);
+        Assert.Equal(CodexBreadcrumbLinkActivationSource.Keyboard, activations[1].Source);
+
+        Assert.True(api.TryActivate());
+
+        Assert.Equal(3, routeCount);
+        Assert.Equal(3, activations.Count);
+        Assert.Same(api, activations[2].Link);
+        Assert.Equal(CodexBreadcrumbLinkActivationSource.Programmatic, activations[2].Source);
+
+        Assert.False(current.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(blocked.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal(3, routeCount);
+        Assert.Equal(3, activations.Count);
+        Assert.Contains("command-blocked", blocked.Classes);
     }
 
     [Fact]
@@ -406,6 +647,106 @@ public class NavigationDataComponentTests
     }
 
     [Fact]
+    public void NavigationMenuTopLevelPointerActivationUsesPrimaryRelease()
+    {
+        var activations = 0;
+        var parameters = new List<object?>();
+        var overview = new CodexNavigationMenuItem { Header = "Overview", Value = "overview", Content = "Overview panel" };
+        var command = new TestCommand(() => activations++);
+        var docs = new CodexNavigationMenuItem
+        {
+            Header = "Docs",
+            Value = "docs",
+            Command = command,
+            CommandParameter = "docs-route"
+        };
+        docs.Activated += (_, args) => parameters.Add(args.CommandParameter);
+        var disabled = new CodexNavigationMenuItem { Header = "Disabled", Content = "Disabled panel", IsEnabled = false };
+        var menu = new CodexNavigationMenu
+        {
+            ItemsSource = new[] { overview, docs, disabled }
+        };
+
+        menu.ActivateItem(overview);
+        Assert.True(menu.IsViewportOpen);
+
+        Assert.False(docs.TryHandlePointerRelease(PointerUpdateKind.RightButtonReleased, menu));
+        Assert.False(docs.TryHandlePointerRelease(PointerUpdateKind.MiddleButtonReleased, menu));
+        Assert.Equal(0, activations);
+        Assert.Empty(parameters);
+        Assert.True(menu.IsViewportOpen);
+        Assert.Same(overview, menu.ActiveItem);
+
+        Assert.True(docs.TryHandlePointerRelease(PointerUpdateKind.LeftButtonReleased, menu));
+        Assert.Equal(1, activations);
+        Assert.Equal(["docs-route"], parameters);
+        Assert.False(menu.IsViewportOpen);
+        Assert.Null(menu.ActiveItem);
+
+        Assert.True(overview.TryHandlePointerRelease(PointerUpdateKind.LeftButtonReleased, menu));
+        Assert.True(menu.IsViewportOpen);
+        Assert.Same(overview, menu.ActiveItem);
+        Assert.Equal("overview", menu.ActiveValue);
+
+        command.CanExecuteValue = false;
+        command.RaiseCanExecuteChanged();
+
+        Assert.Contains("command-blocked", docs.Classes);
+        Assert.DoesNotContain("can-activate", docs.Classes);
+        Assert.False(docs.TryHandlePointerRelease(PointerUpdateKind.LeftButtonReleased, menu));
+        Assert.Equal(1, activations);
+        Assert.Equal(["docs-route"], parameters);
+        Assert.True(menu.IsViewportOpen);
+        Assert.Same(overview, menu.ActiveItem);
+        Assert.False(docs.TryHandleActivationKey(Key.Enter, menu));
+        Assert.Same(overview, menu.ActiveItem);
+
+        Assert.False(disabled.TryHandlePointerRelease(PointerUpdateKind.LeftButtonReleased, menu));
+        Assert.Same(overview, menu.ActiveItem);
+    }
+
+    [Fact]
+    public void NavigationMenuContentLinkPointerActivationUsesPrimaryRelease()
+    {
+        var activations = 0;
+        var parameters = new List<object?>();
+        var command = new TestCommand(() => activations++);
+        var link = new CodexNavigationMenuLink
+        {
+            Content = "Forms",
+            Command = command,
+            CommandParameter = "forms-route"
+        };
+        link.Activated += (_, args) => parameters.Add(args.CommandParameter);
+
+        Assert.False(link.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(link.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.Equal(0, activations);
+        Assert.Empty(parameters);
+
+        Assert.True(link.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal(1, activations);
+        Assert.Equal(["forms-route"], parameters);
+        Assert.Contains("can-activate", link.Classes);
+
+        command.CanExecuteValue = false;
+        command.RaiseCanExecuteChanged();
+
+        Assert.False(link.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal(1, activations);
+        Assert.Equal(["forms-route"], parameters);
+        Assert.Contains("command-blocked", link.Classes);
+
+        link.Command = null;
+        Assert.True(link.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal(["forms-route", "forms-route"], parameters);
+
+        link.IsEnabled = false;
+        Assert.False(link.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal(["forms-route", "forms-route"], parameters);
+    }
+
+    [Fact]
     public void MenubarTriggerNavigationAndMenuStatesMirrorWebMenubar()
     {
         var opened = new List<(CodexMenubarItem? OldMenu, CodexMenubarItem? NewMenu)>();
@@ -490,6 +831,46 @@ public class NavigationDataComponentTests
         Assert.Contains(opened, change => ReferenceEquals(change.NewMenu, file));
         Assert.Contains(opened, change => change.NewMenu is null);
 
+        var pointerFile = new CodexMenubarMenu
+        {
+            Header = "File",
+            Items =
+            {
+                new CodexMenubarItem { Header = "New tab" }
+            }
+        };
+        var pointerMenu = new CodexMenubar
+        {
+            Items =
+            {
+                pointerFile
+            }
+        };
+
+        Assert.False(pointerMenu.TryHandleTopLevelPointerRelease(pointerFile, PointerUpdateKind.RightButtonReleased));
+        Assert.False(pointerMenu.IsOpen);
+        Assert.False(pointerFile.IsSubMenuOpen);
+
+        Assert.False(pointerMenu.TryHandleTopLevelPointerRelease(pointerFile, PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(pointerMenu.IsOpen);
+        Assert.False(pointerFile.IsSubMenuOpen);
+
+        Assert.True(pointerMenu.TryHandleTopLevelPointerRelease(pointerFile, PointerUpdateKind.LeftButtonReleased));
+        Assert.True(pointerMenu.IsOpen);
+        Assert.True(pointerFile.IsSubMenuOpen);
+
+        Assert.False(pointerMenu.TryHandleTopLevelPointerRelease(pointerFile, PointerUpdateKind.RightButtonReleased));
+        Assert.True(pointerMenu.IsOpen);
+        Assert.True(pointerFile.IsSubMenuOpen);
+
+        Assert.True(pointerMenu.TryHandleTopLevelPointerRelease(pointerFile, PointerUpdateKind.LeftButtonReleased));
+        Assert.False(pointerMenu.IsOpen);
+        Assert.False(pointerFile.IsSubMenuOpen);
+
+        pointerMenu.IsLoading = true;
+        Assert.False(pointerMenu.TryHandleTopLevelPointerRelease(pointerFile, PointerUpdateKind.LeftButtonReleased));
+        Assert.False(pointerMenu.IsOpen);
+
         var top = new CodexMenubarMenu
         {
             Header = "Top",
@@ -545,39 +926,177 @@ public class NavigationDataComponentTests
     }
 
     [Fact]
-    public void CollapsibleTriggerKeysToggleOpenStateLikeWebDisclosureTrigger()
+    public void DropdownButtonTriggerKeysOpenLikeWebMenuTrigger()
     {
         var changes = new List<bool>();
+        var dropdown = new CodexDropdownButton
+        {
+            Content = "Provider actions",
+            DropDownContent = new CodexButton { Content = "Rename" },
+            IsArrowVisible = true
+        };
+        dropdown.OpenChanged += (_, args) => changes.Add(args.IsOpen);
+
+        Assert.True(dropdown.HasDropDownContent);
+        Assert.Contains("closed", dropdown.Classes);
+        Assert.True(dropdown.TryHandleTriggerKey(Key.Enter));
+        Assert.True(dropdown.IsOpen);
+        Assert.Equal([true], changes);
+
+        Assert.True(dropdown.TryHandleDismissKey(Key.Escape));
+        Assert.False(dropdown.IsOpen);
+        Assert.Equal([true, false], changes);
+
+        Assert.True(dropdown.TryHandleTriggerKey(Key.Space));
+        Assert.True(dropdown.IsOpen);
+        Assert.Equal([true, false, true], changes);
+
+        Assert.True(dropdown.TryHandleDismissKey(Key.Escape));
+        Assert.True(dropdown.TryHandleTriggerKey(Key.Down));
+        Assert.True(dropdown.IsOpen);
+        Assert.Equal([true, false, true, false, true], changes);
+
+        Assert.False(dropdown.TryHandleTriggerKey(Key.Up));
+        Assert.True(dropdown.IsOpen);
+
+        Assert.True(dropdown.TryHandleDismissKey(Key.Escape));
+        Assert.False(dropdown.TryHandleTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(dropdown.TryHandleTriggerPointerRelease(PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(dropdown.IsOpen);
+
+        Assert.True(dropdown.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(dropdown.IsOpen);
+
+        dropdown.IsLoading = true;
+        dropdown.IsOpen = false;
+        Assert.False(dropdown.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(dropdown.TryHandleTriggerKey(Key.Enter));
+        Assert.False(dropdown.IsOpen);
+    }
+
+    [Fact]
+    public void CollapsibleTriggerKeysToggleOpenStateLikeWebDisclosureTrigger()
+    {
+        var changes = new List<(bool IsOpen, CodexCollapsibleOpenChangeSource Source)>();
         var collapsible = new CodexCollapsible
         {
             Header = "Repository",
             Content = "Branches",
             AnimationDuration = TimeSpan.Zero
         };
-        collapsible.OpenChanged += (_, args) => changes.Add(args.IsOpen);
+        collapsible.OpenChanged += (_, args) => changes.Add((args.IsOpen, args.Source));
 
         Assert.False(collapsible.IsOpen);
         Assert.True(collapsible.TryHandleTriggerKey(Key.Enter));
         Assert.True(collapsible.IsOpen);
-        Assert.Equal([true], changes);
+        Assert.Equal([(true, CodexCollapsibleOpenChangeSource.Keyboard)], changes);
         Assert.Contains("open", collapsible.Classes);
 
         Assert.True(collapsible.TryHandleTriggerKey(Key.Space));
         Assert.False(collapsible.IsOpen);
-        Assert.Equal([true, false], changes);
+        Assert.Equal(
+            [
+                (true, CodexCollapsibleOpenChangeSource.Keyboard),
+                (false, CodexCollapsibleOpenChangeSource.Keyboard)
+            ],
+            changes);
         Assert.Contains("closed", collapsible.Classes);
         Assert.False(collapsible.TryHandleTriggerKey(Key.Escape));
-        Assert.Equal([true, false], changes);
+        Assert.Equal(
+            [
+                (true, CodexCollapsibleOpenChangeSource.Keyboard),
+                (false, CodexCollapsibleOpenChangeSource.Keyboard)
+            ],
+            changes);
 
         collapsible.IsOpen = true;
-        Assert.Equal([true, false, true], changes);
+        Assert.Equal(
+            [
+                (true, CodexCollapsibleOpenChangeSource.Keyboard),
+                (false, CodexCollapsibleOpenChangeSource.Keyboard),
+                (true, CodexCollapsibleOpenChangeSource.Programmatic)
+            ],
+            changes);
 
         collapsible.IsEnabled = false;
         collapsible.IsOpen = false;
-        Assert.Equal([true, false, true, false], changes);
-        Assert.True(collapsible.TryHandleTriggerKey(Key.Enter));
+        Assert.Equal(
+            [
+                (true, CodexCollapsibleOpenChangeSource.Keyboard),
+                (false, CodexCollapsibleOpenChangeSource.Keyboard),
+                (true, CodexCollapsibleOpenChangeSource.Programmatic),
+                (false, CodexCollapsibleOpenChangeSource.Programmatic)
+            ],
+            changes);
+        Assert.False(collapsible.TryHandleTriggerKey(Key.Enter));
         Assert.False(collapsible.IsOpen);
-        Assert.Equal([true, false, true, false], changes);
+        Assert.Equal(
+            [
+                (true, CodexCollapsibleOpenChangeSource.Keyboard),
+                (false, CodexCollapsibleOpenChangeSource.Keyboard),
+                (true, CodexCollapsibleOpenChangeSource.Programmatic),
+                (false, CodexCollapsibleOpenChangeSource.Programmatic)
+            ],
+            changes);
+    }
+
+    [Fact]
+    public void CollapsibleAndAccordionTriggersOnlyUsePrimaryPointerRelease()
+    {
+        var changes = new List<(bool IsOpen, CodexCollapsibleOpenChangeSource Source)>();
+        var collapsible = new CodexCollapsible
+        {
+            Header = "Repository",
+            Content = "Branches",
+            AnimationDuration = TimeSpan.Zero
+        };
+        collapsible.OpenChanged += (_, args) => changes.Add((args.IsOpen, args.Source));
+
+        Assert.False(collapsible.TryHandleTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(collapsible.IsOpen);
+        Assert.Empty(changes);
+
+        Assert.False(collapsible.TryHandleTriggerPointerRelease(PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(collapsible.IsOpen);
+        Assert.Empty(changes);
+
+        Assert.True(collapsible.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(collapsible.IsOpen);
+        Assert.Equal([(true, CodexCollapsibleOpenChangeSource.Pointer)], changes);
+
+        collapsible.IsEnabled = false;
+        Assert.False(collapsible.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(collapsible.IsOpen);
+        Assert.Equal([(true, CodexCollapsibleOpenChangeSource.Pointer)], changes);
+
+        var accordionChanges = new List<CodexAccordionValueChangedEventArgs>();
+        var routing = new CodexAccordionItem { Value = "routing", Header = "Routing" };
+        var billing = new CodexAccordionItem { Value = "billing", Header = "Billing" };
+        var accordion = new CodexAccordion
+        {
+            IsCollapsible = true,
+            Items =
+            {
+                routing,
+                billing
+            }
+        };
+        accordion.ValueChanged += (_, args) => accordionChanges.Add(args);
+
+        Assert.False(billing.TryHandleTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(billing.IsOpen);
+        Assert.Empty(accordionChanges);
+
+        Assert.True(billing.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(billing.IsOpen);
+        Assert.Single(accordionChanges);
+        Assert.Equal(CodexAccordionValueChangeSource.Trigger, accordionChanges[0].Source);
+        Assert.Same(billing, accordionChanges[0].ChangedItem);
+
+        accordion.IsEnabled = false;
+        Assert.False(billing.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(billing.IsOpen);
+        Assert.Single(accordionChanges);
     }
 
     [Fact]
@@ -657,6 +1176,14 @@ public class NavigationDataComponentTests
         Assert.True(accordion.TryHandleItemNavigationKey(routing, Key.Right, moveFocus: false));
         Assert.False(accordion.TryHandleItemNavigationKey(routing, Key.Down, moveFocus: false));
         Assert.Contains("horizontal", accordion.Classes);
+
+        Assert.False(disabled.TryHandleTriggerKey(Key.Enter));
+        Assert.False(disabled.IsOpen);
+
+        accordion.IsEnabled = false;
+        Assert.False(routing.TryHandleTriggerKey(Key.Enter));
+        Assert.True(routing.IsOpen);
+        accordion.IsEnabled = true;
 
         var multipleA = new CodexAccordionItem { Value = "a", Header = "A" };
         var multipleB = new CodexAccordionItem { Value = "b", Header = "B" };
@@ -745,6 +1272,205 @@ public class NavigationDataComponentTests
         Assert.Equal(7, pagination.Page);
         Assert.Contains("loading", pagination.Classes);
         Assert.Equal(6, changed.Count);
+    }
+
+    [Fact]
+    public void PaginationActionPointerReleaseUsesPrimaryButtonOnly()
+    {
+        var changed = new List<CodexPaginationPageChangedEventArgs>();
+        var pagination = new CodexPagination
+        {
+            Page = 3,
+            PageCount = 5
+        };
+        pagination.PageChanged += (_, args) => changed.Add(args);
+
+        Assert.False(pagination.TryHandleActionPointerRelease(PointerUpdateKind.RightButtonReleased, CodexPaginationPageChangeSource.Next));
+        Assert.False(pagination.TryHandleActionPointerRelease(PointerUpdateKind.MiddleButtonReleased, CodexPaginationPageChangeSource.Next));
+        Assert.Equal(3, pagination.Page);
+        Assert.Empty(changed);
+
+        Assert.True(pagination.TryHandleActionPointerRelease(PointerUpdateKind.LeftButtonReleased, CodexPaginationPageChangeSource.Next));
+        Assert.Equal(4, pagination.Page);
+        Assert.True(pagination.TryHandleActionPointerRelease(PointerUpdateKind.LeftButtonReleased, CodexPaginationPageChangeSource.Previous));
+        Assert.Equal(3, pagination.Page);
+        Assert.True(pagination.TryHandleActionPointerRelease(PointerUpdateKind.LeftButtonReleased, CodexPaginationPageChangeSource.First));
+        Assert.Equal(1, pagination.Page);
+        Assert.True(pagination.TryHandleActionPointerRelease(PointerUpdateKind.LeftButtonReleased, CodexPaginationPageChangeSource.Last));
+        Assert.Equal(5, pagination.Page);
+
+        AssertPageChanged(changed[0], 3, 4, CodexPaginationPageChangeSource.Next);
+        AssertPageChanged(changed[1], 4, 3, CodexPaginationPageChangeSource.Previous);
+        AssertPageChanged(changed[2], 3, 1, CodexPaginationPageChangeSource.First);
+        AssertPageChanged(changed[3], 1, 5, CodexPaginationPageChangeSource.Last);
+
+        Assert.False(pagination.TryHandleActionPointerRelease(PointerUpdateKind.LeftButtonReleased, CodexPaginationPageChangeSource.Next));
+        Assert.False(pagination.TryHandleActionPointerRelease(PointerUpdateKind.LeftButtonReleased, CodexPaginationPageChangeSource.Last));
+        Assert.Equal(5, pagination.Page);
+
+        pagination.IsLoading = true;
+
+        Assert.False(pagination.TryHandleActionPointerRelease(PointerUpdateKind.LeftButtonReleased, CodexPaginationPageChangeSource.Previous));
+        Assert.Equal(5, pagination.Page);
+        Assert.Equal(4, changed.Count);
+    }
+
+    [Fact]
+    public void PaginationActionKeyboardActivationUsesEnterAndSpaceOnly()
+    {
+        var changed = new List<CodexPaginationPageChangedEventArgs>();
+        var pagination = new CodexPagination
+        {
+            Page = 2,
+            PageCount = 4
+        };
+        pagination.PageChanged += (_, args) => changed.Add(args);
+
+        Assert.False(pagination.TryHandleActionKey(Key.Tab, CodexPaginationPageChangeSource.Next));
+        Assert.Equal(2, pagination.Page);
+
+        Assert.True(pagination.TryHandleActionKey(Key.Enter, CodexPaginationPageChangeSource.Next));
+        Assert.Equal(3, pagination.Page);
+        Assert.True(pagination.TryHandleActionKey(Key.Space, CodexPaginationPageChangeSource.Previous));
+        Assert.Equal(2, pagination.Page);
+
+        pagination.IsEnabled = false;
+
+        Assert.False(pagination.TryHandleActionKey(Key.Enter, CodexPaginationPageChangeSource.Next));
+        Assert.Equal(2, pagination.Page);
+
+        AssertPageChanged(changed[0], 2, 3, CodexPaginationPageChangeSource.Next);
+        AssertPageChanged(changed[1], 3, 2, CodexPaginationPageChangeSource.Previous);
+        Assert.Equal(2, changed.Count);
+    }
+
+    [Fact]
+    public void CommandItemsExposeCommandBlockedStateAndSkipSelection()
+    {
+        var executions = 0;
+        var selected = new List<CodexCommandItem>();
+        var blockedCommand = new TestCommand(() => executions++)
+        {
+            CanExecuteValue = false
+        };
+        var blocked = new CodexCommandItem { Content = "Blocked action", Icon = "B" };
+        var fallback = new CodexCommandItem { Content = "Fallback action", Icon = "F" };
+        var palette = new CodexCommand
+        {
+            Content = new CodexCommandList
+            {
+                Items =
+                {
+                    new CodexCommandGroup
+                    {
+                        Header = "Actions",
+                        Items =
+                        {
+                            blocked,
+                            fallback
+                        }
+                    }
+                }
+            }
+        };
+        palette.ItemSelected += (_, args) => selected.Add(args.Item);
+        blocked.Command = blockedCommand;
+
+        Assert.False(blocked.CanSelect());
+        Assert.Contains("command-blocked", blocked.Classes);
+        Assert.DoesNotContain("can-select", blocked.Classes);
+
+        InvokeButtonClick(blocked);
+
+        Assert.Equal(0, executions);
+        Assert.Empty(selected);
+        Assert.Null(palette.SelectedItem);
+
+        blocked.IsActive = true;
+        fallback.IsActive = false;
+
+        Assert.True(palette.TrySelectActiveItem());
+        Assert.Same(fallback, palette.SelectedItem);
+        Assert.Single(selected);
+        Assert.Same(fallback, selected[0]);
+
+        blocked.IsActive = true;
+        fallback.IsActive = false;
+
+        Assert.True(palette.TryHandleNavigationKey(Key.Home));
+        Assert.False(blocked.IsActive);
+        Assert.True(fallback.IsActive);
+
+        blockedCommand.CanExecuteValue = true;
+        blockedCommand.RaiseCanExecuteChanged();
+
+        Assert.True(blocked.CanSelect());
+        Assert.Contains("can-select", blocked.Classes);
+        Assert.DoesNotContain("command-blocked", blocked.Classes);
+
+        palette.IsLoading = true;
+
+        Assert.False(blocked.CanSelect());
+        Assert.DoesNotContain("can-select", blocked.Classes);
+        Assert.DoesNotContain("command-blocked", blocked.Classes);
+    }
+
+    [Fact]
+    public void PaginationPageButtonUsesCommandAndLoadingGuardsBeforeActivation()
+    {
+        var commandExecutions = 0;
+        var command = new TestCommand(() => commandExecutions++);
+        var pageButton = new CodexPaginationPageButton
+        {
+            Content = "2",
+            Page = 2,
+            Command = command
+        };
+
+        Assert.True(pageButton.CanActivate);
+        Assert.Contains("can-activate", pageButton.Classes);
+
+        InvokeButtonClick(pageButton);
+
+        Assert.Equal(1, commandExecutions);
+
+        command.CanExecuteValue = false;
+        command.RaiseCanExecuteChanged();
+
+        Assert.False(pageButton.CanActivate);
+        Assert.Contains("command-blocked", pageButton.Classes);
+        Assert.DoesNotContain("can-activate", pageButton.Classes);
+
+        InvokeButtonClick(pageButton);
+
+        Assert.Equal(1, commandExecutions);
+
+        command.CanExecuteValue = true;
+        command.RaiseCanExecuteChanged();
+        pageButton.IsLoading = true;
+
+        Assert.False(pageButton.CanActivate);
+
+        InvokeButtonClick(pageButton);
+
+        Assert.Equal(1, commandExecutions);
+
+        pageButton.IsLoading = false;
+        pageButton.IsCurrent = true;
+
+        Assert.False(pageButton.CanActivate);
+
+        InvokeButtonClick(pageButton);
+
+        Assert.Equal(1, commandExecutions);
+
+        var pagination = new CodexPagination { Page = 2, PageCount = 5 };
+
+        Assert.True(pagination.CanSelectPageItem(3));
+
+        pagination.IsLoading = true;
+
+        Assert.False(pagination.CanSelectPageItem(3));
     }
 
     [Fact]
@@ -1127,6 +1853,8 @@ public class NavigationDataComponentTests
         Assert.Contains("size-lg", carousel.Classes);
         Assert.Contains("can-previous", carousel.Classes);
         Assert.Contains("can-next", carousel.Classes);
+        Assert.DoesNotContain("previous-disabled", carousel.Classes);
+        Assert.DoesNotContain("next-disabled", carousel.Classes);
         Assert.Equal("Slide 2 of 2", carousel.StatusText);
         Assert.Contains("resizable-panel-group", resizable.Classes);
         Assert.Contains("size-sm", resizable.Classes);
@@ -1220,7 +1948,12 @@ public class NavigationDataComponentTests
             ActivateCommandParameter = "fallback"
         };
         var eventParameters = new List<object?>();
-        item.Activated += (_, args) => eventParameters.Add(args.CommandParameter);
+        var eventSources = new List<CodexItemActivationSource>();
+        item.Activated += (_, args) =>
+        {
+            eventParameters.Add(args.CommandParameter);
+            eventSources.Add(args.Source);
+        };
 
         Assert.Contains("item", item.Classes);
         Assert.Contains("interactive", item.Classes);
@@ -1235,17 +1968,30 @@ public class NavigationDataComponentTests
         Assert.True(item.TryHandleActivationKey(Key.Space));
         Assert.Equal(3, activations);
         Assert.Equal(["fallback", "fallback", "fallback"], eventParameters);
+        Assert.Equal(
+            [
+                CodexItemActivationSource.Programmatic,
+                CodexItemActivationSource.Keyboard,
+                CodexItemActivationSource.Keyboard
+            ],
+            eventSources);
 
         command.CanExecuteValue = false;
         command.RaiseCanExecuteChanged();
         Assert.False(item.CanActivate);
+        Assert.DoesNotContain("can-activate", item.Classes);
+        Assert.Contains("command-blocked", item.Classes);
         Assert.False(item.TryActivate());
         Assert.Equal(3, activations);
 
         command.CanExecuteValue = true;
         command.RaiseCanExecuteChanged();
+        Assert.True(item.CanActivate);
+        Assert.Contains("can-activate", item.Classes);
+        Assert.DoesNotContain("command-blocked", item.Classes);
         item.IsLoading = true;
         Assert.Contains("loading", item.Classes);
+        Assert.DoesNotContain("command-blocked", item.Classes);
         Assert.False(item.TryActivate());
         Assert.Equal(3, activations);
 
@@ -1253,6 +1999,48 @@ public class NavigationDataComponentTests
         item.IsEnabled = false;
         Assert.False(item.CanActivate);
         Assert.False(item.TryHandleActivationKey(Key.Enter));
+    }
+
+    [Fact]
+    public void ItemPointerActivationUsesPrimaryReleaseAndIgnoresNestedActions()
+    {
+        var activations = 0;
+        var command = new TestCommand(() => activations++);
+        var item = new CodexItem
+        {
+            IsInteractive = true,
+            Title = "Fallback provider",
+            ActivateCommand = command,
+            ActivateCommandParameter = "fallback"
+        };
+        var eventParameters = new List<object?>();
+        var eventSources = new List<CodexItemActivationSource>();
+        item.Activated += (_, args) =>
+        {
+            eventParameters.Add(args.CommandParameter);
+            eventSources.Add(args.Source);
+        };
+
+        Assert.False(item.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(item.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.Equal(0, activations);
+        Assert.Empty(eventParameters);
+
+        Assert.False(item.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased, new CodexButton { Content = "Configure" }));
+        Assert.False(item.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased, new CodexBadge { Content = "Action", IsInteractive = true }));
+        Assert.Equal(0, activations);
+        Assert.Empty(eventParameters);
+
+        Assert.True(item.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal(1, activations);
+        Assert.Equal(["fallback"], eventParameters);
+        Assert.Equal([CodexItemActivationSource.Pointer], eventSources);
+
+        item.IsLoading = true;
+        Assert.False(item.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal(1, activations);
+        Assert.Equal(["fallback"], eventParameters);
+        Assert.Equal([CodexItemActivationSource.Pointer], eventSources);
     }
 
     [Fact]
@@ -1335,6 +2123,50 @@ public class NavigationDataComponentTests
     }
 
     [Fact]
+    public void MenuItemPointerSelectionUsesPrimaryReleaseOnly()
+    {
+        var executions = 0;
+        var command = new TestCommand(() => executions++);
+        var menu = new CodexMenu();
+        var submenu = new CodexMenuItem { Header = "Export", IsSubMenuOpen = true };
+        var leaf = new CodexMenuItem
+        {
+            Header = "JSON",
+            Command = command
+        };
+        var selected = new List<CodexMenuItemSelectedEventArgs>();
+        leaf.ItemSelected += (_, args) => selected.Add(args);
+        submenu.Items.Add(leaf);
+        menu.Items.Add(submenu);
+
+        Assert.False(leaf.TryHandlePointerSelection(PointerUpdateKind.RightButtonReleased));
+        Assert.True(submenu.IsSubMenuOpen);
+        Assert.Empty(selected);
+        Assert.Equal(0, executions);
+
+        Assert.False(leaf.TryHandlePointerSelection(PointerUpdateKind.MiddleButtonReleased));
+        Assert.True(submenu.IsSubMenuOpen);
+        Assert.Empty(selected);
+        Assert.Equal(0, executions);
+
+        Assert.True(leaf.TryHandlePointerSelection(PointerUpdateKind.LeftButtonReleased));
+        RaiseClick(leaf);
+
+        Assert.Equal(1, executions);
+        var selection = Assert.Single(selected);
+        Assert.Equal(CodexMenuItemSelectSource.Pointer, selection.Source);
+        Assert.True(selection.DidCloseOnSelect);
+        Assert.False(submenu.IsSubMenuOpen);
+
+        submenu.IsSubMenuOpen = true;
+        menu.IsLoading = true;
+        Assert.False(leaf.TryHandlePointerSelection(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(submenu.IsSubMenuOpen);
+        Assert.Single(selected);
+        Assert.Equal(1, executions);
+    }
+
+    [Fact]
     public void ContextMenuItemsSuppressDisabledLoadingAndCommandBlockedActivation()
     {
         var executions = 0;
@@ -1369,6 +2201,40 @@ public class NavigationDataComponentTests
         contextMenu.IsLoading = false;
         RaiseClick(item);
         Assert.Equal(2, executions);
+    }
+
+    [Fact]
+    public void ContextMenuItemPointerSelectionUsesPrimaryReleaseOnly()
+    {
+        var contextMenu = new CodexContextMenu();
+        var submenu = new CodexContextMenuItem { Header = "Move to", IsSubMenuOpen = true };
+        var leaf = new CodexContextMenuItem { Header = "Archive" };
+        var selected = new List<CodexMenuItemSelectedEventArgs>();
+        leaf.ItemSelected += (_, args) => selected.Add(args);
+        submenu.Items.Add(leaf);
+        contextMenu.Items.Add(submenu);
+
+        Assert.False(leaf.TryHandlePointerSelection(PointerUpdateKind.RightButtonReleased));
+        Assert.True(submenu.IsSubMenuOpen);
+        Assert.Empty(selected);
+
+        Assert.False(leaf.TryHandlePointerSelection(PointerUpdateKind.MiddleButtonReleased));
+        Assert.True(submenu.IsSubMenuOpen);
+        Assert.Empty(selected);
+
+        Assert.True(leaf.TryHandlePointerSelection(PointerUpdateKind.LeftButtonReleased));
+        RaiseClick(leaf);
+
+        var selection = Assert.Single(selected);
+        Assert.Equal(CodexMenuItemSelectSource.Pointer, selection.Source);
+        Assert.True(selection.DidCloseOnSelect);
+        Assert.False(submenu.IsSubMenuOpen);
+
+        submenu.IsSubMenuOpen = true;
+        contextMenu.IsLoading = true;
+        Assert.False(leaf.TryHandlePointerSelection(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(submenu.IsSubMenuOpen);
+        Assert.Single(selected);
     }
 
     [Fact]
@@ -1558,7 +2424,7 @@ public class NavigationDataComponentTests
     [InlineData("UsagePieChart.axaml", "MutedForeground", "TrackBrush", "SliceBorderBrush", "CenterFillBrush", "TooltipBackground", "TooltipForeground", "TooltipBorderBrush", "AnimationDuration", "compact", "has-active-slice", "empty")]
     [InlineData("Card.axaml", "PART_Surface", "PART_Header", "PART_Footer", "interactive")]
     [InlineData("Item.axaml", "PART_Surface", "PART_Header", "PART_Body", "PART_Media", "PART_Title", "PART_Description", "PART_Content", "PART_Actions", "PART_Footer", "PART_GroupSurface", "PART_MediaRoot", "interactive", "selected", "loading", "can-activate")]
-    [InlineData("Carousel.axaml", "PART_Viewport", "PART_PreviousButton", "PART_NextButton", "PART_Status", "PART_ItemRoot", "selected", "loop", "can-previous", "can-next", "vertical")]
+    [InlineData("Carousel.axaml", "PART_Viewport", "PART_PreviousButton", "PART_NextButton", "PART_Status", "PART_ItemRoot", "selected", "loop", "can-previous", "can-next", "at-start", "at-end", "previous-disabled", "next-disabled", "vertical")]
     [InlineData("Resizable.axaml", "PART_PanelRoot", "PART_HandleRoot", "PART_HandleGrip", "PART_FocusRing", "with-handle", "dragging", "horizontal", "vertical")]
     [InlineData("AspectRatio.axaml", "PART_Root", "PART_Viewport", "PART_ContentHost", "PART_Empty", "ratio-video", "ratio-portrait", "fit-contain", "TransformOperationsTransition")]
     [InlineData("Separator.axaml", "PART_Line", "horizontal", "vertical", "size-lg")]
@@ -1644,6 +2510,8 @@ public class NavigationDataComponentTests
         Assert.Contains("controls|CodexContextMenuItem.is-radio:checked", contextMenu);
         Assert.Contains("RenderTransformOrigin", contextMenu);
         Assert.Contains("controls|CodexCommandItem.active", command);
+        Assert.Contains("controls|CodexCommandItem.can-select", command);
+        Assert.Contains("controls|CodexCommandItem.command-blocked", command);
         Assert.Contains("controls|CodexCommandEmpty", command);
         Assert.Contains("controls|CodexCommandLoading", command);
         Assert.Contains("controls|CodexCommandShortcut", command);
@@ -1702,6 +2570,8 @@ public class NavigationDataComponentTests
         Assert.Contains("controls|CodexCarousel.loop", carousel);
         Assert.Contains("controls|CodexCarousel.can-previous", carousel);
         Assert.Contains("controls|CodexCarousel.can-next", carousel);
+        Assert.Contains("controls|CodexCarousel.at-start.previous-disabled", carousel);
+        Assert.Contains("controls|CodexCarousel.at-end.next-disabled", carousel);
         Assert.Contains("controls|CodexCarousel.vertical", carousel);
         Assert.Contains("controls|CodexCarouselItem.selected", carousel);
         Assert.Contains("controls|CodexCarouselItem:pointerover", carousel);
@@ -1712,7 +2582,7 @@ public class NavigationDataComponentTests
         Assert.Contains("controls|CodexResizableHandle.vertical", resizable);
         Assert.Contains("CodexSwitch.DisabledOpacity", resizable);
 
-        // Next visual-pass hook: add rendered snapshot coverage for submenu popups and table column alignment.
+        // Rendered lifecycle tests cover submenu popups and table column alignment.
     }
 
     [Fact]
@@ -1768,6 +2638,7 @@ public class NavigationDataComponentTests
         var menuPressed = ExtractStyleBlock(menu, "controls|CodexMenu controls|CodexMenuItem:pressed /template/ Panel Border#PART_ItemRoot");
         var commandFocus = ExtractStyleBlock(command, "controls|CodexCommandItem:focus-visible /template/ Border#PART_ItemRoot");
         var commandItem = ExtractStyleBlock(command, "controls|CodexCommandItem");
+        var commandBlocked = ExtractStyleBlock(command, "controls|CodexCommandItem.command-blocked");
         var commandShortcut = ExtractStyleBlock(command, "controls|CodexCommandShortcut");
 
         Assert.Contains("CodexSwitch.AccentBrush", menuFocus);
@@ -1781,6 +2652,8 @@ public class NavigationDataComponentTests
         Assert.Contains("CodexSwitch.AccentBrush", commandFocus);
         Assert.DoesNotContain("CodexSwitch.RingBrush", commandFocus);
         Assert.Contains("Value=\"Transparent\"", commandFocus);
+        Assert.Contains("CodexSwitch.DisabledOpacity", commandBlocked);
+        Assert.Contains("CodexSwitch.MutedForegroundBrush", commandBlocked);
         Assert.Contains("CodexSwitch.MutedForegroundBrush", commandShortcut);
     }
 
@@ -1969,6 +2842,92 @@ public class NavigationDataComponentTests
     }
 
     [Fact]
+    public void SidebarTriggerAndRailRespectCommandCanExecuteBeforeToggle()
+    {
+        var triggerExecutions = 0;
+        var provider = new CodexSidebarProvider();
+        var sidebar = new CodexSidebar();
+        var triggerCommand = new TestCommand(() => triggerExecutions++)
+        {
+            CanExecuteValue = false
+        };
+        var trigger = new CodexSidebarTrigger
+        {
+            Command = triggerCommand
+        };
+        provider.Content = new StackPanel
+        {
+            Children =
+            {
+                sidebar,
+                trigger
+            }
+        };
+        provider.SyncDescendantState();
+
+        Assert.False(trigger.CanToggle);
+        Assert.Contains("command-blocked", trigger.Classes);
+
+        InvokeButtonClick(trigger);
+
+        Assert.True(provider.IsOpen);
+        Assert.True(sidebar.IsOpen);
+        Assert.Equal(0, triggerExecutions);
+
+        triggerCommand.CanExecuteValue = true;
+        triggerCommand.RaiseCanExecuteChanged();
+
+        Assert.True(trigger.CanToggle);
+        Assert.Contains("can-toggle", trigger.Classes);
+        Assert.DoesNotContain("command-blocked", trigger.Classes);
+
+        InvokeButtonClick(trigger);
+
+        Assert.False(provider.IsOpen);
+        Assert.False(sidebar.IsOpen);
+        Assert.Equal(1, triggerExecutions);
+
+        var railExecutions = 0;
+        var railProvider = new CodexSidebarProvider();
+        var railSidebar = new CodexSidebar();
+        var railCommand = new TestCommand(() => railExecutions++)
+        {
+            CanExecuteValue = false
+        };
+        var rail = new CodexSidebarRail
+        {
+            Command = railCommand
+        };
+        railProvider.Content = new StackPanel
+        {
+            Children =
+            {
+                railSidebar,
+                rail
+            }
+        };
+        railProvider.SyncDescendantState();
+
+        Assert.False(rail.CanToggle);
+        Assert.Contains("command-blocked", rail.Classes);
+
+        InvokeButtonClick(rail);
+
+        Assert.True(railProvider.IsOpen);
+        Assert.True(railSidebar.IsOpen);
+        Assert.Equal(0, railExecutions);
+
+        railCommand.CanExecuteValue = true;
+        railCommand.RaiseCanExecuteChanged();
+
+        InvokeButtonClick(rail);
+
+        Assert.False(railProvider.IsOpen);
+        Assert.False(railSidebar.IsOpen);
+        Assert.Equal(1, railExecutions);
+    }
+
+    [Fact]
     public void SidebarProviderSurfaceDeclaresShadcnStateSelectors()
     {
         var root = FindRepositoryRoot();
@@ -1984,6 +2943,12 @@ public class NavigationDataComponentTests
         Assert.Contains("CodexSidebarSide", source);
         Assert.Contains("TryHandleShortcut(Key key, KeyModifiers modifiers)", source);
         Assert.Contains("OpenChanged", source);
+        Assert.Contains("internal bool CanToggle => IsEnabled", source);
+        Assert.Contains("CommandProperty.Changed.AddClassHandler<CodexSidebarTrigger>((trigger, args) => trigger.OnCommandChanged", source);
+        Assert.Contains("CommandProperty.Changed.AddClassHandler<CodexSidebarRail>((rail, args) => rail.OnCommandChanged", source);
+        Assert.Contains("Classes.Set(\"can-toggle\", CanToggle);", source);
+        Assert.Contains("Classes.Set(\"command-blocked\", Command is not null && IsEnabled && !IsLoading && !CanToggle);", source);
+        Assert.Contains("Classes.Set(\"command-blocked\", Command is not null && IsEnabled && !CanToggle);", source);
 
         Assert.Contains("<ControlTemplate TargetType=\"controls:CodexSidebarProvider\"", style);
         Assert.Contains("<ControlTemplate TargetType=\"controls:CodexSidebarTrigger\"", style);
@@ -1997,6 +2962,8 @@ public class NavigationDataComponentTests
         Assert.Contains("side-right", style);
         Assert.Contains("PART_TriggerRoot", style);
         Assert.Contains("PART_RailLine", style);
+        Assert.Contains("controls|CodexSidebarTrigger.command-blocked", style);
+        Assert.Contains("controls|CodexSidebarRail.command-blocked", style);
         Assert.Contains("TransformOperationsTransition", style);
     }
 

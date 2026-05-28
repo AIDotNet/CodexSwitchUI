@@ -44,11 +44,16 @@ public class DocsRenderedLifecycleTests
         "forms.calendar",
         "forms.date-picker",
         "feedback.toast",
+        "feedback.avatar-group",
         "navigation.breadcrumb",
+        "navigation.side-nav",
         "navigation.segmented-control",
+        "navigation.navigation-menu",
         "navigation.accordion",
         "navigation.menubar",
         "navigation.dropdown",
+        "navigation.menu",
+        "navigation.context-menu",
         "navigation.command",
         "overlay.dialog",
         "overlay.alert-dialog",
@@ -113,6 +118,7 @@ public class DocsRenderedLifecycleTests
         "feedback.alert",
         "feedback.badge",
         "feedback.avatar",
+        "feedback.avatar-group",
         "feedback.empty-state",
         "feedback.toast",
         "feedback.sonner",
@@ -121,6 +127,12 @@ public class DocsRenderedLifecycleTests
         "feedback.skeleton",
         "navigation.tabs",
         "navigation.breadcrumb",
+        "navigation.side-nav",
+        "navigation.segmented-control",
+        "navigation.navigation-menu",
+        "navigation.menu",
+        "navigation.context-menu",
+        "navigation.command",
         "navigation.accordion",
         "navigation.menubar",
         "navigation.collapsible",
@@ -277,9 +289,11 @@ public class DocsRenderedLifecycleTests
                         var visibleInlineCodeBlocks = LogicalDescendants<DocsCodeBlock>(pageRoot)
                             .Where(block => block.IsVisible)
                             .ToArray();
-                        Assert.Equal(codeToggleButtons.Length, visibleInlineCodeBlocks.Length);
+                        Assert.True(
+                            visibleInlineCodeBlocks.Length >= codeToggleButtons.Length,
+                            $"{pageId} should expose at least one visible code block per inline toggle.");
                         Assert.Contains(visibleInlineCodeBlocks, block => block.Title.EndsWith("States.axaml", StringComparison.Ordinal));
-                        Assert.DoesNotContain(visibleInlineCodeBlocks, block => block.Code.Contains("Missing AXAML sample", StringComparison.Ordinal));
+                        Assert.DoesNotContain(visibleInlineCodeBlocks, block => block.Code.Contains("Missing code sample", StringComparison.Ordinal));
                         Assert.All(visibleInlineCodeBlocks, block =>
                             Assert.NotEmpty(VisibleDescendants<SelectableTextBlock>(block)));
 

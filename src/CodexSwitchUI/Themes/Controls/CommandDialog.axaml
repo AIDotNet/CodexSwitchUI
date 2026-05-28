@@ -92,16 +92,24 @@
                               Background="{TemplateBinding Background}"
                               CornerRadius="{DynamicResource CodexSwitch.RadiusSm}">
                         <Grid>
-                          <PathIcon Width="12"
+                          <PathIcon x:Name="PART_CloseIcon"
+                                    Width="12"
                                     Height="12"
                                     Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Data="M3.4 2L2 3.4L6.6 8L2 12.6L3.4 14L8 9.4L12.6 14L14 12.6L9.4 8L14 3.4L12.6 2L8 6.6Z" />
+                          <ContentPresenter x:Name="PART_CloseContent"
+                                            Content="{TemplateBinding Content}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            IsVisible="False" />
                         </Grid>
                       </Border>
                     </ControlTemplate>
                   </Button.Template>
+                  <ContentControl Content="{TemplateBinding CloseContent}" />
                 </Button>
               </Grid>
             </Border>
@@ -164,6 +172,23 @@
         <ThicknessTransition Property="BorderThickness" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
       </Transitions>
     </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog /template/ Button#PART_Close">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog.has-close-content /template/ PathIcon#PART_CloseIcon">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandDialog.has-close-content /template/ ContentPresenter#PART_CloseContent">
+    <Setter Property="IsVisible" Value="True" />
   </Style>
 
   <Style Selector="controls|CodexCommandDialog /template/ Button#PART_Close:pointerover">

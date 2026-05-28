@@ -1,0 +1,122 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Panel group anatomy"
+                       Description="PanelGroup owns orientation, percentage layout, border, and panel count.">
+    <controls:CodexResizablePanelGroup Width="360"
+                                       Height="180"
+                                       Orientation="Horizontal">
+      <controls:CodexResizablePanel DefaultSize="32"
+                                    MinSize="20"
+                                    MaxSize="60">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Sidebar"
+                     FontWeight="SemiBold" />
+          <TextBlock Text="Default 32%"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+      </controls:CodexResizablePanel>
+
+      <controls:CodexResizableHandle WithHandle="True" />
+
+      <controls:CodexResizablePanel DefaultSize="68"
+                                    MinSize="30">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Workspace"
+                     FontWeight="SemiBold" />
+          <TextBlock Text="Remaining surface"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+      </controls:CodexResizablePanel>
+    </controls:CodexResizablePanelGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Handle anatomy"
+                       Description="WithHandle shows the grip while the track keeps a stable drag target.">
+    <controls:CodexResizablePanelGroup Width="360"
+                                       Height="180"
+                                       Orientation="Horizontal"
+                                       Size="Small">
+      <controls:CodexResizablePanel DefaultSize="24"
+                                    MinSize="16">
+        <TextBlock Text="Files"
+                   FontWeight="SemiBold" />
+      </controls:CodexResizablePanel>
+
+      <controls:CodexResizableHandle WithHandle="True" />
+
+      <controls:CodexResizablePanel DefaultSize="48"
+                                    MinSize="30">
+        <TextBlock Text="Preview"
+                   FontWeight="SemiBold" />
+      </controls:CodexResizablePanel>
+
+      <controls:CodexResizableHandle />
+
+      <controls:CodexResizablePanel DefaultSize="28"
+                                    MinSize="18">
+        <TextBlock Text="Inspector"
+                   FontWeight="SemiBold" />
+      </controls:CodexResizablePanel>
+    </controls:CodexResizablePanelGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Vertical anatomy"
+                       Description="Vertical orientation rotates panel sizing and handle direction.">
+    <controls:CodexResizablePanelGroup Width="360"
+                                       Height="220"
+                                       Orientation="Vertical">
+      <controls:CodexResizablePanel DefaultSize="36"
+                                    MinSize="24">
+        <TextBlock Text="Header"
+                   FontWeight="SemiBold" />
+      </controls:CodexResizablePanel>
+
+      <controls:CodexResizableHandle WithHandle="True" />
+
+      <controls:CodexResizablePanel DefaultSize="64"
+                                    MinSize="32">
+        <TextBlock Text="Body"
+                   FontWeight="SemiBold" />
+      </controls:CodexResizablePanel>
+    </controls:CodexResizablePanelGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Constraint anatomy"
+                       Description="MinSize and MaxSize clamp pointer, keyboard, and programmatic resizing.">
+    <controls:CodexResizablePanelGroup Width="360"
+                                       Height="220"
+                                       Orientation="Horizontal"
+                                       Size="Large">
+      <controls:CodexResizablePanel DefaultSize="40"
+                                    MinSize="30"
+                                    MaxSize="55">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Constrained"
+                     FontWeight="SemiBold" />
+          <TextBlock Text="30-55%"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+      </controls:CodexResizablePanel>
+
+      <controls:CodexResizableHandle WithHandle="True" />
+
+      <controls:CodexResizablePanel DefaultSize="60"
+                                    MinSize="35">
+        <StackPanel Spacing="6">
+          <TextBlock Text="Flexible"
+                     FontWeight="SemiBold" />
+          <TextBlock Text="Receives delta"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+      </controls:CodexResizablePanel>
+    </controls:CodexResizablePanelGroup>
+  </controls:CodexField>
+</Grid>

@@ -15,12 +15,31 @@ public enum CodexToggleGroupType
     Multiple
 }
 
-public sealed class CodexTogglePressedChangedEventArgs(bool oldValue, bool newValue)
+public enum CodexTogglePressedChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public enum CodexToggleGroupValueChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public sealed class CodexTogglePressedChangedEventArgs(
+    bool oldValue,
+    bool newValue,
+    CodexTogglePressedChangeSource source = CodexTogglePressedChangeSource.Programmatic)
     : EventArgs
 {
     public bool OldValue { get; } = oldValue;
 
     public bool NewValue { get; } = newValue;
+
+    public CodexTogglePressedChangeSource Source { get; } = source;
 }
 
 public sealed class CodexToggleGroupValueChangedEventArgs : EventArgs
@@ -29,12 +48,14 @@ public sealed class CodexToggleGroupValueChangedEventArgs : EventArgs
         string? oldValue,
         string? newValue,
         IReadOnlyList<string> oldValues,
-        IReadOnlyList<string> newValues)
+        IReadOnlyList<string> newValues,
+        CodexToggleGroupValueChangeSource source = CodexToggleGroupValueChangeSource.Programmatic)
     {
         OldValue = oldValue;
         NewValue = newValue;
         OldValues = oldValues;
         NewValues = newValues;
+        Source = source;
     }
 
     public string? OldValue { get; }
@@ -44,6 +65,8 @@ public sealed class CodexToggleGroupValueChangedEventArgs : EventArgs
     public IReadOnlyList<string> OldValues { get; }
 
     public IReadOnlyList<string> NewValues { get; }
+
+    public CodexToggleGroupValueChangeSource Source { get; }
 }
 
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
@@ -54,6 +77,8 @@ public class CodexToggle : ToggleButton
 
     public static readonly StyledProperty<CodexControlSize> SizeProperty =
         AvaloniaProperty.Register<CodexToggle, CodexControlSize>(nameof(Size), CodexControlSize.Medium);
+
+    private CodexTogglePressedChangeSource? _pendingPressedChangeSource;
 
     static CodexToggle()
     {
@@ -100,8 +125,24 @@ public class CodexToggle : ToggleButton
             return true;
         }
 
-        IsPressed = !IsPressed;
+        _ = TogglePressed(CodexTogglePressedChangeSource.Keyboard);
         return true;
+    }
+
+    internal bool SetPressedState(bool isPressed, CodexTogglePressedChangeSource source)
+    {
+        if (!IsEnabled || IsPressed == isPressed)
+        {
+            return false;
+        }
+
+        RunWithPressedChangeSource(source, () => IsPressed = isPressed);
+        return true;
+    }
+
+    protected bool TogglePressed(CodexTogglePressedChangeSource source)
+    {
+        return SetPressedState(!IsPressed, source);
     }
 
     protected override void OnGotFocus(FocusChangedEventArgs e)
@@ -119,7 +160,31 @@ public class CodexToggle : ToggleButton
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        if (IsEnabled
+            && e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed)
+        {
+            _pendingPressedChangeSource = CodexTogglePressedChangeSource.Pointer;
+        }
+
         base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        try
+        {
+            base.OnPointerReleased(e);
+        }
+        finally
+        {
+            _pendingPressedChangeSource = null;
+        }
+    }
+
+    protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+    {
+        _pendingPressedChangeSource = null;
+        base.OnPointerCaptureLost(e);
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -159,7 +224,22 @@ public class CodexToggle : ToggleButton
             return;
         }
 
-        PressedChanged?.Invoke(this, new CodexTogglePressedChangedEventArgs(oldValue, newValue));
+        var source = _pendingPressedChangeSource ?? CodexTogglePressedChangeSource.Programmatic;
+        PressedChanged?.Invoke(this, new CodexTogglePressedChangedEventArgs(oldValue, newValue, source));
+    }
+
+    private void RunWithPressedChangeSource(CodexTogglePressedChangeSource source, Action action)
+    {
+        var previousSource = _pendingPressedChangeSource;
+        _pendingPressedChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingPressedChangeSource = previousSource;
+        }
     }
 
     private static bool ToPressedValue(object? value)
@@ -200,6 +280,10 @@ public partial class CodexToggleGroup : ItemsControl
     private bool _isUpdatingItems;
     private bool _isApplyingSelectionProperties;
     private bool _hasExternalSelection;
+    private CodexToggleGroupValueChangeSource? _pendingValueChangeSource;
+    private bool _hasPendingOldSelection;
+    private string? _pendingOldValue;
+    private IReadOnlyList<string>? _pendingOldValues;
 
     static CodexToggleGroup()
     {
@@ -230,8 +314,8 @@ public partial class CodexToggleGroup : ItemsControl
         });
         IsLoopProperty.Changed.AddClassHandler<CodexToggleGroup>((group, _) => group.SyncClasses());
         IsRovingFocusProperty.Changed.AddClassHandler<CodexToggleGroup>((group, _) => group.SyncClasses());
-        SelectedValueProperty.Changed.AddClassHandler<CodexToggleGroup>((group, _) => group.ApplyExternalSelection());
-        SelectedValuesProperty.Changed.AddClassHandler<CodexToggleGroup>((group, _) => group.ApplyExternalSelection());
+        SelectedValueProperty.Changed.AddClassHandler<CodexToggleGroup>((group, args) => group.ApplyExternalSelection(args));
+        SelectedValuesProperty.Changed.AddClassHandler<CodexToggleGroup>((group, args) => group.ApplyExternalSelection(args));
     }
 
     public CodexToggleGroup()
@@ -355,7 +439,9 @@ public partial class CodexToggleGroup : ItemsControl
         SyncItemStates();
         if (_hasExternalSelection)
         {
-            ApplyExternalSelection();
+            RunWithValueChangeSource(
+                CodexToggleGroupValueChangeSource.Programmatic,
+                () => ApplyExternalSelection(SelectedValue, SelectedValues));
         }
         else
         {
@@ -390,6 +476,17 @@ public partial class CodexToggleGroup : ItemsControl
         }
 
         UpdateSelectedValues();
+    }
+
+    internal bool ToggleItem(CodexToggleGroupItem item, CodexToggleGroupValueChangeSource source)
+    {
+        if (!IsEnabled || !item.IsEnabled)
+        {
+            return false;
+        }
+
+        RunWithValueChangeSource(source, () => item.IsPressed = !item.IsPressed);
+        return true;
     }
 
     internal bool TryHandleItemNavigationKey(CodexToggleGroupItem item, Key key, bool moveFocus = true)
@@ -446,7 +543,7 @@ public partial class CodexToggleGroup : ItemsControl
         return IsLoop ? (nextIndex + count) % count : -1;
     }
 
-    private void ApplyExternalSelection()
+    private void ApplyExternalSelection(AvaloniaPropertyChangedEventArgs args)
     {
         if (_isApplyingSelectionProperties)
         {
@@ -454,6 +551,20 @@ public partial class CodexToggleGroup : ItemsControl
         }
 
         _hasExternalSelection = true;
+        var oldValue = args.Property == SelectedValueProperty
+            ? args.OldValue as string
+            : SelectedValue;
+        var oldValues = args.Property == SelectedValuesProperty && args.OldValue is IReadOnlyList<string> values
+            ? values
+            : SelectedValues;
+
+        RunWithValueChangeSource(
+            CodexToggleGroupValueChangeSource.Programmatic,
+            () => ApplyExternalSelection(oldValue, oldValues));
+    }
+
+    private void ApplyExternalSelection(string? oldValue, IReadOnlyList<string> oldValues)
+    {
         var items = GetToggleItems().ToList();
         if (items.Count == 0)
         {
@@ -474,7 +585,23 @@ public partial class CodexToggleGroup : ItemsControl
             _isUpdatingItems = false;
         }
 
-        NormalizeSelection();
+        var previousOldValue = _pendingOldValue;
+        var previousOldValues = _pendingOldValues;
+        var previousHasPendingOldSelection = _hasPendingOldSelection;
+        _hasPendingOldSelection = true;
+        _pendingOldValue = oldValue;
+        _pendingOldValues = oldValues.ToArray();
+        try
+        {
+            NormalizeSelection();
+        }
+        finally
+        {
+            _hasPendingOldSelection = previousHasPendingOldSelection;
+            _pendingOldValue = previousOldValue;
+            _pendingOldValues = previousOldValues;
+        }
+
         SyncClasses();
     }
 
@@ -530,8 +657,8 @@ public partial class CodexToggleGroup : ItemsControl
             .ToArray();
 
         var nextValue = nextValues.FirstOrDefault();
-        var oldValue = SelectedValue;
-        var oldValues = SelectedValues;
+        var oldValue = _hasPendingOldSelection ? _pendingOldValue : SelectedValue;
+        var oldValues = _hasPendingOldSelection && _pendingOldValues is not null ? _pendingOldValues : SelectedValues;
 
         if (ValuesEqual(oldValues, nextValues) && string.Equals(oldValue, nextValue, StringComparison.Ordinal))
         {
@@ -551,7 +678,22 @@ public partial class CodexToggleGroup : ItemsControl
         }
 
         SyncClasses();
-        ValueChanged?.Invoke(this, new CodexToggleGroupValueChangedEventArgs(oldValue, nextValue, oldValues, nextValues));
+        var source = _pendingValueChangeSource ?? CodexToggleGroupValueChangeSource.Programmatic;
+        ValueChanged?.Invoke(this, new CodexToggleGroupValueChangedEventArgs(oldValue, nextValue, oldValues, nextValues, source));
+    }
+
+    private void RunWithValueChangeSource(CodexToggleGroupValueChangeSource source, Action action)
+    {
+        var previousSource = _pendingValueChangeSource;
+        _pendingValueChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingValueChangeSource = previousSource;
+        }
     }
 
     private void SyncClasses()
@@ -663,6 +805,8 @@ public partial class CodexToggleGroup : ItemsControl
 
 public class CodexToggleGroupItem : CodexToggle
 {
+    private bool _hasPrimaryPointerPress;
+
     public static readonly StyledProperty<string?> ValueProperty =
         AvaloniaProperty.Register<CodexToggleGroupItem, string?>(nameof(Value));
 
@@ -700,8 +844,33 @@ public class CodexToggleGroupItem : CodexToggle
             return true;
         }
 
-        IsPressed = !IsPressed;
-        return true;
+        if (group is not null)
+        {
+            return group.ToggleItem(this, CodexToggleGroupValueChangeSource.Keyboard);
+        }
+
+        return TogglePressed(CodexTogglePressedChangeSource.Keyboard);
+    }
+
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        var group = FindOwningGroup();
+        if (group is not null)
+        {
+            return group.ToggleItem(this, CodexToggleGroupValueChangeSource.Pointer);
+        }
+
+        if (!IsEnabled)
+        {
+            return false;
+        }
+
+        return TogglePressed(CodexTogglePressedChangeSource.Pointer);
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -721,6 +890,35 @@ public class CodexToggleGroupItem : CodexToggle
         }
 
         base.OnKeyDown(e);
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        _hasPrimaryPointerPress = e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed;
+        if (_hasPrimaryPointerPress)
+        {
+            Focus();
+            e.Handled = true;
+            return;
+        }
+
+        base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        var canActivateFromPointer = _hasPrimaryPointerPress && IsPointerOver;
+        _hasPrimaryPointerPress = false;
+
+        if (canActivateFromPointer && TryHandlePointerActivation(updateKind))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        base.OnPointerReleased(e);
     }
 
     private CodexToggleGroup? FindOwningGroup()

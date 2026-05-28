@@ -12,9 +12,20 @@ using CodexSwitchUI.Themes;
 
 namespace CodexSwitchUI.Controls;
 
-public sealed class CodexCollapsibleOpenChangedEventArgs(bool isOpen) : EventArgs
+public enum CodexCollapsibleOpenChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public sealed class CodexCollapsibleOpenChangedEventArgs(
+    bool isOpen,
+    CodexCollapsibleOpenChangeSource source = CodexCollapsibleOpenChangeSource.Programmatic) : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexCollapsibleOpenChangeSource Source { get; } = source;
 }
 
 public class CodexCollapsible : CodexFrame
@@ -65,6 +76,7 @@ public class CodexCollapsible : CodexFrame
     private bool _collapseWhenAnimationCompletes;
     private bool _isMeasureQueued;
     private bool _isAttached;
+    private CodexCollapsibleOpenChangeSource? _pendingOpenChangeSource;
 
     static CodexCollapsible()
     {
@@ -144,9 +156,14 @@ public class CodexCollapsible : CodexFrame
 
     public virtual void Toggle()
     {
+        Toggle(CodexCollapsibleOpenChangeSource.Programmatic);
+    }
+
+    internal void Toggle(CodexCollapsibleOpenChangeSource source)
+    {
         if (IsEnabled)
         {
-            IsOpen = !IsOpen;
+            SetOpen(!IsOpen, source);
         }
     }
 
@@ -159,7 +176,7 @@ public class CodexCollapsible : CodexFrame
 
         if (_triggerLayout is not null)
         {
-            _triggerLayout.RemoveHandler(InputElement.PointerPressedEvent, OnTriggerPointerPressed);
+            _triggerLayout.RemoveHandler(InputElement.PointerReleasedEvent, OnTriggerPointerReleased);
         }
 
         base.OnApplyTemplate(e);
@@ -171,8 +188,8 @@ public class CodexCollapsible : CodexFrame
         if (_triggerLayout is not null)
         {
             _triggerLayout.AddHandler(
-                InputElement.PointerPressedEvent,
-                OnTriggerPointerPressed,
+                InputElement.PointerReleasedEvent,
+                OnTriggerPointerReleased,
                 RoutingStrategies.Bubble,
                 handledEventsToo: true);
         }
@@ -213,15 +230,15 @@ public class CodexCollapsible : CodexFrame
         }
     }
 
-    private void OnTriggerPointerPressed(object? sender, PointerPressedEventArgs e)
+    private void OnTriggerPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        if (!e.GetCurrentPoint(_triggerLayout).Properties.IsLeftButtonPressed)
+        var updateKind = e.GetCurrentPoint(_triggerLayout ?? this).Properties.PointerUpdateKind;
+        if (!TryHandleTriggerPointerRelease(updateKind))
         {
             return;
         }
 
         _trigger?.Focus(NavigationMethod.Pointer, KeyModifiers.None);
-        Toggle();
         e.Handled = true;
     }
 
@@ -237,12 +254,36 @@ public class CodexCollapsible : CodexFrame
 
     internal virtual bool TryHandleTriggerKey(Key key)
     {
-        if (key is not (Key.Enter or Key.Space))
+        if (!IsEnabled || key is not (Key.Enter or Key.Space))
         {
             return false;
         }
 
-        Toggle();
+        Toggle(CodexCollapsibleOpenChangeSource.Keyboard);
+        return true;
+    }
+
+    internal virtual bool TryHandleTriggerPointerRelease(PointerUpdateKind updateKind)
+    {
+        if (!IsEnabled || updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        Toggle(CodexCollapsibleOpenChangeSource.Pointer);
+        return true;
+    }
+
+    internal bool SetOpen(
+        bool isOpen,
+        CodexCollapsibleOpenChangeSource source = CodexCollapsibleOpenChangeSource.Programmatic)
+    {
+        if (IsOpen == isOpen)
+        {
+            return false;
+        }
+
+        RunWithOpenChangeSource(source, () => IsOpen = isOpen);
         return true;
     }
 
@@ -257,7 +298,7 @@ public class CodexCollapsible : CodexFrame
 
         if (args.OldValue is bool oldValue && args.NewValue is bool newValue && oldValue != newValue)
         {
-            OpenChanged?.Invoke(this, new CodexCollapsibleOpenChangedEventArgs(newValue));
+            OpenChanged?.Invoke(this, new CodexCollapsibleOpenChangedEventArgs(newValue, CurrentOpenChangeSource));
         }
     }
 
@@ -561,5 +602,22 @@ public class CodexCollapsible : CodexFrame
         return (3 * inverse * inverse * control1)
             + (6 * inverse * t * (control2 - control1))
             + (3 * t * t * (1 - control2));
+    }
+
+    private CodexCollapsibleOpenChangeSource CurrentOpenChangeSource =>
+        _pendingOpenChangeSource ?? CodexCollapsibleOpenChangeSource.Programmatic;
+
+    private void RunWithOpenChangeSource(CodexCollapsibleOpenChangeSource source, Action action)
+    {
+        var previousSource = _pendingOpenChangeSource;
+        _pendingOpenChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingOpenChangeSource = previousSource;
+        }
     }
 }

@@ -1,0 +1,67 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="280,*"
+      ColumnSpacing="16">
+  <controls:CodexSidebar>
+    <StackPanel>
+      <controls:CodexSidebarHeader>
+        <StackPanel Spacing="8">
+          <primitives:CodexText Role="Subtitle"
+                                Text="Docs workflow" />
+          <controls:CodexTextBox Text="button"
+                                 PlaceholderText="Search components" />
+        </StackPanel>
+      </controls:CodexSidebarHeader>
+
+      <controls:CodexSidebarContent>
+        <StackPanel Spacing="6">
+          <controls:CodexSidebarGroupLabel Content="Forms" />
+          <controls:CodexSidebarMenuButton Content="Button"
+                                           IsActive="True"
+                                           Badge="4" />
+          <controls:CodexSidebarMenuButton Content="Select"
+                                           Badge="4" />
+          <controls:CodexSidebarMenuButton Content="Date Picker"
+                                           Badge="4" />
+          <controls:CodexSidebarGroupLabel Content="Data Display" />
+          <controls:CodexSidebarMenuButton Content="Data Table"
+                                           Badge="4" />
+        </StackPanel>
+      </controls:CodexSidebarContent>
+
+      <controls:CodexSidebarFooter>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexButton Content="Light"
+                                Size="Small"
+                                Variant="Secondary" />
+          <controls:CodexButton Content="Dark"
+                                Size="Small"
+                                Variant="Ghost" />
+        </StackPanel>
+      </controls:CodexSidebarFooter>
+    </StackPanel>
+  </controls:CodexSidebar>
+
+  <controls:CodexSection Grid.Column="1"
+                         Title="Review sequence"
+                         Description="Navigate, inspect behavior, expand source, then compare contracts.">
+    <controls:CodexSection.Actions>
+      <controls:CodexButton Content="Inspect source"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexSection.Actions>
+    <StackPanel Spacing="10">
+      <controls:CodexProviderCard Header="Rendered example"
+                                  Description="First-class preview surface"
+                                  Icon="R"
+                                  IsActive="True" />
+      <controls:CodexCard Title="Copyable AXAML"
+                          Description="The code block opens directly below this case.">
+        <primitives:CodexText Role="Code"
+                              Text="&lt;controls:CodexButton Content=&quot;Save&quot; /&gt;" />
+      </controls:CodexCard>
+    </StackPanel>
+  </controls:CodexSection>
+</Grid>

@@ -1,0 +1,97 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Stacked"
+                       Description="Default overlap mirrors Web team and assignee stacks.">
+    <controls:CodexAvatarGroup Size="Medium"
+                               Overlap="12">
+      <controls:CodexAvatar Fallback="CN"
+                            Variant="Default" />
+      <controls:CodexAvatar Fallback="LR"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+      <controls:CodexAvatarGroupCount Count="3" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Inline"
+                       Description="Inline mode keeps full avatar width for compact rosters.">
+    <controls:CodexAvatarGroup Size="Medium"
+                               Overlap="0"
+                               IsStacked="False">
+      <controls:CodexAvatar Fallback="CN"
+                            Variant="Default" />
+      <controls:CodexAvatar Fallback="LR"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Compact"
+                       Description="Small size cascades to every avatar and overflow count.">
+    <controls:CodexAvatarGroup Size="Small"
+                               Overlap="8">
+      <controls:CodexAvatar Fallback="CN"
+                            Variant="Default" />
+      <controls:CodexAvatar Fallback="LR"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+      <controls:CodexAvatarGroupCount Count="3" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Large"
+                       Description="Large avatars keep the same overlap and border contract.">
+    <controls:CodexAvatarGroup Size="Large"
+                               Overlap="14">
+      <controls:CodexAvatar Fallback="CN"
+                            Variant="Default" />
+      <controls:CodexAvatar Fallback="LR"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+      <controls:CodexAvatarGroupCount Count="3" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="2"
+                       Label="Hidden member"
+                       Description="Invisible children are skipped when ItemCount and classes update.">
+    <controls:CodexAvatarGroup Size="Medium"
+                               Overlap="12">
+      <controls:CodexAvatar Fallback="CN"
+                            Variant="Default" />
+      <controls:CodexAvatar Fallback="LR"
+                            Variant="Secondary"
+                            IsVisible="False" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Warning" />
+      <controls:CodexAvatarGroupCount Count="2" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="2"
+                       Grid.Column="1"
+                       Label="Disabled"
+                       Description="Disabled groups preserve identity while using shared opacity.">
+    <controls:CodexAvatarGroup Size="Medium"
+                               Overlap="12"
+                               IsEnabled="False">
+      <controls:CodexAvatar Fallback="RO"
+                            Variant="Outline" />
+      <controls:CodexAvatar Fallback="QA"
+                            Variant="Secondary" />
+      <controls:CodexAvatarGroupCount Count="4" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+</Grid>

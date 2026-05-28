@@ -1,0 +1,96 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexDirection Direction="LeftToRight">
+    <controls:CodexCard Title="LTR provider"
+                        Description="FlowDirection.LeftToRight with direction-ltr class.">
+      <StackPanel Spacing="10">
+        <controls:CodexField Label="Provider"
+                             Description="Left-to-right content uses the default layout.">
+          <controls:CodexTextBox Width="260"
+                                 Text="LTR value" />
+        </controls:CodexField>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexBadge Content="Action row"
+                               Variant="Secondary" />
+          <controls:CodexButton Content="Cancel"
+                                Size="Small"
+                                Variant="Outline" />
+          <controls:CodexButton Content="Continue"
+                                Size="Small" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexCard>
+  </controls:CodexDirection>
+
+  <controls:CodexDirection Grid.Column="1"
+                           Direction="RightToLeft">
+    <controls:CodexCard Title="RTL provider"
+                        Description="FlowDirection.RightToLeft with direction-rtl class.">
+      <StackPanel Spacing="10">
+        <controls:CodexField Label="Provider"
+                             Description="Right-to-left content inherits mirrored layout.">
+          <controls:CodexTextBox Width="260"
+                                 Text="RTL value" />
+        </controls:CodexField>
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexBadge Content="Action row"
+                               Variant="Secondary" />
+          <controls:CodexButton Content="Cancel"
+                                Size="Small"
+                                Variant="Outline" />
+          <controls:CodexButton Content="Continue"
+                                Size="Small" />
+        </StackPanel>
+      </StackPanel>
+    </controls:CodexCard>
+  </controls:CodexDirection>
+
+  <controls:CodexDirection Grid.Row="1"
+                           Direction="RightToLeft">
+    <controls:CodexField Label="Nested override"
+                         Description="Outer content mirrors; inner code can opt back into LTR.">
+      <StackPanel Spacing="10">
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+          <controls:CodexBadge Content="RTL actions"
+                               Variant="Secondary" />
+          <controls:CodexButton Content="Back"
+                                Size="Small"
+                                Variant="Outline" />
+          <controls:CodexButton Content="Continue"
+                                Size="Small" />
+        </StackPanel>
+        <controls:CodexDirection Direction="LeftToRight">
+          <primitives:CodexText Role="Code"
+                                Text="route=openai/default" />
+        </controls:CodexDirection>
+      </StackPanel>
+    </controls:CodexField>
+  </controls:CodexDirection>
+
+  <controls:CodexDirection Grid.Row="1"
+                           Grid.Column="1"
+                           Direction="RightToLeft"
+                           IsEnabled="False">
+    <controls:CodexField Label="Disabled RTL"
+                         Description="Disabled state applies opacity without losing direction.">
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexBadge Content="Disabled"
+                             Variant="Secondary" />
+        <controls:CodexButton Content="Cancel"
+                              Size="Small"
+                              Variant="Outline" />
+        <controls:CodexButton Content="Save"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexField>
+  </controls:CodexDirection>
+</Grid>

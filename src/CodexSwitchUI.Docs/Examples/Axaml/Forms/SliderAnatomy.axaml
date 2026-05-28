@@ -1,0 +1,55 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Track and fill"
+                       Description="The root owns track background, filled range, invisible hit buttons, and thumb parts.">
+    <controls:CodexSlider Minimum="0"
+                          Maximum="100"
+                          Value="48"
+                          TickFrequency="1"
+                          MinWidth="320" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Thumb geometry"
+                       Description="Size and intent change the same Codex-owned thumb and border contract.">
+    <controls:CodexSlider Minimum="0"
+                          Maximum="100"
+                          Value="76"
+                          Size="Large"
+                          Intent="Success"
+                          MinWidth="320" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Vertical orientation"
+                       Description="Vertical sliders reuse the same track, fill, hit buttons, and thumb template parts.">
+    <controls:CodexSlider Minimum="0"
+                          Maximum="100"
+                          Value="64"
+                          Orientation="Vertical"
+                          Intent="Warning"
+                          Height="132" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Boundary classes"
+                       Description="Minimum, maximum, disabled, and has-value classes stay component-owned.">
+    <StackPanel Spacing="12">
+      <controls:CodexSlider Minimum="0"
+                            Maximum="100"
+                            Value="0"
+                            MinWidth="320" />
+      <controls:CodexSlider Minimum="0"
+                            Maximum="100"
+                            Value="100"
+                            Intent="Success"
+                            IsEnabled="False"
+                            MinWidth="320" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

@@ -3,6 +3,7 @@
             Spacing="14">
   <controls:CodexMenubar Loop="True">
     <controls:CodexMenubarMenu Header="File">
+      <controls:CodexMenubarLabel Content="Workspace" />
       <controls:CodexMenubarGroup Header="File">
         <controls:CodexMenubarItem Header="New tab"
                                    Shortcut="Cmd+T" />
@@ -50,6 +51,7 @@
 
   <controls:CodexMenubar Size="Small">
     <controls:CodexMenubarMenu Header="Project">
+      <controls:CodexMenubarLabel Content="Workspace" />
       <controls:CodexMenubarItem Header="Open folder"
                                  Shortcut="Cmd+O" />
       <controls:CodexMenubarItem Header="Recent files" />

@@ -138,6 +138,26 @@
     <Setter Property="Opacity" Value="1" />
   </Style>
 
+  <Style Selector="controls|CodexItem.command-blocked">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.command-blocked:pointerover /template/ Border#PART_Surface,
+                   controls|CodexItem.command-blocked:focus-visible /template/ Border#PART_Surface">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.command-blocked:pressed /template/ Border#PART_Surface">
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+
+  <Style Selector="controls|CodexItem.selected.command-blocked:pointerover /template/ Border#PART_Surface">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+
   <Style Selector="controls|CodexItem.has-media /template/ ContentPresenter#PART_Media">
     <Setter Property="IsVisible" Value="True" />
   </Style>

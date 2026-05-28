@@ -1,0 +1,38 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*,*"
+      ColumnSpacing="14">
+  <controls:CodexCard Title="Loaded source"
+                      Description="Path resolves to Source and applies has-source.">
+    <StackPanel Spacing="10">
+      <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                               Width="44"
+                               Height="44" />
+      <controls:CodexBadge Content="has-source"
+                           Variant="Success" />
+    </StackPanel>
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="1"
+                      Title="Missing source"
+                      Description="Failed loads clear Source and keep a missing-source class.">
+    <StackPanel Spacing="10">
+      <controls:CodexImageIcon Path="avares://CodexSwitchUI.Docs/Assets/icons/missing-provider.png"
+                               Width="44"
+                               Height="44" />
+      <controls:CodexBadge Content="missing-source"
+                           Variant="Warning" />
+    </StackPanel>
+  </controls:CodexCard>
+
+  <controls:CodexCard Grid.Column="2"
+                      Title="Empty source"
+                      Description="No path stays non-throwing and visibly muted.">
+    <StackPanel Spacing="10">
+      <controls:CodexImageIcon Width="44"
+                               Height="44" />
+      <controls:CodexBadge Content="empty-source"
+                           Variant="Secondary" />
+    </StackPanel>
+  </controls:CodexCard>
+</Grid>

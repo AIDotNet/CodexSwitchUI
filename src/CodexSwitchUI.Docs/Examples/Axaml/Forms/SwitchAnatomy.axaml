@@ -1,0 +1,53 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Track and thumb"
+                       Description="PART_Track owns the shell, PART_Thumb owns checked-position motion.">
+    <StackPanel Spacing="12">
+      <controls:CodexSwitch Content="Streaming enabled"
+                            IsChecked="True" />
+      <controls:CodexSwitch Content="Fallback routing" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Content slot"
+                       Description="The optional content presenter is hidden for icon-only switch surfaces.">
+    <StackPanel Spacing="12">
+      <controls:CodexSwitch IsChecked="True" />
+      <controls:CodexSwitch Content="With label content"
+                            IsChecked="True" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Size and intent"
+                       Description="Size classes update track/thumb geometry while intent recolors the checked track.">
+    <StackPanel Spacing="12">
+      <controls:CodexSwitch Content="Small success"
+                            Size="Small"
+                            Intent="Success"
+                            IsChecked="True" />
+      <controls:CodexSwitch Content="Large warning"
+                            Size="Large"
+                            Intent="Warning"
+                            IsChecked="True" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled state"
+                       Description="Disabled switches keep checked state readable while pointer and key input are blocked.">
+    <StackPanel Spacing="12">
+      <controls:CodexSwitch Content="Locked on"
+                            IsChecked="True"
+                            IsEnabled="False" />
+      <controls:CodexSwitch Content="Locked off"
+                            IsEnabled="False" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

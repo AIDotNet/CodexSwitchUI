@@ -1,0 +1,30 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexEmptyState Icon="i"
+                            Title="No provider events"
+                            Description="The header, helper text, content slot, and action row all live inside the component template."
+                            Action="Refresh"
+                            SecondaryAction="Clear filter"
+                            MinHeight="220">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8"
+                HorizontalAlignment="Center">
+      <controls:CodexBadge Content="empty"
+                           Variant="Secondary" />
+      <controls:CodexBadge Content="slot content"
+                           Variant="Outline" />
+    </StackPanel>
+  </controls:CodexEmptyState>
+
+  <controls:CodexEmptyState Grid.Column="1"
+                            Icon="!"
+                            Title="Fallback queue paused"
+                            Description="Semantic variants recolor the owned icon shell while actions continue through CodexButton slots."
+                            Variant="Warning"
+                            Size="Large"
+                            Action="Inspect"
+                            SecondaryAction="Dismiss"
+                            MinHeight="220" />
+</Grid>

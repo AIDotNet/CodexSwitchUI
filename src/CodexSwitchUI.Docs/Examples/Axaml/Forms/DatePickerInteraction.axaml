@@ -5,24 +5,32 @@
       ColumnSpacing="16"
       RowSpacing="14">
   <controls:CodexField Label="Keyboard open"
-                       Description="Enter, Space, and ArrowDown open; Escape closes.">
-    <controls:CodexDatePicker DisplayDate="2026-05-01"
-                              SelectedDate="2026-05-13"
-                              IsOpen="True"
-                              CloseOnSelect="False"
-                              MinWidth="280"
-                              HorizontalAlignment="Left" />
+                       Description="Enter, Space, and ArrowDown open; Escape closes with source metadata.">
+    <StackPanel Spacing="8">
+      <controls:CodexDatePicker DisplayDate="2026-05-01"
+                                SelectedDate="2026-05-13"
+                                IsOpen="True"
+                                CloseOnSelect="False"
+                                MinWidth="280"
+                                HorizontalAlignment="Left" />
+      <TextBlock Text="OpenChanged: picker starts open (source=Programmatic)."
+                 Opacity="0.72" />
+    </StackPanel>
   </controls:CodexField>
 
   <controls:CodexField Grid.Column="1"
                        Label="Range completion"
-                       Description="Second date completes the range and can close the popover.">
-    <controls:CodexDatePicker DisplayDate="2026-02-01"
-                              SelectionMode="Range"
-                              RangeStart="2026-02-09"
-                              IsOpen="True"
-                              MinWidth="280"
-                              HorizontalAlignment="Left" />
+                       Description="Second date completes the range, reports source, and can close the popover.">
+    <StackPanel Spacing="8">
+      <controls:CodexDatePicker DisplayDate="2026-02-01"
+                                SelectionMode="Range"
+                                RangeStart="2026-02-09"
+                                IsOpen="True"
+                                MinWidth="280"
+                                HorizontalAlignment="Left" />
+      <TextBlock Text="RangeChanged: waiting for the second date."
+                 Opacity="0.72" />
+    </StackPanel>
   </controls:CodexField>
 
   <controls:CodexField Grid.Row="1"

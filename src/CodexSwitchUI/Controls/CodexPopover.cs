@@ -15,14 +15,26 @@ public enum CodexPopoverAlign
     End
 }
 
-public sealed class CodexPopoverOpenChangedEventArgs(bool isOpen) : EventArgs
+public enum CodexPopoverOpenChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public sealed class CodexPopoverOpenChangedEventArgs(
+    bool isOpen,
+    CodexPopoverOpenChangeSource source = CodexPopoverOpenChangeSource.Programmatic) : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexPopoverOpenChangeSource Source { get; } = source;
 }
 
 public class CodexPopover : CodexFrame
 {
     private Control? _triggerPresenter;
+    private CodexPopoverOpenChangeSource? _pendingOpenChangeSource;
 
     public static readonly StyledProperty<object?> TriggerProperty =
         AvaloniaProperty.Register<CodexPopover, object?>(nameof(Trigger));
@@ -243,15 +255,25 @@ public class CodexPopover : CodexFrame
 
     public void Open()
     {
+        Open(CodexPopoverOpenChangeSource.Programmatic);
+    }
+
+    internal void Open(CodexPopoverOpenChangeSource source)
+    {
         if (!IsEnabled)
         {
             return;
         }
 
-        IsOpen = true;
+        RunWithOpenChangeSource(source, () => IsOpen = true);
     }
 
     public bool Toggle()
+    {
+        return Toggle(CodexPopoverOpenChangeSource.Programmatic);
+    }
+
+    internal bool Toggle(CodexPopoverOpenChangeSource source)
     {
         if (!IsEnabled)
         {
@@ -260,21 +282,26 @@ public class CodexPopover : CodexFrame
 
         if (IsOpen)
         {
-            return Dismiss();
+            return Dismiss(source);
         }
 
-        Open();
+        Open(source);
         return true;
     }
 
     public bool Dismiss()
+    {
+        return Dismiss(CodexPopoverOpenChangeSource.Programmatic);
+    }
+
+    internal bool Dismiss(CodexPopoverOpenChangeSource source)
     {
         if (!IsOpen)
         {
             return false;
         }
 
-        IsOpen = false;
+        RunWithOpenChangeSource(source, () => IsOpen = false);
 
         if (CloseCommand?.CanExecute(null) == true)
         {
@@ -292,12 +319,17 @@ public class CodexPopover : CodexFrame
 
     internal bool TryHandleDismissKey(Key key)
     {
-        return key == Key.Escape && CloseOnEscape && Dismiss();
+        return key == Key.Escape && CloseOnEscape && Dismiss(CodexPopoverOpenChangeSource.Keyboard);
     }
 
     internal bool TryHandleTriggerKey(Key key)
     {
-        return key is Key.Enter or Key.Space && Toggle();
+        return key is Key.Enter or Key.Space && Toggle(CodexPopoverOpenChangeSource.Keyboard);
+    }
+
+    internal bool TryHandleTriggerPointerRelease(PointerUpdateKind updateKind)
+    {
+        return updateKind == PointerUpdateKind.LeftButtonReleased && Toggle(CodexPopoverOpenChangeSource.Pointer);
     }
 
     internal bool TryToggleFromTrigger()
@@ -307,7 +339,7 @@ public class CodexPopover : CodexFrame
 
     internal bool TryDismissFromOutsidePointer()
     {
-        return DismissOnOutsidePointer && Dismiss();
+        return DismissOnOutsidePointer && Dismiss(CodexPopoverOpenChangeSource.Pointer);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -352,7 +384,8 @@ public class CodexPopover : CodexFrame
 
     private void OnTriggerPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        if (TryToggleFromTrigger())
+        var updateKind = e.GetCurrentPoint(_triggerPresenter ?? this).Properties.PointerUpdateKind;
+        if (TryHandleTriggerPointerRelease(updateKind))
         {
             e.Handled = true;
         }
@@ -390,7 +423,7 @@ public class CodexPopover : CodexFrame
 
         if (args.OldValue is bool oldValue && oldValue != IsOpen)
         {
-            OpenChanged?.Invoke(this, new CodexPopoverOpenChangedEventArgs(IsOpen));
+            OpenChanged?.Invoke(this, new CodexPopoverOpenChangedEventArgs(IsOpen, CurrentOpenChangeSource));
         }
 
         if (args.OldValue is true && args.NewValue is false)
@@ -433,5 +466,22 @@ public class CodexPopover : CodexFrame
     private static bool HasValue(object? value)
     {
         return value is string text ? !string.IsNullOrWhiteSpace(text) : value is not null;
+    }
+
+    private CodexPopoverOpenChangeSource CurrentOpenChangeSource =>
+        _pendingOpenChangeSource ?? CodexPopoverOpenChangeSource.Programmatic;
+
+    private void RunWithOpenChangeSource(CodexPopoverOpenChangeSource source, Action action)
+    {
+        var previousSource = _pendingOpenChangeSource;
+        _pendingOpenChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingOpenChangeSource = previousSource;
+        }
     }
 }

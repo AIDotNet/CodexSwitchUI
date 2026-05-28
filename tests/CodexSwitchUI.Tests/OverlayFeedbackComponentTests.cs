@@ -316,6 +316,137 @@ public class OverlayFeedbackComponentTests
     }
 
     [Fact]
+    public void OverlayOpenChangedEventsExposeSourceMetadata()
+    {
+        var dialogChanges = new List<(bool IsOpen, CodexDialogOpenChangeSource Source)>();
+        var dialog = new CodexDialog();
+        dialog.OpenChanged += (_, args) => dialogChanges.Add((args.IsOpen, args.Source));
+
+        dialog.Open();
+        Assert.True(dialog.TryHandleDismissKey(Key.Escape));
+        Assert.True(dialog.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(dialog.TryDismissFromOutsidePointer());
+
+        Assert.Equal(
+            [
+                (true, CodexDialogOpenChangeSource.Programmatic),
+                (false, CodexDialogOpenChangeSource.Keyboard),
+                (true, CodexDialogOpenChangeSource.Pointer),
+                (false, CodexDialogOpenChangeSource.Pointer)
+            ],
+            dialogChanges);
+
+        var sheetChanges = new List<(bool IsOpen, CodexDialogOpenChangeSource Source)>();
+        var sheet = new CodexSheet();
+        sheet.OpenChanged += (_, args) => sheetChanges.Add((args.IsOpen, args.Source));
+
+        Assert.True(sheet.TryHandleTriggerKey(Key.Enter));
+        Assert.True(sheet.Dismiss());
+        Assert.True(sheet.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+
+        Assert.Equal(
+            [
+                (true, CodexDialogOpenChangeSource.Keyboard),
+                (false, CodexDialogOpenChangeSource.Programmatic),
+                (true, CodexDialogOpenChangeSource.Pointer)
+            ],
+            sheetChanges);
+
+        var drawerChanges = new List<(bool IsOpen, CodexDialogOpenChangeSource Source)>();
+        var drawer = new CodexDrawer { IsOpen = true };
+        drawer.OpenChanged += (_, args) => drawerChanges.Add((args.IsOpen, args.Source));
+
+        Assert.True(drawer.DragBy(128));
+        Assert.True(drawer.CompleteDrag());
+
+        Assert.Equal([(false, CodexDialogOpenChangeSource.Pointer)], drawerChanges);
+
+        var commandChanges = new List<(bool IsOpen, CodexDialogOpenChangeSource Source)>();
+        var commandDialog = new CodexCommandDialog { IsOpen = true };
+        commandDialog.OpenChanged += (_, args) => commandChanges.Add((args.IsOpen, args.Source));
+
+        commandDialog.NotifyItemSelected(
+            new CodexCommandItem { Content = "Open provider" },
+            CodexCommandItemSelectSource.Keyboard);
+
+        Assert.Equal([(false, CodexDialogOpenChangeSource.Keyboard)], commandChanges);
+    }
+
+    [Fact]
+    public void PopoverTooltipAndHoverCardOpenChangedEventsExposeSourceMetadata()
+    {
+        var popoverChanges = new List<(bool IsOpen, CodexPopoverOpenChangeSource Source)>();
+        var popover = new CodexPopover();
+        popover.OpenChanged += (_, args) => popoverChanges.Add((args.IsOpen, args.Source));
+
+        popover.Open();
+        Assert.True(popover.TryHandleTriggerKey(Key.Space));
+        Assert.True(popover.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(popover.TryDismissFromOutsidePointer());
+
+        Assert.Equal(
+            [
+                (true, CodexPopoverOpenChangeSource.Programmatic),
+                (false, CodexPopoverOpenChangeSource.Keyboard),
+                (true, CodexPopoverOpenChangeSource.Pointer),
+                (false, CodexPopoverOpenChangeSource.Pointer)
+            ],
+            popoverChanges);
+
+        var tooltipChanges = new List<(bool IsOpen, CodexTooltipOpenChangeSource Source)>();
+        var tooltip = new CodexTooltip
+        {
+            Trigger = "Hover",
+            Content = "Open details",
+            OpenDelay = TimeSpan.Zero,
+            CloseDelay = TimeSpan.Zero
+        };
+        tooltip.OpenChanged += (_, args) => tooltipChanges.Add((args.IsOpen, args.Source));
+
+        Assert.True(tooltip.RequestOpen());
+        Assert.True(tooltip.TryHandleDismissKey(Key.Escape));
+        Assert.True(tooltip.RequestFocusOpen());
+        Assert.True(tooltip.RequestClose(CodexTooltipOpenChangeSource.Focus));
+        tooltip.Open();
+        Assert.True(tooltip.TryHandleDismissKey(Key.Enter));
+
+        Assert.Equal(
+            [
+                (true, CodexTooltipOpenChangeSource.Pointer),
+                (false, CodexTooltipOpenChangeSource.Keyboard),
+                (true, CodexTooltipOpenChangeSource.Focus),
+                (false, CodexTooltipOpenChangeSource.Focus),
+                (true, CodexTooltipOpenChangeSource.Programmatic),
+                (false, CodexTooltipOpenChangeSource.Keyboard)
+            ],
+            tooltipChanges);
+
+        var hoverChanges = new List<(bool IsOpen, CodexHoverCardOpenChangeSource Source)>();
+        var hoverCard = new CodexHoverCard
+        {
+            Trigger = "Provider",
+            Content = "Preview",
+            OpenDelay = TimeSpan.Zero,
+            CloseDelay = TimeSpan.Zero
+        };
+        hoverCard.OpenChanged += (_, args) => hoverChanges.Add((args.IsOpen, args.Source));
+
+        Assert.True(hoverCard.RequestOpen());
+        Assert.True(hoverCard.RequestClose(CodexHoverCardOpenChangeSource.Focus));
+        hoverCard.Open();
+        Assert.True(hoverCard.TryHandleDismissKey(Key.Escape));
+
+        Assert.Equal(
+            [
+                (true, CodexHoverCardOpenChangeSource.Pointer),
+                (false, CodexHoverCardOpenChangeSource.Focus),
+                (true, CodexHoverCardOpenChangeSource.Programmatic),
+                (false, CodexHoverCardOpenChangeSource.Keyboard)
+            ],
+            hoverChanges);
+    }
+
+    [Fact]
     public void DialogTriggerOpenChangedAndKeyboardToggleMirrorWebRoot()
     {
         var changes = new List<bool>();
@@ -422,6 +553,63 @@ public class OverlayFeedbackComponentTests
         popover.IsEnabled = false;
         Assert.False(popover.TryToggleFromTrigger());
         Assert.False(popover.IsOpen);
+    }
+
+    [Fact]
+    public void DialogSheetDrawerAndPopoverTriggersOnlyUsePrimaryPointerRelease()
+    {
+        var dialog = new CodexDialog { Trigger = new CodexButton { Content = "Open dialog" } };
+        var alertDialog = new CodexAlertDialog { Trigger = new CodexButton { Content = "Delete provider" } };
+        var commandDialog = new CodexCommandDialog { Trigger = new CodexButton { Content = "Open command" } };
+        var sheet = new CodexSheet { Trigger = new CodexButton { Content = "Open sheet" } };
+        var drawer = new CodexDrawer { Trigger = new CodexButton { Content = "Open drawer" } };
+        var popover = new CodexPopover { Trigger = new CodexButton { Content = "Open popover" } };
+
+        Assert.False(dialog.TryHandleTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(dialog.IsOpen);
+        Assert.False(alertDialog.TryHandleTriggerPointerRelease(PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(alertDialog.IsOpen);
+        Assert.False(commandDialog.TryHandleTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(commandDialog.IsOpen);
+        Assert.False(sheet.TryHandleTriggerPointerRelease(PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(sheet.IsOpen);
+        Assert.False(drawer.TryHandleTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(drawer.IsOpen);
+        Assert.False(popover.TryHandleTriggerPointerRelease(PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(popover.IsOpen);
+
+        Assert.True(dialog.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(dialog.IsOpen);
+        Assert.True(alertDialog.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(alertDialog.IsOpen);
+        Assert.True(commandDialog.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(commandDialog.IsOpen);
+        Assert.True(sheet.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(sheet.IsOpen);
+        Assert.True(drawer.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(drawer.IsOpen);
+        Assert.True(popover.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(popover.IsOpen);
+
+        dialog.IsEnabled = false;
+        alertDialog.IsEnabled = false;
+        commandDialog.IsEnabled = false;
+        sheet.IsEnabled = false;
+        drawer.IsEnabled = false;
+        popover.IsEnabled = false;
+
+        Assert.False(dialog.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(dialog.IsOpen);
+        Assert.False(alertDialog.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(alertDialog.IsOpen);
+        Assert.False(commandDialog.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(commandDialog.IsOpen);
+        Assert.False(sheet.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(sheet.IsOpen);
+        Assert.False(drawer.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(drawer.IsOpen);
+        Assert.False(popover.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(popover.IsOpen);
     }
 
     [Fact]
@@ -571,6 +759,63 @@ public class OverlayFeedbackComponentTests
         alertDialog.IsModal = false;
         Assert.True(alertDialog.IsModal);
         Assert.Contains("modal", alertDialog.Classes);
+    }
+
+    [Fact]
+    public void AlertDialogPartCommandsMirrorHostCanExecuteChanges()
+    {
+        var cancelCount = 0;
+        var actionCount = 0;
+        var cancelCommand = new TestCommand(() => cancelCount++);
+        var actionCommand = new TestCommand(() => actionCount++);
+        var alertDialog = new CodexAlertDialog
+        {
+            IsOpen = true,
+            CancelCommand = cancelCommand,
+            ActionCommand = actionCommand,
+            CloseOnCancel = false,
+            CloseOnAction = false
+        };
+        var cancelCanExecuteChanges = 0;
+        var actionCanExecuteChanges = 0;
+        alertDialog.CancelDialogCommand.CanExecuteChanged += (_, _) => cancelCanExecuteChanges++;
+        alertDialog.ActionDialogCommand.CanExecuteChanged += (_, _) => actionCanExecuteChanges++;
+
+        Assert.True(alertDialog.CancelDialogCommand.CanExecute(null));
+        Assert.True(alertDialog.ActionDialogCommand.CanExecute(null));
+
+        cancelCommand.CanExecuteValue = false;
+        cancelCommand.RaiseCanExecuteChanged();
+
+        Assert.False(alertDialog.CanCancel());
+        Assert.False(alertDialog.CancelDialogCommand.CanExecute(null));
+        Assert.True(alertDialog.CanAction());
+        Assert.True(alertDialog.ActionDialogCommand.CanExecute(null));
+        Assert.False(alertDialog.Cancel());
+        Assert.Equal(0, cancelCount);
+        Assert.Equal(0, actionCount);
+        Assert.True(cancelCanExecuteChanges > 0);
+        Assert.True(actionCanExecuteChanges > 0);
+
+        cancelCommand.CanExecuteValue = true;
+        actionCommand.CanExecuteValue = false;
+        actionCommand.RaiseCanExecuteChanged();
+
+        Assert.True(alertDialog.CanCancel());
+        Assert.True(alertDialog.CancelDialogCommand.CanExecute(null));
+        Assert.False(alertDialog.CanAction());
+        Assert.False(alertDialog.ActionDialogCommand.CanExecute(null));
+        Assert.False(alertDialog.Confirm());
+        Assert.Equal(0, cancelCount);
+        Assert.Equal(0, actionCount);
+
+        actionCommand.CanExecuteValue = true;
+        actionCommand.RaiseCanExecuteChanged();
+
+        Assert.True(alertDialog.Cancel());
+        Assert.True(alertDialog.Confirm());
+        Assert.Equal(1, cancelCount);
+        Assert.Equal(1, actionCount);
     }
 
     [Fact]
@@ -869,6 +1114,64 @@ public class OverlayFeedbackComponentTests
     }
 
     [Fact]
+    public void DrawerHandleDragPointerContractUsesPrimaryButtonOnly()
+    {
+        var closed = 0;
+        var completedDrags = new List<CodexDrawerDragCompletedEventArgs>();
+        var drawer = new CodexDrawer
+        {
+            IsOpen = true,
+            DragDismissThreshold = 32,
+            CloseCommand = new TestCommand(() => closed++)
+        };
+        drawer.DragCompleted += (_, args) => completedDrags.Add(args);
+
+        Assert.False(drawer.TryBeginHandleDrag(PointerUpdateKind.RightButtonPressed, new Point(0, 0)));
+        Assert.False(drawer.TryBeginHandleDrag(PointerUpdateKind.MiddleButtonPressed, new Point(0, 0)));
+        Assert.False(drawer.IsDragging);
+
+        Assert.True(drawer.TryBeginHandleDrag(PointerUpdateKind.LeftButtonPressed, new Point(0, 0)));
+        Assert.True(drawer.IsDragging);
+        Assert.True(drawer.DragBy(64));
+        Assert.True(drawer.IsDragDismissReady);
+
+        Assert.False(drawer.TryCompleteHandleDrag(PointerUpdateKind.RightButtonReleased));
+        Assert.True(drawer.IsOpen);
+        Assert.True(drawer.IsDragging);
+        Assert.Equal(64, drawer.DragOffset);
+        Assert.Empty(completedDrags);
+        Assert.Equal(0, closed);
+
+        Assert.False(drawer.TryCompleteHandleDrag(PointerUpdateKind.MiddleButtonReleased));
+        Assert.True(drawer.IsOpen);
+        Assert.True(drawer.IsDragging);
+        Assert.Equal(64, drawer.DragOffset);
+        Assert.Empty(completedDrags);
+        Assert.Equal(0, closed);
+
+        Assert.True(drawer.TryCompleteHandleDrag(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(drawer.IsOpen);
+        Assert.False(drawer.IsDragging);
+        Assert.Single(completedDrags);
+        Assert.True(completedDrags[0].Dismissed);
+        Assert.Equal(64, completedDrags[0].DragOffset);
+        Assert.Equal(1, closed);
+        Assert.False(drawer.TryCompleteHandleDrag(PointerUpdateKind.LeftButtonReleased));
+
+        drawer.IsOpen = true;
+        drawer.IsEnabled = false;
+        Assert.False(drawer.TryBeginHandleDrag(PointerUpdateKind.LeftButtonPressed, new Point(0, 0)));
+
+        drawer.IsEnabled = true;
+        drawer.IsHandleVisible = false;
+        Assert.False(drawer.TryBeginHandleDrag(PointerUpdateKind.LeftButtonPressed, new Point(0, 0)));
+
+        drawer.IsHandleVisible = true;
+        drawer.IsOpen = false;
+        Assert.False(drawer.TryBeginHandleDrag(PointerUpdateKind.LeftButtonPressed, new Point(0, 0)));
+    }
+
+    [Fact]
     public void HoverCardUsesRadixOpenCloseDelaysAndDismissSemantics()
     {
         var changes = new List<bool>();
@@ -920,7 +1223,7 @@ public class OverlayFeedbackComponentTests
     [Fact]
     public void DropdownButtonMirrorsDropdownMenuOpenDismissAndSelectSemantics()
     {
-        var changes = new List<bool>();
+        var changes = new List<(bool IsOpen, CodexDropdownButtonOpenChangeSource Source)>();
         var dropdown = new CodexDropdownButton
         {
             Content = "Actions",
@@ -931,51 +1234,65 @@ public class OverlayFeedbackComponentTests
         };
         var enabledAction = new CodexButton { Content = "Open" };
         var disabledAction = new CodexButton { Content = "Disabled", IsEnabled = false };
-        dropdown.OpenChanged += (_, args) => changes.Add(args.IsOpen);
+        dropdown.OpenChanged += (_, args) => changes.Add((args.IsOpen, args.Source));
 
         Assert.False(dropdown.IsOpen);
-        Assert.True(dropdown.Open());
+        Assert.False(dropdown.TryHandleTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(dropdown.TryHandleTriggerPointerRelease(PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(dropdown.IsOpen);
+        Assert.Empty(changes);
+        Assert.True(dropdown.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
         Assert.True(dropdown.IsOpen);
-        Assert.Equal([true], changes);
+        Assert.Equal([(true, CodexDropdownButtonOpenChangeSource.Pointer)], changes);
         Assert.Contains("open", dropdown.Classes);
         Assert.Contains("side-right", dropdown.Classes);
         Assert.Contains("align-start", dropdown.Classes);
 
         Assert.False(dropdown.TryCloseFromDropDownAction(disabledAction));
         Assert.True(dropdown.IsOpen);
-        Assert.Equal([true], changes);
+        Assert.Equal([(true, CodexDropdownButtonOpenChangeSource.Pointer)], changes);
 
         Assert.True(dropdown.TryCloseFromDropDownAction(enabledAction));
         Assert.False(dropdown.IsOpen);
-        Assert.Equal([true, false], changes);
+        Assert.Equal(
+            [
+                (true, CodexDropdownButtonOpenChangeSource.Pointer),
+                (false, CodexDropdownButtonOpenChangeSource.Selection)
+            ],
+            changes);
         Assert.Contains("closed", dropdown.Classes);
 
         dropdown.Open();
-        Assert.Equal([true, false, true], changes);
+        Assert.Equal((true, CodexDropdownButtonOpenChangeSource.Programmatic), changes[^1]);
         dropdown.CloseOnEscape = false;
         Assert.False(dropdown.TryHandleDismissKey(Key.Escape));
         Assert.True(dropdown.IsOpen);
-        Assert.Equal([true, false, true], changes);
+        Assert.Equal((true, CodexDropdownButtonOpenChangeSource.Programmatic), changes[^1]);
 
         dropdown.CloseOnEscape = true;
         Assert.True(dropdown.TryHandleDismissKey(Key.Escape));
         Assert.False(dropdown.IsOpen);
-        Assert.Equal([true, false, true, false], changes);
+        Assert.Equal((false, CodexDropdownButtonOpenChangeSource.Keyboard), changes[^1]);
 
         dropdown.IsLoading = true;
         Assert.False(dropdown.Open());
+        Assert.False(dropdown.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(dropdown.TryHandleTriggerKey(Key.Enter));
+        Assert.False(dropdown.TryHandleTriggerKey(Key.Down));
         Assert.False(dropdown.IsOpen);
-        Assert.Equal([true, false, true, false], changes);
+        Assert.Equal((false, CodexDropdownButtonOpenChangeSource.Keyboard), changes[^1]);
 
         dropdown.IsLoading = false;
         dropdown.DropDownContent = null;
         Assert.False(dropdown.Open());
+        Assert.False(dropdown.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(dropdown.TryHandleTriggerKey(Key.Down));
     }
 
     [Fact]
     public void SplitButtonSeparatesPrimaryActionFromDropdownSemantics()
     {
-        var changes = new List<bool>();
+        var changes = new List<(bool IsOpen, CodexSplitButtonOpenChangeSource Source)>();
         var primaryClicks = 0;
         var commandExecutions = 0;
         var command = new TestCommand(() => commandExecutions++);
@@ -991,7 +1308,7 @@ public class OverlayFeedbackComponentTests
         };
         var enabledAction = new CodexButton { Content = "Open" };
         var disabledAction = new CodexButton { Content = "Disabled", IsEnabled = false };
-        splitButton.OpenChanged += (_, args) => changes.Add(args.IsOpen);
+        splitButton.OpenChanged += (_, args) => changes.Add((args.IsOpen, args.Source));
         splitButton.Click += (_, _) => primaryClicks++;
 
         Assert.False(splitButton.IsOpen);
@@ -1002,39 +1319,51 @@ public class OverlayFeedbackComponentTests
         Assert.False(splitButton.IsOpen);
         Assert.Contains("has-command", splitButton.Classes);
 
-        Assert.True(splitButton.Open());
+        Assert.False(splitButton.TryHandleMenuTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(splitButton.TryHandleMenuTriggerPointerRelease(PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(splitButton.IsOpen);
+        Assert.Empty(changes);
+        Assert.True(splitButton.TryHandleMenuTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
         Assert.True(splitButton.IsOpen);
-        Assert.Equal([true], changes);
+        Assert.Equal([(true, CodexSplitButtonOpenChangeSource.Pointer)], changes);
         Assert.Contains("open", splitButton.Classes);
         Assert.Contains("side-top", splitButton.Classes);
         Assert.Contains("align-end", splitButton.Classes);
 
         Assert.False(splitButton.TryCloseFromDropDownAction(disabledAction));
         Assert.True(splitButton.IsOpen);
-        Assert.Equal([true], changes);
+        Assert.Equal([(true, CodexSplitButtonOpenChangeSource.Pointer)], changes);
 
         Assert.True(splitButton.TryCloseFromDropDownAction(enabledAction));
         Assert.False(splitButton.IsOpen);
-        Assert.Equal([true, false], changes);
+        Assert.Equal(
+            [
+                (true, CodexSplitButtonOpenChangeSource.Pointer),
+                (false, CodexSplitButtonOpenChangeSource.Selection)
+            ],
+            changes);
         Assert.Contains("closed", splitButton.Classes);
 
         splitButton.Open();
-        Assert.Equal([true, false, true], changes);
+        Assert.Equal((true, CodexSplitButtonOpenChangeSource.Programmatic), changes[^1]);
         splitButton.CloseOnEscape = false;
         Assert.False(splitButton.TryHandleDismissKey(Key.Escape));
         Assert.True(splitButton.IsOpen);
-        Assert.Equal([true, false, true], changes);
+        Assert.Equal((true, CodexSplitButtonOpenChangeSource.Programmatic), changes[^1]);
 
         splitButton.CloseOnEscape = true;
         Assert.True(splitButton.TryHandleDismissKey(Key.Escape));
         Assert.False(splitButton.IsOpen);
-        Assert.Equal([true, false, true, false], changes);
+        Assert.Equal((false, CodexSplitButtonOpenChangeSource.Keyboard), changes[^1]);
 
         splitButton.IsLoading = true;
         Assert.False(splitButton.TryExecutePrimaryAction());
         Assert.False(splitButton.Open());
+        Assert.False(splitButton.TryHandleMenuTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(splitButton.TryHandleMenuTriggerKey(Key.Enter));
+        Assert.False(splitButton.TryHandleMenuTriggerKey(Key.Down));
         Assert.Contains("loading", splitButton.Classes);
-        Assert.Equal([true, false, true, false], changes);
+        Assert.Equal((false, CodexSplitButtonOpenChangeSource.Keyboard), changes[^1]);
         Assert.Equal(1, commandExecutions);
 
         splitButton.IsLoading = false;
@@ -1048,6 +1377,8 @@ public class OverlayFeedbackComponentTests
     [Fact]
     public void DropdownAndSplitButtonCloseMenuLeafItemsThroughWebSelectSemantics()
     {
+        var dropdownChanges = new List<(bool IsOpen, CodexDropdownButtonOpenChangeSource Source)>();
+        var splitChanges = new List<(bool IsOpen, CodexSplitButtonOpenChangeSource Source)>();
         var dropdown = new CodexDropdownButton
         {
             Content = "Actions",
@@ -1064,18 +1395,22 @@ public class OverlayFeedbackComponentTests
         var splitLeaf = new CodexMenuItem { Header = "Schedule" };
         dropdownSubmenu.Items.Add(new CodexMenuItem { Header = "JSON" });
         splitSubmenu.Items.Add(new CodexMenuItem { Header = "Later" });
+        dropdown.OpenChanged += (_, args) => dropdownChanges.Add((args.IsOpen, args.Source));
+        splitButton.OpenChanged += (_, args) => splitChanges.Add((args.IsOpen, args.Source));
 
         Assert.True(dropdown.Open());
         Assert.False(dropdown.TryCloseFromDropDownMenuItem(dropdownSubmenu));
         Assert.True(dropdown.IsOpen);
         Assert.True(dropdown.TryCloseFromDropDownMenuItem(dropdownLeaf));
         Assert.False(dropdown.IsOpen);
+        Assert.Equal((false, CodexDropdownButtonOpenChangeSource.Selection), dropdownChanges[^1]);
 
         Assert.True(splitButton.Open());
         Assert.False(splitButton.TryCloseFromDropDownMenuItem(splitSubmenu));
         Assert.True(splitButton.IsOpen);
         Assert.True(splitButton.TryCloseFromDropDownMenuItem(splitLeaf));
         Assert.False(splitButton.IsOpen);
+        Assert.Equal((false, CodexSplitButtonOpenChangeSource.Selection), splitChanges[^1]);
 
         dropdown.CloseOnItemSelected = false;
         Assert.True(dropdown.Open());
@@ -1193,6 +1528,70 @@ public class OverlayFeedbackComponentTests
     }
 
     [Fact]
+    public async Task CommandDialogForwardsCommandItemSelectionSourceMetadata()
+    {
+        await using var session = HeadlessUnitTestSession.StartNew(typeof(OverlayRenderedLifecycleTestApp), AvaloniaTestIsolationLevel.PerTest);
+        await session.Dispatch(() =>
+        {
+            EnsureCodexTheme();
+
+            var selectedValues = new List<string?>();
+            var selectedSources = new List<CodexCommandItemSelectSource>();
+            var pointer = new CodexCommandItem { Content = "Pointer", Value = "pointer" };
+            var keyboard = new CodexCommandItem { Content = "Keyboard", Value = "keyboard" };
+            var programmatic = new CodexCommandItem { Content = "Programmatic", Value = "programmatic" };
+            var disabled = new CodexCommandItem { Content = "Disabled", Value = "disabled", IsEnabled = false };
+            var dialog = new CodexCommandDialog
+            {
+                IsOpen = true,
+                CloseOnItemSelected = false,
+                Content = new CodexCommandList
+                {
+                    Items =
+                    {
+                        pointer,
+                        keyboard,
+                        programmatic,
+                        disabled
+                    }
+                }
+            };
+            dialog.ItemSelected += (_, args) =>
+            {
+                selectedValues.Add(args.Value);
+                selectedSources.Add(args.Source);
+            };
+            var window = ShowWindow(dialog);
+
+            try
+            {
+                Assert.False(pointer.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+                Assert.False(pointer.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+                Assert.Empty(selectedSources);
+
+                Assert.True(pointer.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+                InvokeButtonClick(keyboard);
+                Assert.True(programmatic.TrySelect());
+                Assert.False(disabled.TrySelect());
+
+                Assert.Equal(["pointer", "keyboard", "programmatic"], selectedValues);
+                Assert.Equal(
+                    [
+                        CodexCommandItemSelectSource.Pointer,
+                        CodexCommandItemSelectSource.Keyboard,
+                        CodexCommandItemSelectSource.Programmatic
+                    ],
+                    selectedSources);
+                Assert.True(dialog.IsOpen);
+            }
+            finally
+            {
+                window.Close();
+            }
+        }, CancellationToken.None);
+    }
+
+    [Fact]
     public void EmptyStateActionsRespectLoadingDisabledAndCommandCanExecute()
     {
         var actionExecutions = 0;
@@ -1225,15 +1624,32 @@ public class OverlayFeedbackComponentTests
         Assert.False(emptyState.CanExecuteAction);
         Assert.Contains("has-action", emptyState.Classes);
         Assert.DoesNotContain("can-action", emptyState.Classes);
+        Assert.Contains("action-command-blocked", emptyState.Classes);
+        Assert.DoesNotContain("secondary-action-command-blocked", emptyState.Classes);
+        Assert.Contains("command-blocked", emptyState.Classes);
         Assert.False(emptyState.TryExecuteAction());
         Assert.Equal(1, actionExecutions);
 
         actionCommand.CanExecuteValue = true;
         actionCommand.RaiseCanExecuteChanged();
+        Assert.DoesNotContain("action-command-blocked", emptyState.Classes);
+        Assert.DoesNotContain("command-blocked", emptyState.Classes);
+
+        secondaryCommand.CanExecuteValue = false;
+        secondaryCommand.RaiseCanExecuteChanged();
+        Assert.False(emptyState.CanExecuteSecondaryAction);
+        Assert.Contains("secondary-action-command-blocked", emptyState.Classes);
+        Assert.Contains("command-blocked", emptyState.Classes);
+        Assert.False(emptyState.TryExecuteSecondaryAction());
+        Assert.Equal(1, secondaryExecutions);
+
+        secondaryCommand.CanExecuteValue = true;
+        secondaryCommand.RaiseCanExecuteChanged();
         emptyState.IsLoading = true;
         Assert.False(emptyState.CanExecuteAction);
         Assert.False(emptyState.CanExecuteSecondaryAction);
         Assert.Contains("loading", emptyState.Classes);
+        Assert.DoesNotContain("command-blocked", emptyState.Classes);
         Assert.False(emptyState.TryExecuteAction());
         Assert.False(emptyState.TryExecuteSecondaryAction());
 
@@ -1456,6 +1872,7 @@ public class OverlayFeedbackComponentTests
     {
         var commandActivations = 0;
         var eventParameters = new List<object?>();
+        var eventSources = new List<CodexBadgeActivationSource>();
         var command = new TestCommand(() => commandActivations++);
         var badge = new CodexBadge
         {
@@ -1465,7 +1882,11 @@ public class OverlayFeedbackComponentTests
             Command = command,
             CommandParameter = "provider-route"
         };
-        badge.Activated += (_, args) => eventParameters.Add(args.CommandParameter);
+        badge.Activated += (_, args) =>
+        {
+            eventParameters.Add(args.CommandParameter);
+            eventSources.Add(args.Source);
+        };
 
         Assert.True(badge.Focusable);
         Assert.True(badge.CanActivate);
@@ -1477,6 +1898,7 @@ public class OverlayFeedbackComponentTests
 
         Assert.Equal(1, commandActivations);
         Assert.Equal(["provider-route"], eventParameters);
+        Assert.Equal([CodexBadgeActivationSource.Programmatic], eventSources);
 
         command.CanExecuteValue = false;
         command.RaiseCanExecuteChanged();
@@ -1491,8 +1913,61 @@ public class OverlayFeedbackComponentTests
         badge.IsInteractive = true;
 
         Assert.True(badge.CanActivate);
-        Assert.True(badge.TryActivate());
+        Assert.True(badge.TryHandleActivationKey(Key.Enter));
+        Assert.False(badge.TryHandleActivationKey(Key.Escape));
         Assert.Equal(["provider-route", "provider-route"], eventParameters);
+        Assert.Equal(
+            [
+                CodexBadgeActivationSource.Programmatic,
+                CodexBadgeActivationSource.Keyboard
+            ],
+            eventSources);
+    }
+
+    [Fact]
+    public void BadgePointerActivationUsesPrimaryReleaseOnly()
+    {
+        var commandActivations = 0;
+        var eventParameters = new List<object?>();
+        var eventSources = new List<CodexBadgeActivationSource>();
+        var command = new TestCommand(() => commandActivations++);
+        var badge = new CodexBadge
+        {
+            Content = "Open provider",
+            Variant = CodexControlVariant.Link,
+            IsInteractive = true,
+            Command = command,
+            CommandParameter = "provider-route"
+        };
+        badge.Activated += (_, args) =>
+        {
+            eventParameters.Add(args.CommandParameter);
+            eventSources.Add(args.Source);
+        };
+
+        Assert.False(badge.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(badge.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.Equal(0, commandActivations);
+        Assert.Empty(eventParameters);
+
+        Assert.True(badge.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal(1, commandActivations);
+        Assert.Equal(["provider-route"], eventParameters);
+        Assert.Equal([CodexBadgeActivationSource.Pointer], eventSources);
+
+        command.CanExecuteValue = false;
+        command.RaiseCanExecuteChanged();
+
+        Assert.False(badge.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal(1, commandActivations);
+        Assert.Equal(["provider-route"], eventParameters);
+        Assert.Equal([CodexBadgeActivationSource.Pointer], eventSources);
+
+        badge.Command = null;
+        badge.IsInteractive = false;
+
+        Assert.False(badge.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal(["provider-route"], eventParameters);
     }
 
     [Fact]
@@ -1608,7 +2083,7 @@ public class OverlayFeedbackComponentTests
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Badge.axaml"),
             "PART_Surface", "PART_Status", "interactive", "can-activate", "command-blocked", "focus-visible", "size-lg", "status-warning", "variant-secondary", "variant-destructive", "variant-outline", "variant-success", "variant-warning", "variant-ghost");
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "EmptyState.axaml"),
-            "PART_Surface", "PART_IconShell", "PART_Header", "PART_Title", "PART_Description", "PART_Content", "PART_Action", "PART_SecondaryAction", "has-header", "has-actions", "can-action", "variant-success", "variant-warning", "Transitions");
+            "PART_Surface", "PART_IconShell", "PART_Header", "PART_Title", "PART_Description", "PART_Content", "PART_Action", "PART_SecondaryAction", "has-header", "has-actions", "can-action", "action-command-blocked", "secondary-action-command-blocked", "command-blocked", "variant-success", "variant-warning", "Transitions");
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Avatar.axaml"),
             "PART_Surface", "PART_Image", "PART_Fallback", "PART_Status", "fallback-visible", "fallback-delayed", "loading", "loaded", "error", "status-destructive", "variant-outline");
         AssertStyleContains(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Spinner.axaml"),
@@ -1685,6 +2160,48 @@ public class OverlayFeedbackComponentTests
     private static string FindRepositoryRoot()
     {
         return TestRepository.FindRoot();
+    }
+
+    private static void EnsureCodexTheme()
+    {
+        var application = Application.Current;
+        Assert.NotNull(application);
+
+        if (!application.Styles.OfType<CodexSwitchTheme>().Any())
+        {
+            application.Styles.Add(new CodexSwitchTheme());
+        }
+    }
+
+    private static Window ShowWindow(params Control[] controls)
+    {
+        var root = new StackPanel
+        {
+            Spacing = 16,
+            Margin = new Thickness(18)
+        };
+
+        foreach (var control in controls)
+        {
+            root.Children.Add(control);
+        }
+
+        var window = new Window
+        {
+            Width = 720,
+            Height = 720,
+            Content = root
+        };
+
+        window.Show();
+        return window;
+    }
+
+    private static void InvokeButtonClick(Button button)
+    {
+        var onClick = button.GetType().GetMethod("OnClick", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        Assert.NotNull(onClick);
+        onClick.Invoke(button, null);
     }
 
     private sealed class TestCommand(Action execute) : ICommand

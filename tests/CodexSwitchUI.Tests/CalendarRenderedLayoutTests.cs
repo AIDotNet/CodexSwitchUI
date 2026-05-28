@@ -37,6 +37,8 @@ public class CalendarRenderedLayoutTests
 
                 Assert.Equal(7, weekdays.Length);
                 Assert.Equal(42, days.Length);
+                Assert.InRange(EffectiveOpacity(weekdays[0]), 0.99, 1);
+                Assert.InRange(EffectiveOpacity(days.Single(day => day.Date == new DateTime(2026, 5, 1))), 0.99, 1);
                 AssertSameRow(weekdays);
                 AssertIncreasingColumns(weekdays);
                 AssertPlacedBelow(days[0], weekdays[0], "Calendar day grid should start below weekday headers");
@@ -150,6 +152,18 @@ public class CalendarRenderedLayoutTests
     private static double CenterY(Control control)
     {
         return control.Bounds.Y + control.Bounds.Height / 2d;
+    }
+
+    private static double EffectiveOpacity(Control control)
+    {
+        var opacity = 1d;
+
+        for (Visual? current = control; current is not null; current = current.GetVisualParent())
+        {
+            opacity *= current.Opacity;
+        }
+
+        return opacity;
     }
 
     private static void EnsureCodexTheme()

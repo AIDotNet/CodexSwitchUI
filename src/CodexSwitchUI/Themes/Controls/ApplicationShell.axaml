@@ -160,6 +160,13 @@
     <Setter Property="Cursor" Value="Arrow" />
     <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
   </Style>
+  <Style Selector="controls|CodexSidebarTrigger.command-blocked">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarTrigger.command-blocked:pressed">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
 
   <Style Selector="controls|CodexSidebarRail">
     <Setter Property="Width" Value="12" />
@@ -212,6 +219,13 @@
   </Style>
   <Style Selector="controls|CodexSidebarRail:disabled">
     <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarRail.command-blocked">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+  <Style Selector="controls|CodexSidebarRail.command-blocked:pressed">
     <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
   </Style>
 
@@ -872,6 +886,21 @@
     <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
     <Setter Property="Cursor" Value="Arrow" />
   </Style>
+  <Style Selector="controls|CodexSideNavItem.command-blocked">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+    <Setter Property="Cursor" Value="Arrow" />
+  </Style>
+  <Style Selector="controls|CodexSideNavItem.command-blocked:pointerover">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSideNavItem.selected.command-blocked:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
+  </Style>
+  <Style Selector="controls|CodexSideNavItem.command-blocked:pressed">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
 
   <Style Selector="controls|CodexIconButton">
     <Setter Property="Size" Value="Icon" />
@@ -991,6 +1020,18 @@
     <Setter Property="Opacity" Value="0.82" />
     <Setter Property="RenderTransform" Value="scale(0.97)" />
   </Style>
+  <Style Selector="controls|CodexSegmentedButton.command-blocked">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+  <Style Selector="controls|CodexSegmentedButton.command-blocked:pointerover">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
+  <Style Selector="controls|CodexSegmentedButton.command-blocked:pressed">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+    <Setter Property="RenderTransform" Value="scale(1)" />
+  </Style>
 
   <Style Selector="controls|CodexSection">
     <Setter Property="Transitions">
@@ -1065,26 +1106,32 @@
     </Setter>
     <Setter Property="Template">
       <ControlTemplate TargetType="controls:CodexStatCard">
-        <Border Background="{TemplateBinding Background}"
+        <Border x:Name="PART_Surface"
+                Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 CornerRadius="{TemplateBinding CornerRadius}"
                 Padding="{TemplateBinding Padding}">
-          <Grid RowDefinitions="Auto,Auto,Auto"
+          <Grid x:Name="PART_Layout"
+                RowDefinitions="Auto,Auto,Auto"
                 ColumnDefinitions="*,Auto"
                 RowSpacing="7">
-            <TextBlock Text="{TemplateBinding Label}"
+            <TextBlock x:Name="PART_Label"
+                       Text="{TemplateBinding Label}"
                        Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
                        FontFamily="{DynamicResource CodexSwitch.FontFamily}"
                        FontSize="{DynamicResource CodexSwitch.FontSizeSm}"
                        TextTrimming="CharacterEllipsis" />
-            <ContentPresenter Grid.Column="1"
+            <ContentPresenter x:Name="PART_Icon"
+                              Grid.Column="1"
                               Content="{TemplateBinding Icon}"
                               IsVisible="{TemplateBinding HasIcon}" />
-            <ContentPresenter Grid.Row="1"
+            <ContentPresenter x:Name="PART_Value"
+                              Grid.Row="1"
                               Grid.ColumnSpan="2"
                               Content="{TemplateBinding Value}" />
-            <TextBlock Grid.Row="2"
+            <TextBlock x:Name="PART_Detail"
+                       Grid.Row="2"
                        Grid.ColumnSpan="2"
                        Text="{TemplateBinding Detail}"
                        IsVisible="{TemplateBinding HasDetail}"
@@ -1106,13 +1153,17 @@
     </Setter>
     <Setter Property="Template">
       <ControlTemplate TargetType="controls:CodexMetric">
-        <StackPanel Spacing="3">
-          <TextBlock Text="{TemplateBinding Label}"
+        <StackPanel x:Name="PART_Root"
+                    Spacing="3">
+          <TextBlock x:Name="PART_Label"
+                     Text="{TemplateBinding Label}"
                      Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
                      FontFamily="{DynamicResource CodexSwitch.FontFamily}"
                      FontSize="{DynamicResource CodexSwitch.FontSizeSm}" />
-          <ContentPresenter Content="{TemplateBinding Value}" />
-          <TextBlock Text="{TemplateBinding Detail}"
+          <ContentPresenter x:Name="PART_Value"
+                            Content="{TemplateBinding Value}" />
+          <TextBlock x:Name="PART_Detail"
+                     Text="{TemplateBinding Detail}"
                      IsVisible="{TemplateBinding HasDetail}"
                      Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
                      FontFamily="{DynamicResource CodexSwitch.FontFamily}"
@@ -1153,7 +1204,8 @@
                 RowDefinitions="Auto,Auto"
                 ColumnSpacing="12"
                 RowSpacing="7">
-            <ContentPresenter Grid.RowSpan="2"
+            <ContentPresenter x:Name="PART_Leading"
+                              Grid.RowSpan="2"
                               Content="{TemplateBinding Leading}"
                               IsVisible="{TemplateBinding HasLeading}"
                               VerticalAlignment="Stretch" />
@@ -1165,7 +1217,8 @@
                     CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
                     Background="{DynamicResource CodexSwitch.MutedBrush}"
                     VerticalAlignment="Center">
-              <ContentPresenter Content="{TemplateBinding Icon}"
+              <ContentPresenter x:Name="PART_Icon"
+                                Content="{TemplateBinding Icon}"
                                 IsVisible="{TemplateBinding HasIcon}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center" />
@@ -1180,7 +1233,8 @@
                 <ContentPresenter x:Name="PART_HeaderPresenter"
                                   Content="{TemplateBinding Header}"
                                   VerticalAlignment="Center" />
-                <ContentPresenter Content="{TemplateBinding Meta}"
+                <ContentPresenter x:Name="PART_Meta"
+                                  Content="{TemplateBinding Meta}"
                                   IsVisible="{TemplateBinding HasMeta}"
                                   VerticalAlignment="Center" />
               </StackPanel>
@@ -1195,13 +1249,16 @@
             <StackPanel Grid.Column="3"
                         Spacing="7"
                         HorizontalAlignment="Right">
-              <ContentPresenter Content="{TemplateBinding Status}"
+              <ContentPresenter x:Name="PART_Status"
+                                Content="{TemplateBinding Status}"
                                 IsVisible="{TemplateBinding HasStatus}"
                                 HorizontalAlignment="Right" />
-              <ContentPresenter Content="{TemplateBinding Usage}"
+              <ContentPresenter x:Name="PART_Usage"
+                                Content="{TemplateBinding Usage}"
                                 IsVisible="{TemplateBinding HasUsage}"
                                 HorizontalAlignment="Right" />
-              <ContentPresenter Content="{TemplateBinding Actions}"
+              <ContentPresenter x:Name="PART_Actions"
+                                Content="{TemplateBinding Actions}"
                                 IsVisible="{TemplateBinding HasActions}"
                                 HorizontalAlignment="Right" />
             </StackPanel>
@@ -1216,6 +1273,13 @@
   </Style>
   <Style Selector="controls|CodexProviderCard:pressed">
     <Setter Property="Opacity" Value="0.92" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard:focus-visible /template/ Border#PART_Surface">
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard:disabled">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
   </Style>
   <Style Selector="controls|CodexProviderCard.active">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.ProviderCardActiveBrush}" />
@@ -1244,5 +1308,20 @@
   <Style Selector="controls|CodexProviderCard.dragging:pointerover">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.command-blocked">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.command-blocked:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.CardBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.command-blocked:pressed">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+  <Style Selector="controls|CodexProviderCard.active.command-blocked:pointerover">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.ProviderCardActiveBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.ProviderCardActiveBorderBrush}" />
   </Style>
 </Styles>

@@ -1,0 +1,60 @@
+<controls:CodexChartContainer xmlns="https://github.com/avaloniaui"
+                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                              xmlns:controls="using:CodexSwitchUI.Controls"
+                              xmlns:echarts="using:CodexSwitchUI.ECharts.Controls"
+                              x:CompileBindings="False"
+                              Width="660"
+                              Title="Usage trend anatomy"
+                              Description="Plot, stacked token bands, request bars, cost line, refresh overlay, marker, and tooltip are drawn by the trend surface."
+                              IsRefreshing="True">
+  <controls:CodexChartContainer.Legend>
+    <controls:CodexChartLegend>
+      <controls:CodexChartLegendItem Content="Tokens"
+                                     Value="bands"
+                                     IndicatorStyle="Line"
+                                     IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+      <controls:CodexChartLegendItem Content="Requests"
+                                     Value="bars"
+                                     IndicatorStyle="Square"
+                                     IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+      <controls:CodexChartLegendItem Content="Cost"
+                                     Value="line"
+                                     IndicatorStyle="Line"
+                                     IndicatorBrush="{DynamicResource CodexSwitch.WarningBrush}" />
+    </controls:CodexChartLegend>
+  </controls:CodexChartContainer.Legend>
+
+  <controls:CodexChartContainer.Tooltip>
+    <controls:CodexChartTooltipContent Label="Pointer marker"
+                                       IsOpen="True">
+      <controls:CodexChartTooltipItem Content="Input"
+                                      Value="24.2K"
+                                      IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />
+      <controls:CodexChartTooltipItem Content="Output"
+                                      Value="26.8K"
+                                      IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
+      <controls:CodexChartTooltipItem Content="Cost"
+                                      Value="$0.78"
+                                      IndicatorBrush="{DynamicResource CodexSwitch.WarningBrush}" />
+    </controls:CodexChartTooltipContent>
+  </controls:CodexChartContainer.Tooltip>
+
+  <echarts:CsUsageTrendChart Width="600"
+                             Height="300"
+                             Granularity="Hour"
+                             ItemsSource="{Binding UsageTrendBurstItems}"
+                             IsRefreshing="True"
+                             RefreshingText="Refreshing usage" />
+
+  <controls:CodexChartContainer.Footer>
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexBadge Content="Granularity=Hour"
+                           Variant="Secondary" />
+      <controls:CodexBadge Content="IsRefreshing"
+                           Variant="Warning" />
+      <controls:CodexBadge Content="EmptyText"
+                           Variant="Outline" />
+    </StackPanel>
+  </controls:CodexChartContainer.Footer>
+</controls:CodexChartContainer>

@@ -16,7 +16,8 @@
       <ControlTemplate TargetType="controls:CodexBreadcrumb">
         <ContentPresenter x:Name="PART_Navigation"
                           Content="{TemplateBinding Content}"
-                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                          Foreground="{TemplateBinding Foreground}" />
       </ControlTemplate>
     </Setter>
   </Style>
@@ -48,7 +49,8 @@
     </Setter>
     <Setter Property="Template">
       <ControlTemplate TargetType="controls:CodexBreadcrumbList">
-        <ItemsPresenter x:Name="PART_List" />
+        <ItemsPresenter x:Name="PART_List"
+                        ItemsPanel="{TemplateBinding ItemsPanel}" />
       </ControlTemplate>
     </Setter>
   </Style>
@@ -77,6 +79,7 @@
         <ContentPresenter x:Name="PART_Item"
                           Content="{TemplateBinding Content}"
                           ContentTemplate="{TemplateBinding ContentTemplate}"
+                          Foreground="{TemplateBinding Foreground}"
                           VerticalAlignment="{TemplateBinding VerticalAlignment}" />
       </ControlTemplate>
     </Setter>
@@ -120,6 +123,7 @@
           <ContentPresenter x:Name="PART_LinkContent"
                             Content="{TemplateBinding Content}"
                             ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Foreground="{TemplateBinding Foreground}"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
         </Border>
@@ -133,6 +137,11 @@
 
   <Style Selector="controls|CodexBreadcrumbLink.has-href">
     <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
+  <Style Selector="controls|CodexBreadcrumbLink.command-blocked">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+    <Setter Property="Cursor" Value="Arrow" />
   </Style>
 
   <Style Selector="controls|CodexBreadcrumbLink /template/ Border#PART_LinkRoot">
@@ -208,7 +217,8 @@
                 Padding="{TemplateBinding Padding}">
           <ContentPresenter x:Name="PART_PageContent"
                             Content="{TemplateBinding Content}"
-                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Foreground="{TemplateBinding Foreground}" />
         </Border>
       </ControlTemplate>
     </Setter>
@@ -246,7 +256,8 @@
       <ControlTemplate TargetType="controls:CodexBreadcrumbSeparator">
         <ContentPresenter x:Name="PART_Separator"
                           Content="{TemplateBinding Content}"
-                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                          Foreground="{TemplateBinding Foreground}" />
       </ControlTemplate>
     </Setter>
   </Style>
@@ -293,6 +304,7 @@
           <ContentPresenter x:Name="PART_EllipsisContent"
                             Content="{TemplateBinding Content}"
                             ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Foreground="{TemplateBinding Foreground}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center" />
         </Border>

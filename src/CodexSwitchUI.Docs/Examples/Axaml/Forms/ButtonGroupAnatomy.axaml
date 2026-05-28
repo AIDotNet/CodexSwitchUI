@@ -1,0 +1,59 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Connected actions"
+                       Description="The group owns first, middle, and last item shape while each button keeps its own activation.">
+    <controls:CodexButtonGroup Variant="Outline">
+      <controls:CodexButton Content="Preview" />
+      <controls:CodexButton Content="Code" />
+      <controls:CodexButton Content="Events" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Text and separator"
+                       Description="Text and separator primitives share the connected row contract.">
+    <controls:CodexButtonGroup>
+      <controls:CodexButtonGroupText Content="Mode" />
+      <controls:CodexButton Content="Read"
+                            Variant="Secondary" />
+      <controls:CodexButtonGroupSeparator />
+      <controls:CodexIconButton Content="+"
+                                Variant="Secondary" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Vertical group"
+                       Description="Vertical orientation rotates the item position classes and separator sizing.">
+    <controls:CodexButtonGroup Orientation="Vertical"
+                               Variant="Outline">
+      <controls:CodexButton Content="Today" />
+      <controls:CodexButton Content="This week" />
+      <controls:CodexButton Content="This month" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Mixed controls"
+                       Description="TextBox and NativeSelect can join the same connected action surface.">
+    <controls:CodexButtonGroup>
+      <controls:CodexButtonGroupText Content="Route" />
+      <controls:CodexTextBox Text="/v1/responses"
+                             MinWidth="150" />
+      <controls:CodexNativeSelect SelectedIndex="0"
+                                  MinWidth="96">
+        <controls:CodexNativeSelectOption Value="prod"
+                                          Content="Prod" />
+        <controls:CodexNativeSelectOption Value="dev"
+                                          Content="Dev" />
+      </controls:CodexNativeSelect>
+      <controls:CodexButton Content="Apply"
+                            Variant="Secondary" />
+    </controls:CodexButtonGroup>
+  </controls:CodexField>
+</Grid>

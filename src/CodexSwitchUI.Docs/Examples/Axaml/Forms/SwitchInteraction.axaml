@@ -5,12 +5,12 @@
       ColumnSpacing="16"
       RowSpacing="14">
   <controls:CodexField Label="Pointer toggle"
-                       Description="Pointer release and Space update the same checked state.">
+                       Description="Pointer release, Space, and Enter update the same checked state with source metadata.">
     <StackPanel Spacing="12">
       <controls:CodexSwitch Content="Streaming"
                             IsChecked="True" />
       <controls:CodexSwitch Content="Fallback routing" />
-      <TextBlock Text="Streaming is on."
+      <TextBlock Text="Streaming is on (source=Programmatic)."
                  Opacity="0.72" />
     </StackPanel>
   </controls:CodexField>

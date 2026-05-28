@@ -68,7 +68,8 @@
               <ColumnDefinition Width="{TemplateBinding EndColumnWidth}" />
             </Grid.ColumnDefinitions>
 
-            <Border Background="{DynamicResource CodexSwitch.MutedBrush}"
+            <Border x:Name="PART_StartHeader"
+                    Background="{DynamicResource CodexSwitch.MutedBrush}"
                     BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
                     BorderThickness="0,0,1,1"
                     MinHeight="{TemplateBinding HeaderHeight}">
@@ -83,18 +84,21 @@
                           VerticalScrollBarVisibility="Disabled"
                           AllowAutoHide="True"
                           IsHitTestVisible="False">
-              <Border Background="{DynamicResource CodexSwitch.MutedBrush}"
+              <Border x:Name="PART_MiddleHeader"
+                      Background="{DynamicResource CodexSwitch.MutedBrush}"
                       BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
                       BorderThickness="0,0,0,1"
                       MinHeight="{TemplateBinding HeaderHeight}">
-                <ContentPresenter MinWidth="{TemplateBinding MiddleMinWidth}"
+                <ContentPresenter x:Name="PART_MiddleHeaderContent"
+                                  MinWidth="{TemplateBinding MiddleMinWidth}"
                                   Content="{TemplateBinding MiddleHeader}"
                                   ContentTemplate="{TemplateBinding MiddleHeaderTemplate}"
                                   VerticalAlignment="Center" />
               </Border>
             </ScrollViewer>
 
-            <Border Grid.Column="2"
+            <Border x:Name="PART_EndHeader"
+                    Grid.Column="2"
                     Background="{DynamicResource CodexSwitch.MutedBrush}"
                     BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
                     BorderThickness="1,0,0,1"
@@ -129,7 +133,8 @@
               <ScrollViewer.RenderTransform>
                 <TranslateTransform />
               </ScrollViewer.RenderTransform>
-              <ItemsControl MinWidth="{TemplateBinding MiddleMinWidth}"
+              <ItemsControl x:Name="PART_MiddleItemsControl"
+                            MinWidth="{TemplateBinding MiddleMinWidth}"
                             ItemsSource="{TemplateBinding ItemsSource}"
                             ItemTemplate="{TemplateBinding MiddleCellTemplate}">
                 <ItemsControl.ItemsPanel>
@@ -210,6 +215,164 @@
 
   <Style Selector="controls|CodexPinnedTable.compact controls|CodexTableCell">
     <Setter Property="Padding" Value="8,6" />
+  </Style>
+
+  <Style Selector="controls|CodexTable /template/ ScrollViewer, controls|CodexPinnedTable /template/ ScrollViewer">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="ScrollViewer">
+        <Grid x:Name="PART_ScrollRoot"
+              ColumnDefinitions="*,Auto"
+              RowDefinitions="*,Auto"
+              Background="{TemplateBinding Background}">
+          <ScrollContentPresenter x:Name="PART_ContentPresenter"
+                                  Grid.RowSpan="2"
+                                  Grid.ColumnSpan="2"
+                                  Padding="{TemplateBinding Padding}"
+                                  Background="{TemplateBinding Background}"
+                                  HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                  HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                  ScrollViewer.IsScrollInertiaEnabled="{TemplateBinding IsScrollInertiaEnabled}"
+                                  VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+                                  VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}">
+            <ScrollContentPresenter.GestureRecognizers>
+              <ScrollGestureRecognizer CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
+                                       CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
+                                       IsScrollInertiaEnabled="{Binding (ScrollViewer.IsScrollInertiaEnabled), ElementName=PART_ContentPresenter}" />
+            </ScrollContentPresenter.GestureRecognizers>
+          </ScrollContentPresenter>
+
+          <ScrollBar x:Name="PART_HorizontalScrollBar"
+                     Grid.Row="1"
+                     Grid.Column="0"
+                     Orientation="Horizontal" />
+
+          <ScrollBar x:Name="PART_VerticalScrollBar"
+                     Grid.Row="0"
+                     Grid.Column="1"
+                     Orientation="Vertical" />
+
+          <Border x:Name="PART_Corner"
+                  Grid.Row="1"
+                  Grid.Column="1"
+                  Background="Transparent" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexTable /template/ ScrollViewer ScrollBar, controls|CodexPinnedTable /template/ ScrollViewer ScrollBar">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Foreground" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexTable /template/ ScrollViewer ScrollBar:vertical, controls|CodexPinnedTable /template/ ScrollViewer ScrollBar:vertical">
+    <Setter Property="Width" Value="10" />
+    <Setter Property="MinWidth" Value="10" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="ScrollBar">
+        <Border x:Name="PART_ScrollBarRoot"
+                Width="{TemplateBinding Width}"
+                MinWidth="{TemplateBinding MinWidth}"
+                Background="Transparent"
+                Padding="3,2">
+          <Track x:Name="PART_Track"
+                 Orientation="{TemplateBinding Orientation}"
+                 IsDirectionReversed="True"
+                 Minimum="{TemplateBinding Minimum}"
+                 Maximum="{TemplateBinding Maximum}"
+                 Value="{TemplateBinding Value, Mode=TwoWay}"
+                 ViewportSize="{TemplateBinding ViewportSize}">
+            <Track.DecreaseButton>
+              <RepeatButton x:Name="PART_PageUpButton"
+                            Focusable="False"
+                            IsHitTestVisible="False"
+                            Opacity="0" />
+            </Track.DecreaseButton>
+            <Track.IncreaseButton>
+              <RepeatButton x:Name="PART_PageDownButton"
+                            Focusable="False"
+                            IsHitTestVisible="False"
+                            Opacity="0" />
+            </Track.IncreaseButton>
+            <Track.Thumb>
+              <Thumb x:Name="PART_Thumb" />
+            </Track.Thumb>
+          </Track>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexTable /template/ ScrollViewer ScrollBar:horizontal, controls|CodexPinnedTable /template/ ScrollViewer ScrollBar:horizontal">
+    <Setter Property="Height" Value="10" />
+    <Setter Property="MinHeight" Value="10" />
+    <Setter Property="Template">
+      <ControlTemplate TargetType="ScrollBar">
+        <Border x:Name="PART_ScrollBarRoot"
+                Height="{TemplateBinding Height}"
+                MinHeight="{TemplateBinding MinHeight}"
+                Background="Transparent"
+                Padding="2,3">
+          <Track x:Name="PART_Track"
+                 Orientation="{TemplateBinding Orientation}"
+                 Minimum="{TemplateBinding Minimum}"
+                 Maximum="{TemplateBinding Maximum}"
+                 Value="{TemplateBinding Value, Mode=TwoWay}"
+                 ViewportSize="{TemplateBinding ViewportSize}">
+            <Track.DecreaseButton>
+              <RepeatButton x:Name="PART_PageLeftButton"
+                            Focusable="False"
+                            IsHitTestVisible="False"
+                            Opacity="0" />
+            </Track.DecreaseButton>
+            <Track.IncreaseButton>
+              <RepeatButton x:Name="PART_PageRightButton"
+                            Focusable="False"
+                            IsHitTestVisible="False"
+                            Opacity="0" />
+            </Track.IncreaseButton>
+            <Track.Thumb>
+              <Thumb x:Name="PART_Thumb" />
+            </Track.Thumb>
+          </Track>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexTable /template/ ScrollViewer ScrollBar Thumb#PART_Thumb, controls|CodexPinnedTable /template/ ScrollViewer ScrollBar Thumb#PART_Thumb">
+    <Setter Property="Template">
+      <ControlTemplate TargetType="Thumb">
+        <Border x:Name="PART_ThumbSurface"
+                Background="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                CornerRadius="{DynamicResource CodexSwitch.RadiusLg}"
+                Opacity="0.58" />
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexTable /template/ ScrollViewer ScrollBar Thumb#PART_Thumb /template/ Border#PART_ThumbSurface,
+                   controls|CodexPinnedTable /template/ ScrollViewer ScrollBar Thumb#PART_Thumb /template/ Border#PART_ThumbSurface">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
+  <Style Selector="controls|CodexTable /template/ ScrollViewer ScrollBar Thumb#PART_Thumb:pointerover /template/ Border#PART_ThumbSurface,
+                   controls|CodexPinnedTable /template/ ScrollViewer ScrollBar Thumb#PART_Thumb:pointerover /template/ Border#PART_ThumbSurface">
+    <Setter Property="Background" Value="{DynamicResource CodexSwitch.ForegroundBrush}" />
+    <Setter Property="Opacity" Value="0.72" />
   </Style>
 
   <Style Selector="controls|CodexTableHeader">

@@ -1,10 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Headless;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using CodexSwitchUI.Controls;
 using CodexSwitchUI.Themes;
 using System.Reflection;
@@ -543,6 +545,14 @@ public class MenuRenderedLifecycleTests
                 Assert.True(menuSubMenu.IsSubMenuOpen);
                 Assert.True(contextSubMenu.IsSubMenuOpen);
                 Assert.Contains("submenu-open", contextSubMenu.Classes);
+                Assert.True(FindSubMenuSurface(menuSubMenu).IsEffectivelyVisible);
+                Assert.True(FindSubMenuSurface(contextSubMenu).IsEffectivelyVisible);
+
+                using (var openFrame = Assert.IsAssignableFrom<Bitmap>(window.CaptureRenderedFrame()))
+                {
+                    Assert.True(openFrame.PixelSize.Width > 0);
+                    Assert.True(openFrame.PixelSize.Height > 0);
+                }
 
                 Assert.True(CodexMenuActivation.RequestPointerSubMenuClose(menuSubMenu));
                 Assert.True(CodexMenuActivation.RequestPointerSubMenuClose(contextSubMenu));
@@ -598,6 +608,16 @@ public class MenuRenderedLifecycleTests
         var timerField = state.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.NotNull(timerField);
         Assert.IsType<DispatcherTimer>(timerField.GetValue(state));
+    }
+
+    private static Border FindSubMenuSurface(MenuItem item)
+    {
+        var popup = item.GetVisualDescendants()
+            .OfType<Popup>()
+            .First(control => control.Name == "PART_Popup");
+        var surface = Assert.IsType<Border>(popup.Child);
+        Assert.Equal("PART_SubMenuSurface", surface.Name);
+        return surface;
     }
 
     private static void RaiseKey(InputElement target, Key key, PhysicalKey physicalKey)

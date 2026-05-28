@@ -6,7 +6,7 @@
       ColumnSpacing="16"
       RowSpacing="14">
   <StackPanel Spacing="8">
-    <primitives:CodexText Text="Home/End, arrow keys, page buttons, and host calls emit source-aware PageChanged events."
+    <primitives:CodexText Text="Home/End, arrow keys, primary action releases, page buttons, and host calls emit source-aware PageChanged events."
                           Role="Muted"
                           TextWrapping="Wrap" />
     <controls:CodexPagination Page="9"
@@ -36,12 +36,20 @@
 
   <StackPanel Grid.Row="1"
               Spacing="8">
-    <primitives:CodexText Text="Loading suppresses pointer and keyboard page changes."
+    <primitives:CodexText Text="Loading suppresses primary pointer and keyboard page changes."
                           Role="Muted"
                           TextWrapping="Wrap" />
     <controls:CodexPagination Page="6"
                               PageCount="18"
                               IsLoading="True" />
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <primitives:CodexText Text="Command blocked"
+                            Role="Muted" />
+      <controls:CodexPaginationPageButton Content="7"
+                                           Page="7"
+                                           Classes="command-blocked" />
+    </StackPanel>
   </StackPanel>
 
   <StackPanel Grid.Row="1"

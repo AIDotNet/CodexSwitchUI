@@ -42,6 +42,7 @@
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Alert.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Badge.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Avatar.axaml" />
+  <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/AvatarGroup.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Spinner.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Progress.axaml" />
   <StyleInclude Source="avares://CodexSwitchUI/Themes/Controls/Chart.axaml" />

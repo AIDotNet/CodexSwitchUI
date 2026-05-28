@@ -44,6 +44,10 @@
   <StackPanel Grid.Row="1"
               Grid.Column="1"
               Spacing="12">
+    <controls:CodexFieldLegend Content="Account settings" />
+    <controls:CodexFieldLegend Content="Inline label"
+                               Variant="Label"
+                               Size="Small" />
     <controls:CodexFieldContent>
       <StackPanel Spacing="3">
         <controls:CodexFieldTitle Content="Schema validation" />

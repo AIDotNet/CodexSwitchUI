@@ -1,0 +1,46 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Presenter and placeholder"
+                       Description="The owned template keeps placeholder, presenter, border, and focus ring in one mounted input surface.">
+    <controls:CodexTextBox PlaceholderText="Provider name"
+                           MinWidth="280" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Inline slot anatomy"
+                       Description="Left and right content slots stay outside the text presenter while sharing the same border and padding.">
+    <controls:CodexTextBox Text="openai"
+                           InnerLeftContent="cs://"
+                           InnerRightContent=".local"
+                           MinWidth="280" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Selection and caret"
+                       Description="Selection brush, selection foreground, and caret brush come from Codex tokens instead of default input chrome.">
+    <controls:CodexTextBox Text="https://api.openai.com/v1"
+                           SelectionStart="8"
+                           SelectionEnd="21"
+                           CaretIndex="21"
+                           MinWidth="280" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Intent and size"
+                       Description="Intent and size classes change border, caret, selection, height, padding, and text scale together.">
+    <StackPanel Spacing="10">
+      <controls:CodexTextBox Text="gpt-5"
+                             Size="Small"
+                             MinWidth="280" />
+      <controls:CodexTextBox Text="/v1/chat/completions"
+                             Intent="Warning"
+                             Size="Large"
+                             MinWidth="280" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

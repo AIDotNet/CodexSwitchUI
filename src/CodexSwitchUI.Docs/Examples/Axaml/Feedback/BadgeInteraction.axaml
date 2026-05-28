@@ -70,7 +70,7 @@
   <controls:CodexField Grid.Row="2"
                        Grid.ColumnSpan="2"
                        Label="Link badge activation"
-                       Description="Interactive badges mirror the Web asChild/link case with focus, pointer, and keyboard activation.">
+                       Description="Interactive badges mirror the Web asChild/link case with focus, pointer, keyboard, and source-aware activation.">
     <controls:CodexField.Content>
       <StackPanel Orientation="Horizontal"
                   Spacing="10">

@@ -6,12 +6,24 @@ using Avalonia.Input;
 
 namespace CodexSwitchUI.Controls;
 
-public sealed class CodexSwitchCheckedChangedEventArgs(bool oldValue, bool newValue)
+public enum CodexSwitchCheckedChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public sealed class CodexSwitchCheckedChangedEventArgs(
+    bool oldValue,
+    bool newValue,
+    CodexSwitchCheckedChangeSource source = CodexSwitchCheckedChangeSource.Programmatic)
     : EventArgs
 {
     public bool OldValue { get; } = oldValue;
 
     public bool NewValue { get; } = newValue;
+
+    public CodexSwitchCheckedChangeSource Source { get; } = source;
 }
 
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
@@ -25,6 +37,8 @@ public class CodexSwitch : ToggleButton
 
     public static readonly StyledProperty<bool> HasContentProperty =
         AvaloniaProperty.Register<CodexSwitch, bool>(nameof(HasContent));
+
+    private CodexSwitchCheckedChangeSource? _pendingCheckedChangeSource;
 
     static CodexSwitch()
     {
@@ -56,6 +70,38 @@ public class CodexSwitch : ToggleButton
 
     public bool HasContent => GetValue(HasContentProperty);
 
+    internal bool TryHandleActivationKey(Key key)
+    {
+        if (key is not (Key.Enter or Key.Space))
+        {
+            return false;
+        }
+
+        if (!IsEnabled)
+        {
+            return true;
+        }
+
+        _ = ToggleChecked(CodexSwitchCheckedChangeSource.Keyboard);
+        return true;
+    }
+
+    internal bool SetChecked(bool isChecked, CodexSwitchCheckedChangeSource source)
+    {
+        if (!IsEnabled || ToCheckedValue(IsChecked) == isChecked)
+        {
+            return false;
+        }
+
+        RunWithCheckedChangeSource(source, () => IsChecked = isChecked);
+        return true;
+    }
+
+    internal bool ToggleChecked(CodexSwitchCheckedChangeSource source)
+    {
+        return SetChecked(!ToCheckedValue(IsChecked), source);
+    }
+
     protected override void OnGotFocus(FocusChangedEventArgs e)
     {
         base.OnGotFocus(e);
@@ -71,7 +117,42 @@ public class CodexSwitch : ToggleButton
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        if (IsEnabled
+            && e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed)
+        {
+            _pendingCheckedChangeSource = CodexSwitchCheckedChangeSource.Pointer;
+        }
+
         base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        try
+        {
+            base.OnPointerReleased(e);
+        }
+        finally
+        {
+            _pendingCheckedChangeSource = null;
+        }
+    }
+
+    protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+    {
+        _pendingCheckedChangeSource = null;
+        base.OnPointerCaptureLost(e);
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (TryHandleActivationKey(e.Key))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        base.OnKeyDown(e);
     }
 
     private void SyncClasses()
@@ -94,7 +175,22 @@ public class CodexSwitch : ToggleButton
             return;
         }
 
-        CheckedChanged?.Invoke(this, new CodexSwitchCheckedChangedEventArgs(oldValue, newValue));
+        var source = _pendingCheckedChangeSource ?? CodexSwitchCheckedChangeSource.Programmatic;
+        CheckedChanged?.Invoke(this, new CodexSwitchCheckedChangedEventArgs(oldValue, newValue, source));
+    }
+
+    private void RunWithCheckedChangeSource(CodexSwitchCheckedChangeSource source, Action action)
+    {
+        var previousSource = _pendingCheckedChangeSource;
+        _pendingCheckedChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingCheckedChangeSource = previousSource;
+        }
     }
 
     private static bool ToCheckedValue(object? value)

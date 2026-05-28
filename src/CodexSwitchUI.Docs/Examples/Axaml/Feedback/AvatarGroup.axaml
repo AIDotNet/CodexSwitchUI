@@ -1,0 +1,58 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="14">
+  <controls:CodexAvatarGroup Size="Medium"
+                             Overlap="12">
+    <controls:CodexAvatar Fallback="CN"
+                          ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                          IsStatusVisible="True" />
+    <controls:CodexAvatar Fallback="LR"
+                          ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                          Variant="Secondary" />
+    <controls:CodexAvatar Fallback="ER"
+                          Variant="Outline" />
+    <controls:CodexAvatarGroupCount Count="3" />
+  </controls:CodexAvatarGroup>
+
+  <StackPanel Orientation="Horizontal"
+              Spacing="18">
+    <controls:CodexAvatarGroup Size="Small"
+                               Overlap="8">
+      <controls:CodexAvatar Fallback="CN"
+                            ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                            IsStatusVisible="True" />
+      <controls:CodexAvatar Fallback="LR"
+                            ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+      <controls:CodexAvatarGroupCount Count="3" />
+    </controls:CodexAvatarGroup>
+
+    <controls:CodexAvatarGroup Size="Medium"
+                               Overlap="0"
+                               IsStacked="False">
+      <controls:CodexAvatar Fallback="CN"
+                            ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                            IsStatusVisible="True" />
+      <controls:CodexAvatar Fallback="LR"
+                            ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+    </controls:CodexAvatarGroup>
+
+    <controls:CodexAvatarGroup Size="Large"
+                               Overlap="14">
+      <controls:CodexAvatar Fallback="CN"
+                            ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                            IsStatusVisible="True" />
+      <controls:CodexAvatar Fallback="LR"
+                            ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+      <controls:CodexAvatarGroupCount Count="3" />
+    </controls:CodexAvatarGroup>
+  </StackPanel>
+</StackPanel>

@@ -3,15 +3,27 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
-public sealed class CodexItemActivatedEventArgs(object? commandParameter) : RoutedEventArgs
+public enum CodexItemActivationSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public sealed class CodexItemActivatedEventArgs(
+    object? commandParameter,
+    CodexItemActivationSource source = CodexItemActivationSource.Programmatic) : EventArgs
 {
     public object? CommandParameter { get; } = commandParameter;
+
+    public CodexItemActivationSource Source { get; } = source;
 }
 
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
@@ -204,13 +216,18 @@ public class CodexItem : ContentControl
 
     public bool TryActivate()
     {
+        return TryActivate(CodexItemActivationSource.Programmatic);
+    }
+
+    internal bool TryActivate(CodexItemActivationSource source)
+    {
         if (!IsInteractive || !CanActivate)
         {
             return false;
         }
 
         ActivateCommand?.Execute(ActivateCommandParameter);
-        Activated?.Invoke(this, new CodexItemActivatedEventArgs(ActivateCommandParameter));
+        Activated?.Invoke(this, new CodexItemActivatedEventArgs(ActivateCommandParameter, source));
         return true;
     }
 
@@ -221,7 +238,7 @@ public class CodexItem : ContentControl
             return false;
         }
 
-        return TryActivate();
+        return TryActivate(CodexItemActivationSource.Keyboard);
     }
 
     protected override void OnGotFocus(FocusChangedEventArgs e)
@@ -246,15 +263,27 @@ public class CodexItem : ContentControl
     {
         base.OnPointerReleased(e);
 
-        if (e.Handled || ShouldIgnoreActivation(e.Source))
+        if (e.Handled)
         {
             return;
         }
 
-        if (TryActivate())
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        if (TryHandlePointerActivation(updateKind, e.Source))
         {
             e.Handled = true;
         }
+    }
+
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind, object? source = null)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased
+            || ShouldIgnoreActivation(source))
+        {
+            return false;
+        }
+
+        return TryActivate(CodexItemActivationSource.Pointer);
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -335,6 +364,7 @@ public class CodexItem : ContentControl
         Classes.Set("selected", IsSelected);
         Classes.Set("loading", IsLoading);
         Classes.Set("can-activate", CanActivate);
+        Classes.Set("command-blocked", ActivateCommand is not null && IsInteractive && IsEnabled && !IsLoading && !CanActivate);
         Classes.Set("has-header", HasHeader);
         Classes.Set("has-media", HasMedia);
         Classes.Set("has-title", HasTitle);
@@ -350,9 +380,56 @@ public class CodexItem : ContentControl
         return !string.IsNullOrWhiteSpace(value);
     }
 
-    private static bool ShouldIgnoreActivation(object? source)
+    private bool ShouldIgnoreActivation(object? source)
     {
-        return source is Button or ToggleButton or TextBox or ComboBox or Slider or MenuItem;
+        if (source is not Control control)
+        {
+            return false;
+        }
+
+        if (!ReferenceEquals(control, this) && IsNestedActivationControl(control))
+        {
+            return true;
+        }
+
+        foreach (var ancestor in control.GetVisualAncestors().OfType<Control>())
+        {
+            if (ReferenceEquals(ancestor, this))
+            {
+                break;
+            }
+
+            if (IsNestedActivationControl(ancestor))
+            {
+                return true;
+            }
+        }
+
+        for (var parent = control.GetLogicalParent(); parent is not null; parent = parent.GetLogicalParent())
+        {
+            if (ReferenceEquals(parent, this))
+            {
+                break;
+            }
+
+            if (parent is Control parentControl && IsNestedActivationControl(parentControl))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool IsNestedActivationControl(Control control)
+    {
+        return control is Button
+            or ToggleButton
+            or TextBox
+            or ComboBox
+            or Slider
+            or MenuItem
+            or CodexBadge;
     }
 }
 

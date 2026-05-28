@@ -25,7 +25,7 @@
             </controls:CodexBreadcrumbItem>
           </controls:CodexBreadcrumbList>
         </controls:CodexBreadcrumb>
-        <TextBlock Text="LinkActivated emits link, item, index, href, and content metadata."
+        <TextBlock Text="LinkActivated emits link, item, index, href, content, and source metadata."
                    TextWrapping="Wrap" />
       </StackPanel>
     </controls:CodexField.Content>

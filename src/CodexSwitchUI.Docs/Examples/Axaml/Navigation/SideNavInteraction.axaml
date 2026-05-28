@@ -33,9 +33,11 @@
                                  Content="Disabled"
                                  Detail="Cannot become selected"
                                  IsEnabled="False" />
-      <controls:CodexSideNavItem Value="plain"
-                                 Content="No icon row"
-                                 Detail="Content still aligns" />
+      <controls:CodexSideNavItem Value="blocked"
+                                 Icon="B"
+                                 Content="Command blocked"
+                                 Detail="CanExecute=false"
+                                 Classes="command-blocked" />
     </StackPanel>
   </controls:CodexSideNav>
 
@@ -76,6 +78,6 @@
 
   <TextBlock Grid.Row="2"
              Grid.ColumnSpan="2"
-             Text="ValueChanged emits old/new values, items, and indexes."
+             Text="ValueChanged emits old/new values, items, indexes, and source metadata."
              TextWrapping="Wrap" />
 </Grid>

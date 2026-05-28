@@ -18,7 +18,11 @@
     <AvaloniaResource Include="..\..\..\CodexSwitch\Assets\icons\*.png"
                       Link="Assets\icons\%(Filename)%(Extension)" />
     <AvaloniaResource Remove="Examples\Axaml\**\*.axaml" />
+    <Compile Remove="Examples\CSharp\**\*.cs" />
     <None Update="Examples\Axaml\**\*.axaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Examples\CSharp\**\*.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

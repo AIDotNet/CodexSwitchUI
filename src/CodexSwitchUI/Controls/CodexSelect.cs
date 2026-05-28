@@ -7,13 +7,28 @@ using Avalonia.Threading;
 
 namespace CodexSwitchUI.Controls;
 
+public enum CodexSelectValueChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public enum CodexSelectOpenChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
 public sealed class CodexSelectValueChangedEventArgs(
     object? oldItem,
     object? newItem,
     int oldIndex,
     int newIndex,
     string? oldValue,
-    string? newValue)
+    string? newValue,
+    CodexSelectValueChangeSource source = CodexSelectValueChangeSource.Programmatic)
     : EventArgs
 {
     public object? OldItem { get; } = oldItem;
@@ -27,12 +42,18 @@ public sealed class CodexSelectValueChangedEventArgs(
     public string? OldValue { get; } = oldValue;
 
     public string? NewValue { get; } = newValue;
+
+    public CodexSelectValueChangeSource Source { get; } = source;
 }
 
-public sealed class CodexSelectOpenChangedEventArgs(bool isOpen)
+public sealed class CodexSelectOpenChangedEventArgs(
+    bool isOpen,
+    CodexSelectOpenChangeSource source = CodexSelectOpenChangeSource.Programmatic)
     : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexSelectOpenChangeSource Source { get; } = source;
 }
 
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
@@ -41,6 +62,10 @@ public class CodexSelect : ComboBox
     private object? _lastSelectedItem;
     private int _lastSelectedIndex = -1;
     private string? _lastSelectedValue;
+    private CodexSelectValueChangeSource? _pendingValueChangeSource;
+    private CodexSelectValueChangeSource? _nextInteractionSource;
+    private CodexSelectOpenChangeSource? _pendingOpenChangeSource;
+    private CodexSelectOpenChangeSource? _nextOpenChangeSource;
 
     public static readonly StyledProperty<CodexControlIntent> IntentProperty =
         AvaloniaProperty.Register<CodexSelect, CodexControlIntent>(nameof(Intent), CodexControlIntent.Default);
@@ -95,7 +120,44 @@ public class CodexSelect : ComboBox
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        _nextInteractionSource = CodexSelectValueChangeSource.Pointer;
+        _nextOpenChangeSource = CodexSelectOpenChangeSource.Pointer;
         base.OnPointerPressed(e);
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (IsSelectionKey(e.Key))
+        {
+            _nextInteractionSource = CodexSelectValueChangeSource.Keyboard;
+            _nextOpenChangeSource = CodexSelectOpenChangeSource.Keyboard;
+        }
+
+        base.OnKeyDown(e);
+    }
+
+    internal bool SetDropDownOpen(
+        bool isOpen,
+        CodexSelectOpenChangeSource source = CodexSelectOpenChangeSource.Programmatic)
+    {
+        if (IsDropDownOpen == isOpen)
+        {
+            return false;
+        }
+
+        RunWithOpenChangeSource(source, () => IsDropDownOpen = isOpen);
+        return true;
+    }
+
+    internal bool SelectIndex(int index, CodexSelectValueChangeSource source = CodexSelectValueChangeSource.Programmatic)
+    {
+        if (index < -1 || index >= ItemsView.Count)
+        {
+            return false;
+        }
+
+        RunWithValueChangeSource(source, () => SelectedIndex = index);
+        return true;
     }
 
     private void OnOpenChanged(AvaloniaPropertyChangedEventArgs args)
@@ -107,7 +169,9 @@ public class CodexSelect : ComboBox
             return;
         }
 
-        OpenChanged?.Invoke(this, new CodexSelectOpenChangedEventArgs(IsDropDownOpen));
+        var source = _pendingOpenChangeSource ?? _nextOpenChangeSource ?? CodexSelectOpenChangeSource.Programmatic;
+        _nextOpenChangeSource = null;
+        OpenChanged?.Invoke(this, new CodexSelectOpenChangedEventArgs(IsDropDownOpen, source));
     }
 
     private void OnSelectionChanged(SelectionChangedEventArgs args)
@@ -127,6 +191,9 @@ public class CodexSelect : ComboBox
             return;
         }
 
+        var source = _pendingValueChangeSource ?? _nextInteractionSource ?? CodexSelectValueChangeSource.Programmatic;
+        _nextInteractionSource = null;
+
         ValueChanged?.Invoke(
             this,
             new CodexSelectValueChangedEventArgs(
@@ -135,7 +202,8 @@ public class CodexSelect : ComboBox
                 oldIndex,
                 newIndex,
                 oldValue,
-                newValue));
+                newValue,
+                source));
     }
 
     private void SyncClasses()
@@ -176,6 +244,46 @@ public class CodexSelect : ComboBox
         _lastSelectedItem = SelectedItem;
         _lastSelectedIndex = SelectedIndex;
         _lastSelectedValue = GetItemValue(SelectedItem);
+    }
+
+    private void RunWithValueChangeSource(CodexSelectValueChangeSource source, Action action)
+    {
+        var previousSource = _pendingValueChangeSource;
+        _pendingValueChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingValueChangeSource = previousSource;
+        }
+    }
+
+    private void RunWithOpenChangeSource(CodexSelectOpenChangeSource source, Action action)
+    {
+        var previousSource = _pendingOpenChangeSource;
+        _pendingOpenChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingOpenChangeSource = previousSource;
+        }
+    }
+
+    private static bool IsSelectionKey(Key key)
+    {
+        return key is Key.Enter
+            or Key.Space
+            or Key.Up
+            or Key.Down
+            or Key.PageUp
+            or Key.PageDown
+            or Key.Home
+            or Key.End;
     }
 
     private static string? GetItemValue(object? item)

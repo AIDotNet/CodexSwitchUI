@@ -4,7 +4,9 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 using System.Linq;
+using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
@@ -218,6 +220,21 @@ public class CodexPagination : TemplatedControl
         return CanGoNext && SelectPage(PageCount, CodexPaginationPageChangeSource.Last);
     }
 
+    internal bool TryHandleActionPointerRelease(PointerUpdateKind updateKind, CodexPaginationPageChangeSource source)
+    {
+        return updateKind == PointerUpdateKind.LeftButtonReleased && TryRunAction(source);
+    }
+
+    internal bool TryHandleActionKey(Key key, CodexPaginationPageChangeSource source)
+    {
+        if (key is not (Key.Enter or Key.Space))
+        {
+            return false;
+        }
+
+        return TryRunAction(source);
+    }
+
     internal bool TryHandleNavigationKey(Key key)
     {
         return key switch
@@ -267,68 +284,123 @@ public class CodexPagination : TemplatedControl
 
     private void AttachButtons()
     {
-        if (_firstButton is not null)
-        {
-            _firstButton.Click += OnFirstClicked;
-        }
-
-        if (_previousButton is not null)
-        {
-            _previousButton.Click += OnPreviousClicked;
-        }
-
-        if (_nextButton is not null)
-        {
-            _nextButton.Click += OnNextClicked;
-        }
-
-        if (_lastButton is not null)
-        {
-            _lastButton.Click += OnLastClicked;
-        }
+        AttachActionButton(_firstButton, OnFirstPointerReleased, OnFirstKeyDown);
+        AttachActionButton(_previousButton, OnPreviousPointerReleased, OnPreviousKeyDown);
+        AttachActionButton(_nextButton, OnNextPointerReleased, OnNextKeyDown);
+        AttachActionButton(_lastButton, OnLastPointerReleased, OnLastKeyDown);
     }
 
     private void DetachButtons()
     {
-        if (_firstButton is not null)
+        DetachActionButton(_firstButton, OnFirstPointerReleased, OnFirstKeyDown);
+        DetachActionButton(_previousButton, OnPreviousPointerReleased, OnPreviousKeyDown);
+        DetachActionButton(_nextButton, OnNextPointerReleased, OnNextKeyDown);
+        DetachActionButton(_lastButton, OnLastPointerReleased, OnLastKeyDown);
+    }
+
+    private static void AttachActionButton(
+        CodexButton? button,
+        EventHandler<PointerReleasedEventArgs> pointerHandler,
+        EventHandler<KeyEventArgs> keyHandler)
+    {
+        if (button is null)
         {
-            _firstButton.Click -= OnFirstClicked;
+            return;
         }
 
-        if (_previousButton is not null)
+        button.AddHandler(
+            InputElement.PointerReleasedEvent,
+            pointerHandler,
+            RoutingStrategies.Bubble,
+            handledEventsToo: true);
+        button.AddHandler(
+            InputElement.KeyDownEvent,
+            keyHandler,
+            RoutingStrategies.Bubble,
+            handledEventsToo: true);
+    }
+
+    private static void DetachActionButton(
+        CodexButton? button,
+        EventHandler<PointerReleasedEventArgs> pointerHandler,
+        EventHandler<KeyEventArgs> keyHandler)
+    {
+        if (button is null)
         {
-            _previousButton.Click -= OnPreviousClicked;
+            return;
         }
 
-        if (_nextButton is not null)
-        {
-            _nextButton.Click -= OnNextClicked;
-        }
+        button.RemoveHandler(InputElement.PointerReleasedEvent, pointerHandler);
+        button.RemoveHandler(InputElement.KeyDownEvent, keyHandler);
+    }
 
-        if (_lastButton is not null)
+    private void OnFirstPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        HandleActionPointerReleased(sender, e, CodexPaginationPageChangeSource.First);
+    }
+
+    private void OnPreviousPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        HandleActionPointerReleased(sender, e, CodexPaginationPageChangeSource.Previous);
+    }
+
+    private void OnNextPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        HandleActionPointerReleased(sender, e, CodexPaginationPageChangeSource.Next);
+    }
+
+    private void OnLastPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        HandleActionPointerReleased(sender, e, CodexPaginationPageChangeSource.Last);
+    }
+
+    private void OnFirstKeyDown(object? sender, KeyEventArgs e)
+    {
+        HandleActionKey(e, CodexPaginationPageChangeSource.First);
+    }
+
+    private void OnPreviousKeyDown(object? sender, KeyEventArgs e)
+    {
+        HandleActionKey(e, CodexPaginationPageChangeSource.Previous);
+    }
+
+    private void OnNextKeyDown(object? sender, KeyEventArgs e)
+    {
+        HandleActionKey(e, CodexPaginationPageChangeSource.Next);
+    }
+
+    private void OnLastKeyDown(object? sender, KeyEventArgs e)
+    {
+        HandleActionKey(e, CodexPaginationPageChangeSource.Last);
+    }
+
+    private void HandleActionPointerReleased(object? sender, PointerReleasedEventArgs e, CodexPaginationPageChangeSource source)
+    {
+        var updateKind = e.GetCurrentPoint((Control?)sender ?? this).Properties.PointerUpdateKind;
+        if (TryHandleActionPointerRelease(updateKind, source))
         {
-            _lastButton.Click -= OnLastClicked;
+            e.Handled = true;
         }
     }
 
-    private void OnFirstClicked(object? sender, RoutedEventArgs e)
+    private void HandleActionKey(KeyEventArgs e, CodexPaginationPageChangeSource source)
     {
-        GoFirst();
+        if (TryHandleActionKey(e.Key, source))
+        {
+            e.Handled = true;
+        }
     }
 
-    private void OnPreviousClicked(object? sender, RoutedEventArgs e)
+    private bool TryRunAction(CodexPaginationPageChangeSource source)
     {
-        GoPrevious();
-    }
-
-    private void OnNextClicked(object? sender, RoutedEventArgs e)
-    {
-        GoNext();
-    }
-
-    private void OnLastClicked(object? sender, RoutedEventArgs e)
-    {
-        GoLast();
+        return source switch
+        {
+            CodexPaginationPageChangeSource.First => GoFirst(),
+            CodexPaginationPageChangeSource.Previous => GoPrevious(),
+            CodexPaginationPageChangeSource.Next => GoNext(),
+            CodexPaginationPageChangeSource.Last => GoLast(),
+            _ => false
+        };
     }
 
     private void OnPageChanged(int page)
@@ -382,6 +454,12 @@ public class CodexPagination : TemplatedControl
     private bool CanNavigate()
     {
         return IsEnabled && !IsLoading && PageCount > 0;
+    }
+
+    internal bool CanSelectPageItem(int page)
+    {
+        var target = NormalizePage(page);
+        return CanNavigate() && target != Page && target >= 1 && target <= Math.Max(0, PageCount);
     }
 
     private void SyncState()
@@ -474,6 +552,8 @@ public class CodexPagination : TemplatedControl
 
 public class CodexPaginationPageButton : CodexButton
 {
+    private ICommand? _subscribedCommand;
+
     public static readonly StyledProperty<int> PageProperty =
         AvaloniaProperty.Register<CodexPaginationPageButton, int>(nameof(Page));
 
@@ -488,6 +568,10 @@ public class CodexPaginationPageButton : CodexButton
         PageProperty.Changed.AddClassHandler<CodexPaginationPageButton>((button, _) => button.SyncPageClasses());
         IsCurrentProperty.Changed.AddClassHandler<CodexPaginationPageButton>((button, _) => button.SyncPageClasses());
         IsEllipsisProperty.Changed.AddClassHandler<CodexPaginationPageButton>((button, _) => button.SyncPageClasses());
+        CommandProperty.Changed.AddClassHandler<CodexPaginationPageButton>((button, args) => button.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        CommandParameterProperty.Changed.AddClassHandler<CodexPaginationPageButton>((button, _) => button.SyncPageClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexPaginationPageButton>((button, _) => button.SyncPageClasses());
+        IsLoadingProperty.Changed.AddClassHandler<CodexPaginationPageButton>((button, _) => button.SyncPageClasses());
     }
 
     public CodexPaginationPageButton()
@@ -515,14 +599,33 @@ public class CodexPaginationPageButton : CodexButton
         set => SetValue(IsEllipsisProperty, value);
     }
 
+    internal bool CanActivate => IsEnabled
+                                 && !IsLoading
+                                 && !IsEllipsis
+                                 && !IsCurrent
+                                 && CanExecuteCommand()
+                                 && (FindPagination()?.CanSelectPageItem(Page) ?? true);
+
     protected override void OnClick()
     {
-        if (IsEllipsis || IsCurrent)
+        if (!CanActivate)
         {
             return;
         }
 
+        base.OnClick();
         FindPagination()?.SelectPage(Page, CodexPaginationPageChangeSource.PageItem);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
     }
 
     private CodexPagination? FindPagination()
@@ -543,5 +646,39 @@ public class CodexPaginationPageButton : CodexButton
         Classes.Set("page-item", !IsEllipsis);
         Classes.Set("current", IsCurrent);
         Classes.Set("ellipsis", IsEllipsis);
+        Classes.Set("can-activate", CanActivate);
+        Classes.Set("command-blocked", Command is not null && IsEnabled && !IsLoading && !IsEllipsis && !IsCurrent && !CanExecuteCommand());
+    }
+
+    private bool CanExecuteCommand()
+    {
+        return Command?.CanExecute(CommandParameter) ?? true;
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncPageClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncPageClasses();
     }
 }

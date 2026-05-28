@@ -6,11 +6,11 @@
       ColumnSpacing="16"
       RowSpacing="14">
   <controls:CodexField Label="Value and events"
-                       Description="Buttons mutate the same root value that pointer and keyboard selection update.">
+                       Description="Primary pointer release, Space/Enter, and roving arrows update the same root value with source metadata.">
     <controls:CodexField.Content>
       <StackPanel Spacing="10">
         <primitives:CodexText Role="Muted"
-                              Text="ValueChanged exposes old/new item, index, and value metadata." />
+                              Text="ValueChanged exposes old/new item, index, value, and source metadata." />
         <controls:CodexRadioGroup SelectedValue="balanced">
           <controls:CodexRadioGroupItem Value="balanced"
                                         Content="Balanced" />

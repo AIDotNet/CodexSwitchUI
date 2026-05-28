@@ -1,0 +1,72 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Trigger anatomy"
+                       Description="The trigger owns placeholder, selected content, chevron, focus ring, and has-selection state.">
+    <controls:CodexNativeSelect SelectedIndex="0"
+                                MinWidth="260">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Select route" />
+      <controls:CodexNativeSelectOption Value="primary"
+                                        Content="Primary" />
+      <controls:CodexNativeSelectOption Value="fallback"
+                                        Content="Fallback" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Popup anatomy"
+                       Description="Open state exposes the popup surface with option rows and disabled optgroup labels.">
+    <controls:CodexNativeSelect SelectedIndex="2"
+                                IsDropDownOpen="True"
+                                MinWidth="280">
+      <controls:CodexNativeSelectOptGroup Label="Production" />
+      <controls:CodexNativeSelectOption Value="openai"
+                                        Content="OpenAI" />
+      <controls:CodexNativeSelectOption Value="claude"
+                                        Content="Claude" />
+      <controls:CodexNativeSelectOptGroup Label="Local" />
+      <controls:CodexNativeSelectOption Value="proxy"
+                                        Content="Local proxy" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Disabled option anatomy"
+                       Description="Disabled options remain visible in the native list but do not enter value selection.">
+    <controls:CodexNativeSelect SelectedIndex="1"
+                                MinWidth="260">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Select model" />
+      <controls:CodexNativeSelectOption Value="gpt-5"
+                                        Content="gpt-5" />
+      <controls:CodexNativeSelectOption Value="legacy"
+                                        Content="Legacy model"
+                                        IsEnabled="False" />
+      <controls:CodexNativeSelectOption Value="mini"
+                                        Content="gpt-5-mini" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Invalid compact anatomy"
+                       Description="Invalid, size, placeholder-visible, and field message states stay independent."
+                       Intent="Error"
+                       Message="Choose a provider before saving.">
+    <controls:CodexNativeSelect SelectedIndex="0"
+                                IsInvalid="True"
+                                Size="Small"
+                                MinWidth="260">
+      <controls:CodexNativeSelectOption Value=""
+                                        Content="Select provider" />
+      <controls:CodexNativeSelectOption Value="openai"
+                                        Content="OpenAI" />
+      <controls:CodexNativeSelectOption Value="claude"
+                                        Content="Claude" />
+    </controls:CodexNativeSelect>
+  </controls:CodexField>
+</Grid>

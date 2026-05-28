@@ -6,11 +6,13 @@
       ColumnSpacing="16"
       RowSpacing="14">
   <controls:CodexField Label="Pointer toggle"
-                       Description="Pointer release and Space use the same native checked path.">
+                       Description="Pointer release and Space use the same checked path and report source metadata.">
     <StackPanel Spacing="10">
       <controls:CodexCheckBox Content="Enable provider routing"
                               IsChecked="True" />
       <controls:CodexCheckBox Content="Sync archived sessions" />
+      <TextBlock Text="CheckedStateChanged: routing is checked (source=Programmatic)."
+                 Opacity="0.72" />
     </StackPanel>
   </controls:CodexField>
 

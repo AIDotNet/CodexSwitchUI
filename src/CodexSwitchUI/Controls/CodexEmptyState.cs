@@ -350,6 +350,9 @@ public class CodexEmptyState : ContentControl
 
     private void SyncClasses()
     {
+        var actionCommandBlocked = ActionCommand is not null && HasAction && IsEnabled && !IsLoading && !CanExecuteAction;
+        var secondaryActionCommandBlocked = SecondaryActionCommand is not null && HasSecondaryAction && IsEnabled && !IsLoading && !CanExecuteSecondaryAction;
+
         CodexClassSync.SetVariant(Classes, Variant);
         CodexClassSync.SetSize(Classes, Size);
         Classes.Set("loading", IsLoading);
@@ -363,6 +366,9 @@ public class CodexEmptyState : ContentControl
         Classes.Set("has-actions", HasActions);
         Classes.Set("can-action", CanExecuteAction);
         Classes.Set("can-secondary-action", CanExecuteSecondaryAction);
+        Classes.Set("action-command-blocked", actionCommandBlocked);
+        Classes.Set("secondary-action-command-blocked", secondaryActionCommandBlocked);
+        Classes.Set("command-blocked", actionCommandBlocked || secondaryActionCommandBlocked);
     }
 
     private static bool HasValue(object? value)

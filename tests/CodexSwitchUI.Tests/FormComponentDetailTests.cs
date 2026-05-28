@@ -1,3 +1,4 @@
+using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Threading;
 using CodexSwitchUI.Controls;
@@ -66,6 +67,71 @@ public class FormComponentDetailTests
     }
 
     [Fact]
+    public void SplitButtonMenuTriggerKeysOpenLikeWebMenuTrigger()
+    {
+        var changes = new List<(bool IsOpen, CodexSplitButtonOpenChangeSource Source)>();
+        var splitButton = new CodexSplitButton
+        {
+            Content = "Run sync",
+            DropDownContent = new CodexButton { Content = "Run once" },
+            IsArrowVisible = true
+        };
+        splitButton.OpenChanged += (_, args) => changes.Add((args.IsOpen, args.Source));
+
+        Assert.True(splitButton.HasDropDownContent);
+        Assert.True(splitButton.CanOpenDropDown);
+        Assert.Contains("closed", splitButton.Classes);
+        Assert.True(splitButton.TryHandleMenuTriggerKey(Key.Enter));
+        Assert.True(splitButton.IsOpen);
+        Assert.Equal([(true, CodexSplitButtonOpenChangeSource.Keyboard)], changes);
+
+        Assert.True(splitButton.TryHandleDismissKey(Key.Escape));
+        Assert.False(splitButton.IsOpen);
+        Assert.Equal(
+            [
+                (true, CodexSplitButtonOpenChangeSource.Keyboard),
+                (false, CodexSplitButtonOpenChangeSource.Keyboard)
+            ],
+            changes);
+
+        Assert.True(splitButton.TryHandleMenuTriggerKey(Key.Space));
+        Assert.True(splitButton.IsOpen);
+        Assert.Equal(CodexSplitButtonOpenChangeSource.Keyboard, changes[^1].Source);
+
+        Assert.True(splitButton.TryHandleDismissKey(Key.Escape));
+        Assert.True(splitButton.TryHandleMenuTriggerKey(Key.Down));
+        Assert.True(splitButton.IsOpen);
+        Assert.Equal(
+            [
+                (true, CodexSplitButtonOpenChangeSource.Keyboard),
+                (false, CodexSplitButtonOpenChangeSource.Keyboard),
+                (true, CodexSplitButtonOpenChangeSource.Keyboard),
+                (false, CodexSplitButtonOpenChangeSource.Keyboard),
+                (true, CodexSplitButtonOpenChangeSource.Keyboard)
+            ],
+            changes);
+
+        Assert.False(splitButton.TryHandleMenuTriggerKey(Key.Up));
+        Assert.True(splitButton.IsOpen);
+
+        Assert.True(splitButton.TryHandleDismissKey(Key.Escape));
+        Assert.False(splitButton.TryHandleMenuTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(splitButton.TryHandleMenuTriggerPointerRelease(PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(splitButton.IsOpen);
+
+        Assert.True(splitButton.TryHandleMenuTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(splitButton.IsOpen);
+        Assert.Equal((true, CodexSplitButtonOpenChangeSource.Pointer), changes[^1]);
+
+        splitButton.IsLoading = true;
+        splitButton.IsOpen = false;
+        Assert.Equal((false, CodexSplitButtonOpenChangeSource.Programmatic), changes[^1]);
+        Assert.False(splitButton.TryHandleMenuTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(splitButton.TryHandleMenuTriggerKey(Key.Enter));
+        Assert.False(splitButton.IsOpen);
+    }
+
+    [Fact]
     public void FormControlsSyncIntentAndSizeClasses()
     {
         var controls = new Avalonia.Controls.Control[]
@@ -113,8 +179,8 @@ public class FormComponentDetailTests
     public void CheckboxMirrorsWebCheckedStateChangeContract()
     {
         var checkBox = new CodexCheckBox();
-        var changes = new List<(bool? OldValue, bool? NewValue)>();
-        checkBox.CheckedStateChanged += (_, args) => changes.Add((args.OldValue, args.NewValue));
+        var changes = new List<CodexCheckBoxCheckedStateChangedEventArgs>();
+        checkBox.CheckedStateChanged += (_, args) => changes.Add(args);
 
         Assert.Contains("state-unchecked", checkBox.Classes);
 
@@ -132,19 +198,32 @@ public class FormComponentDetailTests
         Assert.Contains("state-unchecked", checkBox.Classes);
         Assert.Equal(
             [
-                (false, true),
-                (true, null),
-                (null, false)
+                (false, true, CodexCheckBoxCheckedStateChangeSource.Programmatic),
+                (true, null, CodexCheckBoxCheckedStateChangeSource.Programmatic),
+                (null, false, CodexCheckBoxCheckedStateChangeSource.Programmatic)
             ],
-            changes);
+            changes.Select(change => (change.OldValue, change.NewValue, change.Source)));
+
+        changes.Clear();
+        Assert.True(checkBox.TryHandleActivationKey(Key.Space));
+        Assert.Equal(
+            (false, true, CodexCheckBoxCheckedStateChangeSource.Keyboard),
+            changes.Select(change => (change.OldValue, change.NewValue, change.Source)).Single());
+
+        changes.Clear();
+        Assert.True(checkBox.SetCheckedState(false, CodexCheckBoxCheckedStateChangeSource.Pointer));
+        Assert.Equal(
+            (true, false, CodexCheckBoxCheckedStateChangeSource.Pointer),
+            changes.Select(change => (change.OldValue, change.NewValue, change.Source)).Single());
+        Assert.False(checkBox.TryHandleActivationKey(Key.Enter));
     }
 
     [Fact]
     public void ToggleAndToggleGroupMirrorWebPressedAndSelectionState()
     {
         var toggle = new CodexToggle { Content = "Bookmark" };
-        var pressedChanges = new List<(bool OldValue, bool NewValue)>();
-        toggle.PressedChanged += (_, args) => pressedChanges.Add((args.OldValue, args.NewValue));
+        var pressedChanges = new List<CodexTogglePressedChangedEventArgs>();
+        toggle.PressedChanged += (_, args) => pressedChanges.Add(args);
 
         Assert.Contains("state-off", toggle.Classes);
         Assert.True(toggle.TryHandleActivationKey(Avalonia.Input.Key.Space));
@@ -154,13 +233,15 @@ public class FormComponentDetailTests
         Assert.False(toggle.IsPressed);
         toggle.IsPressed = false;
         toggle.IsPressed = true;
+        Assert.True(toggle.SetPressedState(false, CodexTogglePressedChangeSource.Pointer));
         Assert.Equal(
             [
-                (false, true),
-                (true, false),
-                (false, true)
+                (false, true, CodexTogglePressedChangeSource.Keyboard),
+                (true, false, CodexTogglePressedChangeSource.Keyboard),
+                (false, true, CodexTogglePressedChangeSource.Programmatic),
+                (true, false, CodexTogglePressedChangeSource.Pointer)
             ],
-            pressedChanges);
+            pressedChanges.Select(change => (change.OldValue, change.NewValue, change.Source)));
 
         var left = new CodexToggleGroupItem { Content = "Left", Value = "left" };
         var disabled = new CodexToggleGroupItem { Content = "Disabled", Value = "disabled", IsEnabled = false };
@@ -236,6 +317,91 @@ public class FormComponentDetailTests
     }
 
     [Fact]
+    public void ToggleGroupValueChangedPublishesSourceMetadataAndPrimaryPointerRelease()
+    {
+        var left = new CodexToggleGroupItem { Content = "Left", Value = "left" };
+        var code = new CodexToggleGroupItem { Content = "Code", Value = "code" };
+        var disabled = new CodexToggleGroupItem { Content = "Disabled", Value = "disabled", IsEnabled = false };
+        var group = new CodexToggleGroup
+        {
+            Items =
+            {
+                left,
+                code,
+                disabled
+            }
+        };
+        left.IsPressed = true;
+
+        var changes = new List<CodexToggleGroupValueChangedEventArgs>();
+        group.ValueChanged += (_, args) => changes.Add(args);
+
+        Assert.False(code.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(code.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.Equal("left", group.SelectedValue);
+        Assert.Empty(changes);
+
+        Assert.True(code.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+
+        var pointerChange = Assert.Single(changes);
+        Assert.Equal("left", pointerChange.OldValue);
+        Assert.Equal("code", pointerChange.NewValue);
+        Assert.Equal(["left"], pointerChange.OldValues);
+        Assert.Equal(["code"], pointerChange.NewValues);
+        Assert.Equal(CodexToggleGroupValueChangeSource.Pointer, pointerChange.Source);
+
+        changes.Clear();
+        Assert.True(left.TryHandleActivationKey(Key.Enter));
+
+        var keyboardChange = Assert.Single(changes);
+        Assert.Equal("code", keyboardChange.OldValue);
+        Assert.Equal("left", keyboardChange.NewValue);
+        Assert.Equal(CodexToggleGroupValueChangeSource.Keyboard, keyboardChange.Source);
+
+        changes.Clear();
+        group.SelectedValue = "code";
+
+        var programmaticChange = Assert.Single(changes);
+        Assert.Equal("left", programmaticChange.OldValue);
+        Assert.Equal("code", programmaticChange.NewValue);
+        Assert.Equal(CodexToggleGroupValueChangeSource.Programmatic, programmaticChange.Source);
+
+        Assert.False(disabled.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Equal("code", group.SelectedValue);
+        Assert.Single(changes);
+
+        var bold = new CodexToggleGroupItem { Content = "Bold", Value = "bold" };
+        var italic = new CodexToggleGroupItem { Content = "Italic", Value = "italic" };
+        var multiple = new CodexToggleGroup
+        {
+            Type = CodexToggleGroupType.Multiple,
+            Items =
+            {
+                bold,
+                italic
+            }
+        };
+        bold.IsPressed = true;
+        var multipleChanges = new List<CodexToggleGroupValueChangedEventArgs>();
+        multiple.ValueChanged += (_, args) => multipleChanges.Add(args);
+
+        Assert.True(italic.TryHandleActivationKey(Key.Space));
+
+        var multipleKeyboardChange = Assert.Single(multipleChanges);
+        Assert.Equal(["bold"], multipleKeyboardChange.OldValues);
+        Assert.Equal(["bold", "italic"], multipleKeyboardChange.NewValues);
+        Assert.Equal(CodexToggleGroupValueChangeSource.Keyboard, multipleKeyboardChange.Source);
+
+        multipleChanges.Clear();
+        multiple.SelectedValues = ["italic"];
+
+        var multipleProgrammaticChange = Assert.Single(multipleChanges);
+        Assert.Equal(["bold", "italic"], multipleProgrammaticChange.OldValues);
+        Assert.Equal(["italic"], multipleProgrammaticChange.NewValues);
+        Assert.Equal(CodexToggleGroupValueChangeSource.Programmatic, multipleProgrammaticChange.Source);
+    }
+
+    [Fact]
     public void RadioGroupMirrorsWebValueOrientationAndRovingSelectionState()
     {
         var comfortable = new CodexRadioGroupItem { Content = "Comfortable", Value = "comfortable" };
@@ -286,6 +452,8 @@ public class FormComponentDetailTests
         Assert.Same(comfortable, changes[1].NewItem);
         Assert.Equal(2, changes[1].OldIndex);
         Assert.Equal(0, changes[1].NewIndex);
+        Assert.Equal(CodexRadioGroupValueChangeSource.KeyboardNavigation, changes[0].Source);
+        Assert.Equal(CodexRadioGroupValueChangeSource.Keyboard, changes[1].Source);
 
         group.Orientation = Orientation.Horizontal;
         Assert.Contains("horizontal", group.Classes);
@@ -299,6 +467,53 @@ public class FormComponentDetailTests
         Assert.Equal("comfortable", group.SelectedValue);
         Assert.Contains("loading", group.Classes);
         Assert.Contains("group-loading", compact.Classes);
+    }
+
+    [Fact]
+    public void RadioGroupItemPointerActivationUsesPrimaryReleaseOnly()
+    {
+        var balanced = new CodexRadioGroupItem { Content = "Balanced", Value = "balanced" };
+        var reasoning = new CodexRadioGroupItem { Content = "Reasoning", Value = "reasoning" };
+        var disabled = new CodexRadioGroupItem { Content = "Disabled", Value = "disabled", IsEnabled = false };
+        var group = new CodexRadioGroup
+        {
+            SelectedValue = "balanced",
+            Items =
+            {
+                balanced,
+                reasoning,
+                disabled
+            }
+        };
+        var changes = new List<CodexRadioGroupValueChangedEventArgs>();
+        group.ValueChanged += (_, args) => changes.Add(args);
+        group.ApplyTemplate();
+        Assert.True(group.SelectItem(balanced));
+
+        Assert.False(reasoning.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(reasoning.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.True(balanced.IsChecked);
+        Assert.False(reasoning.IsChecked);
+        Assert.Empty(changes);
+
+        Assert.True(reasoning.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(balanced.IsChecked);
+        Assert.True(reasoning.IsChecked);
+        Assert.Equal("reasoning", group.SelectedValue);
+        var change = Assert.Single(changes);
+        Assert.Equal("balanced", change.OldValue);
+        Assert.Equal("reasoning", change.NewValue);
+        Assert.Equal(CodexRadioGroupValueChangeSource.Pointer, change.Source);
+
+        Assert.False(disabled.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(reasoning.IsChecked);
+        Assert.Equal("reasoning", group.SelectedValue);
+
+        group.IsLoading = true;
+        Assert.False(balanced.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(reasoning.IsChecked);
+        Assert.Equal("reasoning", group.SelectedValue);
+        Assert.Single(changes);
     }
 
     [Fact]
@@ -478,14 +693,14 @@ public class FormComponentDetailTests
     public void SelectRaisesWebValueAndOpenChangeEvents()
     {
         var valueChanges = new List<CodexSelectValueChangedEventArgs>();
-        var openChanges = new List<bool>();
+        var openChanges = new List<(bool IsOpen, CodexSelectOpenChangeSource Source)>();
         var select = new CodexSelect
         {
             ItemsSource = new[] { "OpenAI", "Claude", "Responses" },
             PlaceholderText = "Select provider"
         };
         select.ValueChanged += (_, args) => valueChanges.Add(args);
-        select.OpenChanged += (_, args) => openChanges.Add(args.IsOpen);
+        select.OpenChanged += (_, args) => openChanges.Add((args.IsOpen, args.Source));
 
         Assert.Contains("select", select.Classes);
         Assert.Contains("placeholder-visible", select.Classes);
@@ -501,23 +716,42 @@ public class FormComponentDetailTests
         Assert.Equal(1, valueChanges[0].NewIndex);
         Assert.Null(valueChanges[0].OldValue);
         Assert.Equal("Claude", valueChanges[0].NewValue);
+        Assert.Equal(CodexSelectValueChangeSource.Programmatic, valueChanges[0].Source);
 
-        select.SelectedIndex = 2;
+        Assert.True(select.SelectIndex(2, CodexSelectValueChangeSource.Keyboard));
 
         Assert.Equal(1, valueChanges[^1].OldIndex);
         Assert.Equal("Claude", valueChanges[^1].OldValue);
         Assert.Equal("Responses", valueChanges[^1].NewValue);
+        Assert.Equal(CodexSelectValueChangeSource.Keyboard, valueChanges[^1].Source);
 
-        select.IsDropDownOpen = true;
+        Assert.True(select.SelectIndex(0, CodexSelectValueChangeSource.Pointer));
+
+        Assert.Equal("Responses", valueChanges[^1].OldValue);
+        Assert.Equal("OpenAI", valueChanges[^1].NewValue);
+        Assert.Equal(CodexSelectValueChangeSource.Pointer, valueChanges[^1].Source);
+
+        Assert.True(select.SetDropDownOpen(true, CodexSelectOpenChangeSource.Keyboard));
         Dispatcher.UIThread.RunJobs();
 
-        Assert.Contains(true, openChanges);
+        Assert.Equal((true, CodexSelectOpenChangeSource.Keyboard), openChanges[^1]);
         Assert.Contains("popup-open", select.Classes);
 
+        Assert.True(select.SetDropDownOpen(false, CodexSelectOpenChangeSource.Pointer));
+
+        Assert.Equal((false, CodexSelectOpenChangeSource.Pointer), openChanges[^1]);
+        Assert.DoesNotContain("popup-open", select.Classes);
+
+        var openChangeCount = openChanges.Count;
+        select.IsDropDownOpen = true;
         select.IsDropDownOpen = false;
 
-        Assert.Contains(false, openChanges);
-        Assert.DoesNotContain("popup-open", select.Classes);
+        Assert.Equal(
+            [
+                (true, CodexSelectOpenChangeSource.Programmatic),
+                (false, CodexSelectOpenChangeSource.Programmatic)
+            ],
+            openChanges.Skip(openChangeCount));
     }
 
     [Fact]
@@ -527,7 +761,7 @@ public class FormComponentDetailTests
         var todo = new CodexNativeSelectOption { Value = "todo", Content = "Todo" };
         var done = new CodexNativeSelectOption { Value = "done", Content = "Done" };
         var valueChanges = new List<CodexNativeSelectValueChangedEventArgs>();
-        var openChanges = new List<bool>();
+        var openChanges = new List<(bool IsOpen, CodexNativeSelectOpenChangeSource Source)>();
         var select = new CodexNativeSelect
         {
             Items =
@@ -538,7 +772,7 @@ public class FormComponentDetailTests
             }
         };
         select.ValueChanged += (_, args) => valueChanges.Add(args);
-        select.OpenChanged += (_, args) => openChanges.Add(args.IsOpen);
+        select.OpenChanged += (_, args) => openChanges.Add((args.IsOpen, args.Source));
 
         Assert.Contains("native-select", select.Classes);
         Assert.Contains("placeholder-visible", select.Classes);
@@ -551,31 +785,50 @@ public class FormComponentDetailTests
         Assert.Equal(0, valueChanges[0].NewIndex);
         Assert.Null(valueChanges[0].OldValue);
         Assert.Equal("", valueChanges[0].NewValue);
+        Assert.Equal(CodexNativeSelectValueChangeSource.Programmatic, valueChanges[0].Source);
         Assert.Contains("placeholder-visible", select.Classes);
         Assert.DoesNotContain("has-selection", select.Classes);
 
-        select.SelectedItem = todo;
+        Assert.True(select.SelectIndex(1, CodexNativeSelectValueChangeSource.Pointer));
 
         Assert.Equal(2, valueChanges.Count);
         Assert.Equal(0, valueChanges[^1].OldIndex);
         Assert.Equal(1, valueChanges[^1].NewIndex);
         Assert.Equal("", valueChanges[^1].OldValue);
         Assert.Equal("todo", valueChanges[^1].NewValue);
+        Assert.Equal(CodexNativeSelectValueChangeSource.Pointer, valueChanges[^1].Source);
         Assert.Same(placeholder, valueChanges[^1].OldItem);
         Assert.Same(todo, valueChanges[^1].NewItem);
         Assert.Contains("has-selection", select.Classes);
         Assert.DoesNotContain("placeholder-visible", select.Classes);
 
-        select.IsDropDownOpen = true;
+        Assert.True(select.SelectIndex(2, CodexNativeSelectValueChangeSource.Keyboard));
+
+        Assert.Equal("todo", valueChanges[^1].OldValue);
+        Assert.Equal("done", valueChanges[^1].NewValue);
+        Assert.Equal(CodexNativeSelectValueChangeSource.Keyboard, valueChanges[^1].Source);
+
+        Assert.True(select.SetDropDownOpen(true, CodexNativeSelectOpenChangeSource.Keyboard));
         Dispatcher.UIThread.RunJobs();
 
-        Assert.Contains(true, openChanges);
+        Assert.Equal((true, CodexNativeSelectOpenChangeSource.Keyboard), openChanges[^1]);
         Assert.Contains("popup-open", select.Classes);
 
+        Assert.True(select.SetDropDownOpen(false, CodexNativeSelectOpenChangeSource.Pointer));
+
+        Assert.Equal((false, CodexNativeSelectOpenChangeSource.Pointer), openChanges[^1]);
+        Assert.DoesNotContain("popup-open", select.Classes);
+
+        var openChangeCount = openChanges.Count;
+        select.IsDropDownOpen = true;
         select.IsDropDownOpen = false;
 
-        Assert.Contains(false, openChanges);
-        Assert.DoesNotContain("popup-open", select.Classes);
+        Assert.Equal(
+            [
+                (true, CodexNativeSelectOpenChangeSource.Programmatic),
+                (false, CodexNativeSelectOpenChangeSource.Programmatic)
+            ],
+            openChanges.Skip(openChangeCount));
     }
 
     [Fact]
@@ -621,7 +874,7 @@ public class FormComponentDetailTests
     {
         var changes = new List<CodexComboboxSelectionChangedEventArgs>();
         var inputChanges = new List<(string? OldText, string? NewText)>();
-        var openChanges = new List<bool>();
+        var openChanges = new List<(bool IsOpen, CodexComboboxOpenChangeSource Source)>();
         var combobox = new CodexCombobox
         {
             ItemsSource = new[] { "Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro" },
@@ -631,7 +884,7 @@ public class FormComponentDetailTests
         };
         combobox.SelectionChanged += (_, args) => changes.Add(args);
         combobox.InputValueChanged += (_, args) => inputChanges.Add((args.OldText, args.NewText));
-        combobox.OpenChanged += (_, args) => openChanges.Add(args.IsOpen);
+        combobox.OpenChanged += (_, args) => openChanges.Add((args.IsOpen, args.Source));
 
         Assert.Contains("closed", combobox.Classes);
         Assert.Contains("auto-highlight", combobox.Classes);
@@ -647,7 +900,7 @@ public class FormComponentDetailTests
         Assert.Contains("has-text", combobox.Classes);
         Assert.Equal("Next.js", combobox.HighlightedItem);
         Assert.Equal(["Next.js", "Nuxt.js"], combobox.FilteredItems.OfType<CodexComboboxItem>().Select(item => item.Value));
-        Assert.Contains(true, openChanges);
+        Assert.Equal((true, CodexComboboxOpenChangeSource.Input), openChanges[^1]);
         Assert.Contains(inputChanges, change => change.NewText == "n");
 
         Assert.True(combobox.TryHandleInputKey(Avalonia.Input.Key.Down));
@@ -656,6 +909,7 @@ public class FormComponentDetailTests
         Assert.Equal("Nuxt.js", combobox.SelectedItem);
         Assert.Equal("Nuxt.js", combobox.Text);
         Assert.False(combobox.IsOpen);
+        Assert.Equal((false, CodexComboboxOpenChangeSource.Keyboard), openChanges[^1]);
         Assert.Contains("has-selection", combobox.Classes);
         Assert.Contains("has-clear", combobox.Classes);
         Assert.Equal("Nuxt.js", changes[^1].NewItem);
@@ -668,6 +922,8 @@ public class FormComponentDetailTests
         Assert.True(combobox.ClearSelection());
         Assert.Null(combobox.SelectedItem);
         Assert.Equal(string.Empty, combobox.Text);
+        Assert.True(combobox.IsOpen);
+        Assert.Equal((true, CodexComboboxOpenChangeSource.Clear), openChanges[^1]);
         Assert.DoesNotContain("has-selection", combobox.Classes);
         Assert.DoesNotContain("has-clear", combobox.Classes);
         Assert.Equal("Nuxt.js", changes[^1].OldValue);
@@ -697,12 +953,22 @@ public class FormComponentDetailTests
         combobox.CloseOnEscape = true;
         Assert.True(combobox.TryHandleInputKey(Avalonia.Input.Key.Escape));
         Assert.False(combobox.IsOpen);
+        Assert.Equal((false, CodexComboboxOpenChangeSource.Keyboard), openChanges[^1]);
 
         var openChangeCount = openChanges.Count;
         combobox.IsOpen = true;
         combobox.IsOpen = false;
 
-        Assert.Equal([true, false], openChanges.Skip(openChangeCount));
+        Assert.Equal(
+            [
+                (true, CodexComboboxOpenChangeSource.Programmatic),
+                (false, CodexComboboxOpenChangeSource.Programmatic)
+            ],
+            openChanges.Skip(openChangeCount));
+
+        Assert.True(combobox.Open(CodexComboboxOpenChangeSource.Clear));
+        Assert.Equal((true, CodexComboboxOpenChangeSource.Clear), openChanges[^1]);
+        Assert.True(combobox.Close());
 
         Assert.True(combobox.SelectItem("Astro"));
         Assert.Equal("Astro", combobox.SelectedItem);
@@ -710,16 +976,58 @@ public class FormComponentDetailTests
         Assert.Equal(4, changes[^1].NewIndex);
         Assert.Equal(CodexComboboxSelectionChangeSource.Programmatic, changes[^1].Source);
 
+        Assert.True(combobox.Open());
+        combobox.CloseOnSelect = true;
         Assert.True(combobox.SelectItem("SvelteKit", CodexComboboxSelectionChangeSource.Item));
         Assert.Equal("SvelteKit", combobox.SelectedItem);
         Assert.Equal("SvelteKit", combobox.Text);
         Assert.Equal(1, changes[^1].NewIndex);
         Assert.Equal(CodexComboboxSelectionChangeSource.Item, changes[^1].Source);
+        Assert.Equal((false, CodexComboboxOpenChangeSource.Item), openChanges[^1]);
 
         combobox.IsLoading = true;
         Assert.False(combobox.Open());
         Assert.False(combobox.SelectItem("Astro"));
         Assert.Contains("loading", combobox.Classes);
+    }
+
+    [Fact]
+    public void ComboboxTriggerPointerReleaseUsesPrimaryButtonOnly()
+    {
+        var openChanges = new List<(bool IsOpen, CodexComboboxOpenChangeSource Source)>();
+        var combobox = new CodexCombobox
+        {
+            ItemsSource = new[] { "Next.js", "SvelteKit", "Nuxt.js" }
+        };
+        combobox.OpenChanged += (_, args) => openChanges.Add((args.IsOpen, args.Source));
+
+        Assert.False(combobox.TryHandleTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(combobox.TryHandleTriggerPointerRelease(PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(combobox.IsOpen);
+        Assert.Empty(openChanges);
+
+        Assert.True(combobox.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(combobox.IsOpen);
+        Assert.Equal([(true, CodexComboboxOpenChangeSource.Pointer)], openChanges);
+
+        Assert.True(combobox.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(combobox.IsOpen);
+        Assert.Equal(
+            [
+                (true, CodexComboboxOpenChangeSource.Pointer),
+                (false, CodexComboboxOpenChangeSource.Pointer)
+            ],
+            openChanges);
+
+        combobox.IsLoading = true;
+        Assert.False(combobox.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(combobox.IsOpen);
+        Assert.Equal(
+            [
+                (true, CodexComboboxOpenChangeSource.Pointer),
+                (false, CodexComboboxOpenChangeSource.Pointer)
+            ],
+            openChanges);
     }
 
     [Fact]
@@ -772,6 +1080,49 @@ public class FormComponentDetailTests
     }
 
     [Fact]
+    public void SliderPointerDragStartsAndCommitsOnlyForPrimaryPointer()
+    {
+        var committed = new List<CodexSliderValueCommittedEventArgs>();
+        var slider = new CodexSlider
+        {
+            Minimum = 0,
+            Maximum = 100,
+            Value = 24
+        };
+        slider.ValueCommitted += (_, args) => committed.Add(args);
+
+        Assert.False(slider.TryBeginPointerChange(PointerUpdateKind.RightButtonPressed));
+        Assert.DoesNotContain("dragging", slider.Classes);
+        slider.Value = 32;
+        Assert.False(slider.TryCommitPointerValue(PointerUpdateKind.RightButtonReleased));
+        Assert.Empty(committed);
+
+        Assert.False(slider.TryBeginPointerChange(PointerUpdateKind.MiddleButtonPressed));
+        Assert.DoesNotContain("dragging", slider.Classes);
+        slider.Value = 40;
+        Assert.False(slider.TryCommitPointerValue(PointerUpdateKind.MiddleButtonReleased));
+        Assert.Empty(committed);
+
+        Assert.True(slider.TryBeginPointerChange(PointerUpdateKind.LeftButtonPressed));
+        Assert.Contains("dragging", slider.Classes);
+        slider.Value = 58;
+        Assert.False(slider.TryCommitPointerValue(PointerUpdateKind.RightButtonReleased));
+        Assert.Contains("dragging", slider.Classes);
+        Assert.Empty(committed);
+
+        Assert.True(slider.TryCommitPointerValue(PointerUpdateKind.LeftButtonReleased));
+        Assert.DoesNotContain("dragging", slider.Classes);
+        Assert.Single(committed);
+        Assert.Equal(24, committed[0].OldValue);
+        Assert.Equal(58, committed[0].NewValue);
+        Assert.Equal("pointer", committed[0].Source);
+
+        slider.IsEnabled = false;
+        Assert.False(slider.TryBeginPointerChange(PointerUpdateKind.LeftButtonPressed));
+        Assert.DoesNotContain("dragging", slider.Classes);
+    }
+
+    [Fact]
     public void SliderSourceOwnsWebEventAndStateClasses()
     {
         var root = FindRepositoryRoot();
@@ -785,6 +1136,11 @@ public class FormComponentDetailTests
         Assert.Contains("Classes.Set(\"at-min\"", source);
         Assert.Contains("Classes.Set(\"at-max\"", source);
         Assert.Contains("Classes.Set(\"dragging\"", source);
+        Assert.Contains("TryBeginPointerChange(PointerUpdateKind updateKind)", source);
+        Assert.Contains("TryCommitPointerValue(PointerUpdateKind updateKind)", source);
+        Assert.Contains("updateKind != PointerUpdateKind.LeftButtonPressed", source);
+        Assert.Contains("updateKind != PointerUpdateKind.LeftButtonReleased", source);
+        Assert.Contains("Properties.PointerUpdateKind", source);
         Assert.Contains("CommitValue(\"pointer\")", source);
         Assert.Contains("CommitValue(\"keyboard\")", source);
         Assert.Contains("CommitValue(\"focus\")", source);
@@ -864,8 +1220,14 @@ public class FormComponentDetailTests
         Assert.Equal(new DateTime(2026, 1, 18), calendar.SelectedDate);
         Assert.Equal(new DateTime(2026, 1, 16), selectedChanges[0].OldDate);
         Assert.Equal(new DateTime(2026, 1, 18), selectedChanges[0].NewDate);
+        Assert.Equal(CodexCalendarChangeSource.Programmatic, selectedChanges[0].Source);
         Assert.Equal(new DateTime(2026, 1, 16), activeChanges[0].OldDate);
         Assert.Equal(new DateTime(2026, 1, 18), activeChanges[0].NewDate);
+        Assert.Equal(CodexCalendarChangeSource.Programmatic, activeChanges[0].Source);
+
+        calendar.SelectDate(new DateTime(2026, 1, 19), CodexCalendarChangeSource.Keyboard);
+        Assert.Equal(new DateTime(2026, 1, 19), calendar.SelectedDate);
+        Assert.Equal(CodexCalendarChangeSource.Keyboard, selectedChanges[^1].Source);
 
         calendar.SelectionMode = CodexCalendarSelectionMode.Range;
         calendar.SelectDate(new DateTime(2026, 1, 14));
@@ -879,6 +1241,7 @@ public class FormComponentDetailTests
         Assert.True(rangeChanges.Last().IsComplete);
         Assert.Equal(new DateTime(2026, 1, 14), rangeChanges.Last().NewStart);
         Assert.Equal(new DateTime(2026, 1, 20), rangeChanges.Last().NewEnd);
+        Assert.Equal(CodexCalendarChangeSource.Programmatic, rangeChanges.Last().Source);
 
         var rangeMiddle = calendar.Items.OfType<CodexCalendarDayButton>().Single(button => button.Date == new DateTime(2026, 1, 16));
         Assert.True(rangeMiddle.IsRangeMiddle);
@@ -898,7 +1261,52 @@ public class FormComponentDetailTests
         Assert.Equal(new DateTime(2026, 1, 1), displayChanges.Last().OldDisplayDate);
         Assert.Equal(new DateTime(2026, 2, 1), displayChanges.Last().NewDisplayDate);
         Assert.Equal(1, displayChanges.Last().MonthDelta);
+        Assert.Equal(CodexCalendarChangeSource.Programmatic, displayChanges.Last().Source);
         Assert.Contains("can-previous", calendar.Classes);
+
+        calendar.NavigatePreviousMonth(CodexCalendarChangeSource.Keyboard);
+        Assert.Equal(new DateTime(2026, 1, 1), calendar.DisplayDate);
+        Assert.Equal(CodexCalendarChangeSource.Keyboard, displayChanges.Last().Source);
+    }
+
+    [Fact]
+    public void CalendarDayButtonCommandBlocksSelectionBeforeActivation()
+    {
+        var commandExecutions = 0;
+        var command = new TestCommand(() => commandExecutions++)
+        {
+            CanExecuteValue = false
+        };
+        var calendar = new CodexCalendar
+        {
+            DisplayDate = new DateTime(2026, 1, 1),
+            SelectedDate = new DateTime(2026, 1, 16),
+            ActiveDate = new DateTime(2026, 1, 16)
+        };
+        var day = calendar.Items.OfType<CodexCalendarDayButton>().Single(button => button.Date == new DateTime(2026, 1, 18));
+
+        day.Command = command;
+
+        Assert.False(day.CanActivate);
+        Assert.Contains("command-blocked", day.Classes);
+        Assert.DoesNotContain("can-activate", day.Classes);
+
+        InvokeButtonClick(day);
+
+        Assert.Equal(0, commandExecutions);
+        Assert.Equal(new DateTime(2026, 1, 16), calendar.SelectedDate);
+
+        command.CanExecuteValue = true;
+        command.RaiseCanExecuteChanged();
+
+        Assert.True(day.CanActivate);
+        Assert.Contains("can-activate", day.Classes);
+        Assert.DoesNotContain("command-blocked", day.Classes);
+
+        InvokeButtonClick(day);
+
+        Assert.Equal(1, commandExecutions);
+        Assert.Equal(new DateTime(2026, 1, 18), calendar.SelectedDate);
     }
 
     [Fact]
@@ -913,12 +1321,12 @@ public class FormComponentDetailTests
             Intent = CodexControlIntent.Warning,
             Size = CodexControlSize.Small
         };
-        var openChanges = new List<bool>();
-        var selectedDates = new List<DateTime?>();
-        var ranges = new List<(DateTime? Start, DateTime? End)>();
-        picker.OpenChanged += (_, args) => openChanges.Add(args.IsOpen);
-        picker.SelectedDateChanged += (_, args) => selectedDates.Add(args.NewDate);
-        picker.RangeChanged += (_, args) => ranges.Add((args.Start, args.End));
+        var openChanges = new List<CodexDatePickerOpenChangedEventArgs>();
+        var selectedDates = new List<CodexDatePickerSelectedDateChangedEventArgs>();
+        var ranges = new List<CodexDatePickerRangeChangedEventArgs>();
+        picker.OpenChanged += (_, args) => openChanges.Add(args);
+        picker.SelectedDateChanged += (_, args) => selectedDates.Add(args);
+        picker.RangeChanged += (_, args) => ranges.Add(args);
 
         Assert.Contains("date-picker", picker.Classes);
         Assert.Contains("single", picker.Classes);
@@ -938,12 +1346,16 @@ public class FormComponentDetailTests
         Assert.True(picker.HasClearButton);
         Assert.Contains("has-selection", picker.Classes);
         Assert.Contains("has-clear", picker.Classes);
-        Assert.Equal([true, false], openChanges);
-        Assert.Contains(new DateTime(2026, 5, 20), selectedDates);
+        Assert.Equal([true, false], openChanges.Select(change => change.IsOpen));
+        Assert.All(openChanges, change => Assert.Equal(CodexDatePickerChangeSource.Programmatic, change.Source));
+        Assert.Contains(selectedDates, change =>
+            change.NewDate == new DateTime(2026, 5, 20)
+            && change.Source == CodexDatePickerChangeSource.Programmatic);
 
         Assert.True(picker.TryHandleInputKey(Avalonia.Input.Key.Delete));
         Assert.False(picker.HasSelection);
         Assert.Null(picker.DisplayText);
+        Assert.Equal(CodexDatePickerChangeSource.Keyboard, selectedDates[^1].Source);
 
         picker.SelectionMode = CodexCalendarSelectionMode.Range;
         Assert.Contains("range", picker.Classes);
@@ -959,11 +1371,15 @@ public class FormComponentDetailTests
         Assert.Equal(new DateTime(2026, 5, 23), picker.RangeEnd);
         Assert.Equal("2026-05-18 - 2026-05-23", picker.DisplayText);
         Assert.Contains("range-complete", picker.Classes);
-        Assert.Contains(ranges, range => range.Start == new DateTime(2026, 5, 18) && range.End == new DateTime(2026, 5, 23));
+        Assert.Contains(ranges, range =>
+            range.Start == new DateTime(2026, 5, 18)
+            && range.End == new DateTime(2026, 5, 23)
+            && range.Source == CodexDatePickerChangeSource.Programmatic);
 
         picker.IsOpen = true;
         Assert.True(picker.TryHandleInputKey(Avalonia.Input.Key.Escape));
         Assert.False(picker.IsOpen);
+        Assert.Equal(CodexDatePickerChangeSource.Keyboard, openChanges[^1].Source);
 
         Assert.False(picker.SelectDate(new DateTime(2026, 5, 30)));
         Assert.Equal(new DateTime(2026, 5, 18), picker.RangeStart);
@@ -971,6 +1387,114 @@ public class FormComponentDetailTests
         Assert.False(picker.Open());
         Assert.False(picker.SelectDate(new DateTime(2026, 5, 21)));
         Assert.Contains("loading", picker.Classes);
+    }
+
+    [Fact]
+    public void DatePickerTriggerPointerReleaseUsesPrimaryButtonOnly()
+    {
+        var openChanges = new List<CodexDatePickerOpenChangedEventArgs>();
+        var picker = new CodexDatePicker();
+        picker.OpenChanged += (_, args) => openChanges.Add(args);
+
+        Assert.False(picker.TryHandleTriggerPointerRelease(PointerUpdateKind.RightButtonReleased));
+        Assert.False(picker.TryHandleTriggerPointerRelease(PointerUpdateKind.MiddleButtonReleased));
+        Assert.False(picker.IsOpen);
+        Assert.Empty(openChanges);
+
+        Assert.True(picker.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(picker.IsOpen);
+        Assert.Equal([true], openChanges.Select(change => change.IsOpen));
+        Assert.Equal(CodexDatePickerChangeSource.Pointer, openChanges[^1].Source);
+
+        Assert.True(picker.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(picker.IsOpen);
+        Assert.Equal([true, false], openChanges.Select(change => change.IsOpen));
+        Assert.Equal(CodexDatePickerChangeSource.Pointer, openChanges[^1].Source);
+
+        picker.IsLoading = true;
+        Assert.False(picker.TryHandleTriggerPointerRelease(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(picker.IsOpen);
+        Assert.Equal([true, false], openChanges.Select(change => change.IsOpen));
+    }
+
+    [Fact]
+    public void DatePickerCalendarPointerReleaseSyncsOnlyPrimarySelection()
+    {
+        var picker = new CodexDatePicker
+        {
+            DisplayDate = new DateTime(2026, 5, 1),
+            DateFormat = "yyyy-MM-dd"
+        };
+        var selectedDates = new List<CodexDatePickerSelectedDateChangedEventArgs>();
+        var openChanges = new List<CodexDatePickerOpenChangedEventArgs>();
+        picker.SelectedDateChanged += (_, args) => selectedDates.Add(args);
+        picker.OpenChanged += (_, args) => openChanges.Add(args);
+        var calendar = new CodexCalendar
+        {
+            DisplayDate = new DateTime(2026, 5, 1),
+            SelectedDate = new DateTime(2026, 5, 20)
+        };
+
+        picker.IsOpen = true;
+        Assert.False(picker.TryHandleCalendarPointerRelease(PointerUpdateKind.RightButtonReleased, calendar));
+        Assert.True(picker.IsOpen);
+        Assert.Null(picker.SelectedDate);
+
+        Assert.False(picker.TryHandleCalendarPointerRelease(PointerUpdateKind.MiddleButtonReleased, calendar));
+        Assert.True(picker.IsOpen);
+        Assert.Null(picker.SelectedDate);
+
+        Assert.True(picker.TryHandleCalendarPointerRelease(PointerUpdateKind.LeftButtonReleased, calendar));
+        Assert.False(picker.IsOpen);
+        Assert.Equal(new DateTime(2026, 5, 20), picker.SelectedDate);
+        Assert.Equal("2026-05-20", picker.DisplayText);
+        Assert.Equal(CodexDatePickerChangeSource.Pointer, selectedDates.Single().Source);
+        Assert.Equal(CodexDatePickerChangeSource.Pointer, openChanges[^1].Source);
+
+        calendar.SelectedDate = new DateTime(2026, 5, 21);
+        picker.IsOpen = true;
+        picker.IsLoading = true;
+        Assert.False(picker.TryHandleCalendarPointerRelease(PointerUpdateKind.LeftButtonReleased, calendar));
+        Assert.True(picker.IsOpen);
+        Assert.Equal(new DateTime(2026, 5, 20), picker.SelectedDate);
+    }
+
+    [Fact]
+    public void DatePickerRangeCalendarPointerReleaseClosesOnlyWhenPrimarySelectionCompletes()
+    {
+        var picker = new CodexDatePicker
+        {
+            SelectionMode = CodexCalendarSelectionMode.Range,
+            DisplayDate = new DateTime(2026, 5, 1)
+        };
+        var ranges = new List<CodexDatePickerRangeChangedEventArgs>();
+        picker.RangeChanged += (_, args) => ranges.Add(args);
+        var calendar = new CodexCalendar
+        {
+            SelectionMode = CodexCalendarSelectionMode.Range,
+            DisplayDate = new DateTime(2026, 5, 1),
+            RangeStart = new DateTime(2026, 5, 18)
+        };
+
+        picker.IsOpen = true;
+        Assert.False(picker.TryHandleCalendarPointerRelease(PointerUpdateKind.RightButtonReleased, calendar));
+        Assert.True(picker.IsOpen);
+        Assert.Null(picker.RangeStart);
+        Assert.Null(picker.RangeEnd);
+
+        Assert.True(picker.TryHandleCalendarPointerRelease(PointerUpdateKind.LeftButtonReleased, calendar));
+        Assert.True(picker.IsOpen);
+        Assert.Equal(new DateTime(2026, 5, 18), picker.RangeStart);
+        Assert.Null(picker.RangeEnd);
+        Assert.Equal(CodexDatePickerChangeSource.Pointer, ranges[^1].Source);
+
+        calendar.RangeEnd = new DateTime(2026, 5, 23);
+        Assert.True(picker.TryHandleCalendarPointerRelease(PointerUpdateKind.LeftButtonReleased, calendar));
+        Assert.False(picker.IsOpen);
+        Assert.Equal(new DateTime(2026, 5, 18), picker.RangeStart);
+        Assert.Equal(new DateTime(2026, 5, 23), picker.RangeEnd);
+        Assert.Contains("range-complete", picker.Classes);
+        Assert.Equal(CodexDatePickerChangeSource.Pointer, ranges[^1].Source);
     }
 
     [Fact]
@@ -988,8 +1512,8 @@ public class FormComponentDetailTests
     public void SwitchSyncsOptionalLabelContentState()
     {
         var toggle = new CodexSwitch();
-        var checkedChanges = new List<(bool OldValue, bool NewValue)>();
-        toggle.CheckedChanged += (_, args) => checkedChanges.Add((args.OldValue, args.NewValue));
+        var checkedChanges = new List<CodexSwitchCheckedChangedEventArgs>();
+        toggle.CheckedChanged += (_, args) => checkedChanges.Add(args);
 
         Assert.False(toggle.HasContent);
 
@@ -1005,13 +1529,17 @@ public class FormComponentDetailTests
         toggle.IsChecked = true;
         toggle.IsChecked = false;
         toggle.IsChecked = null;
+        Assert.True(toggle.TryHandleActivationKey(Key.Space));
+        Assert.True(toggle.SetChecked(false, CodexSwitchCheckedChangeSource.Pointer));
 
         Assert.Equal(
             [
-                (false, true),
-                (true, false)
+                (false, true, CodexSwitchCheckedChangeSource.Programmatic),
+                (true, false, CodexSwitchCheckedChangeSource.Programmatic),
+                (false, true, CodexSwitchCheckedChangeSource.Keyboard),
+                (true, false, CodexSwitchCheckedChangeSource.Pointer)
             ],
-            checkedChanges);
+            checkedChanges.Select(change => (change.OldValue, change.NewValue, change.Source)));
     }
 
     [Fact]
@@ -1210,6 +1738,80 @@ public class FormComponentDetailTests
     }
 
     [Fact]
+    public void DatePickerPointerReleaseContractsUsePrimaryButtonOnly()
+    {
+        var source = File.ReadAllText(Path.Combine(
+            FindRepositoryRoot(),
+            "src",
+            "CodexSwitchUI",
+            "Controls",
+            "CodexDatePicker.cs"));
+
+        Assert.Contains("TryHandleTriggerPointerRelease(PointerUpdateKind updateKind)", source);
+        Assert.Contains("OnTriggerPointerReleased", source);
+        Assert.Contains("TryHandleCalendarPointerRelease(PointerUpdateKind updateKind", source);
+        Assert.Contains("updateKind != PointerUpdateKind.LeftButtonReleased", source);
+        Assert.Contains("IsLoading || !IsEnabled", source);
+        Assert.Contains("Properties.PointerUpdateKind", source);
+        Assert.Contains("TryHandleTriggerPointerRelease(updateKind)", source);
+        Assert.Contains("TryHandleCalendarPointerRelease(updateKind)", source);
+        Assert.Contains("InputElement.PointerReleasedEvent", source);
+        Assert.Contains("public enum CodexDatePickerChangeSource", source);
+        Assert.Contains("public CodexDatePickerChangeSource Source { get; }", source);
+        Assert.Contains("TogglePopup(CodexDatePickerChangeSource.Pointer)", source);
+        Assert.Contains("Open(CodexDatePickerChangeSource.Keyboard)", source);
+        Assert.Contains("Close(CodexDatePickerChangeSource.Keyboard)", source);
+        Assert.Contains("ClearSelection(CodexDatePickerChangeSource.Keyboard)", source);
+        Assert.Contains("SyncFromCalendar(calendar, CodexDatePickerChangeSource.Pointer)", source);
+        Assert.Contains("RunWithChangeSource(CodexDatePickerChangeSource source", source);
+    }
+
+    [Fact]
+    public void CalendarSelectionEventsExposeWebSources()
+    {
+        var source = File.ReadAllText(Path.Combine(
+            FindRepositoryRoot(),
+            "src",
+            "CodexSwitchUI",
+            "Controls",
+            "CodexCalendar.cs"));
+
+        Assert.Contains("public enum CodexCalendarChangeSource", source);
+        Assert.Contains("public CodexCalendarChangeSource Source { get; }", source);
+        Assert.Contains("SelectDate(activeDate, CodexCalendarChangeSource.Keyboard)", source);
+        Assert.Contains("MoveActiveDate(activeDate.AddDays(1), CodexCalendarChangeSource.Keyboard)", source);
+        Assert.Contains("NavigateNextMonth(CodexCalendarChangeSource.Keyboard)", source);
+        Assert.Contains("owner.SelectDate(Date, owner.CurrentChangeSource);", source);
+        Assert.Contains("CodexCalendarChangeSource.Pointer", source);
+        Assert.Contains("RunWithChangeSource(CodexCalendarChangeSource source", source);
+    }
+
+    [Fact]
+    public void RadioGroupItemPointerAndKeyboardContractsExposeWebSources()
+    {
+        var source = File.ReadAllText(Path.Combine(
+            FindRepositoryRoot(),
+            "src",
+            "CodexSwitchUI",
+            "Controls",
+            "CodexRadioGroup.cs"));
+
+        Assert.Contains("public enum CodexRadioGroupValueChangeSource", source);
+        Assert.Contains("Pointer", source);
+        Assert.Contains("KeyboardNavigation", source);
+        Assert.Contains("public CodexRadioGroupValueChangeSource Source", source);
+        Assert.Contains("SelectItem(nextItem, CodexRadioGroupValueChangeSource.KeyboardNavigation)", source);
+        Assert.Contains("group.SelectItem(this, CodexRadioGroupValueChangeSource.Keyboard)", source);
+        Assert.Contains("group.SelectItem(this, CodexRadioGroupValueChangeSource.Pointer)", source);
+        Assert.Contains("TryHandlePointerActivation(PointerUpdateKind updateKind)", source);
+        Assert.Contains("updateKind != PointerUpdateKind.LeftButtonReleased", source);
+        Assert.Contains("protected override void OnPointerPressed(PointerPressedEventArgs e)", source);
+        Assert.Contains("protected override void OnPointerReleased(PointerReleasedEventArgs e)", source);
+        Assert.Contains("Properties.PointerUpdateKind", source);
+        Assert.Contains("_hasPrimaryPointerPress && IsPointerOver", source);
+    }
+
+    [Fact]
     public void FormStylesContainCustomInteractionParts()
     {
         var root = FindRepositoryRoot();
@@ -1225,7 +1827,7 @@ public class FormComponentDetailTests
         AssertStyleContains(root, "Select", "PART_Popup", "PART_Chevron", "PART_FocusRing", "Placement=\"Bottom\"", "controls|CodexSelect ComboBoxItem:selected");
         AssertStyleContains(root, "Combobox", "PART_InputGroup", "PART_Input", "PART_Clear", "PART_Trigger", "PART_Chevron", "PART_Popup", "PART_PopupBorder", "PART_Loading", "PART_Empty", "PART_List", "CodexComboboxItem", "controls|CodexComboboxItem.highlighted", "controls|CodexComboboxItem.selected");
         AssertStyleContains(root, "NativeSelect", "PART_Popup", "PART_Chevron", "PART_FocusRing", "Placement=\"Bottom\"", "CodexNativeSelectOption", "CodexNativeSelectOptGroup", "placeholder-visible", "invalid", "controls|CodexNativeSelect ComboBoxItem:selected");
-        AssertStyleContains(root, "Calendar", "PART_Header", "PART_PreviousButton", "PART_NextButton", "PART_MonthTitle", "PART_DayRange", "PART_DayRoot", "PART_DayContent", "PART_DayFocusRing", "calendar-day", "range-start", "range-end", "range-middle", "booked", "unavailable", "week-numbers", "TransformOperationsTransition");
+        AssertStyleContains(root, "Calendar", "PART_Header", "PART_PreviousButton", "PART_NextButton", "PART_MonthTitle", "PART_DayRange", "PART_DayRoot", "PART_DayContent", "PART_DayFocusRing", "calendar-day", "range-start", "range-end", "range-middle", "booked", "unavailable", "can-activate", "command-blocked", "week-numbers", "TransformOperationsTransition");
         AssertStyleContains(root, "DatePicker", "PART_InputGroup", "PART_FocusRing", "PART_Trigger", "PART_CalendarIcon", "PART_Clear", "PART_Chevron", "PART_Popup", "PART_PopupBorder", "PART_Calendar", "PART_Loading", "controls:CodexCalendar", "placeholder-visible", "range-complete", "close-on-select", "close-on-escape", "TransformOperationsTransition");
         AssertStyleContains(root, "Checkbox", "PART_Check", "PART_FocusRing", "state-checked", "state-indeterminate", ":indeterminate", ":pressed", "TransformOperationsTransition");
         AssertStyleContains(root, "Radio", "PART_Dot", "PART_FocusRing", "TransformOperationsTransition", ":checked", ":pressed");
@@ -1257,6 +1859,13 @@ public class FormComponentDetailTests
 
         Assert.Contains("IsDropDownOpenProperty.Changed.AddClassHandler<CodexSelect>", selectCode);
         Assert.Contains("SelectingItemsControl.SelectionChangedEvent.AddClassHandler<CodexSelect>", selectCode);
+        Assert.Contains("public enum CodexSelectValueChangeSource", selectCode);
+        Assert.Contains("public CodexSelectValueChangeSource Source { get; } = source;", selectCode);
+        Assert.Contains("private CodexSelectValueChangeSource? _pendingValueChangeSource;", selectCode);
+        Assert.Contains("private CodexSelectValueChangeSource? _nextInteractionSource;", selectCode);
+        Assert.Contains("internal bool SelectIndex(int index, CodexSelectValueChangeSource source = CodexSelectValueChangeSource.Programmatic)", selectCode);
+        Assert.Contains("new CodexSelectValueChangedEventArgs(", selectCode);
+        Assert.Contains("source));", selectCode);
         Assert.Contains("public event EventHandler<CodexSelectValueChangedEventArgs>? ValueChanged;", selectCode);
         Assert.Contains("public event EventHandler<CodexSelectOpenChangedEventArgs>? OpenChanged;", selectCode);
         Assert.Contains("Classes.Set(\"has-selection\", hasSelection)", selectCode);
@@ -1279,6 +1888,18 @@ public class FormComponentDetailTests
             "<ControlTheme TargetType=\"ComboBoxItem\"",
             "<ControlTemplate TargetType=\"controls:CodexNativeSelectOption\"",
             "<ControlTemplate TargetType=\"controls:CodexNativeSelectOptGroup\"",
+            "PART_Trigger",
+            "PART_FocusRing",
+            "PART_Placeholder",
+            "PART_SelectedContentHost",
+            "PART_Chevron",
+            "PART_Popup",
+            "PART_PopupBorder",
+            "PART_ItemsPresenter",
+            "PART_ItemRoot",
+            "PART_OptionContent",
+            "PART_OptGroup",
+            "PART_OptGroupLabel",
             "native-select-option",
             "native-select-optgroup",
             "placeholder-visible",
@@ -1294,6 +1915,13 @@ public class FormComponentDetailTests
         Assert.Contains("IsDropDownOpenProperty.Changed.AddClassHandler<CodexNativeSelect>", selectCode);
         Assert.Contains("SelectingItemsControl.SelectionChangedEvent.AddClassHandler<CodexNativeSelect>", selectCode);
         Assert.Contains("SelectedItemProperty.Changed.AddClassHandler<CodexNativeSelect>", selectCode);
+        Assert.Contains("public enum CodexNativeSelectValueChangeSource", selectCode);
+        Assert.Contains("public CodexNativeSelectValueChangeSource Source { get; } = source;", selectCode);
+        Assert.Contains("private CodexNativeSelectValueChangeSource? _pendingValueChangeSource;", selectCode);
+        Assert.Contains("private CodexNativeSelectValueChangeSource? _nextInteractionSource;", selectCode);
+        Assert.Contains("internal bool SelectIndex(int index, CodexNativeSelectValueChangeSource source = CodexNativeSelectValueChangeSource.Programmatic)", selectCode);
+        Assert.Contains("new CodexNativeSelectValueChangedEventArgs(", selectCode);
+        Assert.Contains("source));", selectCode);
         Assert.Contains("public event EventHandler<CodexNativeSelectValueChangedEventArgs>? ValueChanged;", selectCode);
         Assert.Contains("public event EventHandler<CodexNativeSelectOpenChangedEventArgs>? OpenChanged;", selectCode);
         Assert.Contains("Classes.Set(\"popup-open\", false)", selectCode);
@@ -1339,6 +1967,9 @@ public class FormComponentDetailTests
         Assert.Contains("TextProperty.Changed.AddClassHandler<CodexCombobox>", comboboxCode);
         Assert.Contains("[Content]", comboboxCode);
         Assert.Contains("TryHandleInputKey(Key key)", comboboxCode);
+        Assert.Contains("TryHandleTriggerPointerRelease(PointerUpdateKind updateKind)", comboboxCode);
+        Assert.Contains("OnTriggerPointerReleased", comboboxCode);
+        Assert.Contains("InputElement.PointerReleasedEvent", comboboxCode);
         Assert.Contains("OpenOnInput", comboboxCode);
         Assert.Contains("AutoHighlight", comboboxCode);
         Assert.Contains("HighlightItemOnHover", comboboxCode);
@@ -1467,5 +2098,34 @@ public class FormComponentDetailTests
     private static string FindRepositoryRoot()
     {
         return TestRepository.FindRoot();
+    }
+
+    private static void InvokeButtonClick(Avalonia.Controls.Button button)
+    {
+        var method = button.GetType().GetMethod("OnClick", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        Assert.NotNull(method);
+        method.Invoke(button, null);
+    }
+
+    private sealed class TestCommand(Action execute) : System.Windows.Input.ICommand
+    {
+        public event EventHandler? CanExecuteChanged;
+
+        public bool CanExecuteValue { get; set; } = true;
+
+        public bool CanExecute(object? parameter)
+        {
+            return CanExecuteValue;
+        }
+
+        public void Execute(object? parameter)
+        {
+            execute();
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

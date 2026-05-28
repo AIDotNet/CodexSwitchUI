@@ -167,17 +167,18 @@ public class CodexResizablePanelGroup : Panel
         return Math.Abs(delta) > 0.001 && ResizeHandleByPercent(handle, delta);
     }
 
-    internal void BeginResize(CodexResizableHandle handle)
+    internal bool BeginResize(CodexResizableHandle handle)
     {
         if (!TryGetPanelPair(handle, out _, out _, out var handleIndex))
         {
-            return;
+            return false;
         }
 
         _activeHandleIndex = handleIndex;
         IsDragging = true;
         handle.IsDragging = true;
         SyncStructure();
+        return true;
     }
 
     internal bool ResizeHandleByPixels(CodexResizableHandle handle, double deltaPixels)
@@ -191,12 +192,18 @@ public class CodexResizablePanelGroup : Panel
         return ResizeHandleByPercent(handle, deltaPixels / usableLength * 100d);
     }
 
-    internal void EndResize(CodexResizableHandle handle)
+    internal bool EndResize(CodexResizableHandle handle)
     {
+        if (!IsDragging && !handle.IsDragging)
+        {
+            return false;
+        }
+
         _activeHandleIndex = -1;
         IsDragging = false;
         handle.IsDragging = false;
         SyncStructure();
+        return true;
     }
 
     protected override Size MeasureOverride(Size availableSize)
@@ -624,6 +631,34 @@ public class CodexResizableHandle : TemplatedControl
         return Owner()?.TryHandleResizeKey(this, key) == true;
     }
 
+    internal bool TryBeginResize(PointerUpdateKind updateKind, Point startPoint, CodexResizablePanelGroup? owner = null)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonPressed || !IsEnabled)
+        {
+            return false;
+        }
+
+        owner ??= Owner();
+        if (owner is null)
+        {
+            return false;
+        }
+
+        _lastPoint = startPoint;
+        return owner.BeginResize(this);
+    }
+
+    internal bool TryEndResize(PointerUpdateKind updateKind, CodexResizablePanelGroup? owner = null)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        owner ??= Owner();
+        return owner?.EndResize(this) == true;
+    }
+
     internal void SetGroupState(CodexResizablePanelGroup group, int index, bool isActive)
     {
         Orientation = group.Orientation;
@@ -637,16 +672,21 @@ public class CodexResizableHandle : TemplatedControl
     {
         base.OnPointerPressed(e);
 
-        if (Owner() is not { } owner || !IsEnabled)
+        if (Owner() is not { } owner)
+        {
+            return;
+        }
+
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        var startPoint = e.GetPosition(owner);
+        if (!TryBeginResize(updateKind, startPoint, owner))
         {
             return;
         }
 
         Focus();
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
-        _lastPoint = e.GetPosition(owner);
         e.Pointer.Capture(this);
-        owner.BeginResize(this);
         e.Handled = true;
     }
 
@@ -673,9 +713,11 @@ public class CodexResizableHandle : TemplatedControl
     {
         base.OnPointerReleased(e);
 
-        if (Owner() is { } owner)
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+
+        if (!TryEndResize(updateKind))
         {
-            owner.EndResize(this);
+            return;
         }
 
         e.Pointer.Capture(null);

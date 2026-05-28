@@ -5,12 +5,24 @@ using Avalonia.Input;
 
 namespace CodexSwitchUI.Controls;
 
-public sealed class CodexCheckBoxCheckedStateChangedEventArgs(bool? oldValue, bool? newValue)
+public enum CodexCheckBoxCheckedStateChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public sealed class CodexCheckBoxCheckedStateChangedEventArgs(
+    bool? oldValue,
+    bool? newValue,
+    CodexCheckBoxCheckedStateChangeSource source = CodexCheckBoxCheckedStateChangeSource.Programmatic)
     : EventArgs
 {
     public bool? OldValue { get; } = oldValue;
 
     public bool? NewValue { get; } = newValue;
+
+    public CodexCheckBoxCheckedStateChangeSource Source { get; } = source;
 }
 
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
@@ -21,6 +33,8 @@ public class CodexCheckBox : CheckBox
 
     public static readonly StyledProperty<CodexControlSize> SizeProperty =
         AvaloniaProperty.Register<CodexCheckBox, CodexControlSize>(nameof(Size), CodexControlSize.Medium);
+
+    private CodexCheckBoxCheckedStateChangeSource? _pendingCheckedStateChangeSource;
 
     static CodexCheckBox()
     {
@@ -48,6 +62,38 @@ public class CodexCheckBox : CheckBox
         set => SetValue(SizeProperty, value);
     }
 
+    internal bool TryHandleActivationKey(Key key)
+    {
+        if (key is not Key.Space)
+        {
+            return false;
+        }
+
+        if (!IsEnabled)
+        {
+            return true;
+        }
+
+        _ = ToggleCheckedState(CodexCheckBoxCheckedStateChangeSource.Keyboard);
+        return true;
+    }
+
+    internal bool SetCheckedState(bool? checkedState, CodexCheckBoxCheckedStateChangeSource source)
+    {
+        if (!IsEnabled || ToCheckedState(IsChecked) == checkedState)
+        {
+            return false;
+        }
+
+        RunWithCheckedStateChangeSource(source, () => IsChecked = checkedState);
+        return true;
+    }
+
+    internal bool ToggleCheckedState(CodexCheckBoxCheckedStateChangeSource source)
+    {
+        return SetCheckedState(NextCheckedState(IsChecked, IsThreeState), source);
+    }
+
     protected override void OnGotFocus(FocusChangedEventArgs e)
     {
         base.OnGotFocus(e);
@@ -63,7 +109,42 @@ public class CodexCheckBox : CheckBox
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        if (IsEnabled
+            && e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed)
+        {
+            _pendingCheckedStateChangeSource = CodexCheckBoxCheckedStateChangeSource.Pointer;
+        }
+
         base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        try
+        {
+            base.OnPointerReleased(e);
+        }
+        finally
+        {
+            _pendingCheckedStateChangeSource = null;
+        }
+    }
+
+    protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+    {
+        _pendingCheckedStateChangeSource = null;
+        base.OnPointerCaptureLost(e);
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (TryHandleActivationKey(e.Key))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        base.OnKeyDown(e);
     }
 
     private void SyncClasses()
@@ -86,11 +167,36 @@ public class CodexCheckBox : CheckBox
             return;
         }
 
-        CheckedStateChanged?.Invoke(this, new CodexCheckBoxCheckedStateChangedEventArgs(oldValue, newValue));
+        var source = _pendingCheckedStateChangeSource ?? CodexCheckBoxCheckedStateChangeSource.Programmatic;
+        CheckedStateChanged?.Invoke(this, new CodexCheckBoxCheckedStateChangedEventArgs(oldValue, newValue, source));
+    }
+
+    private void RunWithCheckedStateChangeSource(CodexCheckBoxCheckedStateChangeSource source, Action action)
+    {
+        var previousSource = _pendingCheckedStateChangeSource;
+        _pendingCheckedStateChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingCheckedStateChangeSource = previousSource;
+        }
     }
 
     private static bool? ToCheckedState(object? value)
     {
         return value is bool checkedValue ? checkedValue : null;
+    }
+
+    private static bool? NextCheckedState(bool? value, bool isThreeState)
+    {
+        return value switch
+        {
+            true => isThreeState ? null : false,
+            false => true,
+            _ => false
+        };
     }
 }

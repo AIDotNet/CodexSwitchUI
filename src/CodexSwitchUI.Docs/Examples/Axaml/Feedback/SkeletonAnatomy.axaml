@@ -1,0 +1,43 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <controls:CodexField Label="Text and media placeholders"
+                       Description="Skeleton surfaces own radius, pulse opacity, and line widths so loading layouts do not rely on page-local rectangles.">
+    <StackPanel Spacing="12">
+      <StackPanel Orientation="Horizontal"
+                  Spacing="12">
+        <controls:CodexSkeleton Width="48"
+                                Height="48"
+                                CornerRadius="24" />
+        <StackPanel Spacing="8">
+          <controls:CodexSkeleton Width="240"
+                                  Height="16" />
+          <controls:CodexSkeleton Width="180"
+                                  Height="16" />
+        </StackPanel>
+      </StackPanel>
+      <controls:CodexSkeleton Width="380"
+                              Height="88"
+                              CornerRadius="8" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Pulse and shimmer layer"
+                       Description="The shimmer overlay is a template part, while static skeletons keep the same measured footprint.">
+    <StackPanel Spacing="12">
+      <controls:CodexSkeleton Width="360"
+                              Height="18"
+                              PulseLowOpacity="0.42"
+                              PulseHighOpacity="1"
+                              ShimmerHighOpacity="0.18" />
+      <controls:CodexSkeleton Width="260"
+                              Height="18"
+                              IsAnimated="False" />
+      <primitives:CodexText Role="Muted"
+                            Text="Static mode is the reduced-motion fallback, not a different visual component." />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

@@ -27,7 +27,6 @@ public class CodexCarousel : ItemsControl
 {
     private readonly CarouselPartCommand _previousCommand;
     private readonly CarouselPartCommand _nextCommand;
-    private ScrollViewer? _scrollViewer;
     private bool _isNormalizing;
     private int? _pendingSelectedIndex;
     private CodexCarouselSelectionChangeSource? _pendingSelectionSource;
@@ -271,7 +270,6 @@ public class CodexCarousel : ItemsControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
-        _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
         SyncState();
         ScrollSelectedIntoView();
     }
@@ -408,6 +406,8 @@ public class CodexCarousel : ItemsControl
 
     private void SyncClasses()
     {
+        var hasSelection = SlideCount > 0 && SelectedIndex >= 0 && SelectedIndex < SlideCount;
+
         CodexClassSync.SetSize(Classes, Size);
         Classes.Set("carousel", true);
         Classes.Set("horizontal", Orientation == Orientation.Horizontal);
@@ -415,6 +415,10 @@ public class CodexCarousel : ItemsControl
         Classes.Set("loop", Loop);
         Classes.Set("can-previous", CanGoPrevious);
         Classes.Set("can-next", CanGoNext);
+        Classes.Set("previous-disabled", !CanGoPrevious);
+        Classes.Set("next-disabled", !CanGoNext);
+        Classes.Set("at-start", !hasSelection || SelectedIndex <= 0);
+        Classes.Set("at-end", !hasSelection || SelectedIndex >= SlideCount - 1);
         Classes.Set("has-items", SlideCount > 0);
         Classes.Set("empty", SlideCount == 0);
         Classes.Set("has-multiple", HasMultipleItems);
@@ -477,12 +481,6 @@ public class CodexCarousel : ItemsControl
 
             var item = GetItemControl(SelectedIndex);
             item?.BringIntoView();
-
-            if (_scrollViewer is not null)
-            {
-                Classes.Set("at-start", Orientation == Orientation.Horizontal ? _scrollViewer.Offset.X <= 0 : _scrollViewer.Offset.Y <= 0);
-                Classes.Set("at-end", !CanGoNext);
-            }
         }, DispatcherPriority.Loaded);
     }
 

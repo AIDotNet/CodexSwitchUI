@@ -1,0 +1,45 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Display hierarchy"
+                       Description="Title and subtitle roles create page and section rhythm.">
+    <StackPanel Spacing="8">
+      <primitives:CodexText Role="Title"
+                            Text="Provider routing" />
+      <primitives:CodexText Role="Subtitle"
+                            Text="Routing summary" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Body and metadata"
+                       Description="Body and muted roles keep dense product surfaces readable.">
+    <StackPanel Spacing="8">
+      <primitives:CodexText Role="Body"
+                            Text="42.7K tokens routed through the primary provider." />
+      <primitives:CodexText Role="Muted"
+                            Text="Updated 12 seconds ago" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Code role"
+                       Description="Inline code uses compact typography and tokenized surface color.">
+    <primitives:CodexText Role="Code"
+                          Text="route=openai/default" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Wrapping"
+                       Description="Long copy wraps inside the primitive instead of overflowing panels.">
+    <primitives:CodexText Width="320"
+                          Role="Body"
+                          TextWrapping="Wrap"
+                          Text="Long descriptive text wraps at the component boundary while preserving line height and color tokens." />
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,46 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Wrapped button"
+                       Description="The ring wraps the focusable child without changing the child template.">
+    <primitives:CodexFocusRing IsRingVisible="True"
+                               RingOffset="4">
+      <controls:CodexButton Content="Visible ring" />
+    </primitives:CodexFocusRing>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Geometry"
+                       Description="Thickness, offset, radius, and brush are primitive properties.">
+    <primitives:CodexFocusRing IsRingVisible="True"
+                               RingThickness="4"
+                               RingOffset="6"
+                               CornerRadius="10">
+      <controls:CodexButton Content="Large target"
+                            Variant="Secondary" />
+    </primitives:CodexFocusRing>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Wrapped input"
+                       Description="Any focusable content can use the same focus-visible shell.">
+    <primitives:CodexFocusRing RingOffset="3">
+      <controls:CodexTextBox Width="260"
+                             Text="Keyboard target" />
+    </primitives:CodexFocusRing>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled child"
+                       Description="Disabled children keep layout while ignoring activation.">
+    <primitives:CodexFocusRing IsRingVisible="True">
+      <controls:CodexButton Content="Disabled"
+                            IsEnabled="False" />
+    </primitives:CodexFocusRing>
+  </controls:CodexField>
+</Grid>

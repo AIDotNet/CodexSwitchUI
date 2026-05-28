@@ -1,0 +1,79 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexField Label="Indicator host"
+                       Description="The moving indicator is measured from the selected child segment after layout.">
+    <controls:CodexSegmentedControl HorizontalAlignment="Left"
+                                    SelectedValue="code">
+      <controls:CodexSegmentedControl.Content>
+        <StackPanel Orientation="Horizontal">
+          <controls:CodexSegmentedButton Content="Preview"
+                                         Value="preview" />
+          <controls:CodexSegmentedButton Content="Code"
+                                         Value="code"
+                                         IsSelected="True" />
+          <controls:CodexSegmentedButton Content="Events"
+                                         Value="events" />
+        </StackPanel>
+      </controls:CodexSegmentedControl.Content>
+    </controls:CodexSegmentedControl>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Value fallback"
+                       Description="Segments can use explicit values or fall back to text content.">
+    <controls:CodexSegmentedControl HorizontalAlignment="Left">
+      <controls:CodexSegmentedControl.Content>
+        <StackPanel Orientation="Horizontal">
+          <controls:CodexSegmentedButton Content="1h" />
+          <controls:CodexSegmentedButton Content="24h"
+                                         IsSelected="True" />
+          <controls:CodexSegmentedButton Content="7d" />
+        </StackPanel>
+      </controls:CodexSegmentedControl.Content>
+    </controls:CodexSegmentedControl>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Disabled segment"
+                       Description="Disabled segments keep indicator geometry and cannot take selection.">
+    <controls:CodexSegmentedControl HorizontalAlignment="Left"
+                                    SelectedValue="dark">
+      <controls:CodexSegmentedControl.Content>
+        <StackPanel Orientation="Horizontal">
+          <controls:CodexSegmentedButton Content="Light"
+                                         Value="light" />
+          <controls:CodexSegmentedButton Content="Dark"
+                                         Value="dark"
+                                         IsSelected="True" />
+          <controls:CodexSegmentedButton Content="System"
+                                         Value="system"
+                                         IsEnabled="False" />
+        </StackPanel>
+      </controls:CodexSegmentedControl.Content>
+    </controls:CodexSegmentedControl>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Remeasure path"
+                       Description="Different-width segments animate indicator width, height, and margin with motion tokens.">
+    <controls:CodexSegmentedControl HorizontalAlignment="Left"
+                                    SelectedValue="long">
+      <controls:CodexSegmentedControl.Content>
+        <StackPanel Orientation="Horizontal">
+          <controls:CodexSegmentedButton Content="S"
+                                         Value="short" />
+          <controls:CodexSegmentedButton Content="Selected long segment"
+                                         Value="long"
+                                         IsSelected="True" />
+          <controls:CodexSegmentedButton Content="M"
+                                         Value="middle" />
+        </StackPanel>
+      </controls:CodexSegmentedControl.Content>
+    </controls:CodexSegmentedControl>
+  </controls:CodexField>
+</Grid>

@@ -1,0 +1,60 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Root and content"
+                       Description="PART_Root, PART_Content, and PART_FocusRing own the button-like surface.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexToggle Content="Bookmark"
+                            IsPressed="True" />
+      <controls:CodexToggle Content="Code" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Variant surface"
+                       Description="Default, outline, and ghost variants reuse the same pressed state classes.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexToggle Content="Default"
+                            IsPressed="True" />
+      <controls:CodexToggle Content="Outline"
+                            Variant="Outline"
+                            IsPressed="True" />
+      <controls:CodexToggle Content="Ghost"
+                            Variant="Ghost" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Pressed classes"
+                       Description="IsPressed maps to checked, pressed, state-on, and state-off classes.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexToggle Content="state-on"
+                            IsPressed="True" />
+      <controls:CodexToggle Content="state-off" />
+      <controls:CodexToggle Content="size-icon"
+                            Size="Icon"
+                            Variant="Ghost" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled guard"
+                       Description="Disabled toggles keep pressed visuals but suppress pointer and keyboard activation.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexToggle Content="Locked on"
+                            IsPressed="True"
+                            IsEnabled="False" />
+      <controls:CodexToggle Content="Locked off"
+                            Variant="Outline"
+                            IsEnabled="False" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

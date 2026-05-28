@@ -1,0 +1,65 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexDropdownButton Content="Trigger and chevron"
+                                IsOpen="True"
+                                IsArrowVisible="True"
+                                Align="Start">
+    <controls:CodexDropdownButton.DropDownContent>
+      <StackPanel Width="210"
+                  Spacing="6">
+        <TextBlock Text="PART_Trigger owns button states." />
+        <controls:CodexButton Content="Primary action"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+        <controls:CodexButton Content="Destructive action"
+                              Variant="Destructive"
+                              HorizontalAlignment="Stretch" />
+      </StackPanel>
+    </controls:CodexDropdownButton.DropDownContent>
+  </controls:CodexDropdownButton>
+
+  <controls:CodexDropdownButton Grid.Column="1"
+                                Content="Popup surface"
+                                IsOpen="True"
+                                Align="End"
+                                Placement="Bottom">
+    <controls:CodexDropdownButton.DropDownContent>
+      <StackPanel Width="216"
+                  Spacing="6">
+        <TextBlock Text="PART_Surface fades and scales from the trigger edge." />
+        <controls:CodexSeparator />
+        <controls:CodexButton Content="Close on select"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+      </StackPanel>
+    </controls:CodexDropdownButton.DropDownContent>
+  </controls:CodexDropdownButton>
+
+  <controls:CodexDropdownButton Grid.Row="1"
+                                Content="Keep open"
+                                IsOpen="True"
+                                CloseOnItemSelected="False">
+    <controls:CodexDropdownButton.DropDownContent>
+      <StackPanel Width="198"
+                  Spacing="6">
+        <controls:CodexSwitch Content="Pin menu"
+                              IsChecked="True" />
+        <controls:CodexCheckBox Content="Show shortcuts"
+                                IsChecked="True" />
+      </StackPanel>
+    </controls:CodexDropdownButton.DropDownContent>
+  </controls:CodexDropdownButton>
+
+  <controls:CodexDropdownButton Grid.Row="1"
+                                Grid.Column="1"
+                                Content="Loading guard"
+                                IsLoading="True">
+    <controls:CodexDropdownButton.DropDownContent>
+      <TextBlock Text="Loading keeps trigger chrome visible while blocking open and close actions." />
+    </controls:CodexDropdownButton.DropDownContent>
+  </controls:CodexDropdownButton>
+</Grid>

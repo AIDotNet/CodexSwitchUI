@@ -59,15 +59,28 @@ public class CodexTooltipProvider : ContentControl
     }
 }
 
-public sealed class CodexTooltipOpenChangedEventArgs(bool isOpen) : EventArgs
+public enum CodexTooltipOpenChangeSource
+{
+    Programmatic,
+    Pointer,
+    Focus,
+    Keyboard
+}
+
+public sealed class CodexTooltipOpenChangedEventArgs(
+    bool isOpen,
+    CodexTooltipOpenChangeSource source = CodexTooltipOpenChangeSource.Programmatic) : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexTooltipOpenChangeSource Source { get; } = source;
 }
 
 public class CodexTooltip : ContentControl
 {
     private DispatcherTimer? _openTimer;
     private DispatcherTimer? _closeTimer;
+    private CodexTooltipOpenChangeSource? _pendingOpenChangeSource;
 
     public static readonly StyledProperty<object?> TriggerProperty =
         AvaloniaProperty.Register<CodexTooltip, object?>(nameof(Trigger));
@@ -194,16 +207,26 @@ public class CodexTooltip : ContentControl
 
     public void Open()
     {
+        Open(CodexTooltipOpenChangeSource.Programmatic);
+    }
+
+    internal void Open(CodexTooltipOpenChangeSource source)
+    {
         if (!IsEnabled)
         {
             return;
         }
 
         StopTimers();
-        IsOpen = true;
+        RunWithOpenChangeSource(source, () => IsOpen = true);
     }
 
     public bool Dismiss()
+    {
+        return Dismiss(CodexTooltipOpenChangeSource.Programmatic);
+    }
+
+    internal bool Dismiss(CodexTooltipOpenChangeSource source)
     {
         StopTimers();
 
@@ -212,11 +235,11 @@ public class CodexTooltip : ContentControl
             return false;
         }
 
-        IsOpen = false;
+        RunWithOpenChangeSource(source, () => IsOpen = false);
         return true;
     }
 
-    internal bool RequestOpen()
+    internal bool RequestOpen(CodexTooltipOpenChangeSource source = CodexTooltipOpenChangeSource.Pointer)
     {
         if (!IsEnabled)
         {
@@ -233,11 +256,11 @@ public class CodexTooltip : ContentControl
         var openDelay = EffectiveOpenDelay();
         if (openDelay <= TimeSpan.Zero)
         {
-            Open();
+            Open(source);
             return true;
         }
 
-        StartTimer(ref _openTimer, openDelay, Open);
+        StartTimer(ref _openTimer, openDelay, () => Open(source));
         return true;
     }
 
@@ -255,11 +278,11 @@ public class CodexTooltip : ContentControl
             return false;
         }
 
-        Open();
+        Open(CodexTooltipOpenChangeSource.Focus);
         return true;
     }
 
-    internal bool RequestClose()
+    internal bool RequestClose(CodexTooltipOpenChangeSource source = CodexTooltipOpenChangeSource.Pointer)
     {
         StopOpenTimer();
 
@@ -270,10 +293,10 @@ public class CodexTooltip : ContentControl
 
         if (CloseDelay <= TimeSpan.Zero)
         {
-            return Dismiss();
+            return Dismiss(source);
         }
 
-        StartTimer(ref _closeTimer, CloseDelay, () => IsOpen = false);
+        StartTimer(ref _closeTimer, CloseDelay, () => Dismiss(source));
         return true;
     }
 
@@ -286,8 +309,8 @@ public class CodexTooltip : ContentControl
 
         return key switch
         {
-            Key.Escape => CloseOnEscape && Dismiss(),
-            Key.Enter or Key.Space => Dismiss(),
+            Key.Escape => CloseOnEscape && Dismiss(CodexTooltipOpenChangeSource.Keyboard),
+            Key.Enter or Key.Space => Dismiss(CodexTooltipOpenChangeSource.Keyboard),
             _ => false
         };
     }
@@ -297,7 +320,7 @@ public class CodexTooltip : ContentControl
         base.OnPointerEntered(e);
         if (HasTrigger)
         {
-            RequestOpen();
+            RequestOpen(CodexTooltipOpenChangeSource.Pointer);
         }
     }
 
@@ -306,7 +329,7 @@ public class CodexTooltip : ContentControl
         base.OnPointerExited(e);
         if (HasTrigger)
         {
-            RequestClose();
+            RequestClose(CodexTooltipOpenChangeSource.Pointer);
         }
     }
 
@@ -324,7 +347,7 @@ public class CodexTooltip : ContentControl
         base.OnLostFocus(e);
         if (HasTrigger)
         {
-            RequestClose();
+            RequestClose(CodexTooltipOpenChangeSource.Focus);
         }
     }
 
@@ -378,7 +401,7 @@ public class CodexTooltip : ContentControl
 
         if (args.OldValue is bool oldValue && oldValue != IsOpen)
         {
-            OpenChanged?.Invoke(this, new CodexTooltipOpenChangedEventArgs(IsOpen));
+            OpenChanged?.Invoke(this, new CodexTooltipOpenChangedEventArgs(IsOpen, CurrentOpenChangeSource));
         }
     }
 
@@ -456,5 +479,22 @@ public class CodexTooltip : ContentControl
     private static bool HasValue(object? value)
     {
         return value is string text ? !string.IsNullOrWhiteSpace(text) : value is not null;
+    }
+
+    private CodexTooltipOpenChangeSource CurrentOpenChangeSource =>
+        _pendingOpenChangeSource ?? CodexTooltipOpenChangeSource.Programmatic;
+
+    private void RunWithOpenChangeSource(CodexTooltipOpenChangeSource source, Action action)
+    {
+        var previousSource = _pendingOpenChangeSource;
+        _pendingOpenChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingOpenChangeSource = previousSource;
+        }
     }
 }

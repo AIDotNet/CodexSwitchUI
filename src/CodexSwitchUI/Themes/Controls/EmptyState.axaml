@@ -158,6 +158,12 @@
     <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
   </Style>
 
+  <Style Selector="controls|CodexEmptyState.action-command-blocked /template/ controls|CodexButton#PART_Action,
+                   controls|CodexEmptyState.secondary-action-command-blocked /template/ controls|CodexButton#PART_SecondaryAction">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
   <Style Selector="controls|CodexEmptyState.size-sm">
     <Setter Property="Padding" Value="20" />
     <Setter Property="MinHeight" Value="140" />

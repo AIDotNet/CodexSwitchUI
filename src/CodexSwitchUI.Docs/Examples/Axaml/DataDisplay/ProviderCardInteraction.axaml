@@ -1,11 +1,11 @@
 <Grid xmlns="https://github.com/avaloniaui"
       xmlns:controls="using:CodexSwitchUI.Controls"
       ColumnDefinitions="*,*"
-      RowDefinitions="Auto,Auto"
+      RowDefinitions="Auto,Auto,Auto"
       ColumnSpacing="16"
       RowSpacing="14">
   <controls:CodexField Label="Sibling selection"
-                       Description="Pointer and keyboard activation keep one active row.">
+                       Description="Pointer, keyboard, and programmatic selection report source metadata.">
     <controls:CodexField.Content>
       <StackPanel Spacing="10">
         <controls:CodexProviderCard Header="OpenAI"
@@ -77,5 +77,18 @@
                                 Icon="L"
                                 Status="Locked"
                                 IsEnabled="False" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="2"
+                       Grid.ColumnSpan="2"
+                       Label="Command blocked"
+                       Description="CanExecute=false keeps sibling active state unchanged and exposes command-blocked styling.">
+    <controls:CodexProviderCard Header="Staged route"
+                                Meta="Blocked"
+                                Description="Validation must pass before this provider row can become active."
+                                Icon="S"
+                                Status="Waiting"
+                                Usage="0"
+                                Classes="command-blocked" />
   </controls:CodexField>
 </Grid>

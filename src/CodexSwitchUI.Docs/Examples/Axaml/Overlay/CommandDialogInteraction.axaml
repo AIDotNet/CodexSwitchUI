@@ -1,31 +1,39 @@
 <Grid xmlns="https://github.com/avaloniaui"
       xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
       ColumnDefinitions="*,*"
       RowDefinitions="Auto,Auto"
       ColumnSpacing="14"
       RowSpacing="14">
-  <controls:CodexCommandDialog Placeholder="Search commands..."
-                               IsOpen="True"
-                               CloseOnItemSelected="True">
-    <controls:CodexCommandDialog.Trigger>
-      <controls:CodexButton Content="Open command menu"
-                            Size="Small" />
-    </controls:CodexCommandDialog.Trigger>
-    <controls:CodexCommandList>
-      <controls:CodexCommandGroup Header="Close on select">
-        <controls:CodexCommandItem Content="Switch provider"
-                                   Icon="P"
-                                   Shortcut="Enter"
-                                   IsActive="True" />
-        <controls:CodexCommandItem Content="Refresh models"
-                                   Icon="R"
-                                   Shortcut="Cmd+R" />
-        <controls:CodexCommandItem Content="Disabled action"
-                                   Icon="D"
-                                   IsEnabled="False" />
-      </controls:CodexCommandGroup>
-    </controls:CodexCommandList>
-  </controls:CodexCommandDialog>
+  <StackPanel Spacing="8">
+    <primitives:CodexText Role="Muted"
+                          Text="ItemSelected forwards Pointer, Keyboard, and Programmatic source metadata from the command item." />
+    <controls:CodexCommandDialog Placeholder="Search commands..."
+                                 IsOpen="True"
+                                 CloseOnItemSelected="True">
+      <controls:CodexCommandDialog.Trigger>
+        <controls:CodexButton Content="Open command menu"
+                              Size="Small" />
+      </controls:CodexCommandDialog.Trigger>
+      <controls:CodexCommandList>
+        <controls:CodexCommandGroup Header="Close on select">
+          <controls:CodexCommandItem Content="Switch provider"
+                                     Value="provider"
+                                     Icon="P"
+                                     Shortcut="Enter"
+                                     IsActive="True" />
+          <controls:CodexCommandItem Content="Refresh models"
+                                     Value="refresh"
+                                     Icon="R"
+                                     Shortcut="Cmd+R" />
+          <controls:CodexCommandItem Content="Disabled action"
+                                     Value="disabled"
+                                     Icon="D"
+                                     IsEnabled="False" />
+        </controls:CodexCommandGroup>
+      </controls:CodexCommandList>
+    </controls:CodexCommandDialog>
+  </StackPanel>
 
   <controls:CodexCommandDialog Grid.Column="1"
                                Placeholder="Loading command..."

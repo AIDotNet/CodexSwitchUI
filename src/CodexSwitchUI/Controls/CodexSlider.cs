@@ -93,15 +93,20 @@ public class CodexSlider : Slider
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
-        _isPointerChanging = IsEnabled;
-        Classes.Set("dragging", _isPointerChanging);
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        if (!TryBeginPointerChange(updateKind))
+        {
+            return;
+        }
+
         base.OnPointerPressed(e);
     }
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
         base.OnPointerReleased(e);
-        CommitPointerValue();
+        TryCommitPointerValue(updateKind);
     }
 
     protected override void OnKeyUp(KeyEventArgs e)
@@ -117,6 +122,28 @@ public class CodexSlider : Slider
     public bool CommitValue()
     {
         return CommitValue("programmatic");
+    }
+
+    internal bool TryBeginPointerChange(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonPressed || !IsEnabled)
+        {
+            return false;
+        }
+
+        _isPointerChanging = true;
+        Classes.Set("dragging", true);
+        return true;
+    }
+
+    internal bool TryCommitPointerValue(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        return CommitPointerValue();
     }
 
     private void SyncClasses()
@@ -162,16 +189,16 @@ public class CodexSlider : Slider
         ValueChanging?.Invoke(this, new CodexSliderValueChangingEventArgs(oldValue, newValue));
     }
 
-    private void CommitPointerValue()
+    private bool CommitPointerValue()
     {
         if (!_isPointerChanging)
         {
-            return;
+            return false;
         }
 
         _isPointerChanging = false;
         Classes.Set("dragging", false);
-        CommitValue("pointer");
+        return CommitValue("pointer");
     }
 
     private bool CommitValue(string source)

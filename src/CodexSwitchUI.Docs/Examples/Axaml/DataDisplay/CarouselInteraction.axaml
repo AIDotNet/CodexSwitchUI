@@ -10,7 +10,7 @@
       <controls:CodexCarousel MaxWidth="560">
         <controls:CodexCarouselItem Width="260">
           <controls:CodexCard Title="Start"
-                              Description="Previous disabled" />
+                              Description="at-start / previous-disabled" />
         </controls:CodexCarouselItem>
         <controls:CodexCarouselItem Width="260">
           <controls:CodexCard Title="Middle"
@@ -18,7 +18,7 @@
         </controls:CodexCarouselItem>
         <controls:CodexCarouselItem Width="260">
           <controls:CodexCard Title="End"
-                              Description="Next disabled" />
+                              Description="at-end / next-disabled" />
         </controls:CodexCarouselItem>
       </controls:CodexCarousel>
       <TextBlock Text="SelectionChanged: source metadata distinguishes API, previous, next, first, last, and keyboard movement."

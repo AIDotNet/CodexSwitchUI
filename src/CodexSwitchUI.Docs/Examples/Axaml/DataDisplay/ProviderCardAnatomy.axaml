@@ -1,0 +1,72 @@
+<StackPanel xmlns="https://github.com/avaloniaui"
+            xmlns:controls="using:CodexSwitchUI.Controls"
+            Spacing="12">
+  <controls:CodexProviderCard Description="Leading, icon, header, meta, description, status, usage, and actions are separate slots."
+                              Icon="AI"
+                              IsActive="True">
+    <controls:CodexProviderCard.Leading>
+      <controls:CodexBadge Content="Default"
+                           Variant="Secondary" />
+    </controls:CodexProviderCard.Leading>
+    <controls:CodexProviderCard.Header>
+      <TextBlock Text="OpenAI Responses"
+                 FontWeight="SemiBold" />
+    </controls:CodexProviderCard.Header>
+    <controls:CodexProviderCard.Meta>
+      <controls:CodexBadge Content="Active"
+                           Variant="Success" />
+    </controls:CodexProviderCard.Meta>
+    <controls:CodexProviderCard.Status>
+      <controls:CodexBadge Content="Healthy"
+                           Variant="Success"
+                           IsStatusVisible="True" />
+    </controls:CodexProviderCard.Status>
+    <controls:CodexProviderCard.Usage>
+      <controls:CodexMetric Label="Tokens"
+                            Detail="24h">
+        <controls:CodexMetric.Value>
+          <TextBlock Text="42.7K"
+                     FontWeight="SemiBold" />
+        </controls:CodexMetric.Value>
+      </controls:CodexMetric>
+    </controls:CodexProviderCard.Usage>
+    <controls:CodexProviderCard.Actions>
+      <controls:CodexIconButton Content="..."
+                                Variant="Ghost" />
+    </controls:CodexProviderCard.Actions>
+  </controls:CodexProviderCard>
+
+  <controls:CodexProviderCard Description="Dragging keeps the same slot structure while suppressing hover emphasis."
+                              Icon="C"
+                              IsDragging="True">
+    <controls:CodexProviderCard.Leading>
+      <controls:CodexBadge Content="Fallback"
+                           Variant="Outline" />
+    </controls:CodexProviderCard.Leading>
+    <controls:CodexProviderCard.Header>
+      <TextBlock Text="Claude"
+                 FontWeight="SemiBold" />
+    </controls:CodexProviderCard.Header>
+    <controls:CodexProviderCard.Meta>
+      <controls:CodexBadge Content="Ready"
+                           Variant="Secondary" />
+    </controls:CodexProviderCard.Meta>
+    <controls:CodexProviderCard.Status>
+      <controls:CodexBadge Content="Queued"
+                           Variant="Secondary" />
+    </controls:CodexProviderCard.Status>
+    <controls:CodexProviderCard.Usage>
+      <controls:CodexMetric Label="Tokens">
+        <controls:CodexMetric.Value>
+          <TextBlock Text="7.1K"
+                     FontWeight="SemiBold" />
+        </controls:CodexMetric.Value>
+      </controls:CodexMetric>
+    </controls:CodexProviderCard.Usage>
+    <controls:CodexProviderCard.Actions>
+      <controls:CodexButton Content="Route"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexProviderCard.Actions>
+  </controls:CodexProviderCard>
+</StackPanel>

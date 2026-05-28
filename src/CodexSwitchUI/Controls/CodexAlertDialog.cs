@@ -57,6 +57,8 @@ public class CodexAlertDialog : CodexDialog
 
     private readonly AlertDialogPartCommand _cancelDialogCommand;
     private readonly AlertDialogPartCommand _actionDialogCommand;
+    private ICommand? _subscribedCancelCommand;
+    private ICommand? _subscribedActionCommand;
     private CodexButton? _cancelButton;
     private bool _isCancelFocusQueued;
 
@@ -65,8 +67,8 @@ public class CodexAlertDialog : CodexDialog
         MediaProperty.Changed.AddClassHandler<CodexAlertDialog>((dialog, _) => dialog.SyncAlertDialogClasses());
         CancelContentProperty.Changed.AddClassHandler<CodexAlertDialog>((dialog, _) => dialog.SyncAlertDialogClasses());
         ActionContentProperty.Changed.AddClassHandler<CodexAlertDialog>((dialog, _) => dialog.SyncAlertDialogClasses());
-        CancelCommandProperty.Changed.AddClassHandler<CodexAlertDialog>((dialog, _) => dialog.RaisePartCommandStateChanged());
-        ActionCommandProperty.Changed.AddClassHandler<CodexAlertDialog>((dialog, _) => dialog.RaisePartCommandStateChanged());
+        CancelCommandProperty.Changed.AddClassHandler<CodexAlertDialog>((dialog, args) => dialog.OnCancelCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        ActionCommandProperty.Changed.AddClassHandler<CodexAlertDialog>((dialog, args) => dialog.OnActionCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
         ActionVariantProperty.Changed.AddClassHandler<CodexAlertDialog>((dialog, _) => dialog.SyncAlertDialogClasses());
         SizeProperty.Changed.AddClassHandler<CodexAlertDialog>((dialog, _) => dialog.SyncAlertDialogClasses());
         IsCancelLoadingProperty.Changed.AddClassHandler<CodexAlertDialog>((dialog, _) =>
@@ -249,6 +251,23 @@ public class CodexAlertDialog : CodexDialog
         QueueCancelFocus();
     }
 
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCancelCommand is not null)
+        {
+            _subscribedCancelCommand.CanExecuteChanged -= OnPartCommandCanExecuteChanged;
+            _subscribedCancelCommand = null;
+        }
+
+        if (_subscribedActionCommand is not null)
+        {
+            _subscribedActionCommand.CanExecuteChanged -= OnPartCommandCanExecuteChanged;
+            _subscribedActionCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
     private void SyncAlertDialogClasses()
     {
         CodexClassSync.SetSize(Classes, Size);
@@ -276,6 +295,43 @@ public class CodexAlertDialog : CodexDialog
     {
         _cancelDialogCommand?.RaiseCanExecuteChanged();
         _actionDialogCommand?.RaiseCanExecuteChanged();
+    }
+
+    private void OnCancelCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        _subscribedCancelCommand = ResubscribePartCommand(_subscribedCancelCommand, oldCommand, newCommand);
+        RaisePartCommandStateChanged();
+    }
+
+    private void OnActionCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        _subscribedActionCommand = ResubscribePartCommand(_subscribedActionCommand, oldCommand, newCommand);
+        RaisePartCommandStateChanged();
+    }
+
+    private ICommand? ResubscribePartCommand(ICommand? subscribedCommand, ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return subscribedCommand;
+        }
+
+        if (subscribedCommand is not null)
+        {
+            subscribedCommand.CanExecuteChanged -= OnPartCommandCanExecuteChanged;
+        }
+
+        if (newCommand is not null)
+        {
+            newCommand.CanExecuteChanged += OnPartCommandCanExecuteChanged;
+        }
+
+        return newCommand;
+    }
+
+    private void OnPartCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        RaisePartCommandStateChanged();
     }
 
     private void QueueCancelFocus()

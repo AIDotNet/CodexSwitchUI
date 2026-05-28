@@ -1,0 +1,60 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexCollapsible Header="Trigger and chevron"
+                             IsOpen="True">
+    <controls:CodexCollapsible.Content>
+      <StackPanel Spacing="8">
+        <TextBlock Text="PART_Trigger, focus ring, and PART_Chevron stay in one template." />
+        <controls:CodexButton Content="Nested action"
+                              Size="Small"
+                              HorizontalAlignment="Left" />
+      </StackPanel>
+    </controls:CodexCollapsible.Content>
+  </controls:CodexCollapsible>
+
+  <controls:CodexCollapsible Grid.Column="1"
+                             IsOpen="True"
+                             ContentPadding="0,10,0,0">
+    <controls:CodexCollapsible.Header>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <primitives:CodexText Role="Body"
+                              Text="Header slot" />
+        <controls:CodexBadge Content="Open"
+                             Size="Small" />
+      </StackPanel>
+    </controls:CodexCollapsible.Header>
+    <controls:CodexCollapsible.Content>
+      <TextBlock Text="Header can be rich content while measured body stays in PART_ContentClip." />
+    </controls:CodexCollapsible.Content>
+  </controls:CodexCollapsible>
+
+  <controls:CodexCollapsible Grid.Row="1"
+                             Header="Measured content"
+                             IsOpen="True"
+                             AnimationDuration="0:0:0.220">
+    <controls:CodexCollapsible.Content>
+      <StackPanel Spacing="10">
+        <controls:CodexCheckBox Content="Prefer cached sessions"
+                                IsChecked="True" />
+        <controls:CodexCheckBox Content="Enable fallback route" />
+        <TextBlock Text="Height animates from the measured content value." />
+      </StackPanel>
+    </controls:CodexCollapsible.Content>
+  </controls:CodexCollapsible>
+
+  <controls:CodexCollapsible Grid.Row="1"
+                             Grid.Column="1"
+                             Header="Closed and disabled"
+                             IsOpen="False"
+                             IsEnabled="False">
+    <controls:CodexCollapsible.Content>
+      <TextBlock Text="Closed content remains available for measurement, while disabled blocks trigger input." />
+    </controls:CodexCollapsible.Content>
+  </controls:CodexCollapsible>
+</Grid>

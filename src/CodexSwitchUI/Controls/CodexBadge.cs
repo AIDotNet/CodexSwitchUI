@@ -8,6 +8,13 @@ using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
+public enum CodexBadgeActivationSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexBadge : CodexFrame
 {
@@ -101,14 +108,39 @@ public class CodexBadge : CodexFrame
 
     public bool TryActivate()
     {
+        return TryActivate(CodexBadgeActivationSource.Programmatic);
+    }
+
+    internal bool TryActivate(CodexBadgeActivationSource source)
+    {
         if (!CanActivate)
         {
             return false;
         }
 
         Command?.Execute(CommandParameter);
-        Activated?.Invoke(this, new CodexBadgeActivatedEventArgs(CommandParameter));
+        Activated?.Invoke(this, new CodexBadgeActivatedEventArgs(CommandParameter, source));
         return true;
+    }
+
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        return TryActivate(CodexBadgeActivationSource.Pointer);
+    }
+
+    public bool TryHandleActivationKey(Key key)
+    {
+        if (key is not (Key.Enter or Key.Space))
+        {
+            return false;
+        }
+
+        return TryActivate(CodexBadgeActivationSource.Keyboard);
     }
 
     protected override void OnGotFocus(FocusChangedEventArgs e)
@@ -128,7 +160,8 @@ public class CodexBadge : CodexFrame
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
         base.OnPointerPressed(e);
 
-        if (CanActivate && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        if (CanActivate && updateKind == PointerUpdateKind.LeftButtonPressed)
         {
             Focus(NavigationMethod.Pointer, KeyModifiers.None);
         }
@@ -138,8 +171,8 @@ public class CodexBadge : CodexFrame
     {
         base.OnPointerReleased(e);
 
-        if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased
-            && TryActivate())
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        if (TryHandlePointerActivation(updateKind))
         {
             e.Handled = true;
         }
@@ -147,7 +180,7 @@ public class CodexBadge : CodexFrame
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        if (e.Key is (Key.Enter or Key.Space) && TryActivate())
+        if (TryHandleActivationKey(e.Key))
         {
             e.Handled = true;
             return;
@@ -220,7 +253,11 @@ public class CodexBadge : CodexFrame
     }
 }
 
-public sealed class CodexBadgeActivatedEventArgs(object? commandParameter) : EventArgs
+public sealed class CodexBadgeActivatedEventArgs(
+    object? commandParameter,
+    CodexBadgeActivationSource source = CodexBadgeActivationSource.Programmatic) : EventArgs
 {
     public object? CommandParameter { get; } = commandParameter;
+
+    public CodexBadgeActivationSource Source { get; } = source;
 }

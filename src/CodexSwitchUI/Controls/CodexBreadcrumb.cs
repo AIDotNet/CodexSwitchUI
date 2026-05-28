@@ -6,6 +6,7 @@ using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
 using System.Linq;
+using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
@@ -14,7 +15,8 @@ public sealed class CodexBreadcrumbLinkActivatedEventArgs(
     CodexBreadcrumbItem? item,
     int index,
     string? href,
-    object? content) : EventArgs
+    object? content,
+    CodexBreadcrumbLinkActivationSource source = CodexBreadcrumbLinkActivationSource.Programmatic) : EventArgs
 {
     public CodexBreadcrumbLink Link { get; } = link;
 
@@ -25,6 +27,15 @@ public sealed class CodexBreadcrumbLinkActivatedEventArgs(
     public string? Href { get; } = href;
 
     public object? Content { get; } = content;
+
+    public CodexBreadcrumbLinkActivationSource Source { get; } = source;
+}
+
+public enum CodexBreadcrumbLinkActivationSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
 }
 
 public class CodexBreadcrumb : ContentControl
@@ -73,7 +84,9 @@ public class CodexBreadcrumb : ContentControl
         AutomationProperties.SetIsControlElementOverride(this, true);
     }
 
-    internal void NotifyLinkActivated(CodexBreadcrumbLink link)
+    internal void NotifyLinkActivated(
+        CodexBreadcrumbLink link,
+        CodexBreadcrumbLinkActivationSource source = CodexBreadcrumbLinkActivationSource.Programmatic)
     {
         var item = link.GetLogicalAncestors().OfType<CodexBreadcrumbItem>().FirstOrDefault()
             ?? link.GetVisualAncestors().OfType<CodexBreadcrumbItem>().FirstOrDefault();
@@ -82,7 +95,7 @@ public class CodexBreadcrumb : ContentControl
 
         LinkActivated?.Invoke(
             this,
-            new CodexBreadcrumbLinkActivatedEventArgs(link, item, index, link.Href, link.Content));
+            new CodexBreadcrumbLinkActivatedEventArgs(link, item, index, link.Href, link.Content, source));
     }
 
     private IReadOnlyList<CodexBreadcrumbItem> GetBreadcrumbItems()
@@ -184,6 +197,12 @@ public class CodexBreadcrumbItem : ContentControl
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexBreadcrumbLink : Button
 {
+    private ICommand? _subscribedCommand;
+    private bool _hasPrimaryPointerPress;
+    private PointerUpdateKind? _pendingPointerReleaseKind;
+    private bool _activationHandledByPointerRelease;
+    private CodexBreadcrumbLinkActivationSource? _pendingActivationSource;
+
     public static readonly StyledProperty<bool> IsCurrentProperty =
         AvaloniaProperty.Register<CodexBreadcrumbLink, bool>(nameof(IsCurrent));
 
@@ -198,6 +217,9 @@ public class CodexBreadcrumbLink : Button
         IsCurrentProperty.Changed.AddClassHandler<CodexBreadcrumbLink>((link, _) => link.SyncClasses());
         SizeProperty.Changed.AddClassHandler<CodexBreadcrumbLink>((link, _) => link.SyncClasses());
         HrefProperty.Changed.AddClassHandler<CodexBreadcrumbLink>((link, _) => link.SyncClasses());
+        CommandProperty.Changed.AddClassHandler<CodexBreadcrumbLink>((link, args) => link.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        CommandParameterProperty.Changed.AddClassHandler<CodexBreadcrumbLink>((link, _) => link.SyncClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexBreadcrumbLink>((link, _) => link.SyncClasses());
     }
 
     public CodexBreadcrumbLink()
@@ -223,28 +245,64 @@ public class CodexBreadcrumbLink : Button
         set => SetValue(HrefProperty, value);
     }
 
+    public bool CanActivate => !IsCurrent && IsEnabled && (Command?.CanExecute(CommandParameter) ?? true);
+
     public bool TryActivate()
     {
-        if (IsCurrent || !IsEnabled)
+        return TryActivate(CodexBreadcrumbLinkActivationSource.Programmatic);
+    }
+
+    internal bool TryActivate(CodexBreadcrumbLinkActivationSource source)
+    {
+        if (!CanActivate)
         {
             return false;
         }
 
-        OnClick();
+        _pendingActivationSource = source;
+        try
+        {
+            OnClick();
+        }
+        finally
+        {
+            _pendingActivationSource = null;
+        }
+
         return true;
+    }
+
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        return TryActivate(CodexBreadcrumbLinkActivationSource.Pointer);
     }
 
     protected override void OnClick()
     {
-        if (IsCurrent || !IsEnabled)
+        if (_pendingPointerReleaseKind is { } updateKind)
+        {
+            if (updateKind != PointerUpdateKind.LeftButtonReleased || !CanActivate)
+            {
+                return;
+            }
+
+            NotifyOwner(_pendingActivationSource ?? CodexBreadcrumbLinkActivationSource.Pointer);
+            _activationHandledByPointerRelease = true;
+            base.OnClick();
+            return;
+        }
+
+        if (!CanActivate)
         {
             return;
         }
 
-        var owner = this.GetLogicalAncestors().OfType<CodexBreadcrumb>().FirstOrDefault()
-            ?? this.GetVisualAncestors().OfType<CodexBreadcrumb>().FirstOrDefault();
-        owner?.NotifyLinkActivated(this);
-
+        NotifyOwner(_pendingActivationSource ?? CodexBreadcrumbLinkActivationSource.Keyboard);
         base.OnClick();
     }
 
@@ -262,8 +320,50 @@ public class CodexBreadcrumbLink : Button
 
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
+        _hasPrimaryPointerPress = e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed;
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
         base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        var canActivateFromPointer = _hasPrimaryPointerPress && IsPointerOver;
+        _hasPrimaryPointerPress = false;
+
+        if (canActivateFromPointer)
+        {
+            _pendingPointerReleaseKind = updateKind;
+            try
+            {
+                base.OnPointerReleased(e);
+            }
+            finally
+            {
+                _pendingPointerReleaseKind = null;
+            }
+
+            if (_activationHandledByPointerRelease)
+            {
+                _activationHandledByPointerRelease = false;
+                e.Handled = true;
+            }
+
+            return;
+        }
+
+        base.OnPointerReleased(e);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
     }
 
     private void SyncClasses()
@@ -271,7 +371,43 @@ public class CodexBreadcrumbLink : Button
         Classes.Set("breadcrumb-link", true);
         Classes.Set("current", IsCurrent);
         Classes.Set("has-href", !string.IsNullOrWhiteSpace(Href));
+        Classes.Set("can-activate", CanActivate);
+        Classes.Set("command-blocked", Command is not null && !IsCurrent && IsEnabled && !CanActivate);
         CodexClassSync.SetSize(Classes, Size);
+    }
+
+    private void NotifyOwner(CodexBreadcrumbLinkActivationSource source)
+    {
+        var owner = this.GetLogicalAncestors().OfType<CodexBreadcrumb>().FirstOrDefault()
+            ?? this.GetVisualAncestors().OfType<CodexBreadcrumb>().FirstOrDefault();
+        owner?.NotifyLinkActivated(this, source);
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncClasses();
     }
 }
 

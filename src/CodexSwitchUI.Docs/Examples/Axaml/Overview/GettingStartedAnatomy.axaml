@@ -1,0 +1,79 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="14">
+  <controls:CodexField Label="Page registry"
+                       Description="Each menu row maps to a DocsPage and standalone AXAML sample.">
+    <Grid ColumnDefinitions="*,*"
+          ColumnSpacing="10">
+      <controls:CodexStatCard Label="Categories"
+                              Detail="navigation">
+        <controls:CodexStatCard.Value>
+          <primitives:CodexText Role="Body"
+                                Text="8" />
+        </controls:CodexStatCard.Value>
+      </controls:CodexStatCard>
+      <controls:CodexStatCard Grid.Column="1"
+                              Label="Pages"
+                              Detail="independent">
+        <controls:CodexStatCard.Value>
+          <primitives:CodexText Role="Body"
+                                Text="57+" />
+        </controls:CodexStatCard.Value>
+      </controls:CodexStatCard>
+    </Grid>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Example case"
+                       Description="Rendered preview, toggle, and source blocks stay local to the case.">
+    <StackPanel Spacing="8">
+      <controls:CodexBadge Content="preview"
+                           Variant="Secondary" />
+      <controls:CodexButton Content="Source"
+                            Size="Small"
+                            Variant="Secondary"
+                            HorizontalAlignment="Left" />
+      <primitives:CodexText Role="Code"
+                            Text="foreach (var codeSample in example.CodeSamples)" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Behavior sections"
+                       Description="State and event matrices keep Web parity visible.">
+    <Grid ColumnDefinitions="*,*"
+          ColumnSpacing="10">
+      <controls:CodexStatCard Label="States"
+                              Detail="classes">
+        <controls:CodexStatCard.Value>
+          <primitives:CodexText Role="Body"
+                                Text="matrix" />
+        </controls:CodexStatCard.Value>
+      </controls:CodexStatCard>
+      <controls:CodexStatCard Grid.Column="1"
+                              Label="Events"
+                              Detail="triggers">
+        <controls:CodexStatCard.Value>
+          <primitives:CodexText Role="Body"
+                                Text="matrix" />
+        </controls:CodexStatCard.Value>
+      </controls:CodexStatCard>
+    </Grid>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Source surface"
+                       Description="AXAML and companion C# remain selectable and copyable after expansion.">
+    <StackPanel Spacing="8">
+      <primitives:CodexText Role="Code"
+                            Text="Examples/Axaml/{Category}/{Case}.axaml" />
+      <primitives:CodexText Role="Muted"
+                            Text="The code block remains below the current rendered case." />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

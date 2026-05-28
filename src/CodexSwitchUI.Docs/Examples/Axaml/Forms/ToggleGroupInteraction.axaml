@@ -16,7 +16,7 @@
         <controls:CodexToggleGroupItem Content="Right"
                                        Value="right" />
       </controls:CodexToggleGroup>
-      <TextBlock Text="Single value: center."
+      <TextBlock Text="Single value: center (source=Programmatic)."
                  Opacity="0.72" />
     </StackPanel>
   </controls:CodexField>
@@ -36,14 +36,14 @@
         <controls:CodexToggleGroupItem Content="Underline"
                                        Value="underline" />
       </controls:CodexToggleGroup>
-      <TextBlock Text="Multiple values: bold, italic."
+      <TextBlock Text="Multiple values: bold, italic (source=Programmatic)."
                  Opacity="0.72" />
     </StackPanel>
   </controls:CodexField>
 
   <controls:CodexField Grid.Row="1"
                        Label="Roving keys"
-                       Description="Right/Left move in horizontal groups; Home and End jump to enabled boundaries.">
+                       Description="Right/Left move focus; Enter or Space reports source=Keyboard.">
     <controls:CodexToggleGroup IsLoop="False"
                                SelectedValue="preview">
       <controls:CodexToggleGroupItem Content="Preview"
@@ -61,7 +61,7 @@
   <controls:CodexField Grid.Row="1"
                        Grid.Column="1"
                        Label="Vertical orientation"
-                       Description="Up/Down move through enabled vertical group items.">
+                       Description="Up/Down move through enabled vertical items while primary release reports source=Pointer.">
     <controls:CodexToggleGroup Orientation="Vertical"
                                Variant="Outline"
                                SelectedValue="list">

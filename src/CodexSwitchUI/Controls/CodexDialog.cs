@@ -8,15 +8,27 @@ using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
-public sealed class CodexDialogOpenChangedEventArgs(bool isOpen) : EventArgs
+public enum CodexDialogOpenChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public sealed class CodexDialogOpenChangedEventArgs(
+    bool isOpen,
+    CodexDialogOpenChangeSource source = CodexDialogOpenChangeSource.Programmatic) : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexDialogOpenChangeSource Source { get; } = source;
 }
 
 public class CodexDialog : CodexFrame
 {
     private Control? _triggerPresenter;
     private Control? _overlayPresenter;
+    private CodexDialogOpenChangeSource? _pendingOpenChangeSource;
 
     public static readonly StyledProperty<object?> TriggerProperty =
         AvaloniaProperty.Register<CodexDialog, object?>(nameof(Trigger));
@@ -217,15 +229,25 @@ public class CodexDialog : CodexFrame
 
     public void Open()
     {
+        Open(CodexDialogOpenChangeSource.Programmatic);
+    }
+
+    internal void Open(CodexDialogOpenChangeSource source)
+    {
         if (!IsEnabled)
         {
             return;
         }
 
-        IsOpen = true;
+        RunWithOpenChangeSource(source, () => IsOpen = true);
     }
 
     public bool Toggle()
+    {
+        return Toggle(CodexDialogOpenChangeSource.Programmatic);
+    }
+
+    internal bool Toggle(CodexDialogOpenChangeSource source)
     {
         if (!IsEnabled)
         {
@@ -234,21 +256,26 @@ public class CodexDialog : CodexFrame
 
         if (IsOpen)
         {
-            return Dismiss();
+            return Dismiss(source);
         }
 
-        Open();
+        Open(source);
         return true;
     }
 
     public bool Dismiss()
+    {
+        return Dismiss(CodexDialogOpenChangeSource.Programmatic);
+    }
+
+    internal bool Dismiss(CodexDialogOpenChangeSource source)
     {
         if (!IsOpen)
         {
             return false;
         }
 
-        IsOpen = false;
+        RunWithOpenChangeSource(source, () => IsOpen = false);
 
         if (CloseCommand?.CanExecute(null) == true)
         {
@@ -266,17 +293,22 @@ public class CodexDialog : CodexFrame
 
     internal bool TryHandleDismissKey(Key key)
     {
-        return key == Key.Escape && CloseOnEscape && Dismiss();
+        return key == Key.Escape && CloseOnEscape && Dismiss(CodexDialogOpenChangeSource.Keyboard);
     }
 
     internal bool TryDismissFromOutsidePointer()
     {
-        return DismissOnOutsidePointer && Dismiss();
+        return DismissOnOutsidePointer && Dismiss(CodexDialogOpenChangeSource.Pointer);
     }
 
     internal bool TryHandleTriggerKey(Key key)
     {
-        return key is Key.Enter or Key.Space && Toggle();
+        return key is Key.Enter or Key.Space && Toggle(CodexDialogOpenChangeSource.Keyboard);
+    }
+
+    internal bool TryHandleTriggerPointerRelease(PointerUpdateKind updateKind)
+    {
+        return updateKind == PointerUpdateKind.LeftButtonReleased && Toggle(CodexDialogOpenChangeSource.Pointer);
     }
 
     internal bool TryToggleFromTrigger()
@@ -341,7 +373,8 @@ public class CodexDialog : CodexFrame
 
     private void OnTriggerPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        if (TryToggleFromTrigger())
+        var updateKind = e.GetCurrentPoint(_triggerPresenter ?? this).Properties.PointerUpdateKind;
+        if (TryHandleTriggerPointerRelease(updateKind))
         {
             e.Handled = true;
         }
@@ -379,7 +412,7 @@ public class CodexDialog : CodexFrame
 
         if (args.OldValue is bool oldValue && oldValue != IsOpen)
         {
-            OpenChanged?.Invoke(this, new CodexDialogOpenChangedEventArgs(IsOpen));
+            OpenChanged?.Invoke(this, new CodexDialogOpenChangedEventArgs(IsOpen, CurrentOpenChangeSource));
         }
 
         if (args.OldValue is true && args.NewValue is false)
@@ -422,5 +455,22 @@ public class CodexDialog : CodexFrame
     private static bool HasValue(object? value)
     {
         return value is string text ? !string.IsNullOrWhiteSpace(text) : value is not null;
+    }
+
+    private CodexDialogOpenChangeSource CurrentOpenChangeSource =>
+        _pendingOpenChangeSource ?? CodexDialogOpenChangeSource.Programmatic;
+
+    private void RunWithOpenChangeSource(CodexDialogOpenChangeSource source, Action action)
+    {
+        var previousSource = _pendingOpenChangeSource;
+        _pendingOpenChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingOpenChangeSource = previousSource;
+        }
     }
 }

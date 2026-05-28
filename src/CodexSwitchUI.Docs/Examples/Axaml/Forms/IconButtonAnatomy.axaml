@@ -1,0 +1,65 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Icon-sized chrome"
+                       Description="IconButton inherits the CodexButton template and fixes the control to icon dimensions.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexIconButton Content="+"
+                                Variant="Default" />
+      <controls:CodexIconButton Content="i"
+                                Variant="Secondary" />
+      <controls:CodexIconButton Content="..."
+                                Variant="Ghost" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Round geometry"
+                       Description="Round only changes radius; hover, pressed, loading, and focus-visible still come from CodexButton.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexIconButton Content="+"
+                                IsRound="True"
+                                Variant="Default" />
+      <controls:CodexIconButton Content="?"
+                                IsRound="True"
+                                Variant="Secondary" />
+      <controls:CodexIconButton Content="x"
+                                IsRound="True"
+                                Variant="Destructive" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Loading slot"
+                       Description="Loading content replaces the glyph without changing the toolbar hit target.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexIconButton Content=">"
+                                IsLoading="True" />
+      <controls:CodexIconButton Content="*"
+                                IsLoading="True"
+                                LoadingContent="..."
+                                Variant="Secondary" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Semantic toolbar"
+                       Description="Icon-only actions preserve square rhythm across destructive, disabled, and outline variants.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexIconButton Content="x"
+                                Variant="Destructive" />
+      <controls:CodexIconButton Content="o"
+                                Variant="Outline" />
+      <controls:CodexIconButton Content="i"
+                                IsEnabled="False" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

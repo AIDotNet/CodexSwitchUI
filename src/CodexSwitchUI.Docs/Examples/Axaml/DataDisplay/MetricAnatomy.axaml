@@ -1,0 +1,39 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <controls:CodexStatCard Label="StatCard"
+                          Detail="Label, value, detail, and icon slots">
+    <controls:CodexStatCard.Value>
+      <TextBlock Text="42.7K"
+                 FontWeight="SemiBold" />
+    </controls:CodexStatCard.Value>
+    <controls:CodexStatCard.Icon>
+      <controls:CodexBadge Content="Icon"
+                           Variant="Secondary" />
+    </controls:CodexStatCard.Icon>
+  </controls:CodexStatCard>
+
+  <controls:CodexCard Grid.Column="1"
+                      Title="Metric primitive"
+                      Description="Compact Metric keeps the same label/value/detail contract for dense surfaces.">
+    <StackPanel Spacing="10">
+      <controls:CodexMetric Label="Fallbacks"
+                            Detail="Last hour">
+        <controls:CodexMetric.Value>
+          <TextBlock Text="7"
+                     FontWeight="SemiBold" />
+        </controls:CodexMetric.Value>
+      </controls:CodexMetric>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexBadge Content="PART_Label"
+                             Variant="Outline" />
+        <controls:CodexBadge Content="PART_Value"
+                             Variant="Outline" />
+        <controls:CodexBadge Content="PART_Detail"
+                             Variant="Outline" />
+      </StackPanel>
+    </StackPanel>
+  </controls:CodexCard>
+</Grid>

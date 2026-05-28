@@ -402,6 +402,8 @@ public class CodexNavigationMenu : ItemsControl
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexNavigationMenuItem : HeaderedContentControl
 {
+    private ICommand? _subscribedCommand;
+
     public static readonly StyledProperty<string?> ValueProperty =
         AvaloniaProperty.Register<CodexNavigationMenuItem, string?>(nameof(Value));
 
@@ -431,11 +433,12 @@ public class CodexNavigationMenuItem : HeaderedContentControl
 
     static CodexNavigationMenuItem()
     {
-        CommandProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
+        CommandProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, args) => item.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
         CommandParameterProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
         IconProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
         IsOpenProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
         ContentProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexNavigationMenuItem>((item, _) => item.SyncClasses());
     }
 
     public CodexNavigationMenuItem()
@@ -480,6 +483,8 @@ public class CodexNavigationMenuItem : HeaderedContentControl
 
     public bool HasContent => GetValue(HasContentProperty);
 
+    public bool CanActivateLink => IsEnabled && !HasContent && (Command?.CanExecute(CommandParameter) ?? true);
+
     public double ViewportWidth
     {
         get => GetValue(ViewportWidthProperty);
@@ -499,7 +504,7 @@ public class CodexNavigationMenuItem : HeaderedContentControl
 
     public bool TryActivateLink()
     {
-        if (!IsEnabled || HasContent || !(Command?.CanExecute(CommandParameter) ?? true))
+        if (!CanActivateLink)
         {
             return false;
         }
@@ -520,18 +525,21 @@ public class CodexNavigationMenuItem : HeaderedContentControl
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
         base.OnPointerPressed(e);
 
-        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        if (updateKind == PointerUpdateKind.LeftButtonPressed)
         {
             Focus(NavigationMethod.Pointer, KeyModifiers.None);
-            if (!TryActivateLink())
-            {
-                Activate();
-            }
-            else
-            {
-                FindOwner()?.CloseViewport();
-            }
+            e.Handled = true;
+        }
+    }
 
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        base.OnPointerReleased(e);
+
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        if (TryHandlePointerRelease(updateKind))
+        {
             e.Handled = true;
         }
     }
@@ -564,13 +572,43 @@ public class CodexNavigationMenuItem : HeaderedContentControl
 
     internal bool TryHandleActivationKey(Key key, CodexNavigationMenu? owner = null)
     {
-        if (key is not (Key.Enter or Key.Space))
+        if (key is not (Key.Enter or Key.Space) || !IsEnabled)
         {
             return false;
         }
 
-        if (TryActivateLink())
+        if (!HasContent)
         {
+            if (!TryActivateLink())
+            {
+                return false;
+            }
+
+            owner?.CloseViewport();
+        }
+        else
+        {
+            Activate(owner);
+        }
+
+        return true;
+    }
+
+    internal bool TryHandlePointerRelease(PointerUpdateKind updateKind, CodexNavigationMenu? owner = null)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased || !IsEnabled)
+        {
+            return false;
+        }
+
+        owner ??= FindOwner();
+        if (!HasContent)
+        {
+            if (!TryActivateLink())
+            {
+                return false;
+            }
+
             owner?.CloseViewport();
         }
         else
@@ -602,6 +640,17 @@ public class CodexNavigationMenuItem : HeaderedContentControl
             ?? this.GetVisualAncestors().OfType<CodexNavigationMenu>().FirstOrDefault();
     }
 
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
     private void SyncClasses()
     {
         var hasContent = HasValue(Content);
@@ -612,7 +661,35 @@ public class CodexNavigationMenuItem : HeaderedContentControl
         Classes.Set("has-icon", HasIcon);
         Classes.Set("has-content", hasContent);
         Classes.Set("link", !hasContent);
-        Classes.Set("can-activate", !hasContent && (Command?.CanExecute(CommandParameter) ?? true));
+        Classes.Set("can-activate", CanActivateLink);
+        Classes.Set("command-blocked", !hasContent && !CanActivateLink);
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncClasses();
     }
 
     private static bool HasValue(object? value)
@@ -679,6 +756,8 @@ public class CodexNavigationMenuContent : ItemsControl
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexNavigationMenuLink : ContentControl
 {
+    private ICommand? _subscribedCommand;
+
     public static readonly StyledProperty<string?> DescriptionProperty =
         AvaloniaProperty.Register<CodexNavigationMenuLink, string?>(nameof(Description));
 
@@ -704,9 +783,10 @@ public class CodexNavigationMenuLink : ContentControl
     {
         DescriptionProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
         IconProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
-        CommandProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
+        CommandProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, args) => link.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
         CommandParameterProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
         IsActiveProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexNavigationMenuLink>((link, _) => link.SyncClasses());
     }
 
     public CodexNavigationMenuLink()
@@ -751,6 +831,8 @@ public class CodexNavigationMenuLink : ContentControl
 
     public bool HasIcon => GetValue(HasIconProperty);
 
+    public bool CanActivate => IsEnabled && (Command?.CanExecute(CommandParameter) ?? true);
+
     protected override void OnGotFocus(FocusChangedEventArgs e)
     {
         base.OnGotFocus(e);
@@ -773,8 +855,8 @@ public class CodexNavigationMenuLink : ContentControl
     {
         base.OnPointerReleased(e);
 
-        if (e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonReleased
-            && TryActivate())
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        if (TryHandlePointerActivation(updateKind))
         {
             e.Handled = true;
         }
@@ -791,9 +873,19 @@ public class CodexNavigationMenuLink : ContentControl
         base.OnKeyDown(e);
     }
 
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        return TryActivate();
+    }
+
     public bool TryActivate()
     {
-        if (!IsEnabled || !(Command?.CanExecute(CommandParameter) ?? true))
+        if (!CanActivate)
         {
             return false;
         }
@@ -803,6 +895,17 @@ public class CodexNavigationMenuLink : ContentControl
         return true;
     }
 
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
     private void SyncClasses()
     {
         SetValue(HasDescriptionProperty, HasValue(Description));
@@ -810,7 +913,35 @@ public class CodexNavigationMenuLink : ContentControl
         Classes.Set("active", IsActive);
         Classes.Set("has-description", HasDescription);
         Classes.Set("has-icon", HasIcon);
-        Classes.Set("can-activate", Command?.CanExecute(CommandParameter) ?? true);
+        Classes.Set("can-activate", CanActivate);
+        Classes.Set("command-blocked", !CanActivate);
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncClasses();
     }
 
     private static bool HasValue(object? value)

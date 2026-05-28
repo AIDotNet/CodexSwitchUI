@@ -4,6 +4,7 @@ using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Layout;
+using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
 using System.Globalization;
 
@@ -15,13 +16,21 @@ public enum CodexTabsActivationMode
     Manual
 }
 
+public enum CodexTabsValueChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
 public sealed class CodexTabsValueChangedEventArgs(
     object? oldItem,
     object? newItem,
     int oldIndex,
     int newIndex,
     string? oldValue,
-    string? newValue)
+    string? newValue,
+    CodexTabsValueChangeSource source)
     : EventArgs
 {
     public object? OldItem { get; } = oldItem;
@@ -35,6 +44,8 @@ public sealed class CodexTabsValueChangedEventArgs(
     public string? OldValue { get; } = oldValue;
 
     public string? NewValue { get; } = newValue;
+
+    public CodexTabsValueChangeSource Source { get; } = source;
 }
 
 public class CodexTabs : TabControl
@@ -47,6 +58,7 @@ public class CodexTabs : TabControl
     private string? _lastSelectedValue;
     private bool _hasExplicitSelectedValue;
     private bool _isSyncingSelectedValue;
+    private CodexTabsValueChangeSource? _pendingValueChangeSource;
 
     public static readonly StyledProperty<CodexControlSize> SizeProperty =
         AvaloniaProperty.Register<CodexTabs, CodexControlSize>(nameof(Size), CodexControlSize.Medium);
@@ -236,7 +248,29 @@ public class CodexTabs : TabControl
             return true;
         }
 
-        SelectedIndex = nextIndex;
+        SelectIndex(nextIndex, CodexTabsValueChangeSource.Keyboard);
+        return true;
+    }
+
+    internal bool SelectItem(CodexTabItem item, CodexTabsValueChangeSource source = CodexTabsValueChangeSource.Programmatic)
+    {
+        if (!item.IsEnabled)
+        {
+            return false;
+        }
+
+        var index = IndexOfItem(item);
+        return index >= 0 && SelectIndex(index, source);
+    }
+
+    internal bool SelectIndex(int index, CodexTabsValueChangeSource source = CodexTabsValueChangeSource.Programmatic)
+    {
+        if (index < 0 || index >= ItemsView.Count || !IsSelectable(index))
+        {
+            return false;
+        }
+
+        RunWithValueChangeSource(source, () => SelectedIndex = index);
         return true;
     }
 
@@ -349,7 +383,8 @@ public class CodexTabs : TabControl
             return;
         }
 
-        ValueChanged?.Invoke(this, new CodexTabsValueChangedEventArgs(oldItem, newItem, oldIndex, newIndex, oldValue, newValue));
+        var source = _pendingValueChangeSource ?? CodexTabsValueChangeSource.Programmatic;
+        ValueChanged?.Invoke(this, new CodexTabsValueChangedEventArgs(oldItem, newItem, oldIndex, newIndex, oldValue, newValue, source));
     }
 
     private void ApplySelectedValue()
@@ -362,7 +397,7 @@ public class CodexTabs : TabControl
         var nextIndex = IndexOfValue(SelectedValue);
         if (nextIndex >= 0 && nextIndex != SelectedIndex)
         {
-            SelectedIndex = nextIndex;
+            SelectIndex(nextIndex, CodexTabsValueChangeSource.Programmatic);
         }
     }
 
@@ -425,6 +460,33 @@ public class CodexTabs : TabControl
         return -1;
     }
 
+    private int IndexOfItem(CodexTabItem item)
+    {
+        for (var index = 0; index < ItemsView.Count; index++)
+        {
+            if (ReferenceEquals(ItemsView[index], item) || ReferenceEquals(ContainerFromIndex(index), item))
+            {
+                return index;
+            }
+        }
+
+        return -1;
+    }
+
+    private void RunWithValueChangeSource(CodexTabsValueChangeSource source, Action action)
+    {
+        var previousSource = _pendingValueChangeSource;
+        _pendingValueChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingValueChangeSource = previousSource;
+        }
+    }
+
     private object? GetItemAt(int index)
     {
         return index >= 0 && index < ItemsView.Count ? ItemsView[index] : null;
@@ -451,6 +513,8 @@ public class CodexTabs : TabControl
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexTabItem : TabItem
 {
+    private bool _hasPrimaryPointerPress;
+
     public static readonly StyledProperty<string?> ValueProperty =
         AvaloniaProperty.Register<CodexTabItem, string?>(nameof(Value));
 
@@ -475,7 +539,30 @@ public class CodexTabItem : TabItem
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        _hasPrimaryPointerPress = e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed;
+        if (_hasPrimaryPointerPress)
+        {
+            Focus();
+            e.Handled = true;
+            return;
+        }
+
         base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        var canActivateFromPointer = _hasPrimaryPointerPress && IsPointerOver;
+        _hasPrimaryPointerPress = false;
+
+        if (canActivateFromPointer && TryHandlePointerActivation(updateKind))
+        {
+            e.Handled = true;
+            return;
+        }
+
+        base.OnPointerReleased(e);
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -498,6 +585,31 @@ public class CodexTabItem : TabItem
         if (!IsEnabled || key is not (Key.Enter or Key.Space))
         {
             return false;
+        }
+
+        return TrySelect(CodexTabsValueChangeSource.Keyboard);
+    }
+
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind)
+    {
+        return updateKind == PointerUpdateKind.LeftButtonReleased
+            && TrySelect(CodexTabsValueChangeSource.Pointer);
+    }
+
+    internal bool TrySelect(CodexTabsValueChangeSource source = CodexTabsValueChangeSource.Programmatic)
+    {
+        if (!IsEnabled)
+        {
+            return false;
+        }
+
+        var tabs = ItemsControl.ItemsControlFromItemContainer(this) as CodexTabs
+            ?? this.GetVisualAncestors().OfType<CodexTabs>().FirstOrDefault()
+            ?? this.GetLogicalAncestors().OfType<CodexTabs>().FirstOrDefault();
+
+        if (tabs is not null)
+        {
+            return tabs.SelectItem(this, source);
         }
 
         IsSelected = true;

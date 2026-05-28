@@ -1,0 +1,65 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Ring and dot"
+                       Description="The template owns PART_Ring, PART_Dot, and the focus ring instead of inheriting native chrome.">
+    <StackPanel Spacing="10">
+      <controls:CodexRadio GroupName="radio-anatomy-ring"
+                           Content="Checked route"
+                           IsChecked="True" />
+      <controls:CodexRadio GroupName="radio-anatomy-ring"
+                           Content="Unchecked route" />
+      <controls:CodexRadio GroupName="radio-anatomy-ring"
+                           Content="Warning intent"
+                           Intent="Warning" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Label target"
+                       Description="CodexLabel targets the radio without adding page-local click handlers.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="10">
+      <controls:CodexRadio x:Name="routePrimary"
+                           GroupName="radio-anatomy-label"
+                           IsChecked="True" />
+      <controls:CodexLabel Target="{Binding #routePrimary}"
+                           Content="Use cached provider health" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Size classes"
+                       Description="Small, default, large, and icon geometry keep stable hit targets.">
+    <StackPanel Spacing="10">
+      <controls:CodexRadio GroupName="radio-anatomy-size"
+                           Content="Small"
+                           Size="Small" />
+      <controls:CodexRadio GroupName="radio-anatomy-size"
+                           Content="Default"
+                           IsChecked="True" />
+      <controls:CodexRadio GroupName="radio-anatomy-size"
+                           Content="Large"
+                           Size="Large" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled surface"
+                       Description="Disabled opacity and cursor are token-owned while checked state remains visible.">
+    <StackPanel Spacing="10">
+      <controls:CodexRadio GroupName="radio-anatomy-disabled"
+                           Content="Locked checked"
+                           IsChecked="True"
+                           IsEnabled="False" />
+      <controls:CodexRadio GroupName="radio-anatomy-disabled"
+                           Content="Locked unchecked"
+                           IsEnabled="False" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

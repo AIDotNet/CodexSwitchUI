@@ -33,9 +33,9 @@
 
   <controls:CodexItem Grid.Row="1"
                       Title="Command blocked"
-                      Description="CanActivate follows command state, disabled state, and loading state."
+                      Description="CanExecute=false removes row activation without unmounting media or copy."
                       IsInteractive="True"
-                      IsLoading="True">
+                      Classes="command-blocked">
     <controls:CodexItem.Media>
       <controls:CodexItemMedia Content="B"
                                Variant="Warning" />

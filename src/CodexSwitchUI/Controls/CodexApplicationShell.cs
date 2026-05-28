@@ -2,6 +2,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
+using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
@@ -308,6 +310,8 @@ public class CodexSidebar : CodexFrame
 
 public class CodexSidebarTrigger : CodexButton
 {
+    private ICommand? _subscribedCommand;
+
     public static readonly StyledProperty<CodexSidebarProvider?> TargetProviderProperty =
         AvaloniaProperty.Register<CodexSidebarTrigger, CodexSidebarProvider?>(nameof(TargetProvider));
 
@@ -318,6 +322,10 @@ public class CodexSidebarTrigger : CodexButton
     {
         TargetProviderProperty.Changed.AddClassHandler<CodexSidebarTrigger>((trigger, _) => trigger.SyncResolvedState());
         TargetSidebarProperty.Changed.AddClassHandler<CodexSidebarTrigger>((trigger, _) => trigger.SyncResolvedState());
+        CommandProperty.Changed.AddClassHandler<CodexSidebarTrigger>((trigger, args) => trigger.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        CommandParameterProperty.Changed.AddClassHandler<CodexSidebarTrigger>((trigger, _) => trigger.SyncToggleClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexSidebarTrigger>((trigger, _) => trigger.SyncToggleClasses());
+        IsLoadingProperty.Changed.AddClassHandler<CodexSidebarTrigger>((trigger, _) => trigger.SyncToggleClasses());
     }
 
     public CodexSidebarTrigger()
@@ -339,6 +347,10 @@ public class CodexSidebarTrigger : CodexButton
         set => SetValue(TargetSidebarProperty, value);
     }
 
+    internal bool CanToggle => IsEnabled
+                               && !IsLoading
+                               && (Command?.CanExecute(CommandParameter) ?? true);
+
     protected override void OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs e)
     {
         base.OnAttachedToLogicalTree(e);
@@ -347,7 +359,7 @@ public class CodexSidebarTrigger : CodexButton
 
     protected override void OnClick()
     {
-        if (IsLoading)
+        if (!CanToggle)
         {
             return;
         }
@@ -366,9 +378,21 @@ public class CodexSidebarTrigger : CodexButton
         base.OnClick();
     }
 
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
     internal void SyncSidebarState(CodexSidebarState state)
     {
         CodexSidebarClassSync.Apply(Classes, state);
+        SyncToggleClasses();
     }
 
     private void SyncResolvedState()
@@ -399,10 +423,45 @@ public class CodexSidebarTrigger : CodexButton
             ?? this.GetLogicalAncestors().OfType<CodexSidebar>().FirstOrDefault()
             ?? ResolveProvider()?.GetLogicalDescendants().OfType<CodexSidebar>().FirstOrDefault();
     }
+
+    private void SyncToggleClasses()
+    {
+        Classes.Set("can-toggle", CanToggle);
+        Classes.Set("command-blocked", Command is not null && IsEnabled && !IsLoading && !CanToggle);
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncToggleClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncToggleClasses();
+    }
 }
 
 public class CodexSidebarRail : Button
 {
+    private ICommand? _subscribedCommand;
+
     public static readonly StyledProperty<CodexSidebarProvider?> TargetProviderProperty =
         AvaloniaProperty.Register<CodexSidebarRail, CodexSidebarProvider?>(nameof(TargetProvider));
 
@@ -413,6 +472,9 @@ public class CodexSidebarRail : Button
     {
         TargetProviderProperty.Changed.AddClassHandler<CodexSidebarRail>((rail, _) => rail.SyncResolvedState());
         TargetSidebarProperty.Changed.AddClassHandler<CodexSidebarRail>((rail, _) => rail.SyncResolvedState());
+        CommandProperty.Changed.AddClassHandler<CodexSidebarRail>((rail, args) => rail.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        CommandParameterProperty.Changed.AddClassHandler<CodexSidebarRail>((rail, _) => rail.SyncToggleClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexSidebarRail>((rail, _) => rail.SyncToggleClasses());
     }
 
     public CodexSidebarRail()
@@ -432,6 +494,8 @@ public class CodexSidebarRail : Button
         set => SetValue(TargetSidebarProperty, value);
     }
 
+    internal bool CanToggle => IsEnabled && (Command?.CanExecute(CommandParameter) ?? true);
+
     protected override void OnAttachedToLogicalTree(LogicalTreeAttachmentEventArgs e)
     {
         base.OnAttachedToLogicalTree(e);
@@ -440,6 +504,11 @@ public class CodexSidebarRail : Button
 
     protected override void OnClick()
     {
+        if (!CanToggle)
+        {
+            return;
+        }
+
         if (ResolveProvider() is { } provider)
         {
             provider.ToggleOpen();
@@ -454,9 +523,21 @@ public class CodexSidebarRail : Button
         base.OnClick();
     }
 
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
     internal void SyncSidebarState(CodexSidebarState state)
     {
         CodexSidebarClassSync.Apply(Classes, state);
+        SyncToggleClasses();
     }
 
     private void SyncResolvedState()
@@ -486,6 +567,39 @@ public class CodexSidebarRail : Button
         return TargetSidebar
             ?? this.GetLogicalAncestors().OfType<CodexSidebar>().FirstOrDefault()
             ?? ResolveProvider()?.GetLogicalDescendants().OfType<CodexSidebar>().FirstOrDefault();
+    }
+
+    private void SyncToggleClasses()
+    {
+        Classes.Set("can-toggle", CanToggle);
+        Classes.Set("command-blocked", Command is not null && IsEnabled && !CanToggle);
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncToggleClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncToggleClasses();
     }
 }
 

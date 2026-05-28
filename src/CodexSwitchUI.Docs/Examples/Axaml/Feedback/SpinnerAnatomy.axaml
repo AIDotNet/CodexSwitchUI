@@ -1,0 +1,42 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="14">
+  <controls:CodexField Label="Spokes and stroke"
+                       Description="The spinner renders its own spokes, size classes, and stroke thickness instead of inheriting native chrome.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="16">
+      <controls:CodexSpinner Size="Small"
+                             StrokeThickness="1.75"
+                             Label="Small sync" />
+      <controls:CodexSpinner StrokeThickness="2"
+                             Label="Default sync" />
+      <controls:CodexSpinner Size="Large"
+                             StrokeThickness="2.25"
+                             Label="Large sync" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Semantic composition"
+                       Description="Foreground and live label can change while the spinner remains non-focusable and hit-test transparent.">
+    <StackPanel Spacing="12">
+      <StackPanel Orientation="Horizontal"
+                  Spacing="10">
+        <controls:CodexSpinner Foreground="{DynamicResource CodexSwitch.SuccessBrush}"
+                               Label="Sync complete soon" />
+        <primitives:CodexText Role="Body"
+                              Text="Syncing provider metadata" />
+      </StackPanel>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="10">
+        <controls:CodexSpinner IsActive="False"
+                               Foreground="{DynamicResource CodexSwitch.MutedForegroundBrush}"
+                               Label="Paused sync" />
+        <primitives:CodexText Role="Muted"
+                              Text="Paused state keeps layout while the timer is stopped." />
+      </StackPanel>
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

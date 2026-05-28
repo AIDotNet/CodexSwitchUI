@@ -8,13 +8,22 @@ using Avalonia.VisualTree;
 
 namespace CodexSwitchUI.Controls;
 
+public enum CodexRadioGroupValueChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard,
+    KeyboardNavigation
+}
+
 public sealed class CodexRadioGroupValueChangedEventArgs(
     string? oldValue,
     string? newValue,
     CodexRadioGroupItem? oldItem = null,
     CodexRadioGroupItem? newItem = null,
     int oldIndex = -1,
-    int newIndex = -1)
+    int newIndex = -1,
+    CodexRadioGroupValueChangeSource source = CodexRadioGroupValueChangeSource.Programmatic)
     : EventArgs
 {
     public string? OldValue { get; } = oldValue;
@@ -28,6 +37,8 @@ public sealed class CodexRadioGroupValueChangedEventArgs(
     public int OldIndex { get; } = oldIndex;
 
     public int NewIndex { get; } = newIndex;
+
+    public CodexRadioGroupValueChangeSource Source { get; } = source;
 }
 
 public class CodexRadioGroup : ItemsControl
@@ -37,6 +48,7 @@ public class CodexRadioGroup : ItemsControl
     private readonly string _generatedGroupName = $"codex-radio-group-{Interlocked.Increment(ref _nextGeneratedGroupId)}";
     private bool _isUpdatingItems;
     private bool _isApplyingSelection;
+    private CodexRadioGroupValueChangeSource _valueChangeSource = CodexRadioGroupValueChangeSource.Programmatic;
 
     public static readonly StyledProperty<Orientation> OrientationProperty =
         AvaloniaProperty.Register<CodexRadioGroup, Orientation>(nameof(Orientation), Orientation.Vertical);
@@ -270,7 +282,7 @@ public class CodexRadioGroup : ItemsControl
         }
 
         var nextItem = items[nextIndex];
-        SelectItem(nextItem);
+        SelectItem(nextItem, CodexRadioGroupValueChangeSource.KeyboardNavigation);
         if (moveFocus)
         {
             nextItem.Focus();
@@ -279,15 +291,31 @@ public class CodexRadioGroup : ItemsControl
         return true;
     }
 
-    internal bool SelectItem(CodexRadioGroupItem item)
+    internal bool SelectItem(
+        CodexRadioGroupItem item,
+        CodexRadioGroupValueChangeSource source = CodexRadioGroupValueChangeSource.Programmatic)
     {
         if (IsLoading || !IsEnabled || !item.IsEnabled)
         {
             return false;
         }
 
-        item.IsChecked = true;
+        WithValueChangeSource(source, () => item.IsChecked = true);
         return true;
+    }
+
+    private void WithValueChangeSource(CodexRadioGroupValueChangeSource source, Action action)
+    {
+        var previousSource = _valueChangeSource;
+        _valueChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _valueChangeSource = previousSource;
+        }
     }
 
     private int NextIndex(int currentIndex, int step, int count)
@@ -367,7 +395,7 @@ public class CodexRadioGroup : ItemsControl
         SyncClasses();
         ValueChanged?.Invoke(
             this,
-            new CodexRadioGroupValueChangedEventArgs(oldValue, nextValue, oldItem, newItem, oldIndex, newIndex));
+            new CodexRadioGroupValueChangedEventArgs(oldValue, nextValue, oldItem, newItem, oldIndex, newIndex, _valueChangeSource));
     }
 
     private void SyncClasses()
@@ -477,6 +505,10 @@ public class CodexRadioGroup : ItemsControl
 
 public class CodexRadioGroupItem : CodexRadio
 {
+    private bool _hasPrimaryPointerPress;
+    private PointerUpdateKind? _pendingPointerReleaseKind;
+    private bool _selectionHandledByPointerRelease;
+
     public static readonly StyledProperty<string?> ValueProperty =
         AvaloniaProperty.Register<CodexRadioGroupItem, string?>(nameof(Value));
 
@@ -522,8 +554,30 @@ public class CodexRadioGroupItem : CodexRadio
         var group = FindOwningGroup();
         if (group is not null)
         {
-            _ = group.SelectItem(this);
+            _ = group.SelectItem(this, CodexRadioGroupValueChangeSource.Keyboard);
             return true;
+        }
+
+        if (!IsEnabled)
+        {
+            return false;
+        }
+
+        IsChecked = true;
+        return true;
+    }
+
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased || !IsEnabled)
+        {
+            return false;
+        }
+
+        var group = FindOwningGroup();
+        if (group is not null)
+        {
+            return group.SelectItem(this, CodexRadioGroupValueChangeSource.Pointer);
         }
 
         IsChecked = true;
@@ -540,6 +594,17 @@ public class CodexRadioGroupItem : CodexRadio
 
     protected override void OnClick()
     {
+        if (_pendingPointerReleaseKind is { } updateKind)
+        {
+            if (updateKind != PointerUpdateKind.LeftButtonReleased)
+            {
+                return;
+            }
+
+            _selectionHandledByPointerRelease = TryHandlePointerActivation(updateKind);
+            return;
+        }
+
         var group = FindOwningGroup();
         if (group is not null)
         {
@@ -548,6 +613,42 @@ public class CodexRadioGroupItem : CodexRadio
         }
 
         base.OnClick();
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        _hasPrimaryPointerPress = e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed;
+        base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        var canActivateFromPointer = _hasPrimaryPointerPress && IsPointerOver;
+        _hasPrimaryPointerPress = false;
+
+        if (canActivateFromPointer)
+        {
+            _pendingPointerReleaseKind = updateKind;
+            try
+            {
+                base.OnPointerReleased(e);
+            }
+            finally
+            {
+                _pendingPointerReleaseKind = null;
+            }
+
+            if (_selectionHandledByPointerRelease)
+            {
+                _selectionHandledByPointerRelease = false;
+                e.Handled = true;
+            }
+
+            return;
+        }
+
+        base.OnPointerReleased(e);
     }
 
     protected override void OnKeyDown(KeyEventArgs e)

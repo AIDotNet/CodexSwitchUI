@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 
 namespace CodexSwitchUI.Controls;
 
@@ -34,7 +35,6 @@ public class CodexCommandDialog : CodexDialog
     public CodexCommandDialog()
     {
         IsCloseVisible = false;
-        AddHandler(Button.ClickEvent, OnCommandItemClicked, RoutingStrategies.Bubble);
         SyncCommandClasses();
     }
 
@@ -78,21 +78,44 @@ public class CodexCommandDialog : CodexDialog
 
     internal bool TryCloseFromCommandItem(CodexCommandItem item)
     {
+        return TryCloseFromCommandItem(item, CodexCommandItemSelectSource.Programmatic);
+    }
+
+    internal bool TryCloseFromCommandItem(CodexCommandItem item, CodexCommandItemSelectSource source)
+    {
         if (!CloseOnItemSelected || IsLoading || !IsOpen || !item.IsEnabled)
         {
             return false;
         }
 
-        return Dismiss();
+        return Dismiss(ToOpenChangeSource(source));
     }
 
-    private void OnCommandItemClicked(object? sender, RoutedEventArgs e)
+    internal void NotifyItemSelected(CodexCommandItem item, CodexCommandItemSelectSource source)
     {
-        if (e.Source is CodexCommandItem item)
+        ItemSelected?.Invoke(this, new CodexCommandItemSelectedEventArgs(item, item.ResolveValue(), source));
+        TryCloseFromCommandItem(item, source);
+    }
+
+    internal static CodexCommandDialog? FindOwner(CodexCommandItem item)
+    {
+        for (var parent = item.GetLogicalParent(); parent is not null; parent = parent.GetLogicalParent())
         {
-            ItemSelected?.Invoke(this, new CodexCommandItemSelectedEventArgs(item, item.ResolveValue()));
-            TryCloseFromCommandItem(item);
+            if (parent is CodexCommandDialog dialog)
+            {
+                return dialog;
+            }
         }
+
+        for (var parent = item.GetVisualParent(); parent is not null; parent = parent.GetVisualParent())
+        {
+            if (parent is CodexCommandDialog dialog)
+            {
+                return dialog;
+            }
+        }
+
+        return null;
     }
 
     private void SyncCommandClasses()
@@ -100,5 +123,15 @@ public class CodexCommandDialog : CodexDialog
         Classes.Set("loading", IsLoading);
         Classes.Set("close-on-select", CloseOnItemSelected);
         Classes.Set("loop", LoopNavigation);
+    }
+
+    private static CodexDialogOpenChangeSource ToOpenChangeSource(CodexCommandItemSelectSource source)
+    {
+        return source switch
+        {
+            CodexCommandItemSelectSource.Pointer => CodexDialogOpenChangeSource.Pointer,
+            CodexCommandItemSelectSource.Keyboard => CodexDialogOpenChangeSource.Keyboard,
+            _ => CodexDialogOpenChangeSource.Programmatic
+        };
     }
 }

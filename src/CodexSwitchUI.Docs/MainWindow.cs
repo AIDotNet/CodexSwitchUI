@@ -65,7 +65,7 @@ public sealed class MainWindow : Window
             [
                 "PanelGroup, Panel, and Handle match the shadcn Resizable composition contract.",
                 "Horizontal and vertical resizing share one percentage layout model with min and max constraints.",
-                "Pointer drag, Arrow keys, PageUp/PageDown, Home, End, focus-visible, and with-handle states are component-owned."
+                "Primary pointer drag, Arrow keys, PageUp/PageDown, Home, End, focus-visible, and with-handle states are component-owned."
             ])
         ]),
         new("Forms",
@@ -109,7 +109,7 @@ public sealed class MainWindow : Window
             Page("forms.split-button", "Forms", "Split button", "Primary action with Web-style dropdown disclosure and focus return.", "Forms/SplitButton.axaml", BuildSplitButtonPreview,
             [
                 "Primary and menu actions keep separate disabled/loading state.",
-                "The menu trigger owns open, close, and restore-focus paths.",
+                "The menu trigger owns primary pointer release, Enter/Space/ArrowDown open, close, restore-focus, and source-aware OpenChanged paths.",
                 "Chevron and surface motion use the same dropdown timing contract."
             ]),
             Page("forms.textbox", "Forms", "TextBox", "Single-line input with Web focus-visible and read-only states.", "Forms/TextBox.axaml", BuildInputPreview,
@@ -127,33 +127,33 @@ public sealed class MainWindow : Window
             Page("forms.select", "Forms", "Select", "Popup selection with Codex-owned trigger, item, and focus states.", "Forms/Select.axaml", BuildSelectPreview,
             [
                 "The trigger, popup, item selection, and focus state are owned by CodexSwitchUI.",
-                "ValueChanged mirrors Web onValueChange with old/new item, index, and string value metadata.",
-                "OpenChanged mirrors Web onOpenChange while keyboard and pointer paths share the same selected/open visual contract."
+                "ValueChanged mirrors Web onValueChange with old/new item, index, string value, and pointer/keyboard/programmatic source metadata.",
+                "OpenChanged mirrors Web onOpenChange with pointer, keyboard, and programmatic source metadata."
             ]),
             Page("forms.combobox", "Forms", "Combobox", "Filterable select input with command-style popup items and keyboard selection.", "Forms/Combobox.axaml", BuildComboboxPreview,
             [
                 "Combobox is a filterable Select for predefined values: input text filters the owned popup list but does not commit free-form text.",
                 "AutoHighlight, highlighted item, selected item, clear button, loading, empty, and open/closed classes are component-owned.",
                 "SelectionChanged reports old/new item, index, display value, and selection source for keyboard, item, clear, and host paths.",
-                "Arrow keys, Enter, Escape, pointer hover, clear, and trigger clicks share the same selection and dismissal contract."
+                "OpenChanged reports pointer, keyboard, input, focus, clear, item, and programmatic source metadata."
             ]),
             Page("forms.native-select", "Forms", "Native Select", "Styled native selection with option, optgroup, disabled, invalid, and mobile-friendly behavior.", "Forms/NativeSelect.axaml", BuildNativeSelectPreview,
             [
                 "Native Select keeps the browser-style option model separate from the fully custom CodexSelect popup.",
                 "Option values, disabled options, optgroup headers, invalid state, and selection classes stay component-owned.",
-                "ValueChanged emits old/new option value metadata and OpenChanged mirrors the native popup open path while matching shadcn surface tokens."
+                "ValueChanged emits old/new option value and source metadata while OpenChanged mirrors pointer, keyboard, and programmatic native popup paths."
             ]),
             Page("forms.calendar", "Forms", "Calendar", "Single and range date selection with outside days, week numbers, disabled bounds, and keyboard navigation.", "Forms/Calendar.axaml", BuildCalendarPreview,
             [
                 "Calendar mirrors shadcn's DayPicker-backed surface with single selection, range selection, outside-day visibility, and week-number variants.",
                 "Previous/next month buttons, day cells, active date, selected date, range edges, today, unavailable, and hidden outside-day states stay component-owned.",
-                "Arrow, Home, End, PageUp, PageDown, Enter, Space, pointer selection, disabled guards, and focus-visible rings follow the Web event contract."
+                "Arrow, Home, End, PageUp, PageDown, Enter, Space, pointer selection, disabled guards, focus-visible rings, and source-aware events follow the Web contract."
             ]),
             Page("forms.date-picker", "Forms", "Date Picker", "Popover-backed date selection with Calendar composition, clear action, and open/close motion.", "Forms/DatePicker.axaml", BuildDatePickerPreview,
             [
                 "Date Picker follows shadcn's Popover plus Calendar composition while exposing a single Codex control for Avalonia apps.",
                 "Selected date, range start/end, placeholder, clear action, loading overlay, and open/closed classes stay component-owned.",
-                "Trigger click, ArrowDown, Enter, Space, Escape, Backspace/Delete, pointer day selection, disabled bounds, and loading guards share the Web event contract."
+                "Primary trigger release, ArrowDown, Enter, Space, Escape, Backspace/Delete, pointer day selection, disabled bounds, loading guards, and source-aware events share the Web contract."
             ]),
             Page("forms.field", "Forms", "Field", "Label, helper, message, required, and layout primitive.", "Forms/Field.axaml", BuildFieldPreview,
             [
@@ -164,7 +164,7 @@ public sealed class MainWindow : Window
             Page("forms.checkbox", "Forms", "Checkbox", "Checked, indeterminate, intent, and keyboard states.", "Forms/Checkbox.axaml", BuildCheckboxPreview,
             [
                 "Checked and indeterminate states use owned glyphs and tokenized scale motion.",
-                "CheckedStateChanged exposes the Web-style onCheckedChange path with old and new bool? values.",
+                "CheckedStateChanged exposes the Web-style onCheckedChange path with old/new bool? values and source metadata.",
                 "Intent and size classes can be combined without changing the activation path."
             ]),
             Page("forms.radio", "Forms", "Radio", "Grouped single selection with dot motion and focus-visible state.", "Forms/Radio.axaml", BuildRadioPreview,
@@ -175,26 +175,27 @@ public sealed class MainWindow : Window
             ]),
             Page("forms.radio-group", "Forms", "Radio Group", "Root-controlled single-choice selection with value, orientation, roving keys, and required states.", "Forms/RadioGroup.axaml", BuildRadioGroupPreview,
             [
-                "Radio Group mirrors shadcn and Radix with a root-owned value and value-change event carrying old/new item, index, and value metadata.",
-                "Arrow keys, Home, End, Space, Enter, disabled items, loading suppression, loop, and orientation are component-owned.",
+                "Radio Group mirrors shadcn and Radix with a root-owned value and value-change event carrying old/new item, index, value, and source metadata.",
+                "Primary pointer release, Arrow keys, Home, End, Space, Enter, disabled items, loading suppression, loop, and orientation are component-owned.",
                 "Group intent, size, required, and direction-friendly layout flow into every radio item."
             ]),
             Page("forms.switch", "Forms", "Switch", "Toggle track, thumb motion, checked, pressed, and disabled states.", "Forms/Switch.axaml", BuildSwitchPreview,
             [
                 "Thumb translation is driven by the checked pseudo-class.",
-                "CheckedChanged mirrors Web onCheckedChange with normalized old/new boolean values.",
+                "CheckedChanged mirrors Web onCheckedChange with normalized old/new boolean values and source metadata.",
                 "Intent and size classes match the Web switch variants."
             ]),
             Page("forms.toggle", "Forms", "Toggle", "Standalone two-state button with Web pressed, size, disabled, and keyboard behavior.", "Forms/Toggle.axaml", BuildTogglePreview,
             [
                 "Pressed state maps to the native checked path and Web data-state on/off classes.",
-                "PressedChanged mirrors Web onPressedChange with normalized old/new boolean values.",
+                "PressedChanged mirrors Web onPressedChange with normalized old/new boolean values and source metadata.",
                 "Standalone Toggle owns outline, size, disabled, keyboard, and pointer pressed feedback.",
                 "Use Toggle Group when a set of toggles share value, roving focus, spacing, or orientation."
             ]),
             Page("forms.toggle-group", "Forms", "Toggle Group", "Grouped two-state buttons with single/multiple value, spacing, orientation, and roving focus.", "Forms/ToggleGroup.axaml", BuildToggleGroupPreview,
             [
                 "Toggle Group mirrors shadcn and Radix with single and multiple value modes.",
+                "ValueChanged reports old/new selected values and pointer, keyboard, or programmatic source metadata.",
                 "Spacing follows the Web spacing prop, including connected spacing=0 item corners.",
                 "Arrow, Home, End, Enter, Space, disabled items, loop, and orientation are component-owned."
             ]),
@@ -202,7 +203,7 @@ public sealed class MainWindow : Window
             [
                 "ValueChanging mirrors Web onValueChange with old/new values and an array-shaped value payload.",
                 "ValueCommitted mirrors Web onValueCommit and records pointer, keyboard, focus, or programmatic commit source.",
-                "Thumb hover, pressed, dragging, focus-visible, disabled, intent, and size states stay component-owned."
+                "Primary pointer drag, thumb hover, pressed, dragging, focus-visible, disabled, intent, and size states stay component-owned."
             ])
         ]),
         new("Feedback",
@@ -217,7 +218,7 @@ public sealed class MainWindow : Window
             [
                 "Variant and status variant are independent so status dots can change tone.",
                 "Sizes map to the common Codex control size scale.",
-                "Badge text remains compact for repeated table and nav surfaces."
+                "Interactive badges activate on primary pointer release, Enter, or Space and emit Activated with source metadata."
             ]),
             Page("feedback.avatar", "Feedback", "Avatar", "Fallback initials, status dot, size, and variant states.", "Feedback/Avatar.axaml", BuildAvatarPreview,
             [
@@ -225,6 +226,13 @@ public sealed class MainWindow : Window
                 "Fallback visibility supports Radix-style delayed rendering to avoid loading flashes.",
                 "Status dot tone is independent from avatar background tone.",
                 "Sizes align with button and badge control dimensions."
+            ]),
+            Page("feedback.avatar-group", "Feedback", "Avatar group", "Overlapping identity stacks with overflow counts, density, and layout state.", "Feedback/AvatarGroup.axaml", BuildAvatarGroupPreview,
+            [
+                "AvatarGroup owns stacked and inline layout so page code does not need manual margins.",
+                "Children inherit the root size and receive first, middle, last, and group-item classes.",
+                "AvatarGroupCount renders the overflow member slot with the same border, radius, and motion tokens.",
+                "Overlap, visibility, disabled, and compact sizing stay component-owned like the Web AvatarGroup pattern."
             ]),
             Page("feedback.empty-state", "Feedback", "Empty state", "No-result surfaces with action suppression and semantic variants.", "Feedback/EmptyState.axaml", BuildEmptyStatePreview,
             [
@@ -267,31 +275,35 @@ public sealed class MainWindow : Window
         [
             Page("navigation.tabs", "Navigation", "Tabs", "Roving keyboard selection, value changes, activation modes, and line/default variants.", "Navigation/Tabs.axaml", BuildTabsPreview,
             [
-                "SelectedValue and ValueChanged mirror Web value and onValueChange with old/new item, index, and value metadata.",
+                "SelectedValue and ValueChanged mirror Web value and onValueChange with old/new item, index, value, and pointer/keyboard/programmatic source metadata.",
                 "Arrow keys, Home, End, disabled-skip behavior, and loop boundaries follow the active orientation.",
                 "ActivationMode switches between automatic tab activation and manual focus-only roving before Enter/Space."
             ]),
             Page("navigation.breadcrumb", "Navigation", "Breadcrumb", "Hierarchical navigation path with links, current page, separators, and collapsed items.", "Navigation/Breadcrumb.axaml", BuildBreadcrumbPreview,
             [
                 "Ancestor links stay clickable while the current page is represented by non-interactive page content.",
+                "Link activation honors Command.CanExecute before publishing LinkActivated or running the command.",
+                "Primary pointer release, keyboard activation, and programmatic activation surface source metadata.",
                 "Separator and ellipsis parts are independent slots so custom separators and collapsed trails compose like shadcn.",
                 "Current, disabled, and focus-visible states are component-owned rather than page-local text styles."
             ]),
             Page("navigation.side-nav", "Navigation", "Side navigation", "Root-owned side navigation rows with icon, detail, selected, and disabled states.", "Navigation/SideNav.axaml", BuildSideNavPreview,
             [
-                "SelectedValue and ValueChanged mirror Web navigation state with old/new item, index, and value metadata.",
+                "SelectedValue and ValueChanged mirror Web navigation state with old/new item, index, value, and source metadata.",
+                "Primary pointer release emits source=Pointer while Enter/Space activation emits source=Keyboard.",
                 "Icon and detail slots sync their own presence classes for dense navigation rows.",
                 "Selected, pointer-over, pressed, and disabled states use shared app-shell tokens."
             ]),
             Page("navigation.segmented-control", "Navigation", "Segmented control", "Segmented options with a moving Web-style selection indicator.", "Navigation/SegmentedControl.axaml", BuildSegmentedControlPreview,
             [
-                "Selected button state updates sibling buttons through the component group.",
+                "Selected button state updates sibling buttons through the component group with pointer, keyboard, or programmatic source metadata.",
+                "Primary pointer release emits source=Pointer while Enter/Space activation emits source=Keyboard.",
                 "The indicator measures the selected item and animates width, height, and offset.",
                 "Pressed and pointer-over transforms stay local to each segment."
             ]),
             Page("navigation.navigation-menu", "Navigation", "Navigation menu", "Viewport disclosure with trigger motion, arrow navigation, and content slide.", "Navigation/NavigationMenu.axaml", BuildNavigationMenuPreview,
             [
-                "Pointer and keyboard activation open the shared viewport.",
+                "Pointer enter, primary link release, content link release, and keyboard activation share the navigation contract.",
                 "Moving between items reverses the slide direction when needed.",
                 "Escape closes the viewport and clears the active item."
             ]),
@@ -304,7 +316,8 @@ public sealed class MainWindow : Window
             ]),
             Page("navigation.dropdown", "Navigation", "Dropdown button", "Trigger-owned popup state, close-on-select, and focus return.", "Navigation/DropdownButton.axaml", BuildDropdownPreview,
             [
-                "The trigger toggles open state only when enabled, loaded, and content exists.",
+                "The trigger toggles open state from primary pointer release and opens from Enter/Space/ArrowDown only when enabled, loaded, and content exists.",
+                "OpenChanged reports Pointer, Keyboard, Selection, or Programmatic source metadata.",
                 "Escape closes the popup and requests focus restoration to the trigger.",
                 "Button actions inside the surface close the popup when close-on-select is enabled."
             ]),
@@ -326,6 +339,7 @@ public sealed class MainWindow : Window
             [
                 "The command input owns search text so filtering, empty results, and active item state remain component-driven.",
                 "Arrow keys, Home, End, Enter, pointer hover, and loading suppression share the Web command event path.",
+                "ItemSelected carries source metadata for primary pointer release, keyboard activation, and programmatic TrySelect calls.",
                 "Shortcut and separator parts are first-class command subcomponents instead of page-local text or native separators."
             ]),
             Page("navigation.accordion", "Navigation", "Accordion", "Stacked disclosure items with single/multiple expansion and roving trigger keys.", "Navigation/Accordion.axaml", BuildAccordionPreview,
@@ -333,11 +347,12 @@ public sealed class MainWindow : Window
                 "Single mode keeps one item open unless collapsible mode allows closing all items.",
                 "ValueChanged mirrors Web onValueChange with old/new values plus changed item, index, and source metadata.",
                 "Multiple mode lets items toggle independently while preserving measured content animation.",
-                "Arrow, Home, End, Enter, and Space mirror the Web Accordion trigger contract."
+                "Primary pointer release, Arrow, Home, End, Enter, and Space mirror the Web Accordion trigger contract."
             ]),
             Page("navigation.collapsible", "Navigation", "Collapsible", "Disclosure trigger with content measurement and open/close animation.", "Navigation/Collapsible.axaml", BuildCollapsiblePreview,
             [
-                "Enter and Space toggle the same state path as pointer activation.",
+                "Primary pointer release, Enter, and Space toggle the same disclosure state path.",
+                "OpenChanged reports Pointer, Keyboard, or Programmatic source metadata.",
                 "Content height and opacity animate from measured content size.",
                 "Reduced motion resolves the animation duration to zero."
             ]),
@@ -359,12 +374,13 @@ public sealed class MainWindow : Window
             Page("overlay.dialog", "Overlay", "Dialog", "Dismissal, focus-return, and layer surface examples.", "Overlay/Dialog.axaml", BuildDialogPreview,
             [
                 "Dialog mirrors Radix Root, Trigger, Overlay, Content, Title, Description, and Close composition.",
-                "Trigger click, Enter, and Space open or close the mounted content and emit OpenChanged.",
+                "Trigger click, Enter, and Space open or close the mounted content and emit source-aware OpenChanged.",
                 "Escape, outside pointer, close controls, modal scrim, and focus restoration share the same close path."
             ]),
             Page("overlay.alert-dialog", "Overlay", "Alert dialog", "Interruptive confirmation surface with least-destructive focus and response actions.", "Overlay/AlertDialog.axaml", BuildAlertDialogPreview,
             [
                 "Cancel and action buttons own distinct command paths and both can close through the dialog contract.",
+                "Host CanExecute changes propagate to cancel and action buttons before response activation.",
                 "Outside pointer dismissal is disabled by default so important decisions require an explicit response.",
                 "Opening focuses the cancel action first, while Escape closes and restores focus to the trigger."
             ]),
@@ -378,32 +394,33 @@ public sealed class MainWindow : Window
             [
                 "Drawer mirrors shadcn/Vaul Root, Trigger, Content, Overlay, Header, Footer, and Close composition.",
                 "Drawer extends the dialog dismissal contract with direction-bottom, direction-top, direction-left, and direction-right motion.",
-                "The handle owns drag offset, drag-dismiss-ready, and close-on-drag state like Web drawer affordances.",
+                "Primary handle drag owns drag offset, drag-dismiss-ready, and close-on-drag state like Web drawer affordances.",
                 "Scrollable content, sticky footer actions, Escape, outside pointer, close button, and focus return share one mounted overlay path."
             ]),
             Page("overlay.command-dialog", "Overlay", "Command dialog", "Command palette overlay with close-on-select and focus restoration.", "Overlay/CommandDialog.axaml", BuildCommandDialogPreview,
             [
                 "CommandDialog mirrors shadcn CommandDialog with an Open Menu trigger and CommandInput plus CommandList composition.",
-                "Trigger click, Enter, and Space open or close the mounted command palette and emit OpenChanged.",
-                "Command item selection, loading suppression, Escape, outside pointer, and focus return share the dialog Dismiss path."
+                "Trigger click, Enter, and Space open or close the mounted command palette and emit source-aware OpenChanged.",
+                "Command item selection forwards pointer, keyboard, and programmatic source metadata before close-on-select dismissal.",
+                "Loading suppression, Escape, outside pointer, and focus return share the dialog Dismiss path."
             ]),
             Page("overlay.popover", "Overlay", "Popover", "Anchored surface examples for close behavior and focus return.", "Overlay/Popover.axaml", BuildPopoverPreview,
             [
                 "Popover mirrors Radix Root, Trigger, Content, Close, and optional Arrow composition.",
-                "Trigger click, Enter, and Space toggle the open state and emit OpenChanged.",
+                "Trigger click, Enter, and Space toggle the open state and emit source-aware OpenChanged.",
                 "Close buttons, Escape, outside pointer, and RestoreFocusOnDismiss share the same mounted close path."
             ]),
             Page("overlay.tooltip", "Overlay", "Tooltip", "Trigger-owned hint surface with provider delay, side, arrow, focus, hover, and open states.", "Overlay/Tooltip.axaml", BuildTooltipPreview,
             [
                 "Tooltip mirrors Radix composition with provider, trigger, and content roles.",
                 "Pointer hover follows provider delay while keyboard focus opens immediately like Web Tab navigation.",
-                "OpenChanged mirrors Web onOpenChange and Escape, Enter, and Space close the mounted surface.",
+                "OpenChanged mirrors Web onOpenChange with Pointer, Focus, Keyboard, or Programmatic source metadata.",
                 "Placement maps to side classes for direction-aware transforms and arrow placement."
             ]),
             Page("overlay.hover-card", "Overlay", "Hover card", "Delayed hover/focus preview surface with Radix-style trigger, content, side, and align composition.", "Overlay/HoverCard.axaml", BuildHoverCardPreview,
             [
                 "Open and close delays mirror the Web HoverCard contract.",
-                "Trigger and content stay mounted together while open changes emit the same root event path.",
+                "Trigger and content stay mounted together while open changes emit source-aware root events.",
                 "Escape dismissal, side classes, and align classes are component-owned."
             ])
         ]),
@@ -419,7 +436,7 @@ public sealed class MainWindow : Window
             [
                 "Item mirrors shadcn's row composition: media, content, actions, footer, group, and separator are first-class slots.",
                 "Interactive, selected, loading, disabled, focus-visible, and hover states are component-owned instead of page-local row styles.",
-                "Pointer, Enter, and Space activation share one command and Activated event path while nested actions keep their own click behavior."
+                "Pointer, Enter, Space, and programmatic activation share one command path while Activated reports source metadata."
             ]),
             Page("data.aspect-ratio", "Data Display", "Aspect Ratio", "Fixed-ratio media primitive with clipped content, fit modes, and ratio state.", "DataDisplay/AspectRatio.axaml", BuildAspectRatioPreview,
             [
@@ -465,7 +482,7 @@ public sealed class MainWindow : Window
             ]),
             Page("data.provider-card", "Data Display", "Provider card", "Provider list row with active, dragging, usage, status, and action slots.", "DataDisplay/ProviderCard.axaml", BuildProviderCardPreview,
             [
-                "Click selection marks one card active and clears sibling active state.",
+                "Selection marks one card active, clears sibling active state, and reports pointer, keyboard, or programmatic source metadata.",
                 "Leading, icon, meta, description, status, usage, and actions each sync slot presence.",
                 "Active, hover, pressed, disabled, and dragging states use provider-card tokens."
             ]),
@@ -491,7 +508,8 @@ public sealed class MainWindow : Window
             [
                 "Home and End move to the first and last page.",
                 "Left/PageUp and Right/PageDown request previous and next pages.",
-                "Loading and disabled states suppress page changes and action clicks."
+                "First/previous/next/last actions respond to primary pointer release plus Enter/Space key activation.",
+                "Loading and disabled states suppress page changes and action activation."
             ]),
             Page("data.scroll-area", "Data Display", "Scroll area", "Custom viewport with hover, scroll, inset, and boundary state.", "DataDisplay/ScrollArea.axaml", BuildScrollAreaPreview,
             [
@@ -621,257 +639,466 @@ public sealed class MainWindow : Window
 
         examples.AddRange(pageId switch
         {
+            "overview.getting-started" =>
+            [
+                Example("Docs anatomy", "Category registry, page model, examples, state matrix, event matrix, and inline source reveal.", "Overview/GettingStartedAnatomy.axaml", BuildOverviewAnatomyPreview),
+                Example("Docs workflow", "Search, menu navigation, theme switching, preview review, and local source expansion workflow.", "Overview/GettingStartedWorkflow.axaml", BuildOverviewWorkflowPreview),
+                Example("Source contract", "Standalone AXAML samples, copyable code block surface, and rendered lifecycle coverage.", "Overview/GettingStartedSource.axaml", BuildOverviewSourcePreview)
+            ],
             "layout.application-shell" =>
             [
+                Example("Shell anatomy", "Sidebar header, content, footer, grouped menu rows, section header, actions, and body slots.", "Layout/ApplicationShellAnatomy.axaml", BuildApplicationShellAnatomyPreview),
                 Example("Shell states", "Active, badge, hover action, footer, and collapsed sidebar composition.", "Layout/ApplicationShellStates.axaml", BuildApplicationShellStatesPreview),
-                Example("Shell interaction", "Sidebar navigation selection, sibling clearing, badge updates, footer action, and stable section slot examples.", "Layout/ApplicationShellInteraction.axaml", BuildApplicationShellInteractionPreview)
+                Example(
+                    "Shell interaction",
+                    "Sidebar navigation selection, sibling clearing, badge updates, footer action, and stable section slot examples.",
+                    "Layout/ApplicationShellInteraction.axaml",
+                    BuildApplicationShellInteractionPreview,
+                    Code("Layout/ApplicationShellInteraction.cs", "CSharp/Layout/ApplicationShellInteraction.cs"))
             ],
             "layout.sidebar" =>
             [
                 Example("Sidebar states", "Expanded, icon-collapsed, offcanvas, right-side, floating, and inset sidebar states.", "Layout/SidebarStates.axaml", BuildSidebarStatesPreview),
                 Example("Sidebar anatomy", "Provider, Sidebar, Trigger, Rail, Inset, header, content, footer, and menu slots.", "Layout/SidebarAnatomy.axaml", BuildSidebarAnatomyPreview),
-                Example("Sidebar interaction", "Trigger click, rail click, provider shortcut, controlled open state, and inset updates.", "Layout/SidebarInteraction.axaml", BuildSidebarInteractionPreview)
+                Example(
+                    "Sidebar interaction",
+                    "Trigger click, rail click, provider shortcut, controlled open state, and inset updates.",
+                    "Layout/SidebarInteraction.axaml",
+                    BuildSidebarInteractionPreview,
+                    Code("Layout/SidebarInteraction.cs", "CSharp/Layout/SidebarInteraction.cs"))
             ],
             "layout.sidebar-primitives" =>
             [
+                Example("Sidebar anatomy", "Header, content, group label, group action, menu item, badge, row action, submenu, and footer slots.", "Layout/SidebarPrimitivesAnatomy.axaml", BuildSidebarPrimitivesAnatomyPreview),
                 Example("Sidebar states", "Active rows, badges, hover actions, nested items, sizes, and disabled sidebar states.", "Layout/SidebarPrimitivesStates.axaml", BuildSidebarPrimitivesStatesPreview),
-                Example("Sidebar interaction", "Menu active state, badge refresh, hover action, nested row selection, and disabled guard examples.", "Layout/SidebarPrimitivesInteraction.axaml", BuildSidebarPrimitivesInteractionPreview)
+                Example(
+                    "Sidebar interaction",
+                    "Menu active state, badge refresh, hover action, nested row selection, and disabled guard examples.",
+                    "Layout/SidebarPrimitivesInteraction.axaml",
+                    BuildSidebarPrimitivesInteractionPreview,
+                    Code("Layout/SidebarPrimitivesInteraction.cs", "CSharp/Layout/SidebarPrimitivesInteraction.cs"))
             ],
             "layout.section" =>
             [
+                Example("Section anatomy", "Title, description, action slot, content slot, empty header, and dense body composition.", "Layout/SectionAnatomy.axaml", BuildSectionComponentAnatomyPreview),
                 Example("Section states", "Heading-only, action slot, empty content, and dense content section states.", "Layout/SectionStates.axaml", BuildSectionComponentStatesPreview),
-                Example("Section interaction", "Action refresh, title and description updates, action slot toggles, empty body, and dense content examples.", "Layout/SectionInteraction.axaml", BuildSectionComponentInteractionPreview)
+                Example(
+                    "Section interaction",
+                    "Action refresh, title and description updates, action slot toggles, empty body, and dense content examples.",
+                    "Layout/SectionInteraction.axaml",
+                    BuildSectionComponentInteractionPreview,
+                    Code("Layout/SectionInteraction.cs", "CSharp/Layout/SectionInteraction.cs"))
             ],
             "layout.resizable" =>
             [
                 Example("Resizable states", "Horizontal, vertical, hidden-grip, compact, large, and constrained panel states.", "Layout/ResizableStates.axaml", BuildResizableStatesPreview),
+                Example("Resizable anatomy", "PanelGroup, Panel, Handle, grip, track, vertical orientation, and constraint anatomy.", "Layout/ResizableAnatomy.axaml", BuildResizableAnatomyPreview),
                 Example("Resizable composition", "Three-panel editor composition with multiple handles and slotted content.", "Layout/ResizableComposition.axaml", BuildResizableCompositionPreview),
-                Example("Resizable interaction", "Pointer drag, keyboard resize, min/max clamp, and layout event examples.", "Layout/ResizableInteraction.axaml", BuildResizableInteractionPreview)
+                Example(
+                    "Resizable interaction",
+                    "Primary pointer drag, keyboard resize, min/max clamp, and layout event examples.",
+                    "Layout/ResizableInteraction.axaml",
+                    BuildResizableInteractionPreview,
+                    Code("Layout/ResizableInteraction.cs", "CSharp/Layout/ResizableInteraction.cs"))
             ],
             "forms.button" =>
             [
                 Example("State matrix", "Loading, disabled, destructive, outline, ghost, and link button states.", "Forms/ButtonStates.axaml", BuildButtonStatesPreview),
                 Example("Button anatomy", "Leading icon, trailing shortcut, loading label, and toolbar-density button composition.", "Forms/ButtonAnatomy.axaml", BuildButtonAnatomyPreview),
-                Example("Button interaction", "Pointer and keyboard activation, loading suppression, focus-visible, disabled guard, and icon slot examples.", "Forms/ButtonInteraction.axaml", BuildButtonInteractionPreview)
+                Example("Button interaction", "Pointer and keyboard activation, loading suppression, focus-visible, disabled guard, and icon slot examples.", "Forms/ButtonInteraction.axaml", BuildButtonInteractionPreview,
+                    Code("Forms/ButtonInteraction.cs", "CSharp/Forms/ButtonInteraction.cs"))
             ],
             "forms.button-group" =>
             [
                 Example("Button group states", "Default, icon, vertical, separator, text, and disabled grouped action states.", "Forms/ButtonGroupStates.axaml", BuildButtonGroupStatesPreview),
+                Example("Button group anatomy", "Root group, connected items, text segment, separator, vertical group, and mixed control anatomy.", "Forms/ButtonGroupAnatomy.axaml", BuildButtonGroupAnatomyPreview),
                 Example("Button group composition", "Text, separator, nested group, input, and select compositions in a single connected action row.", "Forms/ButtonGroupComposition.axaml", BuildButtonGroupCompositionPreview),
-                Example("Button group interaction", "Independent child activation, loading suppression, tab stops, disabled guards, and nested group examples.", "Forms/ButtonGroupInteraction.axaml", BuildButtonGroupInteractionPreview)
+                Example("Button group interaction", "Independent child activation, loading suppression, tab stops, disabled guards, and nested group examples.", "Forms/ButtonGroupInteraction.axaml", BuildButtonGroupInteractionPreview,
+                    Code("Forms/ButtonGroupInteraction.cs", "CSharp/Forms/ButtonGroupInteraction.cs"))
             ],
             "forms.input-group" =>
             [
                 Example("Input group states", "Inline-start, inline-end, block-start, block-end, error, and disabled input group states.", "Forms/InputGroupStates.axaml", BuildInputGroupStatesPreview),
+                Example("Input group anatomy", "Root border, focus ring, inline and block addons, input, textarea, text, button, select, and intent anatomy.", "Forms/InputGroupAnatomy.axaml", BuildInputGroupAnatomyPreview),
                 Example("Input group composition", "Text addons, action buttons, keyboard hints, select composition, and textarea composition.", "Forms/InputGroupComposition.axaml", BuildInputGroupCompositionPreview),
-                Example("Input group interaction", "Focus-within, loading button suppression, read-only child input, and disabled action examples.", "Forms/InputGroupInteraction.axaml", BuildInputGroupInteractionPreview)
+                Example("Input group interaction", "Focus-within, loading button suppression, read-only child input, and disabled action examples.", "Forms/InputGroupInteraction.axaml", BuildInputGroupInteractionPreview,
+                    Code("Forms/InputGroupInteraction.cs", "CSharp/Forms/InputGroupInteraction.cs"))
             ],
             "forms.input-otp" =>
             [
                 Example("Input OTP states", "Digits-only, alphanumeric, invalid, and disabled one-time password states.", "Forms/InputOtpStates.axaml", BuildInputOtpStatesPreview),
+                Example("Input OTP anatomy", "Root, grouped slots, separators, character slots, active slot, invalid slot, pattern, and recovery-code anatomy.", "Forms/InputOtpAnatomy.axaml", BuildInputOtpAnatomyPreview),
                 Example("Input OTP composition", "Four, six, and eight slot grouped compositions with separators and actions.", "Forms/InputOtpComposition.axaml", BuildInputOtpCompositionPreview),
-                Example("Input OTP interaction", "Paste entry, active slot, Backspace/Delete, warning intent, and keyboard navigation examples.", "Forms/InputOtpInteraction.axaml", BuildInputOtpInteractionPreview)
+                Example("Input OTP interaction", "Paste entry, active slot, Backspace/Delete, warning intent, and keyboard navigation examples.", "Forms/InputOtpInteraction.axaml", BuildInputOtpInteractionPreview,
+                    Code("Forms/InputOtpInteraction.cs", "CSharp/Forms/InputOtpInteraction.cs"))
             ],
             "forms.label" =>
             [
                 Example("Label states", "Default, required, semantic intent, disabled, and target-disabled label states.", "Forms/LabelStates.axaml", BuildLabelStatesPreview),
+                Example("Label anatomy", "Target association, required marker, access-key content, intent styling, and disabled-target anatomy.", "Forms/LabelAnatomy.axaml", BuildLabelAnatomyPreview),
                 Example("Label composition", "Checkbox, switch, input group, and CodexField label composition.", "Forms/LabelComposition.axaml", BuildLabelCompositionPreview),
-                Example("Label interaction", "Pointer target focus, access-key text, disabled target, and validation label examples.", "Forms/LabelInteraction.axaml", BuildLabelInteractionPreview)
+                Example("Label interaction", "Pointer target focus, access-key text, disabled target, and validation label examples.", "Forms/LabelInteraction.axaml", BuildLabelInteractionPreview,
+                    Code("Forms/LabelInteraction.cs", "CSharp/Forms/LabelInteraction.cs"))
             ],
             "forms.icon-button" =>
             [
                 Example("Icon button states", "Default, round, ghost, destructive, loading, and disabled icon actions.", "Forms/IconButtonStates.axaml", BuildIconButtonStatesPreview),
-                Example("Icon button interaction", "Toolbar click feedback, round toggle, loading suppression, destructive action, and disabled guard examples.", "Forms/IconButtonInteraction.axaml", BuildIconButtonInteractionPreview)
+                Example("Icon button anatomy", "Icon-sized button chrome, round geometry, loading slot, focus ring, and toolbar density anatomy.", "Forms/IconButtonAnatomy.axaml", BuildIconButtonAnatomyPreview),
+                Example("Icon button interaction", "Toolbar click feedback, round toggle, loading suppression, destructive action, and disabled guard examples.", "Forms/IconButtonInteraction.axaml", BuildIconButtonInteractionPreview,
+                    Code("Forms/IconButtonInteraction.cs", "CSharp/Forms/IconButtonInteraction.cs"))
             ],
             "forms.split-button" =>
             [
                 Example("Disclosure states", "Open, closed, loading, disabled, and action-surface split button states.", "Forms/SplitButtonStates.axaml", BuildSplitButtonStatesPreview),
-                Example("Split button interaction", "Primary command, menu trigger, close-on-select, alignment, loading suppression, and action surface.", "Forms/SplitButtonInteraction.axaml", BuildSplitButtonInteractionPreview)
+                Example("Split button anatomy", "Primary action, menu trigger, divider, chevron, popup surface, arrow, and dropdown content anatomy.", "Forms/SplitButtonAnatomy.axaml", BuildSplitButtonAnatomyPreview),
+                Example("Split button interaction", "Primary command, menu trigger, close-on-select, alignment, loading suppression, and action surface.", "Forms/SplitButtonInteraction.axaml", BuildSplitButtonInteractionPreview,
+                    Code("Forms/SplitButtonInteraction.cs", "CSharp/Forms/SplitButtonInteraction.cs"))
             ],
             "forms.textbox" =>
             [
                 Example("Validation states", "Default, read-only, disabled, and destructive input states.", "Forms/TextBoxStates.axaml", BuildTextBoxStatesPreview),
-                Example("Text input interaction", "Keyboard focus, pointer focus, selection, slot content, validation feedback, read-only, and disabled input paths.", "Forms/TextBoxInteraction.axaml", BuildTextBoxInteractionPreview)
+                Example("TextBox anatomy", "Border, scroll viewer, placeholder, text presenter, selection, caret, and inline slot anatomy.", "Forms/TextBoxAnatomy.axaml", BuildTextBoxAnatomyPreview),
+                Example("Text input interaction", "Keyboard focus, pointer focus, selection, slot content, validation feedback, read-only, and disabled input paths.", "Forms/TextBoxInteraction.axaml", BuildTextBoxInteractionPreview,
+                    Code("Forms/TextBoxInteraction.cs", "CSharp/Forms/TextBoxInteraction.cs"))
             ],
             "forms.textarea" =>
             [
                 Example("Textarea states", "Default, readonly, disabled, large, and error multiline input states.", "Forms/TextareaStates.axaml", BuildTextareaStatesPreview),
-                Example("Textarea interaction", "Multiline entry, wrapping, placeholder, scroll, validation feedback, read-only, and disabled paths.", "Forms/TextareaInteraction.axaml", BuildTextareaInteractionPreview)
+                Example("Textarea anatomy", "Multiline border, scroll viewer, wrapping presenter, placeholder, caret, selection, and tall layout anatomy.", "Forms/TextareaAnatomy.axaml", BuildTextareaAnatomyPreview),
+                Example("Textarea interaction", "Multiline entry, wrapping, placeholder, scroll, validation feedback, read-only, and disabled paths.", "Forms/TextareaInteraction.axaml", BuildTextareaInteractionPreview,
+                    Code("Forms/TextareaInteraction.cs", "CSharp/Forms/TextareaInteraction.cs"))
             ],
             "forms.select" =>
             [
                 Example("Select states", "Selected, disabled, compact, and warning select trigger states.", "Forms/SelectStates.axaml", BuildSelectStatesPreview),
                 Example("Select anatomy", "Trigger, placeholder, selected content, chevron, popup surface, disabled item, and field composition.", "Forms/SelectAnatomy.axaml", BuildSelectAnatomyPreview),
-                Example("Select interaction", "OpenChanged, ValueChanged, selected item, keyboard focus contract, intent feedback, and disabled trigger examples.", "Forms/SelectInteraction.axaml", BuildSelectInteractionPreview)
+                Example(
+                    "Select interaction",
+                    "OpenChanged, ValueChanged, selected item, keyboard focus contract, intent feedback, and disabled trigger examples.",
+                    "Forms/SelectInteraction.axaml",
+                    BuildSelectInteractionPreview,
+                    Code("Forms/SelectInteraction.cs", "CSharp/Forms/SelectInteraction.cs"))
             ],
             "forms.combobox" =>
             [
                 Example("Combobox states", "Open, warning, empty, disabled, selected, and compact filterable select states.", "Forms/ComboboxStates.axaml", BuildComboboxStatesPreview),
                 Example("Combobox anatomy", "Input group, clear button, trigger, popup, empty content, list, check indicator, and input-group composition.", "Forms/ComboboxAnatomy.axaml", BuildComboboxAnatomyPreview),
-                Example("Combobox interaction", "Auto highlight, arrow/Enter selection, clear reset, manual close policy, loading suppression, and Escape examples.", "Forms/ComboboxInteraction.axaml", BuildComboboxInteractionPreview)
+                Example(
+                    "Combobox interaction",
+                    "Auto highlight, arrow/Enter selection, clear reset, manual close policy, loading suppression, and Escape examples.",
+                    "Forms/ComboboxInteraction.axaml",
+                    BuildComboboxInteractionPreview,
+                    Code("Forms/ComboboxInteraction.cs", "CSharp/Forms/ComboboxInteraction.cs"))
             ],
             "forms.native-select" =>
             [
                 Example("Native Select states", "Selected, disabled, invalid, and compact native select trigger states.", "Forms/NativeSelectStates.axaml", BuildNativeSelectStatesPreview),
+                Example("Native Select anatomy", "Trigger, selected content, popup surface, option values, optgroup labels, disabled option, and invalid trigger anatomy.", "Forms/NativeSelectAnatomy.axaml", BuildNativeSelectAnatomyPreview),
                 Example("Native Select composition", "Option values, optgroup headers, input-group composition, and action row layout.", "Forms/NativeSelectComposition.axaml", BuildNativeSelectCompositionPreview),
-                Example("Native Select interaction", "OpenChanged, ValueChanged, keyboard selection, disabled option, warning intent, and selection classes.", "Forms/NativeSelectInteraction.axaml", BuildNativeSelectInteractionPreview)
+                Example(
+                    "Native Select interaction",
+                    "OpenChanged, ValueChanged, keyboard selection, disabled option, warning intent, and selection classes.",
+                    "Forms/NativeSelectInteraction.axaml",
+                    BuildNativeSelectInteractionPreview,
+                    Code("Forms/NativeSelectInteraction.cs", "CSharp/Forms/NativeSelectInteraction.cs"))
             ],
             "forms.calendar" =>
             [
                 Example("Calendar states", "Selected, hidden outside-day, week-number, bounded, and disabled calendar states.", "Forms/CalendarStates.axaml", BuildCalendarStatesPreview),
+                Example("Calendar anatomy", "Header, weekday grid, outside days, range edges, week numbers, and bounded day anatomy.", "Forms/CalendarAnatomy.axaml", BuildCalendarAnatomyPreview),
                 Example("Calendar composition", "Range calendar and date-picker-style popover composition using the same Calendar primitive.", "Forms/CalendarComposition.axaml", BuildCalendarCompositionPreview),
-                Example("Calendar interaction", "Active day, range edges, keyboard month navigation, disabled bounds, and compact selection examples.", "Forms/CalendarInteraction.axaml", BuildCalendarInteractionPreview)
+                Example(
+                    "Calendar interaction",
+                    "Source-aware selected/range/active/month events, keyboard navigation, disabled bounds, and compact selection examples.",
+                    "Forms/CalendarInteraction.axaml",
+                    BuildCalendarInteractionPreview,
+                    Code("Forms/CalendarInteraction.cs", "CSharp/Forms/CalendarInteraction.cs"))
             ],
             "forms.date-picker" =>
             [
                 Example("Date Picker states", "Selected, open, range, loading, disabled, and bounded date picker states.", "Forms/DatePickerStates.axaml", BuildDatePickerStatesPreview),
                 Example("Date Picker anatomy", "Trigger, placeholder text, clear action, chevron, popover surface, loading layer, and calendar content.", "Forms/DatePickerAnatomy.axaml", BuildDatePickerAnatomyPreview),
-                Example("Date Picker interaction", "Open/close keys, range completion, clear reset, disabled bounds, and loading guard examples.", "Forms/DatePickerInteraction.axaml", BuildDatePickerInteractionPreview)
+                Example(
+                    "Date Picker interaction",
+                    "Source-aware open/close, range completion, clear reset, disabled bounds, and loading guard examples.",
+                    "Forms/DatePickerInteraction.axaml",
+                    BuildDatePickerInteractionPreview,
+                    Code("Forms/DatePickerInteraction.cs", "CSharp/Forms/DatePickerInteraction.cs"))
             ],
             "forms.field" =>
             [
                 Example("Field states", "Required, description, helper message, error, and disabled field composition.", "Forms/FieldStates.axaml", BuildFieldStatesPreview),
                 Example("Field anatomy", "Label, description, required marker, message, and replaceable child control slots.", "Forms/FieldAnatomy.axaml", BuildFieldAnatomyPreview),
                 Example("Field group", "FieldSet, FieldGroup, FieldContent, FieldSeparator, and FieldError composition examples.", "Forms/FieldGroup.axaml", BuildFieldGroupPreview),
-                Example("Field interaction", "Validation message updates, required marker, intent handoff, focusable child controls, and disabled child guard examples.", "Forms/FieldInteraction.axaml", BuildFieldInteractionPreview)
+                Example("Field interaction", "Validation message updates, required marker, intent handoff, focusable child controls, and disabled child guard examples.", "Forms/FieldInteraction.axaml", BuildFieldInteractionPreview,
+                    Code("Forms/FieldInteraction.cs", "CSharp/Forms/FieldInteraction.cs"))
             ],
             "forms.checkbox" =>
             [
                 Example("Checkbox states", "Checked, unchecked, indeterminate, disabled, and intent checkbox states.", "Forms/CheckboxStates.axaml", BuildCheckboxStatesPreview),
                 Example("Checkbox anatomy", "Root, indicator states, label targeting, fieldset grouping, validation, and intent composition.", "Forms/CheckboxAnatomy.axaml", BuildCheckboxAnatomyPreview),
-                Example("Checkbox interaction", "Pointer toggle, Space activation, three-state cycle, focus-visible target, and disabled guard examples.", "Forms/CheckboxInteraction.axaml", BuildCheckboxInteractionPreview)
+                Example(
+                    "Checkbox interaction",
+                    "Pointer toggle, Space activation, three-state cycle, focus-visible target, and disabled guard examples.",
+                    "Forms/CheckboxInteraction.axaml",
+                    BuildCheckboxInteractionPreview,
+                    Code("Forms/CheckboxInteraction.cs", "CSharp/Forms/CheckboxInteraction.cs"))
             ],
             "forms.radio" =>
             [
                 Example("Radio states", "Grouped, warning, disabled, checked, and unchecked radio states.", "Forms/RadioStates.axaml", BuildRadioStatesPreview),
-                Example("Radio interaction", "Sibling selection, keyboard traversal, intent feedback, focus-visible target, and disabled guard examples.", "Forms/RadioInteraction.axaml", BuildRadioInteractionPreview)
+                Example("Radio anatomy", "Ring, dot, label target, group name, size, intent, checked, and disabled anatomy.", "Forms/RadioAnatomy.axaml", BuildRadioAnatomyPreview),
+                Example(
+                    "Radio interaction",
+                    "Sibling selection, keyboard traversal, intent feedback, focus-visible target, and disabled guard examples.",
+                    "Forms/RadioInteraction.axaml",
+                    BuildRadioInteractionPreview,
+                    Code("Forms/RadioInteraction.cs", "CSharp/Forms/RadioInteraction.cs"))
             ],
             "forms.radio-group" =>
             [
                 Example("Radio Group states", "Selected, horizontal, required, loading, disabled item, and warning group states.", "Forms/RadioGroupStates.axaml", BuildRadioGroupStatesPreview),
                 Example("Radio Group anatomy", "Root, item values, group name, selected value, item states, and field composition.", "Forms/RadioGroupAnatomy.axaml", BuildRadioGroupAnatomyPreview),
-                Example("Radio Group interaction", "Value changes, orientation switch, loading suppression, loop guard, and disabled item examples.", "Forms/RadioGroupInteraction.axaml", BuildRadioGroupInteractionPreview)
+                Example(
+                    "Radio Group interaction",
+                    "Value changes, orientation switch, loading suppression, loop guard, and disabled item examples.",
+                    "Forms/RadioGroupInteraction.axaml",
+                    BuildRadioGroupInteractionPreview,
+                    Code("Forms/RadioGroupInteraction.cs", "CSharp/Forms/RadioGroupInteraction.cs"))
             ],
             "forms.switch" =>
             [
-                Example("Toggle states", "Checked, unchecked, disabled, warning, and large switch states.", "Forms/SwitchStates.axaml", BuildSwitchStatesPreview),
-                Example("Switch interaction", "Pointer toggle, keyboard activation, thumb motion, focus-visible target, and disabled guard examples.", "Forms/SwitchInteraction.axaml", BuildSwitchInteractionPreview)
+                Example("Switch states", "Checked, unchecked, disabled, warning, and large switch states.", "Forms/SwitchStates.axaml", BuildSwitchStatesPreview),
+                Example("Switch anatomy", "Track, thumb, content slot, checked motion, size, intent, and disabled anatomy.", "Forms/SwitchAnatomy.axaml", BuildSwitchAnatomyPreview),
+                Example(
+                    "Switch interaction",
+                    "Pointer toggle, keyboard activation, thumb motion, focus-visible target, and disabled guard examples.",
+                    "Forms/SwitchInteraction.axaml",
+                    BuildSwitchInteractionPreview,
+                    Code("Forms/SwitchInteraction.cs", "CSharp/Forms/SwitchInteraction.cs"))
             ],
             "forms.toggle" =>
             [
                 Example("Toggle states", "Pressed, unpressed, outline, disabled, and size toggle states.", "Forms/ToggleStates.axaml", BuildToggleStatesPreview),
-                Example("Toggle interaction", "Standalone pressed changes, keyboard activation, disabled suppression, and size/variant examples.", "Forms/ToggleInteraction.axaml", BuildToggleInteractionPreview)
+                Example("Toggle anatomy", "Root, content, focus ring, pressed classes, variants, icon size, and disabled anatomy.", "Forms/ToggleAnatomy.axaml", BuildToggleAnatomyPreview),
+                Example(
+                    "Toggle interaction",
+                    "Standalone pressed changes, keyboard activation, disabled suppression, and size/variant examples.",
+                    "Forms/ToggleInteraction.axaml",
+                    BuildToggleInteractionPreview,
+                    Code("Forms/ToggleInteraction.cs", "CSharp/Forms/ToggleInteraction.cs"))
             ],
             "forms.toggle-group" =>
             [
                 Example("Toggle Group states", "Single, multiple, outline, vertical, connected spacing, and disabled grouped toggle examples.", "Forms/ToggleGroupStates.axaml", BuildToggleGroupStatesPreview),
                 Example("Toggle Group anatomy", "Root, item values, type, selected values, spacing, orientation, and field composition.", "Forms/ToggleGroupAnatomy.axaml", BuildToggleGroupAnatomyPreview),
-                Example("Toggle Group interaction", "Value changes, multiple selection, roving keys, loop guards, connected spacing, and disabled item examples.", "Forms/ToggleGroupInteraction.axaml", BuildToggleGroupInteractionPreview)
+                Example(
+                    "Toggle Group interaction",
+                    "Source-aware value changes, multiple selection, roving keys, loop guards, connected spacing, and disabled item examples.",
+                    "Forms/ToggleGroupInteraction.axaml",
+                    BuildToggleGroupInteractionPreview,
+                    Code("Forms/ToggleGroupInteraction.cs", "CSharp/Forms/ToggleGroupInteraction.cs"))
             ],
             "forms.slider" =>
             [
                 Example("Slider states", "Default, large, success, warning, disabled, and zero-value slider states.", "Forms/SliderStates.axaml", BuildSliderStatesPreview),
-                Example("Slider interaction", "Pointer drag, keyboard range changes, vertical orientation, and disabled guard examples.", "Forms/SliderInteraction.axaml", BuildSliderInteractionPreview)
+                Example("Slider anatomy", "Root, track background, fill, invisible hit buttons, thumb, orientation, and value classes.", "Forms/SliderAnatomy.axaml", BuildSliderAnatomyPreview),
+                Example(
+                    "Slider interaction",
+                    "Primary pointer drag, keyboard range changes, vertical orientation, and disabled guard examples.",
+                    "Forms/SliderInteraction.axaml",
+                    BuildSliderInteractionPreview,
+                    Code("Forms/SliderInteraction.cs", "CSharp/Forms/SliderInteraction.cs"))
             ],
             "feedback.alert" =>
             [
                 Example("Alert states", "Default, success, warning, destructive, and action alert compositions.", "Feedback/AlertStates.axaml", BuildAlertStatesPreview),
                 Example("Alert anatomy", "Icon, title, description, rich content, action slot, default glyph, and semantic variants.", "Feedback/AlertAnatomy.axaml", BuildAlertAnatomyPreview),
-                Example("Alert interaction", "Action slot clicks, variant updates, rich content, disabled guards, and dynamic slot presence examples.", "Feedback/AlertInteraction.axaml", BuildAlertInteractionPreview)
+                Example(
+                    "Alert interaction",
+                    "Action slot clicks, variant updates, rich content, disabled guards, and dynamic slot presence examples.",
+                    "Feedback/AlertInteraction.axaml",
+                    BuildAlertInteractionPreview,
+                    Code("Feedback/AlertInteraction.cs", "CSharp/Feedback/AlertInteraction.cs"))
             ],
             "feedback.badge" =>
             [
                 Example("Badge states", "Status dots, semantic variants, outline, and compact badge sizes.", "Feedback/BadgeStates.axaml", BuildBadgeStatesPreview),
                 Example("Badge anatomy", "Variants, inline icons, spinner content, link-like badges, and status dots.", "Feedback/BadgeAnatomy.axaml", BuildBadgeAnatomyPreview),
-                Example("Badge interaction", "Host-driven status changes, count updates, size toggles, and disabled host composition examples.", "Feedback/BadgeInteraction.axaml", BuildBadgeInteractionPreview)
+                Example(
+                    "Badge interaction",
+                    "Primary pointer activation, keyboard activation, host-driven status changes, count updates, size toggles, and disabled host composition examples.",
+                    "Feedback/BadgeInteraction.axaml",
+                    BuildBadgeInteractionPreview,
+                    Code("Feedback/BadgeInteraction.cs", "CSharp/Feedback/BadgeInteraction.cs"))
             ],
             "feedback.avatar" =>
             [
                 Example("Avatar states", "Loaded image, fallback initials, error fallback, delayed fallback, status variants, and size states.", "Feedback/AvatarStates.axaml", BuildAvatarStatesPreview),
                 Example("Avatar anatomy", "Avatar fallback, status badge, overlapping group, and group-count composition.", "Feedback/AvatarAnatomy.axaml", BuildAvatarAnatomyPreview),
-                Example("Avatar interaction", "Image loading status events, fallback delay changes, size changes, and disabled host composition examples.", "Feedback/AvatarInteraction.axaml", BuildAvatarInteractionPreview)
+                Example(
+                    "Avatar interaction",
+                    "Image loading status events, fallback delay changes, size changes, and disabled host composition examples.",
+                    "Feedback/AvatarInteraction.axaml",
+                    BuildAvatarInteractionPreview,
+                    Code("Feedback/AvatarInteraction.cs", "CSharp/Feedback/AvatarInteraction.cs"))
+            ],
+            "feedback.avatar-group" =>
+            [
+                Example("Avatar group states", "Stacked, inline, compact, large, overflow, hidden member, and disabled group states.", "Feedback/AvatarGroupStates.axaml", BuildAvatarGroupStatesPreview),
+                Example("Avatar group anatomy", "Root panel, inherited child size, overlap, group item classes, and overflow count slot.", "Feedback/AvatarGroupAnatomy.axaml", BuildAvatarGroupAnatomyPreview),
+                Example(
+                    "Avatar group interaction",
+                    "Stacking, overlap, member visibility, overflow status, and disabled host composition examples.",
+                    "Feedback/AvatarGroupInteraction.axaml",
+                    BuildAvatarGroupInteractionPreview,
+                    Code("Feedback/AvatarGroupInteraction.cs", "CSharp/Feedback/AvatarGroupInteraction.cs"))
             ],
             "feedback.empty-state" =>
             [
                 Example("Empty states", "Default, outline, success, warning, destructive, and loading empty-state actions.", "Feedback/EmptyStateStates.axaml", BuildEmptyStateStatesPreview),
-                Example("Empty state interaction", "Action requests, loading suppression, disabled guard, and semantic recovery action examples.", "Feedback/EmptyStateInteraction.axaml", BuildEmptyStateInteractionPreview)
+                Example("Empty state anatomy", "Icon shell, header, description, content slot, primary action, and secondary action anatomy.", "Feedback/EmptyStateAnatomy.axaml", BuildEmptyStateAnatomyPreview),
+                Example("Empty state interaction", "Action requests, loading suppression, disabled guard, and semantic recovery action examples.", "Feedback/EmptyStateInteraction.axaml", BuildEmptyStateInteractionPreview,
+                    Code("Feedback/EmptyStateInteraction.cs", "CSharp/Feedback/EmptyStateInteraction.cs"))
             ],
             "feedback.toast" =>
             [
                 Example("Toast states", "Open, closed, success, warning, destructive, action, and close states.", "Feedback/ToastStates.axaml", BuildToastStatesPreview),
                 Example("Toast anatomy", "Icon, title, description, rich content, action, and close slots in one toast surface.", "Feedback/ToastAnatomy.axaml", BuildToastAnatomyPreview),
-                Example("Toast interaction", "Dismiss command, close command callback, reopen, manual Escape policy, action slot, and closed exit examples.", "Feedback/ToastInteraction.axaml", BuildToastInteractionPreview)
+                Example(
+                    "Toast interaction",
+                    "Dismiss command, close command callback, reopen, manual Escape policy, action slot, and closed exit examples.",
+                    "Feedback/ToastInteraction.axaml",
+                    BuildToastInteractionPreview,
+                    Code("Feedback/ToastInteraction.cs", "CSharp/Feedback/ToastInteraction.cs"))
             ],
             "feedback.sonner" =>
             [
                 Example("Sonner states", "Expanded, compact, rich-color, and positioned toast viewport states.", "Feedback/SonnerStates.axaml", BuildSonnerStatesPreview),
-                Example("Sonner lifecycle", "Success, warning, loading, compact stack, close-button visibility, and viewport position lifecycle examples.", "Feedback/SonnerLifecycle.axaml", BuildSonnerLifecyclePreview)
+                Example("Sonner anatomy", "Viewport, animated host rows, rich-color toast content, action slots, and close visibility.", "Feedback/SonnerAnatomy.axaml", BuildSonnerAnatomyPreview),
+                Example(
+                    "Sonner interaction",
+                    "Success, warning, loading, compact stack, close-button visibility, and viewport position lifecycle examples.",
+                    "Feedback/SonnerInteraction.axaml",
+                    BuildSonnerInteractionPreview,
+                    Code("Feedback/SonnerInteraction.cs", "CSharp/Feedback/SonnerInteraction.cs"))
             ],
             "feedback.spinner" =>
             [
                 Example("Spinner states", "Small, medium, large, active, paused, and semantic loading indicators.", "Feedback/SpinnerStates.axaml", BuildSpinnerStatesPreview),
-                Example("Spinner lifecycle", "Attach-start animation, paused state, reduced-motion static frame, and composed loading rows.", "Feedback/SpinnerInteraction.axaml", BuildSpinnerInteractionPreview)
+                Example("Spinner anatomy", "Rendered spokes, stroke thickness, semantic tone, live label, and non-interactive loading composition.", "Feedback/SpinnerAnatomy.axaml", BuildSpinnerAnatomyPreview),
+                Example("Spinner interaction", "Attach-start animation, paused state, reduced-motion static frame, and composed loading rows.", "Feedback/SpinnerInteraction.axaml", BuildSpinnerInteractionPreview,
+                    Code("Feedback/SpinnerInteraction.cs", "CSharp/Feedback/SpinnerInteraction.cs"))
             ],
             "feedback.progress" =>
             [
                 Example("Progress states", "Determinate, indeterminate, success, warning, destructive, and compact progress bars.", "Feedback/ProgressStates.axaml", BuildProgressStatesPreview),
-                Example("Progress interaction", "Determinate value transition, indeterminate loop, reduced-motion static frame, and disabled guard examples.", "Feedback/ProgressInteraction.axaml", BuildProgressInteractionPreview)
+                Example("Progress anatomy", "Track, indicator, text label, indeterminate segment, semantic color, and size variants.", "Feedback/ProgressAnatomy.axaml", BuildProgressAnatomyPreview),
+                Example("Progress interaction", "Determinate value transition, indeterminate loop, reduced-motion static frame, and disabled guard examples.", "Feedback/ProgressInteraction.axaml", BuildProgressInteractionPreview,
+                    Code("Feedback/ProgressInteraction.cs", "CSharp/Feedback/ProgressInteraction.cs"))
             ],
             "feedback.skeleton" =>
             [
                 Example("Loading shapes", "Animated, static, avatar, text, and block skeleton placeholders.", "Feedback/SkeletonStates.axaml", BuildSkeletonStatesPreview),
-                Example("Skeleton motion", "Pulse, shimmer, static reduced-motion, and composed loading layout examples.", "Feedback/SkeletonInteraction.axaml", BuildSkeletonInteractionPreview)
+                Example("Skeleton anatomy", "Surface, shimmer layer, pulse opacity, rounded media blocks, and text line placeholders.", "Feedback/SkeletonAnatomy.axaml", BuildSkeletonAnatomyPreview),
+                Example("Skeleton interaction", "Pulse, shimmer, static reduced-motion, and composed loading layout examples.", "Feedback/SkeletonInteraction.axaml", BuildSkeletonInteractionPreview,
+                    Code("Feedback/SkeletonInteraction.cs", "CSharp/Feedback/SkeletonInteraction.cs"))
             ],
             "navigation.tabs" =>
             [
                 Example("Tabs states", "Default, line, vertical, disabled, compact, and selected tab states.", "Navigation/TabsStates.axaml", BuildTabsStatesPreview),
                 Example("Tabs anatomy", "Trigger headers, selected content, line variant, disabled item, and vertical layout.", "Navigation/TabsAnatomy.axaml", BuildTabsAnatomyPreview),
-                Example("Tabs interaction", "ValueChanged status, programmatic value changes, automatic/manual activation, loop boundaries, and disabled-skip tab contracts.", "Navigation/TabsInteraction.axaml", BuildTabsInteractionPreview)
+                Example(
+                    "Tabs interaction",
+                    "ValueChanged source metadata, programmatic value changes, automatic/manual activation, loop boundaries, and disabled-skip tab contracts.",
+                    "Navigation/TabsInteraction.axaml",
+                    BuildTabsInteractionPreview,
+                    Code("Navigation/TabsInteraction.cs", "CSharp/Navigation/TabsInteraction.cs"))
             ],
             "navigation.breadcrumb" =>
             [
                 Example("Breadcrumb states", "Small, large, collapsed, disabled, and custom separator breadcrumb states.", "Navigation/BreadcrumbStates.axaml", BuildBreadcrumbStatesPreview),
                 Example("Breadcrumb anatomy", "Root, list, item, link, separator, ellipsis, and current page pieces composed together.", "Navigation/BreadcrumbAnatomy.axaml", BuildBreadcrumbAnatomyPreview),
-                Example("Breadcrumb interaction", "Ancestor link activation, current-page suppression, dropdown composition, and disabled route examples.", "Navigation/BreadcrumbInteraction.axaml", BuildBreadcrumbInteractionPreview)
+                Example(
+                    "Breadcrumb interaction",
+                    "Ancestor link activation, current-page suppression, dropdown composition, and disabled route examples.",
+                    "Navigation/BreadcrumbInteraction.axaml",
+                    BuildBreadcrumbInteractionPreview,
+                    Code("Navigation/BreadcrumbInteraction.cs", "CSharp/Navigation/BreadcrumbInteraction.cs"))
             ],
             "navigation.side-nav" =>
             [
                 Example("Side nav states", "Root selected value, icon, detail, disabled, and fallback side nav row states.", "Navigation/SideNavStates.axaml", BuildSideNavStatesPreview),
-                Example("Side nav interaction", "ValueChanged status, pointer and keyboard selection, sibling clearing, disabled rows, detail alignment, and no-icon row states.", "Navigation/SideNavInteraction.axaml", BuildSideNavInteractionPreview)
+                Example("Side nav anatomy", "Root selected value, item value, icon, content, detail, selected row, and disabled row anatomy.", "Navigation/SideNavAnatomy.axaml", BuildSideNavAnatomyPreview),
+                Example(
+                    "Side nav interaction",
+                    "ValueChanged source status, primary pointer release, keyboard selection, sibling clearing, disabled rows, detail alignment, and no-icon row states.",
+                    "Navigation/SideNavInteraction.axaml",
+                    BuildSideNavInteractionPreview,
+                    Code("Navigation/SideNavInteraction.cs", "CSharp/Navigation/SideNavInteraction.cs"))
             ],
             "navigation.segmented-control" =>
             [
                 Example("Segmented states", "Selected indicator, disabled segment, pressed scale, and compact segmented options.", "Navigation/SegmentedControlStates.axaml", BuildSegmentedControlStatesPreview),
-                Example("Segmented interaction", "Sibling selection, indicator remeasure, disabled segments, and command-backed selection states.", "Navigation/SegmentedControlInteraction.axaml", BuildSegmentedControlInteractionPreview)
+                Example("Segmented anatomy", "Indicator host, selected segment, values, disabled segment, and layout remeasure anatomy.", "Navigation/SegmentedControlAnatomy.axaml", BuildSegmentedControlAnatomyPreview),
+                Example("Segmented interaction", "Source-aware sibling selection, primary pointer release, indicator remeasure, disabled segments, and command-backed controlled states.", "Navigation/SegmentedControlInteraction.axaml", BuildSegmentedControlInteractionPreview,
+                    Code("Navigation/SegmentedControlInteraction.cs", "CSharp/Navigation/SegmentedControlInteraction.cs"))
             ],
             "navigation.navigation-menu" =>
             [
                 Example("Viewport states", "Open, reversed-motion, vertical, disabled, and active navigation menu states.", "Navigation/NavigationMenuStates.axaml", BuildNavigationMenuStatesPreview),
                 Example("Navigation anatomy", "Root, list, trigger item, content, links, top-level link, indicator, viewport, and value state.", "Navigation/NavigationMenuAnatomy.axaml", BuildNavigationMenuAnatomyPreview),
-                Example("Navigation interaction", "Pointer activation, keyboard roving, motion direction, Escape dismissal, and disabled trigger examples.", "Navigation/NavigationMenuInteraction.axaml", BuildNavigationMenuInteractionPreview)
+                Example(
+                    "Navigation interaction",
+                    "Pointer enter, primary link release, keyboard roving, motion direction, Escape dismissal, and disabled trigger examples.",
+                    "Navigation/NavigationMenuInteraction.axaml",
+                    BuildNavigationMenuInteractionPreview,
+                    Code("Navigation/NavigationMenuInteraction.cs", "CSharp/Navigation/NavigationMenuInteraction.cs"))
             ],
             "navigation.menubar" =>
             [
                 Example("Menubar states", "Open trigger, checked, radio, disabled, loading, compact, and vertical menubar states.", "Navigation/MenubarStates.axaml", BuildMenubarStatesPreview),
+                Example("Menubar anatomy", "Root, trigger, popup, label, group, separator, shortcut, checkbox, radio, and nested submenu pieces.", "Navigation/MenubarAnatomy.axaml", BuildMenubarAnatomyPreview),
                 Example("Menubar composition", "File, edit, view, profile, grouped, separator, shortcut, checkbox, radio, and nested submenu composition.", "Navigation/MenubarComposition.axaml", BuildMenubarCompositionPreview),
-                Example("Menubar interaction", "Arrow roving, open-on-hover handoff, Escape dismissal, loading suppression, and close-on-select examples.", "Navigation/MenubarInteraction.axaml", BuildMenubarInteractionPreview)
+                Example(
+                    "Menubar interaction",
+                    "Arrow roving, open-on-hover handoff, Escape dismissal, loading suppression, and close-on-select examples.",
+                    "Navigation/MenubarInteraction.axaml",
+                    BuildMenubarInteractionPreview,
+                    Code("Navigation/MenubarInteraction.cs", "CSharp/Navigation/MenubarInteraction.cs"))
             ],
             "navigation.dropdown" =>
             [
                 Example("Dropdown states", "Open, closed, loading, disabled, aligned, and close-on-select dropdown states.", "Navigation/DropdownButtonStates.axaml", BuildDropdownStatesPreview),
-                Example("Dropdown interaction", "Trigger-owned surface, alignment, close-on-select, loading suppression, and destructive action rows.", "Navigation/DropdownButtonInteraction.axaml", BuildDropdownInteractionPreview)
+                Example("Dropdown anatomy", "Trigger, chevron, popup, surface, arrow, content, alignment, and focus-return anatomy.", "Navigation/DropdownButtonAnatomy.axaml", BuildDropdownAnatomyPreview),
+                Example(
+                    "Dropdown interaction",
+                    "Trigger-owned surface, alignment, close-on-select, loading suppression, and destructive action rows.",
+                    "Navigation/DropdownButtonInteraction.axaml",
+                    BuildDropdownInteractionPreview,
+                    Code("Navigation/DropdownButtonInteraction.cs", "CSharp/Navigation/DropdownButtonInteraction.cs"))
             ],
             "navigation.menu" =>
             [
                 Example("Menu states", "Active, checked, radio, submenu, loading, disabled, and shortcut menu states.", "Navigation/MenuStates.axaml", BuildMenuStatesPreview),
                 Example("Menu anatomy", "Grouped menu items, separators, empty rows, loading rows, shortcuts, and loading suppression.", "Navigation/MenuAnatomy.axaml", BuildMenuAnatomyPreview),
-                Example("Menu interaction", "Keyboard submenu open, pointer delay, loading suppression, checked/radio selection, and disabled leaf paths.", "Navigation/MenuInteraction.axaml", BuildMenuInteractionPreview)
+                Example(
+                    "Menu interaction",
+                    "Keyboard submenu open, pointer delay, loading suppression, checked/radio selection, and disabled leaf paths.",
+                    "Navigation/MenuInteraction.axaml",
+                    BuildMenuInteractionPreview,
+                    Code("Navigation/MenuInteraction.cs", "CSharp/Navigation/MenuInteraction.cs"))
             ],
             "navigation.context-menu" =>
             [
                 Example("Context states", "Inset, checked, radio, side placement, submenu, and disabled context menu states.", "Navigation/ContextMenuStates.axaml", BuildContextMenuStatesPreview),
                 Example("Context anatomy", "Context groups, labels, shortcuts, inset rows, submenu placement, and disabled leaf items.", "Navigation/ContextMenuAnatomy.axaml", BuildContextMenuAnatomyPreview),
-                Example("Context interaction", "Side-aware submenu placement, pointer delay surfaces, loading suppression, selection state, and disabled leaf paths.", "Navigation/ContextMenuInteraction.axaml", BuildContextMenuInteractionPreview)
+                Example(
+                    "Context interaction",
+                    "Side-aware submenu placement, pointer delay surfaces, loading suppression, selection state, and disabled leaf paths.",
+                    "Navigation/ContextMenuInteraction.axaml",
+                    BuildContextMenuInteractionPreview,
+                    Code("Navigation/ContextMenuInteraction.cs", "CSharp/Navigation/ContextMenuInteraction.cs"))
             ],
             "navigation.command" =>
             [
@@ -879,200 +1106,294 @@ public sealed class MainWindow : Window
                 Example("Command anatomy", "Standalone command input, grouped results, loading row, empty row, active item, and shortcut slots.", "Navigation/CommandAnatomy.axaml", BuildCommandAnatomyPreview),
                 Example("Command filtering", "Search text, item value, keywords, hidden separators, and no-result empty state.", "Navigation/CommandFiltering.axaml", BuildCommandFilteringPreview),
                 Example("Command scrollable", "Scrollable grouped command list with loop navigation and stable shortcut alignment.", "Navigation/CommandScrollable.axaml", BuildCommandScrollablePreview),
-                Example("Command interaction", "Keyboard navigation, pointer hover selection, loading suppression, focus-visible input, empty rows, and disabled results.", "Navigation/CommandInteraction.axaml", BuildCommandInteractionPreview)
+                Example(
+                    "Command interaction",
+                    "Keyboard navigation, pointer hover selection, loading suppression, focus-visible input, empty rows, and disabled results.",
+                    "Navigation/CommandInteraction.axaml",
+                    BuildCommandInteractionPreview,
+                    Code("Navigation/CommandInteraction.cs", "CSharp/Navigation/CommandInteraction.cs"))
             ],
             "navigation.accordion" =>
             [
                 Example("Accordion states", "Single, multiple, collapsible, disabled, and reduced-motion accordion states.", "Navigation/AccordionStates.axaml", BuildAccordionStatesPreview),
                 Example("Accordion anatomy", "Root, item, trigger, chevron, content, and nested form slots composed together.", "Navigation/AccordionAnatomy.axaml", BuildAccordionAnatomyPreview),
-                Example("Accordion interaction", "Single item replacement, collapsible close-all, multiple toggles, trigger navigation, and disabled guards.", "Navigation/AccordionInteraction.axaml", BuildAccordionInteractionPreview)
+                Example("Accordion interaction", "Single item replacement, collapsible close-all, multiple toggles, trigger navigation, and disabled guards.", "Navigation/AccordionInteraction.axaml", BuildAccordionInteractionPreview,
+                    Code("Navigation/AccordionInteraction.cs", "CSharp/Navigation/AccordionInteraction.cs"))
             ],
             "navigation.collapsible" =>
             [
                 Example("Disclosure states", "Open and closed collapsible surfaces with the same trigger contract.", "Navigation/CollapsibleStates.axaml", BuildCollapsibleStatesPreview),
-                Example("Collapsible interaction", "Measured content animation, keyboard trigger, reduced-motion duration, and disabled disclosure examples.", "Navigation/CollapsibleInteraction.axaml", BuildCollapsibleInteractionPreview)
+                Example("Collapsible anatomy", "Trigger, header slot, chevron, content clip, measured content, and height animation anatomy.", "Navigation/CollapsibleAnatomy.axaml", BuildCollapsibleAnatomyPreview),
+                Example("Collapsible interaction", "Measured content animation, keyboard trigger, reduced-motion duration, and disabled disclosure examples.", "Navigation/CollapsibleInteraction.axaml", BuildCollapsibleInteractionPreview,
+                    Code("Navigation/CollapsibleInteraction.cs", "CSharp/Navigation/CollapsibleInteraction.cs"))
             ],
             "navigation.separator" =>
             [
                 Example("Separator states", "Horizontal, vertical, small, medium, and large separator states.", "Navigation/SeparatorStates.axaml", BuildSeparatorStatesPreview),
-                Example("Separator interaction", "Orientation toggles, density changes, layout-preserving vertical separators, and disabled host composition examples.", "Navigation/SeparatorInteraction.axaml", BuildSeparatorInteractionPreview)
+                Example("Separator anatomy", "Line template, orientation classes, density sizes, toolbar dividers, and section divider anatomy.", "Navigation/SeparatorAnatomy.axaml", BuildSeparatorAnatomyPreview),
+                Example("Separator interaction", "Orientation toggles, density changes, layout-preserving vertical separators, and disabled host composition examples.", "Navigation/SeparatorInteraction.axaml", BuildSeparatorInteractionPreview,
+                    Code("Navigation/SeparatorInteraction.cs", "CSharp/Navigation/SeparatorInteraction.cs"))
             ],
             "navigation.kbd" =>
             [
                 Example("Kbd states", "Small, default, large, single-key, and chord keyboard token states.", "Navigation/KbdStates.axaml", BuildKbdStatesPreview),
                 Example("Kbd anatomy", "Kbd, KbdGroup, button trailing slot, tooltip content, and input group addon composition.", "Navigation/KbdAnatomy.axaml", BuildKbdAnatomyPreview),
-                Example("Kbd interaction", "Shortcut sequence refresh, density toggle, command hint composition, and disabled host examples.", "Navigation/KbdInteraction.axaml", BuildKbdInteractionPreview)
+                Example("Kbd interaction", "Shortcut sequence refresh, density toggle, command hint composition, and disabled host examples.", "Navigation/KbdInteraction.axaml", BuildKbdInteractionPreview,
+                    Code("Navigation/KbdInteraction.cs", "CSharp/Navigation/KbdInteraction.cs"))
             ],
             "overlay.dialog" =>
             [
                 Example("Layer states", "Open and closed dialog surfaces with shared action and close slots.", "Overlay/DialogStates.axaml", BuildDialogStatesPreview),
                 Example("Dialog anatomy", "Header, content, close control, footer action row, and destructive confirmation layout.", "Overlay/DialogAnatomy.axaml", BuildDialogAnatomyPreview),
-                Example("Dialog interaction", "Dismiss command, Escape and outside-pointer policy, close action, restore-focus target, and closed exit state examples.", "Overlay/DialogInteraction.axaml", BuildDialogInteractionPreview)
+                Example(
+                    "Dialog interaction",
+                    "Dismiss command, Escape and outside-pointer policy, close action, restore-focus target, and closed exit state examples.",
+                    "Overlay/DialogInteraction.axaml",
+                    BuildDialogInteractionPreview,
+                    Code("Overlay/DialogInteraction.cs", "CSharp/Overlay/DialogInteraction.cs"))
             ],
             "overlay.alert-dialog" =>
             [
                 Example("Alert states", "Default, small, destructive, media, loading, and closed alert-dialog states.", "Overlay/AlertDialogStates.axaml", BuildAlertDialogStatesPreview),
                 Example("Alert anatomy", "Media, title, description, content, cancel, and action slots composed as a response surface.", "Overlay/AlertDialogAnatomy.axaml", BuildAlertDialogAnatomyPreview),
-                Example("Alert interaction", "Cancel/action command paths, Escape focus return, action loading, outside-pointer policy, and async close examples.", "Overlay/AlertDialogInteraction.axaml", BuildAlertDialogInteractionPreview)
+                Example(
+                    "Alert interaction",
+                    "Cancel/action command paths, Escape focus return, action loading, outside-pointer policy, and async close examples.",
+                    "Overlay/AlertDialogInteraction.axaml",
+                    BuildAlertDialogInteractionPreview,
+                    Code("Overlay/AlertDialogInteraction.cs", "CSharp/Overlay/AlertDialogInteraction.cs"))
             ],
             "overlay.sheet" =>
             [
                 Example("Sheet states", "Right, left, top, bottom, closed, and no-close drawer surface states.", "Overlay/SheetStates.axaml", BuildSheetStatesPreview),
                 Example("Sheet anatomy", "Header, body, footer action, close content, and scrollable drawer body.", "Overlay/SheetAnatomy.axaml", BuildSheetAnatomyPreview),
-                Example("Sheet interaction", "Side switching, dismiss command, Escape/outside-pointer policy, focus return, and closed edge motion examples.", "Overlay/SheetInteraction.axaml", BuildSheetInteractionPreview)
+                Example(
+                    "Sheet interaction",
+                    "Side switching, dismiss command, Escape/outside-pointer policy, focus return, and closed edge motion examples.",
+                    "Overlay/SheetInteraction.axaml",
+                    BuildSheetInteractionPreview,
+                    Code("Overlay/SheetInteraction.cs", "CSharp/Overlay/SheetInteraction.cs"))
             ],
             "overlay.drawer" =>
             [
                 Example("Drawer states", "Bottom, top, left, right, closed, no-handle, and drag-ready drawer states.", "Overlay/DrawerStates.axaml", BuildDrawerStatesPreview),
                 Example("Drawer anatomy", "Handle, header, scrollable body, footer actions, close content, and direction composition.", "Overlay/DrawerAnatomy.axaml", BuildDrawerAnatomyPreview),
-                Example("Drawer interaction", "Handle drag, drag-dismiss threshold, reopen, direction cycling, Escape policy, and focus return examples.", "Overlay/DrawerInteraction.axaml", BuildDrawerInteractionPreview)
+                Example(
+                    "Drawer interaction",
+                    "Primary handle drag, drag-dismiss threshold, reopen, direction cycling, Escape policy, and focus return examples.",
+                    "Overlay/DrawerInteraction.axaml",
+                    BuildDrawerInteractionPreview,
+                    Code("Overlay/DrawerInteraction.cs", "CSharp/Overlay/DrawerInteraction.cs"))
             ],
             "overlay.command-dialog" =>
             [
                 Example("Command dialog states", "Open, closed, loading, close-on-select, and grouped command dialog states.", "Overlay/CommandDialogStates.axaml", BuildCommandDialogStatesPreview),
                 Example("Command dialog anatomy", "Dialog forwarding for command input, filtering, list, groups, separators, shortcuts, and empty content.", "Overlay/CommandDialogAnatomy.axaml", BuildCommandDialogAnatomyPreview),
-                Example("Command dialog interaction", "Close-on-select, loading suppression, disabled item, shortcut, grouped results, and closed overlay examples.", "Overlay/CommandDialogInteraction.axaml", BuildCommandDialogInteractionPreview)
+                Example(
+                    "Command dialog interaction",
+                    "Close-on-select, loading suppression, disabled item, shortcut, grouped results, and closed overlay examples.",
+                    "Overlay/CommandDialogInteraction.axaml",
+                    BuildCommandDialogInteractionPreview,
+                    Code("Overlay/CommandDialogInteraction.cs", "CSharp/Overlay/CommandDialogInteraction.cs"))
             ],
             "overlay.popover" =>
             [
                 Example("Popover states", "Open, closed, action, placement, and focus-return popover states.", "Overlay/PopoverStates.axaml", BuildPopoverStatesPreview),
                 Example("Popover anatomy", "Trigger, header, body content, action slot, close control, and manual-dismiss variant.", "Overlay/PopoverAnatomy.axaml", BuildPopoverAnatomyPreview),
-                Example("Popover interaction", "Trigger-owned open state, dismiss command, focus return, Escape/outside-pointer policy, and action slot examples.", "Overlay/PopoverInteraction.axaml", BuildPopoverInteractionPreview)
+                Example(
+                    "Popover interaction",
+                    "Trigger-owned open state, dismiss command, focus return, Escape/outside-pointer policy, and action slot examples.",
+                    "Overlay/PopoverInteraction.axaml",
+                    BuildPopoverInteractionPreview,
+                    Code("Overlay/PopoverInteraction.cs", "CSharp/Overlay/PopoverInteraction.cs"))
             ],
             "overlay.tooltip" =>
             [
                 Example("Tooltip states", "Top, bottom, left, right, arrow, small, and closed tooltip states.", "Overlay/TooltipStates.axaml", BuildTooltipStatesPreview),
                 Example("Tooltip anatomy", "Provider delay, trigger slot, content surface, side placement, Kbd content, and disabled trigger wrapper.", "Overlay/TooltipAnatomy.axaml", BuildTooltipAnatomyPreview),
-                Example("Tooltip interaction", "OpenChanged status, provider timing, focus-open parity, keyboard dismissal, persistent hints, and closed defaults.", "Overlay/TooltipInteraction.axaml", BuildTooltipInteractionPreview)
+                Example(
+                    "Tooltip interaction",
+                    "OpenChanged status, provider timing, focus-open parity, keyboard dismissal, persistent hints, and closed defaults.",
+                    "Overlay/TooltipInteraction.axaml",
+                    BuildTooltipInteractionPreview,
+                    Code("Overlay/TooltipInteraction.cs", "CSharp/Overlay/TooltipInteraction.cs"))
             ],
             "overlay.hover-card" =>
             [
                 Example("Delay states", "Open and closed hover-card surfaces for timing and side placement checks.", "Overlay/HoverCardStates.axaml", BuildHoverCardStatesPreview),
                 Example("Hover card anatomy", "Trigger, content, side, align, avatar-rich preview, shortcut content, and closed-state composition.", "Overlay/HoverCardAnatomy.axaml", BuildHoverCardAnatomyPreview),
-                Example("Hover card interaction", "Open and close delay, focus/hover trigger, side and align classes, disabled trigger, and arrow visibility examples.", "Overlay/HoverCardInteraction.axaml", BuildHoverCardInteractionPreview)
+                Example(
+                    "Hover card interaction",
+                    "Open and close delay, focus/hover trigger, side and align classes, disabled trigger, and arrow visibility examples.",
+                    "Overlay/HoverCardInteraction.axaml",
+                    BuildHoverCardInteractionPreview,
+                    Code("Overlay/HoverCardInteraction.cs", "CSharp/Overlay/HoverCardInteraction.cs"))
             ],
             "data.card" =>
             [
                 Example("Card states", "Default, interactive, header-only, footer action, and dense card states.", "DataDisplay/CardStates.axaml", BuildCardStatesPreview),
-                Example("Card interaction", "Pointer selection, footer action, dynamic slot updates, and disabled action composition examples.", "DataDisplay/CardInteraction.axaml", BuildCardInteractionPreview)
+                Example("Card anatomy", "Surface, header, title, description, content, footer, and interactive state anatomy.", "DataDisplay/CardAnatomy.axaml", BuildCardAnatomyPreview),
+                Example("Card interaction", "Pointer selection, footer action, dynamic slot updates, and disabled action composition examples.", "DataDisplay/CardInteraction.axaml", BuildCardInteractionPreview,
+                    Code("DataDisplay/CardInteraction.cs", "CSharp/DataDisplay/CardInteraction.cs"))
             ],
             "data.item" =>
             [
                 Example("Item states", "Default, selected, loading, disabled, and interactive item row states.", "DataDisplay/ItemStates.axaml", BuildItemStatesPreview),
                 Example("Item anatomy", "Header, media, title, description, content, actions, footer, group, and separator composition.", "DataDisplay/ItemAnatomy.axaml", BuildItemAnatomyPreview),
-                Example("Item interaction", "Pointer activation, Enter/Space activation, nested action slots, command guards, and grouped rows.", "DataDisplay/ItemInteraction.axaml", BuildItemInteractionPreview)
+                Example("Item interaction", "Pointer activation, Enter/Space activation, nested action slots, command guards, and grouped rows.", "DataDisplay/ItemInteraction.axaml", BuildItemInteractionPreview,
+                    Code("DataDisplay/ItemInteraction.cs", "CSharp/DataDisplay/ItemInteraction.cs"))
             ],
             "data.aspect-ratio" =>
             [
                 Example("Aspect Ratio states", "Video, square, portrait, empty, and fit-mode aspect ratio states.", "DataDisplay/AspectRatioStates.axaml", BuildAspectRatioStatesPreview),
                 Example("Aspect Ratio anatomy", "Root, viewport, content host, empty placeholder, ratio text, and clipped media content.", "DataDisplay/AspectRatioAnatomy.axaml", BuildAspectRatioAnatomyPreview),
-                Example("Aspect Ratio interaction", "Ratio changes, fit-mode switching, content toggling, and RatioChanged event examples.", "DataDisplay/AspectRatioInteraction.axaml", BuildAspectRatioInteractionPreview)
+                Example("Aspect Ratio interaction", "Ratio changes, fit-mode switching, content toggling, and RatioChanged event examples.", "DataDisplay/AspectRatioInteraction.axaml", BuildAspectRatioInteractionPreview,
+                    Code("DataDisplay/AspectRatioInteraction.cs", "CSharp/DataDisplay/AspectRatioInteraction.cs"))
             ],
             "data.carousel" =>
             [
                 Example("Carousel states", "Default, loop, vertical, no-navigation, compact, and large carousel states.", "DataDisplay/CarouselStates.axaml", BuildCarouselStatesPreview),
+                Example("Carousel anatomy", "Viewport, items, previous, next, status, and boundary classes composed together.", "DataDisplay/CarouselAnatomy.axaml", BuildCarouselAnatomyPreview),
                 Example("Carousel composition", "Card slides, variable slide widths, status text, and action composition examples.", "DataDisplay/CarouselComposition.axaml", BuildCarouselCompositionPreview),
-                Example("Carousel interaction", "Previous/next commands, selected-index event updates, keyboard navigation, and boundary guard examples.", "DataDisplay/CarouselInteraction.axaml", BuildCarouselInteractionPreview)
+                Example("Carousel interaction", "Previous/next commands, selected-index event updates, keyboard navigation, and boundary guard examples.", "DataDisplay/CarouselInteraction.axaml", BuildCarouselInteractionPreview,
+                    Code("DataDisplay/CarouselInteraction.cs", "CSharp/DataDisplay/CarouselInteraction.cs"))
             ],
             "data.chart" =>
             [
                 Example("Chart states", "Default, compact, refreshing, hidden tooltip, vertical legend, and custom indicator chart states.", "DataDisplay/ChartStates.axaml", BuildChartStatesPreview),
                 Example("Chart anatomy", "Container header, chart content, legend, tooltip content, tooltip items, and footer composition.", "DataDisplay/ChartAnatomy.axaml", BuildChartAnatomyPreview),
-                Example("Chart interaction", "Data refresh, tooltip visibility, legend orientation, indicator style, and compact density examples.", "DataDisplay/ChartInteraction.axaml", BuildChartInteractionPreview)
+                Example("Chart interaction", "Data refresh, tooltip visibility, legend orientation, indicator style, and compact density examples.", "DataDisplay/ChartInteraction.axaml", BuildChartInteractionPreview,
+                    Code("DataDisplay/ChartInteraction.cs", "CSharp/DataDisplay/ChartInteraction.cs"))
             ],
             "data.bar-chart" =>
             [
                 Example("Bar Chart states", "Vertical, horizontal, compact gridless, negative, empty, and disabled bar chart states.", "DataDisplay/BarChartStates.axaml", BuildBarChartStatesPreview),
                 Example("Bar Chart anatomy", "Plot, grid, rounded bars, zero baseline, active bar, tooltip, and chart container composition.", "DataDisplay/BarChartAnatomy.axaml", BuildBarChartAnatomyPreview),
-                Example("Bar Chart interaction", "ItemsSource refresh, ActiveItemChanged, orientation, grid, axis labels, and reduced-motion examples.", "DataDisplay/BarChartInteraction.axaml", BuildBarChartInteractionPreview)
+                Example("Bar Chart interaction", "ItemsSource refresh, ActiveItemChanged, orientation, grid, axis labels, and reduced-motion examples.", "DataDisplay/BarChartInteraction.axaml", BuildBarChartInteractionPreview,
+                    Code("DataDisplay/BarChartInteraction.cs", "CSharp/DataDisplay/BarChartInteraction.cs"))
             ],
             "data.line-chart" =>
             [
                 Example("Line Chart states", "Area, line-only, compact, gridless, empty, and disabled line chart states.", "DataDisplay/LineChartStates.axaml", BuildLineChartStatesPreview),
                 Example("Line Chart anatomy", "Plot, grid, area fill, line path, dots, active point, tooltip, and chart container composition.", "DataDisplay/LineChartAnatomy.axaml", BuildLineChartAnatomyPreview),
-                Example("Line Chart interaction", "ItemsSource refresh, ActivePointChanged, compact density, dots, area, and reduced-motion examples.", "DataDisplay/LineChartInteraction.axaml", BuildLineChartInteractionPreview)
+                Example("Line Chart interaction", "ItemsSource refresh, ActivePointChanged, compact density, dots, area, and reduced-motion examples.", "DataDisplay/LineChartInteraction.axaml", BuildLineChartInteractionPreview,
+                    Code("DataDisplay/LineChartInteraction.cs", "CSharp/DataDisplay/LineChartInteraction.cs"))
             ],
             "data.metric" =>
             [
                 Example("Metric states", "Stat card, metric, icon, detail, compact, and empty-detail metric states.", "DataDisplay/MetricStates.axaml", BuildMetricStatesPreview),
-                Example("Metric interaction", "Refresh updates, detail toggles, icon swaps, accent handoff, and compact metric composition examples.", "DataDisplay/MetricInteraction.axaml", BuildMetricInteractionPreview)
+                Example("Metric anatomy", "StatCard and Metric label, value, detail, icon, and accent slots.", "DataDisplay/MetricAnatomy.axaml", BuildMetricAnatomyPreview),
+                Example("Metric interaction", "Refresh updates, detail toggles, icon swaps, accent handoff, and compact metric composition examples.", "DataDisplay/MetricInteraction.axaml", BuildMetricInteractionPreview,
+                    Code("DataDisplay/MetricInteraction.cs", "CSharp/DataDisplay/MetricInteraction.cs"))
             ],
             "data.image-icon" =>
             [
                 Example("Image icon states", "Small, medium, large, missing-source, and provider logo image icon states.", "DataDisplay/ImageIconStates.axaml", BuildImageIconStatesPreview),
-                Example("Image icon interaction", "Provider resource switching, load/error lifecycle events, size changes, and disabled host composition examples.", "DataDisplay/ImageIconInteraction.axaml", BuildImageIconInteractionPreview)
+                Example("Image icon anatomy", "Path source, bitmap state classes, empty source, missing source, and host composition anatomy.", "DataDisplay/ImageIconAnatomy.axaml", BuildImageIconAnatomyPreview),
+                Example("Image icon interaction", "Provider resource switching, load/error lifecycle events, size changes, and disabled host composition examples.", "DataDisplay/ImageIconInteraction.axaml", BuildImageIconInteractionPreview,
+                    Code("DataDisplay/ImageIconInteraction.cs", "CSharp/DataDisplay/ImageIconInteraction.cs"))
             ],
             "data.provider-card" =>
             [
                 Example("Provider card states", "Active, inactive, dragging, disabled, status, usage, and action provider rows.", "DataDisplay/ProviderCardStates.axaml", BuildProviderCardStatesPreview),
-                Example("Provider card interaction", "Sibling active selection, drag visual feedback, action slot, disabled guard, and usage/status slot examples.", "DataDisplay/ProviderCardInteraction.axaml", BuildProviderCardInteractionPreview)
+                Example("Provider card anatomy", "Leading, icon, header, meta, description, status, usage, and actions slot anatomy.", "DataDisplay/ProviderCardAnatomy.axaml", BuildProviderCardAnatomyPreview),
+                Example("Provider card interaction", "Sibling active selection, drag visual feedback, action slot, disabled guard, and usage/status slot examples.", "DataDisplay/ProviderCardInteraction.axaml", BuildProviderCardInteractionPreview,
+                    Code("DataDisplay/ProviderCardInteraction.cs", "CSharp/DataDisplay/ProviderCardInteraction.cs"))
             ],
             "data.pagination" =>
             [
                 Example("Boundary states", "First page, middle range, last page, loading, and compact pagination.", "DataDisplay/PaginationStates.axaml", BuildPaginationStatesPreview),
-                Example("Pagination interaction", "Keyboard navigation, page event contract, compact mode, ellipses, and loading suppression.", "DataDisplay/PaginationInteraction.axaml", BuildPaginationInteractionPreview)
+                Example("Pagination anatomy", "First, previous, page item, ellipsis, next, last, current, compact, and loading anatomy.", "DataDisplay/PaginationAnatomy.axaml", BuildPaginationAnatomyPreview),
+                Example("Pagination interaction", "Keyboard navigation, page event contract, compact mode, ellipses, and loading suppression.", "DataDisplay/PaginationInteraction.axaml", BuildPaginationInteractionPreview,
+                    Code("DataDisplay/PaginationInteraction.cs", "CSharp/DataDisplay/PaginationInteraction.cs"))
             ],
             "data.table" =>
             [
                 Example("Density states", "Compact, striped, selected, disabled, and hoverable table rows.", "DataDisplay/TableStates.axaml", BuildTableStatesPreview),
                 Example("Table anatomy", "Header, body, footer, caption, aligned cells, and selected rows composed from table subcomponents.", "DataDisplay/TableAnatomy.axaml", BuildTableAnatomyPreview),
-                Example("Table interaction", "Pointer row selection, sibling clearing, density toggles, hover guards, and transition refresh examples.", "DataDisplay/TableInteraction.axaml", BuildTableInteractionPreview)
+                Example("Table interaction", "Pointer row selection, sibling clearing, density toggles, hover guards, and transition refresh examples.", "DataDisplay/TableInteraction.axaml", BuildTableInteractionPreview,
+                    Code("DataDisplay/TableInteraction.cs", "CSharp/DataDisplay/TableInteraction.cs"))
             ],
             "data.data-table" =>
             [
                 Example("Data Table states", "Filtered, selected, empty, loading, hidden-column, and compact data-table states.", "DataDisplay/DataTableStates.axaml", BuildDataTableStatesPreview),
                 Example("Data Table anatomy", "Toolbar, filter input, column menu, table header/body/footer, row actions, selection summary, and pagination.", "DataDisplay/DataTableAnatomy.axaml", BuildDataTableAnatomyPreview),
-                Example("Data Table interaction", "Filter toggle, amount sorting, column visibility, row selection, action menu, and pagination trigger examples.", "DataDisplay/DataTableInteraction.axaml", BuildDataTableInteractionPreview)
+                Example("Data Table interaction", "Filter toggle, amount sorting, column visibility, row selection, action menu, and pagination trigger examples.", "DataDisplay/DataTableInteraction.axaml", BuildDataTableInteractionPreview,
+                    Code("DataDisplay/DataTableInteraction.cs", "CSharp/DataDisplay/DataTableInteraction.cs"))
             ],
             "data.pinned-table" =>
             [
                 Example("Pinned states", "Default, compact, loading, synchronized headers, and refresh transition states.", "DataDisplay/PinnedTableStates.axaml", BuildPinnedTableStatesPreview),
-                Example("Pinned table interaction", "Horizontal body scroll synchronizes the header while refresh and density actions exercise transition paths.", "DataDisplay/PinnedTableInteraction.axaml", BuildPinnedTableInteractionPreview)
+                Example("Pinned anatomy", "Start, middle, end header and cell regions with synchronized owned scrollbars.", "DataDisplay/PinnedTableAnatomy.axaml", BuildPinnedTableAnatomyPreview),
+                Example("Pinned table interaction", "Horizontal body scroll synchronizes the header while refresh and density actions exercise transition paths.", "DataDisplay/PinnedTableInteraction.axaml", BuildPinnedTableInteractionPreview,
+                    Code("DataDisplay/PinnedTableInteraction.cs", "CSharp/DataDisplay/PinnedTableInteraction.cs"))
             ],
             "data.scroll-area" =>
             [
                 Example("Scroll states", "Hover, always, inset, disabled, and boundary scroll-area states.", "DataDisplay/ScrollAreaStates.axaml", BuildScrollAreaStatesPreview),
-                Example("Scroll interaction", "Scroll metrics, boundary actions, hover/scroll visibility, idle reset, and disabled guard examples.", "DataDisplay/ScrollAreaInteraction.axaml", BuildScrollAreaInteractionPreview)
+                Example("Scroll anatomy", "Root, viewport, content presenter, scrollbars, corner, thumb, and boundary class anatomy.", "DataDisplay/ScrollAreaAnatomy.axaml", BuildScrollAreaAnatomyPreview),
+                Example("Scroll interaction", "Scroll metrics, boundary actions, hover/scroll visibility, idle reset, and disabled guard examples.", "DataDisplay/ScrollAreaInteraction.axaml", BuildScrollAreaInteractionPreview,
+                    Code("DataDisplay/ScrollAreaInteraction.cs", "CSharp/DataDisplay/ScrollAreaInteraction.cs"))
             ],
             "data.ranked-bar-chart" =>
             [
                 Example("Rank states", "Default, compact, max-visible, empty, and accent ranked bar chart states.", "DataDisplay/RankedBarChartStates.axaml", BuildRankedBarChartStatesPreview),
-                Example("Rank interaction", "Collection refresh, ActiveItemChanged, compact density, max-visible changes, empty state, and accent refresh examples.", "DataDisplay/RankedBarChartInteraction.axaml", BuildRankedBarChartInteractionPreview)
+                Example("Rank anatomy", "Row label, track, active row, value, detail, accent, empty, and max-visible anatomy.", "DataDisplay/RankedBarChartAnatomy.axaml", BuildRankedBarChartAnatomyPreview),
+                Example("Rank interaction", "Collection refresh, ActiveItemChanged, compact density, max-visible changes, empty state, and accent refresh examples.", "DataDisplay/RankedBarChartInteraction.axaml", BuildRankedBarChartInteractionPreview,
+                    Code("DataDisplay/RankedBarChartInteraction.cs", "CSharp/DataDisplay/RankedBarChartInteraction.cs"))
             ],
             "data.usage-pie-chart" =>
             [
                 Example("Usage states", "Default, compact, empty, animated, and hover-ready usage pie chart states.", "DataDisplay/UsagePieChartStates.axaml", BuildUsagePieChartStatesPreview),
-                Example("Usage interaction", "Pointer hover tooltip interpolation, ActiveItemChanged, collection refresh animation, compact density, and reduced-motion examples.", "DataDisplay/UsagePieChartInteraction.axaml", BuildUsagePieChartInteractionPreview)
+                Example("Pie anatomy", "Slices, center label/value, legend text, active tooltip, compact, empty, and animation token anatomy.", "DataDisplay/UsagePieChartAnatomy.axaml", BuildUsagePieChartAnatomyPreview),
+                Example("Usage interaction", "Pointer hover tooltip interpolation, ActiveItemChanged, collection refresh animation, compact density, and reduced-motion examples.", "DataDisplay/UsagePieChartInteraction.axaml", BuildUsagePieChartInteractionPreview,
+                    Code("DataDisplay/UsagePieChartInteraction.cs", "CSharp/DataDisplay/UsagePieChartInteraction.cs"))
             ],
             "data.usage-trend-chart" =>
             [
                 Example("Trend states", "Hourly, daily, refreshing, empty, cost, and pointer-hover-ready trend chart states.", "DataDisplay/UsageTrendChartStates.axaml", BuildUsageTrendChartStatesPreview),
-                Example("Trend interaction", "Pointer marker tooltip, refresh overlay, granularity switch, empty state, and data refresh animation examples.", "DataDisplay/UsageTrendChartInteraction.axaml", BuildUsageTrendChartInteractionPreview)
+                Example("Trend anatomy", "Plot area, token series, request bars, cost line, refresh overlay, marker, and tooltip anatomy.", "DataDisplay/UsageTrendChartAnatomy.axaml", BuildUsageTrendChartAnatomyPreview),
+                Example("Trend interaction", "Pointer marker tooltip, refresh overlay, granularity switch, empty state, and data refresh animation examples.", "DataDisplay/UsageTrendChartInteraction.axaml", BuildUsageTrendChartInteractionPreview,
+                    Code("DataDisplay/UsageTrendChartInteraction.cs", "CSharp/DataDisplay/UsageTrendChartInteraction.cs"))
             ],
             "primitives.typography" =>
             [
+                Example("Typography anatomy", "Title, subtitle, body, muted, code roles, wrapping, and dense content rhythm.", "Primitives/TypographyAnatomy.axaml", BuildTypographyAnatomyPreview),
                 Example("Type states", "Title, subtitle, body, muted, code, wrapping, and theme typography states.", "Primitives/TypographyStates.axaml", BuildTypographyStatesPreview),
-                Example("Typography interaction", "Role switching, wrapping, code role, muted metadata, and dense content hierarchy examples.", "Primitives/TypographyInteraction.axaml", BuildTypographyInteractionPreview)
+                Example("Typography interaction", "Role switching, wrapping, code role, muted metadata, and dense content hierarchy examples.", "Primitives/TypographyInteraction.axaml", BuildTypographyInteractionPreview,
+                    Code("Primitives/TypographyInteraction.cs", "CSharp/Primitives/TypographyInteraction.cs"))
             ],
             "primitives.focus-ring" =>
             [
+                Example("Focus anatomy", "Wrapped child content, visibility, thickness, offset, radius, brush, and disabled target composition.", "Primitives/FocusRingAnatomy.axaml", BuildFocusRingAnatomyPreview),
                 Example("Ring states", "Visible, hidden, thick, offset, rounded, and wrapped focus ring states.", "Primitives/FocusRingStates.axaml", BuildFocusRingStatesPreview),
-                Example("Focus ring interaction", "Visibility toggles, thickness and offset updates, wrapped button targets, and disabled focus target examples.", "Primitives/FocusRingInteraction.axaml", BuildFocusRingInteractionPreview)
+                Example("Focus ring interaction", "Visibility toggles, thickness and offset updates, wrapped button targets, and disabled focus target examples.", "Primitives/FocusRingInteraction.axaml", BuildFocusRingInteractionPreview,
+                    Code("Primitives/FocusRingInteraction.cs", "CSharp/Primitives/FocusRingInteraction.cs"))
             ],
             "primitives.direction" =>
             [
+                Example("Direction anatomy", "LTR provider, RTL provider, nested override, inherited field layout, and action mirroring.", "Primitives/DirectionAnatomy.axaml", BuildDirectionAnatomyPreview),
                 Example("Direction states", "LTR, RTL, nested override, disabled, and mirrored action row states.", "Primitives/DirectionStates.axaml", BuildDirectionStatesPreview),
-                Example("Direction interaction", "Direction switch, nested override, event status, form alignment, and action mirroring examples.", "Primitives/DirectionInteraction.axaml", BuildDirectionInteractionPreview)
+                Example("Direction interaction", "Direction switch, nested override, event status, form alignment, and action mirroring examples.", "Primitives/DirectionInteraction.axaml", BuildDirectionInteractionPreview,
+                    Code("Primitives/DirectionInteraction.cs", "CSharp/Primitives/DirectionInteraction.cs"))
             ],
             "primitives.overlay" =>
             [
+                Example("Overlay anatomy", "Open layer, scrim, content alignment, close policy, manual layer, and closed composition.", "Primitives/OverlayAnatomy.axaml", BuildOverlayPrimitiveAnatomyPreview),
                 Example("Overlay states", "Open, closed, no-scrim, light-scrim, and dismissal-ready overlay states.", "Primitives/OverlayStates.axaml", BuildOverlayPrimitiveStatesPreview),
-                Example("Overlay interaction", "Dismiss command, reopen, Escape/outside-pointer policy, scrim toggle, and closed state examples.", "Primitives/OverlayInteraction.axaml", BuildOverlayPrimitiveInteractionPreview)
+                Example(
+                    "Overlay interaction",
+                    "Dismiss command, reopen, Escape/outside-pointer policy, scrim toggle, and closed state examples.",
+                    "Primitives/OverlayInteraction.axaml",
+                    BuildOverlayPrimitiveInteractionPreview,
+                    Code("Primitives/OverlayInteraction.cs", "CSharp/Primitives/OverlayInteraction.cs"))
             ],
             "tokens.motion" =>
             [
+                Example("Motion anatomy", "Duration tokens, easing resources, opacity transition, translate transition, and reduced-motion handoff.", "Tokens/MotionAnatomy.axaml", BuildMotionAnatomyPreview),
                 Example("Motion states", "Fast, default, slow, overlay, reduced-motion, and token timing examples.", "Tokens/MotionStates.axaml", BuildMotionStatesPreview),
-                Example("Motion interaction", "Runtime duration resolution, opacity transition, translate motion, reduced-duration handoff, and token comparison examples.", "Tokens/MotionInteraction.axaml", BuildMotionInteractionPreview)
+                Example("Motion interaction", "Runtime duration resolution, opacity transition, translate motion, reduced-duration handoff, and token comparison examples.", "Tokens/MotionInteraction.axaml", BuildMotionInteractionPreview,
+                    Code("Tokens/MotionInteraction.cs", "CSharp/Tokens/MotionInteraction.cs"))
             ],
             _ => []
         });
@@ -1080,9 +1401,19 @@ public sealed class MainWindow : Window
         return examples;
     }
 
-    private static DocsExampleCase Example(string title, string description, string samplePath, Func<Control> preview)
+    private static DocsExampleCase Example(
+        string title,
+        string description,
+        string samplePath,
+        Func<Control> preview,
+        params DocsCodeSnippet[] additionalCodeSamples)
     {
-        return new DocsExampleCase(title, description, samplePath, preview);
+        return new DocsExampleCase(title, description, samplePath, preview, additionalCodeSamples);
+    }
+
+    private static DocsCodeSnippet Code(string title, string samplePath)
+    {
+        return new DocsCodeSnippet(title, samplePath);
     }
 
     private static IReadOnlyList<DocsStateCase> StateCasesFor(string pageId)
@@ -1103,7 +1434,8 @@ public sealed class MainWindow : Window
                 State("Expanded", "Sidebar", "Expanded sidebars expose header, content, footer, menu, trigger, rail, and inset state."),
                 State("Icon", "Collapsible", "Icon mode narrows the sidebar while preserving menu hit targets and rail toggling."),
                 State("Offcanvas", "Collapsible", "Offcanvas mode translates the sidebar off the selected side when collapsed."),
-                State("Inset", "Variant", "Inset sidebars pair with SidebarInset so main content responds to the same state.")
+                State("Inset", "Variant", "Inset sidebars pair with SidebarInset so main content responds to the same state."),
+                State("Command blocked", "Trigger", "Trigger and rail expose command-blocked when host commands cannot toggle the sidebar.")
             ],
             "layout.sidebar-primitives" =>
             [
@@ -1126,7 +1458,7 @@ public sealed class MainWindow : Window
                 State("Panel group", "Root", "Children compose as Panel, Handle, Panel without page-local split layout."),
                 State("Orientation", "Root", "Horizontal and vertical groups use the same percent layout contract."),
                 State("With handle", "Handle", "WithHandle reveals the visible grip while the separator track remains interactive."),
-                State("Dragging", "Handle", "Pointer drag marks the active handle and group dragging state."),
+                State("Dragging", "Handle", "Primary pointer drag marks the active handle and group dragging state."),
                 State("Constraints", "Panel", "MinSize and MaxSize clamp resize deltas before layout changes.")
             ],
             "forms.button" =>
@@ -1196,6 +1528,7 @@ public sealed class MainWindow : Window
                 State("Closed", "Trigger", "Selected value remains visible in the trigger."),
                 State("Open", "Popup", "Popup surface uses Codex popover tokens."),
                 State("Selected", "Item", "Selected item state is driven by ComboBox selection."),
+                State("Source", "Event", "ValueChanged and OpenChanged report Pointer, Keyboard, or Programmatic source."),
                 State("Disabled", "Trigger", "Disabled select cannot open the popup."),
                 State("Focus-visible", "Trigger", "Keyboard focus shows the shared ring contract.")
             ],
@@ -1207,12 +1540,13 @@ public sealed class MainWindow : Window
                 State("Selected", "Item", "Selected item shows a check indicator and fills the input text."),
                 State("Empty/loading", "Status", "Empty and loading slots replace the item list while staying in the same popup."),
                 State("Clear", "Action", "Clear button appears when text or a selection is present."),
-                State("Metadata", "Event args", "SelectionChanged includes old/new items, indexes, display values, and source.")
+                State("Metadata", "Event args", "SelectionChanged and OpenChanged include source metadata for input, item, keyboard, pointer, clear, focus, and host paths.")
             ],
             "forms.native-select" =>
             [
                 State("Placeholder", "Option", "An empty option value keeps the trigger in placeholder-visible state."),
                 State("Selected", "Option", "Selected option state is driven by native ComboBox selection."),
+                State("Source", "Event", "ValueChanged and OpenChanged report Pointer, Keyboard, or Programmatic option/popup source."),
                 State("OptGroup", "List", "OptGroup rows render as disabled group labels above their options."),
                 State("Invalid", "Trigger", "Invalid state maps to destructive border styling like aria-invalid."),
                 State("Disabled", "Trigger/Option", "Disabled selects and disabled options suppress activation.")
@@ -1225,7 +1559,9 @@ public sealed class MainWindow : Window
                 State("Outside", "Day cell", "Outside days can stay visible and muted or become blank hit-test-suppressed cells."),
                 State("Week numbers", "Grid", "ShowWeekNumbers adds a leading week-number column and header."),
                 State("Unavailable", "Day cell", "MinDate, MaxDate, and booked dates disable selection while preserving layout."),
-                State("Active", "Focus target", "ActiveDate mirrors the Web roving-day target for keyboard navigation.")
+                State("Active", "Focus target", "ActiveDate mirrors the Web roving-day target for keyboard navigation."),
+                State("Command blocked", "Day cell", "Command CanExecute=false applies command-blocked before day activation."),
+                State("Source", "Event", "SelectedDateChanged, RangeChanged, DisplayDateChanged, and ActiveDateChanged report Pointer, Keyboard, or Programmatic source.")
             ],
             "forms.date-picker" =>
             [
@@ -1234,7 +1570,8 @@ public sealed class MainWindow : Window
                 State("Open", "Popover", "Open class drives the popover opacity/scale entrance and chevron rotation."),
                 State("Range", "Calendar", "RangeStart and RangeEnd are forwarded into the Calendar range grid."),
                 State("Loading", "Popover", "Loading overlay blocks trigger/select actions while preserving the open surface."),
-                State("Disabled bounds", "Calendar", "MinDate and MaxDate make unavailable days non-selectable.")
+                State("Disabled bounds", "Calendar", "MinDate and MaxDate make unavailable days non-selectable."),
+                State("Source", "Event", "OpenChanged, SelectedDateChanged, and RangeChanged report Pointer, Keyboard, or Programmatic source.")
             ],
             "forms.field" =>
             [
@@ -1253,7 +1590,7 @@ public sealed class MainWindow : Window
                 State("Open", "Surface", "Open class drives popup surface styling."),
                 State("Loading", "Trigger", "Loading prevents primary action and popup activation."),
                 State("Disabled", "Trigger", "Disabled trigger never opens."),
-                State("Close-on-select", "Surface action", "Child actions dismiss when enabled.")
+                State("Close-on-select", "Surface action", "Child actions dismiss when enabled and report Selection source.")
             ],
             "forms.toggle" =>
             [
@@ -1261,7 +1598,8 @@ public sealed class MainWindow : Window
                 State("Unpressed", "Toggle", "Unpressed state maps to state-off without mutating content."),
                 State("Outline", "Toggle", "Variant tokens change the standalone toggle surface."),
                 State("Size", "Toggle", "Small, default, large, and icon sizes keep hit targets stable."),
-                State("Disabled", "Toggle", "Disabled toggles preserve pressed state but suppress activation.")
+                State("Disabled", "Toggle", "Disabled toggles preserve pressed state but suppress activation."),
+                State("Source", "Event", "PressedChanged reports Pointer, Keyboard, or Programmatic pressed source.")
             ],
             "forms.toggle-group" =>
             [
@@ -1269,7 +1607,8 @@ public sealed class MainWindow : Window
                 State("Multiple group", "ToggleGroup", "Items can be toggled independently."),
                 State("Spacing", "ToggleGroup", "Spacing maps to shadcn spacing values, including connected spacing=0 items."),
                 State("Orientation", "ToggleGroup", "Horizontal and vertical groups use orientation-specific arrow keys."),
-                State("Roving focus", "ToggleGroup", "Arrow keys move through enabled items and Home/End jump to boundaries.")
+                State("Roving focus", "ToggleGroup", "Arrow keys move through enabled items and Home/End jump to boundaries."),
+                State("Source", "Event", "ValueChanged reports Pointer, Keyboard, or Programmatic toggle source.")
             ],
             "forms.checkbox" =>
             [
@@ -1278,9 +1617,19 @@ public sealed class MainWindow : Window
                 State("Indeterminate", "Indicator", "Three-state mixed selection exposes state-indeterminate and animates the bar glyph."),
                 State("Intent", "Root", "Semantic intent changes tone without changing activation."),
                 State("Disabled", "Root", "Disabled state suppresses interaction through the native control."),
-                State("Focus-visible", "Root", "Keyboard focus shows the shared focus ring.")
+                State("Focus-visible", "Root", "Keyboard focus shows the shared focus ring."),
+                State("Source", "Event", "CheckedStateChanged reports Pointer, Keyboard, or Programmatic checked source.")
             ],
-            "forms.checkbox" or "forms.radio" or "forms.switch" =>
+            "forms.switch" =>
+            [
+                State("Checked", "Track", "Checked state moves the thumb and exposes the checked visual contract."),
+                State("Unchecked", "Track", "Unchecked state returns the thumb to the start edge."),
+                State("Intent", "Root", "Semantic intent changes tone without changing activation."),
+                State("Disabled", "Root", "Disabled state suppresses interaction through the native control."),
+                State("Focus-visible", "Root", "Keyboard focus shows the shared focus ring."),
+                State("Source", "Event", "CheckedChanged reports Pointer, Keyboard, or Programmatic checked source.")
+            ],
+            "forms.radio" =>
             [
                 State("Checked", "Indicator", "Selection visuals are property-driven by native checked state."),
                 State("Unchecked", "Indicator", "Unchecked state returns to the neutral token surface."),
@@ -1296,12 +1645,12 @@ public sealed class MainWindow : Window
                 State("Loop", "Roving focus", "Loop controls arrow-key wrapping across enabled items."),
                 State("Loading", "Root", "Loading suppresses item activation without clearing the value."),
                 State("Required", "Root", "Required state is class-driven and flows to items."),
-                State("Metadata", "Event args", "ValueChanged includes old/new selected items, indexes, and values.")
+                State("Metadata", "Event args", "ValueChanged includes old/new selected items, indexes, values, and source.")
             ],
             "forms.slider" =>
             [
                 State("Value", "Track", "Decrease and thumb position follow the native Value property and expose has-value/at-min/at-max classes."),
-                State("Dragging", "Thumb", "Pointer drag adds the dragging class and uses the active thumb motion."),
+                State("Dragging", "Thumb", "Primary pointer drag adds the dragging class and uses the active thumb motion."),
                 State("Intent", "Root", "Intent changes track and thumb tone through tokens."),
                 State("Disabled", "Root", "Disabled state suppresses pointer and keyboard changes."),
                 State("Focus-visible", "Root", "Keyboard focus shows the shared focus ring.")
@@ -1322,21 +1671,40 @@ public sealed class MainWindow : Window
                 State("Delay", "Fallback", "FallbackDelay mirrors Radix delayMs so loading avatars can avoid a fast text flash."),
                 State("Status", "Indicator", "Status dot tone remains independent from image and fallback loading state.")
             ],
+            "feedback.avatar-group" =>
+            [
+                State("Stacked", "Root", "Stacked groups overlap visible children using the Overlap property."),
+                State("Inline", "Root", "Inline groups lay children edge-to-edge without page-local spacing."),
+                State("Inherited size", "Children", "Avatar and AvatarGroupCount children receive the group Size during measure and arrange."),
+                State("Overflow", "Count", "AvatarGroupCount renders the final overflow slot and shares group sizing."),
+                State("Visibility", "Items", "Hidden children are excluded from ItemCount, layout, and first/middle/last class assignment."),
+                State("Disabled", "Root", "Disabled groups preserve identity while reducing opacity through the shared disabled token.")
+            ],
             "feedback.empty-state" =>
             [
                 State("Default", "Surface", "Title, description, and actions are centered together."),
                 State("Outline", "Variant", "Bordered variant uses border/background resources."),
                 State("Loading", "Action", "Action command path can be suppressed while loading."),
                 State("Disabled", "Action", "Disabled action does not execute."),
+                State("Command blocked", "Actions", "Primary and secondary ActionCommand CanExecute=false expose command-blocked action classes."),
                 State("Semantic", "Variant", "Success/warning/destructive variants use semantic tokens.")
             ],
-            "feedback.toast" or "feedback.sonner" =>
+            "feedback.toast" =>
             [
                 State("Open", "Toast", "Open class drives enter styling."),
                 State("Closed", "Toast", "Closed class drives exit styling."),
                 State("Rich colors", "Surface", "Semantic toast variants map to Web tone."),
                 State("Action", "Slot", "Action and cancel buttons stay inside the toast contract."),
                 State("Close", "Button", "Close action routes through Dismiss.")
+            ],
+            "feedback.sonner" =>
+            [
+                State("Queue", "Service", "Toast, Success, Info, Warning, Error, and Loading insert newest toasts at the top of the service queue."),
+                State("Auto dismiss", "Timer", "Non-loading toasts start a duration timer, while loading toasts stay open until host dismissal."),
+                State("Closing", "Exit motion", "Dismiss marks the toast closing before exit motion removes it from the service collection."),
+                State("Stacking", "Viewport", "VisibleToasts, Expand, Gap, Offset, and Position own the viewport stack without page-local layout."),
+                State("Rich colors", "Toast variant", "RichColors maps generated toast variants onto Web Sonner semantic surfaces."),
+                State("Close visibility", "Viewport", "CloseButton toggles generated toast close affordances across the stack.")
             ],
             "feedback.spinner" or "feedback.progress" or "feedback.skeleton" =>
             [
@@ -1350,6 +1718,7 @@ public sealed class MainWindow : Window
             [
                 State("Value", "Root", "SelectedValue owns the active trigger like Web value state."),
                 State("Selected", "Tab item", "Selected item is property-driven by SelectedIndex and selected value."),
+                State("Source", "Event", "ValueChanged reports Pointer, Keyboard, or Programmatic selection source."),
                 State("Disabled", "Tab item", "Disabled items are skipped by roving navigation."),
                 State("Activation", "Root", "Automatic mode selects during roving; manual mode moves focus until Enter or Space."),
                 State("Loop", "List", "Loop controls whether arrow navigation wraps around enabled triggers."),
@@ -1361,6 +1730,7 @@ public sealed class MainWindow : Window
             [
                 State("Navigation root", "Breadcrumb", "The root wraps a labelled navigation path rather than a page-local row of text."),
                 State("Link activation", "Breadcrumb", "LinkActivated publishes the active ancestor route from the root."),
+                State("Source", "Event", "LinkActivated reports Pointer, Keyboard, or Programmatic activation source."),
                 State("List", "BreadcrumbList", "Items, separators, and ellipsis compose in order inside a horizontal list."),
                 State("Ancestor link", "BreadcrumbLink", "Ancestor entries can execute commands or route through host navigation."),
                 State("Current page", "BreadcrumbPage", "The current resource uses page foreground and remains non-interactive."),
@@ -1370,17 +1740,21 @@ public sealed class MainWindow : Window
             [
                 State("Value", "Root", "SelectedValue owns the active row like Web sidebar state."),
                 State("Selected", "Row", "Selected state is synchronized from the root value or legacy sibling selection."),
+                State("Source", "Event", "ValueChanged reports Pointer, Keyboard, or Programmatic selection source."),
                 State("Icon", "Leading slot", "Icon presence maps to HasIcon."),
                 State("Detail", "Subcopy", "Detail presence maps to HasDetail."),
                 State("Disabled", "Row", "Disabled rows do not select."),
+                State("Command blocked", "Row", "Command CanExecute=false applies command-blocked and preserves the root value."),
                 State("Pressed", "Row", "Pressed opacity mirrors Web click feedback.")
             ],
             "navigation.segmented-control" =>
             [
                 State("Selected", "Button", "Selected button updates sibling state."),
+                State("Source", "Event", "ValueChanged reports Pointer, Keyboard, or Programmatic selection source."),
                 State("Indicator", "Track", "Indicator follows selected bounds."),
                 State("Hover", "Button", "Pointer-over scales the hovered segment."),
                 State("Pressed", "Button", "Pressed segment uses a compact scale-down."),
+                State("Command blocked", "Button", "Command CanExecute=false applies command-blocked while keeping selection controlled."),
                 State("Disabled", "Button", "Disabled segment does not become selected.")
             ],
             "navigation.navigation-menu" =>
@@ -1407,7 +1781,9 @@ public sealed class MainWindow : Window
                 State("Search", "Root", "SearchText filters items by value, content, and keywords."),
                 State("Empty results", "List", "Empty-results class appears when filtering hides every item."),
                 State("Separator", "CommandSeparator", "Separators hide during filtering unless AlwaysRender is set."),
-                State("Loading", "Root", "Loading suppresses item activation.")
+                State("Loading", "Root", "Loading suppresses item activation."),
+                State("Command blocked", "Item", "Command CanExecute=false applies command-blocked and removes the item from active selection."),
+                State("Selection source", "ItemSelected", "Pointer, Keyboard, and Programmatic sources stay visible in the selected event payload.")
             ],
             "navigation.menu" or "navigation.context-menu" =>
             [
@@ -1427,10 +1803,11 @@ public sealed class MainWindow : Window
             ],
             "navigation.collapsible" =>
             [
-                State("Open", "Content", "Content is visible, measured for height animation, and emits OpenChanged."),
+                State("Open", "Content", "Content is visible, measured for height animation, and emits source-aware OpenChanged."),
                 State("Closed", "Content", "Content animates closed without replacing the control."),
                 State("Trigger", "Header", "Chevron rotation follows open state."),
                 State("Disabled", "Trigger", "Disabled trigger cannot toggle."),
+                State("Source", "Event", "OpenChanged reports Pointer, Keyboard, or Programmatic source."),
                 State("Reduced motion", "Runtime", "Open and close duration can resolve to zero.")
             ],
             "navigation.separator" =>
@@ -1452,38 +1829,41 @@ public sealed class MainWindow : Window
             "overlay.dialog" =>
             [
                 State("Trigger", "Root", "Trigger slot stays visible while overlay and content open or close."),
-                State("Open", "Layer", "Overlay and content are visible, marked open, and emit OpenChanged."),
+                State("Open", "Layer", "Overlay and content are visible, marked open, and emit source-aware OpenChanged."),
                 State("Closed", "Layer", "Closed class drives overlay fade and content exit styling without hiding the trigger."),
                 State("Modal", "Overlay", "Modal class keeps the scrim visible; non-modal hides it."),
                 State("Close button", "Header", "Close button uses the shared Dismiss command."),
                 State("Outside pointer", "Overlay", "Outside pointer routes through dismissal."),
+                State("Source", "Event", "OpenChanged reports Pointer, Keyboard, or Programmatic source."),
                 State("Restore focus", "Trigger", "Dismissal requests focus return when configured.")
             ],
             "overlay.alert-dialog" =>
             [
                 State("Trigger", "Root", "Trigger slot opens the response surface and stays visible through open and closed states."),
-                State("Open", "Layer", "Overlay and content are visible, marked open, and emit OpenChanged."),
+                State("Open", "Layer", "Overlay and content are visible, marked open, and emit source-aware OpenChanged."),
                 State("Closed", "Layer", "Closed class drives overlay fade and content exit styling without hiding the trigger."),
                 State("Response required", "Layer", "Outside pointer dismissal is disabled by default."),
                 State("Cancel focus", "Least destructive action", "Opening queues focus to the cancel button."),
                 State("Destructive action", "Action button", "ActionVariant can use destructive button tokens."),
                 State("Loading", "Action button", "Action loading suppresses confirmation until ready."),
+                State("Source", "Event", "Inherited OpenChanged reports Pointer, Keyboard, or Programmatic source."),
                 State("Small", "Content size", "Small size tightens the confirmation surface.")
             ],
             "overlay.sheet" =>
             [
                 State("Trigger", "Root", "Trigger slot stays visible while edge content opens or closes."),
-                State("Open", "Layer", "Overlay and SheetContent are visible, marked open, and emit OpenChanged."),
+                State("Open", "Layer", "Overlay and SheetContent are visible, marked open, and emit source-aware OpenChanged."),
                 State("Closed", "Layer", "Closed class keeps the trigger mounted while the surface runs edge exit motion."),
                 State("Side", "Placement", "Side property maps to side-left, side-right, side-top, or side-bottom."),
                 State("Overlay", "Layer", "Modal class keeps the scrim visible; non-modal hides it."),
                 State("Close button", "Header", "Close button uses the shared Dismiss command."),
+                State("Source", "Event", "Inherited OpenChanged reports Pointer, Keyboard, or Programmatic source."),
                 State("Restore focus", "Trigger", "Dismissal requests focus return when configured.")
             ],
             "overlay.drawer" =>
             [
                 State("Trigger", "Root", "Trigger slot stays visible while drawer content opens, closes, or drag-dismisses."),
-                State("Open", "Layer", "Overlay and DrawerContent are visible, marked open, and emit OpenChanged."),
+                State("Open", "Layer", "Overlay and DrawerContent are visible, marked open, and emit source-aware OpenChanged."),
                 State("Closed", "Layer", "Closed class keeps the trigger mounted while the drawer runs direction exit motion."),
                 State("Overlay", "Layer", "Modal class keeps the scrim visible; non-modal hides it."),
                 State("Direction", "Placement", "Direction maps to direction-bottom, direction-top, direction-right, or direction-left."),
@@ -1491,47 +1871,52 @@ public sealed class MainWindow : Window
                 State("Drag ready", "Gesture", "DragOffset crossing DragDismissThreshold sets drag-dismiss-ready."),
                 State("Scrollable body", "Content", "Body scrolls while footer actions stay mounted."),
                 State("Scale background", "Layer", "Scale-background class marks the Vaul-style background treatment."),
+                State("Source", "Event", "Inherited OpenChanged reports Pointer, Keyboard, or Programmatic source; drag dismiss reports Pointer."),
                 State("Restore focus", "Trigger", "Dismissal requests focus return to the trigger when configured.")
             ],
             "overlay.popover" =>
             [
                 State("Trigger", "Anchor", "Trigger slot stays visible while content opens and closes."),
-                State("Open", "Surface", "Popover content is visible, marked open, and emits OpenChanged."),
+                State("Open", "Surface", "Popover content is visible, marked open, and emits source-aware OpenChanged."),
                 State("Closed", "Surface", "Closed class drives exit styling without hiding the trigger."),
                 State("Side / align", "Placement", "Placement and Align map to side and align classes for origin-aware motion."),
                 State("Arrow", "Content", "Optional arrow visually links content to the trigger."),
                 State("Close button", "Header", "Close button uses Dismiss command."),
                 State("Outside pointer", "Anchor layer", "Outside pointer dismisses when enabled."),
+                State("Source", "Event", "OpenChanged reports Pointer, Keyboard, or Programmatic source."),
                 State("Restore focus", "Trigger", "Focus returns to the anchor on dismiss.")
             ],
             "overlay.command-dialog" =>
             [
                 State("Trigger", "Root", "Open Menu trigger stays visible while the command palette opens or closes."),
-                State("Open", "Layer", "Overlay and command surface are visible, marked open, and emit OpenChanged."),
+                State("Open", "Layer", "Overlay and command surface are visible, marked open, and emit source-aware OpenChanged."),
                 State("Closed", "Layer", "Closed class drives overlay fade and surface exit motion without hiding the trigger."),
                 State("Command", "cmdk composition", "CommandInput, CommandList, Empty, Group, Separator, Item, and Shortcut stay inside the surface."),
                 State("Loading", "Command", "Loading suppresses close-on-select while preserving command content."),
                 State("Close button", "Header", "Close button uses Dismiss command when visible."),
                 State("Outside pointer", "Layer", "Outside pointer dismisses when enabled."),
+                State("Source", "Event", "Inherited OpenChanged reports trigger and close-on-select source metadata."),
                 State("Restore focus", "Trigger", "Focus returns to the trigger on dismiss.")
             ],
             "overlay.tooltip" =>
             [
                 State("Provider", "TooltipProvider", "Provider carries delay and skip-delay defaults for nested tooltip triggers."),
                 State("Trigger", "Tooltip", "Trigger slot receives pointer and focus routes."),
-                State("Open", "Content", "Open class drives enter styling and emits OpenChanged while the trigger stays visible."),
+                State("Open", "Content", "Open class drives enter styling and emits source-aware OpenChanged while the trigger stays visible."),
                 State("Closed", "Content", "Closed class drives exit styling without removing the trigger."),
                 State("Side", "Placement", "Placement maps to side-specific transform origins and arrow placement."),
+                State("Source", "Event", "OpenChanged reports Pointer, Focus, Keyboard, or Programmatic source."),
                 State("Arrow", "Content", "Arrow visibility is component-owned.")
             ],
             "overlay.hover-card" =>
             [
                 State("Trigger", "HoverCard", "Trigger slot receives pointer and focus routes."),
                 State("Content", "HoverCard", "Preview content stays mounted for enter and exit motion."),
-                State("Open", "Surface", "Open class drives enter styling and emits OpenChanged."),
+                State("Open", "Surface", "Open class drives enter styling and emits source-aware OpenChanged."),
                 State("Closed", "Surface", "Closed class drives exit styling without replacing the trigger."),
                 State("Side", "Placement", "Placement maps to side-specific transform origins."),
                 State("Align", "Placement", "Start, center, and end align classes are component-owned."),
+                State("Source", "Event", "OpenChanged reports Pointer, Focus, Keyboard, or Programmatic source."),
                 State("Delay", "Timing", "OpenDelay and CloseDelay match Web timing.")
             ],
             "data.card" =>
@@ -1549,6 +1934,7 @@ public sealed class MainWindow : Window
                 State("Actions", "Trailing slot", "Nested controls keep their own click path inside the row."),
                 State("Selected", "Surface", "Selected row state uses accent fill and ring border."),
                 State("Loading", "Activation", "Loading suppresses row activation while keeping the layout mounted."),
+                State("Command blocked", "Row", "ActivateCommand CanExecute=false applies command-blocked and suppresses row activation."),
                 State("Group", "List", "Groups and separators provide shared row rhythm.")
             ],
             "data.aspect-ratio" =>
@@ -1566,7 +1952,7 @@ public sealed class MainWindow : Window
                 State("Selection source", "Root", "SelectionChanged records whether API, previous, next, first, last, or keyboard moved the slide."),
                 State("Loop", "Root", "Loop enables previous from the first slide and next from the last slide."),
                 State("Orientation", "Rail", "Horizontal and vertical rails use the same selected-index contract."),
-                State("Boundary", "Actions", "Previous and next commands disable when the edge is reached without loop."),
+                State("Boundary", "Actions", "at-start, at-end, previous-disabled, and next-disabled classes follow SelectedIndex before commands run."),
                 State("Status", "Text", "StatusText reports the selected slide count without page-local formatting."),
                 State("Motion", "Item", "Selected item scale, opacity, and border transitions use Codex motion tokens.")
             ],
@@ -1620,7 +2006,8 @@ public sealed class MainWindow : Window
                 State("Dragging", "Row", "Dragging state reduces opacity and suppresses hover recolor."),
                 State("Status", "Trailing slot", "Status slot stays independent from usage and actions."),
                 State("Usage", "Trailing slot", "Usage slot can render metrics, badges, or text."),
-                State("Disabled", "Row", "Disabled provider rows cannot be selected.")
+                State("Disabled", "Row", "Disabled provider rows cannot be selected."),
+                State("Command blocked", "Row", "Command CanExecute=false applies command-blocked and keeps sibling active state unchanged.")
             ],
             "data.table" =>
             [
@@ -1653,6 +2040,7 @@ public sealed class MainWindow : Window
                 State("Ellipsis", "Page item", "Long ranges collapse into disabled ellipsis items."),
                 State("First/last", "Actions", "Boundary buttons disable at range edges."),
                 State("Loading", "Root", "Loading suppresses navigation."),
+                State("Command blocked", "Page item", "Command CanExecute=false applies command-blocked before page activation."),
                 State("Compact", "Root", "Compact reduces button spacing and size."),
                 State("Source", "Event metadata", "PageChanged reports whether changes came from page items, actions, keyboard, or host code.")
             ],
@@ -1750,6 +2138,7 @@ public sealed class MainWindow : Window
             [
                 Event("Trigger click", "Toggles the nearest SidebarProvider or standalone Sidebar open state."),
                 Event("Rail click", "Uses the same toggle path as SidebarTrigger while keeping the rail affordance visible."),
+                Event("CanExecute", "Trigger and rail commands update can-toggle and command-blocked before ToggleOpen."),
                 Event("Ctrl+B", "Provider shortcut toggles the sidebar and publishes OpenChanged."),
                 Event("Open changed", "Sidebar, trigger, rail, and inset classes synchronize from the provider state.")
             ],
@@ -1767,7 +2156,7 @@ public sealed class MainWindow : Window
             ],
             "layout.resizable" =>
             [
-                Event("Pointer drag", "Transfers percentage from the panel after the handle to the panel before it."),
+                Event("Primary drag", "Primary pointer press starts handle dragging and transfers percentage from the panel after the handle to the panel before it."),
                 Event("Arrow keys", "Horizontal handles use Left/Right and vertical handles use Up/Down."),
                 Event("Page keys", "PageUp and PageDown use the same resize path as arrow keys."),
                 Event("Home / End", "Requests the nearest constrained edge without bypassing min and max sizes."),
@@ -1826,43 +2215,49 @@ public sealed class MainWindow : Window
             ],
             "forms.select" =>
             [
-                Event("Trigger click", "Opens the popup when enabled and emits OpenChanged."),
-                Event("Item selection", "Updates SelectedItem/SelectedIndex, closes through native selection, and emits ValueChanged with old/new metadata."),
+                Event("Trigger click", "Opens the popup when enabled and emits OpenChanged with pointer, keyboard, or programmatic source metadata."),
+                Event("Item selection", "Updates SelectedItem/SelectedIndex, closes through native selection, and emits ValueChanged with old/new metadata plus source."),
+                Event("Keyboard selection", "Arrow, Home, End, Enter, and Space mark selection changes with source=Keyboard."),
+                Event("Programmatic selection", "SelectedIndex changes from host code emit source=Programmatic."),
                 Event("Keyboard focus", "Shows the shared focus-visible ring.")
             ],
             "forms.combobox" =>
             [
-                Event("Input text", "Filters the item list and opens the popup when OpenOnInput is enabled."),
+                Event("Primary trigger", "Primary pointer release toggles the popup when enabled and emits OpenChanged with source=Pointer."),
+                Event("Input text", "Filters the item list and opens the popup with source=Input when OpenOnInput is enabled."),
                 Event("Arrow / Home / End", "Moves the highlighted option through the filtered list."),
-                Event("Enter", "Commits the highlighted predefined item, reports keyboard source, and closes when CloseOnSelect is enabled."),
-                Event("Item click", "Commits the clicked item and reports item source."),
-                Event("Escape", "Closes the popup when CloseOnEscape is enabled."),
+                Event("Enter", "Commits the highlighted predefined item, reports keyboard source, and closes with source=Keyboard when CloseOnSelect is enabled."),
+                Event("Item click", "Commits the clicked item and closes with source=Item when CloseOnSelect is enabled."),
+                Event("Escape", "Closes the popup with source=Keyboard when CloseOnEscape is enabled."),
                 Event("Clear", "Resets SelectedItem and Text, reports clear source, then keeps the popup ready for a new search.")
             ],
             "forms.native-select" =>
             [
-                Event("Trigger click", "Opens the native list when enabled, sets popup-open for the entrance motion, and emits OpenChanged."),
-                Event("Option selection", "Updates SelectedItem/SelectedIndex, has-selection, and emits ValueChanged with old/new option value metadata."),
+                Event("Trigger click", "Opens the native list when enabled, sets popup-open for the entrance motion, and emits OpenChanged with pointer, keyboard, or programmatic source metadata."),
+                Event("Option selection", "Updates SelectedItem/SelectedIndex, has-selection, and emits ValueChanged with old/new option value plus source metadata."),
+                Event("Keyboard selection", "Arrow, Home, End, Enter, and Space mark option changes with source=Keyboard."),
+                Event("Programmatic selection", "SelectedIndex or SelectedItem changes from host code emit source=Programmatic."),
                 Event("Disabled option", "Keeps the option visible while suppressing selection."),
                 Event("Keyboard focus", "Shows focus-visible only for keyboard or programmatic focus."),
                 Event("Invalid change", "Toggles invalid and destructive border state without replacing the control.")
             ],
             "forms.calendar" =>
             [
-                Event("Pointer day", "Selects the clicked day when it is visible and available and emits SelectedDateChanged in single mode."),
-                Event("Range day", "First click sets RangeStart; second click completes or normalizes the range and emits RangeChanged."),
-                Event("Arrow keys", "Moves ActiveDate by day or week and changes DisplayDate when crossing months."),
+                Event("Primary day", "Primary pointer release selects a visible available day and emits SelectedDateChanged with source=Pointer."),
+                Event("Range day", "First click sets RangeStart; second click completes or normalizes the range and emits RangeChanged with source=Pointer."),
+                Event("Arrow keys", "Moves ActiveDate by day or week and emits source=Keyboard when crossing months."),
                 Event("Home / End", "Moves ActiveDate to the first or last day in the current calendar row."),
                 Event("PageUp / PageDown", "Moves to the previous or next month while preserving the keyboard path and emits DisplayDateChanged."),
-                Event("Enter / Space", "Selects ActiveDate through the same unavailable guard as pointer selection.")
+                Event("Enter / Space", "Selects ActiveDate through the same unavailable guard with source=Keyboard."),
+                Event("CanExecute", "Day button commands update can-activate and command-blocked before SelectedDateChanged.")
             ],
             "forms.date-picker" =>
             [
-                Event("Trigger click", "Toggles the popover when enabled and not loading."),
-                Event("Enter / Space / Down", "Opens the picker through the same keyboard trigger path as Web popovers."),
-                Event("Pointer day", "Selects a single date or advances range selection, then closes when the selection is complete."),
-                Event("Escape", "Closes the popover when CloseOnEscape is enabled."),
-                Event("Backspace / Delete", "Clears the selected date or range without page-local handlers."),
+                Event("Primary trigger", "Primary pointer release toggles the popover with source=Pointer when enabled and not loading."),
+                Event("Enter / Space / Down", "Opens the picker through the same keyboard trigger path with source=Keyboard."),
+                Event("Primary day", "Primary pointer release syncs the Calendar selection with source=Pointer, then closes when complete."),
+                Event("Escape", "Closes the popover with source=Keyboard when CloseOnEscape is enabled."),
+                Event("Backspace / Delete", "Clears the selected date or range with source=Keyboard without page-local handlers."),
                 Event("Disabled/loading", "Suppresses open and select actions while keeping the trigger state visible.")
             ],
             "forms.field" =>
@@ -1875,28 +2270,30 @@ public sealed class MainWindow : Window
             "forms.split-button" =>
             [
                 Event("Primary click", "Runs the primary command when enabled and not loading."),
-                Event("Menu trigger", "Toggles the dropdown when content is available and emits OpenChanged."),
-                Event("Child action", "Closes the dropdown, emits OpenChanged, and requests focus return when close-on-select is enabled."),
-                Event("Menu item select", "Leaf menu items close the dropdown like Web onSelect while submenu triggers stay open.")
+                Event("Menu trigger", "Primary pointer release toggles the dropdown when content is available and emits OpenChanged with source=Pointer."),
+                Event("Enter / Space / ArrowDown", "Opens the menu trigger popup through the Web dropdown keyboard path with source=Keyboard."),
+                Event("Child action", "Closes the dropdown, emits OpenChanged with source=Selection, and requests focus return when close-on-select is enabled."),
+                Event("Menu item select", "Leaf menu items close the dropdown with source=Selection while submenu triggers stay open.")
             ],
             "forms.toggle" =>
             [
-                Event("Pointer released", "Toggles pressed state through the native checked path."),
-                Event("Space / Enter", "Activates or deactivates the focused standalone toggle."),
-                Event("PressedChanged", "Raises normalized old and new boolean values like Web onPressedChange."),
+                Event("Pointer released", "Toggles pressed state through the native checked path and emits source=Pointer."),
+                Event("Space / Enter", "Activates or deactivates the focused standalone toggle with source=Keyboard."),
+                Event("PressedChanged", "Raises normalized old/new booleans plus Pointer, Keyboard, or Programmatic source like Web onPressedChange."),
                 Event("Disabled activation", "Keeps the current pressed state and ignores pointer or key activation.")
             ],
             "forms.toggle-group" =>
             [
-                Event("Pointer released", "Toggles the item and updates the group SelectedValue or SelectedValues."),
-                Event("Space / Enter", "Activates or deactivates the focused toggle item."),
+                Event("Primary pointer release", "Toggles the item with source=Pointer and updates the group SelectedValue or SelectedValues."),
+                Event("Space / Enter", "Activates or deactivates the focused toggle item with source=Keyboard."),
+                Event("Programmatic value", "SelectedValue or SelectedValues changes reapply item state with source=Programmatic."),
                 Event("Arrow / Home / End", "Moves roving focus through enabled group items while respecting orientation and loop settings.")
             ],
             "forms.checkbox" =>
             [
-                Event("Pointer released", "Toggles checked state through the native checked path."),
-                Event("Space", "Activates the same state path as pointer input."),
-                Event("CheckedStateChanged", "Raises with old and new bool? values like Web onCheckedChange, including indeterminate."),
+                Event("Pointer released", "Toggles checked state through the native checked path and emits source=Pointer."),
+                Event("Space", "Activates the same state path with source=Keyboard."),
+                Event("CheckedStateChanged", "Raises old/new bool? values plus Pointer, Keyboard, or Programmatic source like Web onCheckedChange."),
                 Event("Pointer focus", "Suppresses focus-visible ring.")
             ],
             "forms.radio" =>
@@ -1907,23 +2304,24 @@ public sealed class MainWindow : Window
             ],
             "forms.switch" =>
             [
-                Event("Pointer released", "Toggles checked state through the native checked path."),
-                Event("Space", "Activates the same state path as pointer input."),
-                Event("CheckedChanged", "Raises normalized old and new boolean values like Web onCheckedChange."),
+                Event("Pointer released", "Toggles checked state through the native checked path and emits source=Pointer."),
+                Event("Space / Enter", "Activates the same state path with source=Keyboard."),
+                Event("CheckedChanged", "Raises normalized old/new booleans plus Pointer, Keyboard, or Programmatic source like Web onCheckedChange."),
                 Event("Pointer focus", "Suppresses focus-visible ring.")
             ],
             "forms.radio-group" =>
             [
-                Event("Arrow keys", "Move through enabled items, select the next value, and honor loop boundaries."),
-                Event("Space / Enter", "Select the focused item without unchecking the current value first."),
-                Event("ValueChanged", "Raises old/new selected items, indexes, and values like Web onValueChange."),
+                Event("Primary pointer release", "Only left-button pointer release selects an item and emits source=Pointer."),
+                Event("Arrow keys", "Move through enabled items, select the next value, honor loop boundaries, and emit source=KeyboardNavigation."),
+                Event("Space / Enter", "Select the focused item without unchecking the current value first and emit source=Keyboard."),
+                Event("ValueChanged", "Raises old/new selected items, indexes, values, and source like Web onValueChange metadata."),
                 Event("Loading", "Suppresses item activation while preserving selected value.")
             ],
             "forms.slider" =>
             [
                 Event("ValueChanging", "Raises during pointer, keyboard, or programmatic value movement like Web onValueChange."),
                 Event("ValueCommitted", "Raises after pointer release, navigation key release, focus loss, or CommitValue like Web onValueCommit."),
-                Event("Pointer drag", "Updates Value, exposes dragging, and commits with source=pointer on release."),
+                Event("Primary drag", "Primary pointer press starts dragging, updates Value, and commits with source=pointer on primary release."),
                 Event("Arrow / Page / Home / End", "Adjust Value through keyboard interaction and commits with source=keyboard.")
             ],
             "feedback.avatar" =>
@@ -1933,11 +2331,42 @@ public sealed class MainWindow : Window
                 Event("Fallback delay", "Keeps fallback hidden while loading until FallbackDelay elapses."),
                 Event("Source changed", "Manual Source assignment updates loaded or idle status without requiring ImagePath.")
             ],
-            "feedback.toast" or "feedback.sonner" =>
+            "feedback.avatar-group" =>
+            [
+                Event("Measure", "Visible children inherit group Size and update ItemCount before layout."),
+                Event("Arrange", "Stacked layout subtracts Overlap while inline layout preserves full child width."),
+                Event("Visibility changed", "Hidden members drop out of the group and remaining children recompute first/middle/last classes."),
+                Event("Host disabled", "Disabled state changes opacity without replacing avatar or overflow count content.")
+            ],
+            "feedback.badge" =>
+            [
+                Event("Primary pointer", "Primary pointer release activates interactive/link badges, runs Command before Activated, and reports Pointer source."),
+                Event("Enter / Space", "Activates the same badge command path for keyboard users and reports Keyboard source."),
+                Event("Programmatic", "TryActivate reports Programmatic source while sharing the same CanExecute guard path."),
+                Event("CanExecute", "Updates can-activate and command-blocked classes without replacing the badge."),
+                Event("Status changed", "Host updates content, variant, and status dot tone through badge properties.")
+            ],
+            "feedback.empty-state" =>
+            [
+                Event("Primary action", "Runs ActionCommand and ActionRequested when the primary action can execute."),
+                Event("Secondary action", "Runs SecondaryActionCommand and SecondaryActionRequested when the secondary action can execute."),
+                Event("CanExecute", "Action commands update can-action, can-secondary-action, and command-blocked classes before requests."),
+                Event("Loading / disabled", "Suppresses both action paths while keeping icon, text, content, and action slots mounted.")
+            ],
+            "feedback.toast" =>
             [
                 Event("Dismiss", "Sets the toast closed before removal."),
                 Event("Escape", "Dismisses when CloseOnEscape is true."),
                 Event("Action click", "Executes the toast action command without page-local handlers.")
+            ],
+            "feedback.sonner" =>
+            [
+                Event("Show", "Toast, Success, Info, Warning, Error, and Loading create service toasts, insert newest first, and start timers when duration is nonzero."),
+                Event("Dismiss", "Dismiss locates the toast by id, marks it closing, and removes it after the exit duration."),
+                Event("Clear", "Stops active toast timers and empties the service queue before host reseeding."),
+                Event("Action / cancel", "Generated toast action and cancel buttons execute commands supplied through CodexSonnerOptions."),
+                Event("Limit trim", "ToastLimit trims the oldest non-closing toast through the same dismiss path."),
+                Event("Loading", "Loading toasts default to zero duration and remain mounted until explicit dismissal.")
             ],
             "feedback.spinner" or "feedback.progress" or "feedback.skeleton" =>
             [
@@ -1947,48 +2376,58 @@ public sealed class MainWindow : Window
             ],
             "navigation.tabs" =>
             [
-                Event("ValueChanged", "Raises with old/new selected item, index, and value like Web onValueChange."),
-                Event("Arrow / Home / End", "Moves through enabled tabs and activates immediately in automatic mode."),
-                Event("Enter / Space", "Activates the focused tab item in manual mode."),
+                Event("ValueChanged", "Raises with old/new selected item, index, value, and source like Web onValueChange."),
+                Event("Primary pointer release", "Selects through the root with source=Pointer and rejects right/middle releases."),
+                Event("Arrow / Home / End", "Moves through enabled tabs and activates immediately in automatic mode with source=Keyboard."),
+                Event("Enter / Space", "Activates the focused tab item in manual mode with source=Keyboard."),
+                Event("Programmatic value", "SelectedValue changes select the matching tab with source=Programmatic."),
                 Event("Disabled item", "Skipped by roving navigation."),
                 Event("Loop boundary", "Stops at the first or last enabled tab when loop is disabled.")
             ],
             "navigation.breadcrumb" =>
             [
-                Event("LinkActivated", "Raises from the root with link, item, index, href, and content metadata."),
-                Event("Ancestor link click", "Runs the link command path for host routing."),
+                Event("LinkActivated", "Raises from the root with link, item, index, href, content, and source metadata."),
+                Event("Primary pointer release", "Runs ancestor routing with source=Pointer and rejects right/middle releases."),
+                Event("Keyboard activation", "Enter/Space runs ancestor routing with source=Keyboard."),
+                Event("Command blocked", "Command CanExecute=false applies command-blocked and suppresses LinkActivated."),
                 Event("Current page click", "Suppresses activation because the current page is not navigable."),
                 Event("Dropdown composition", "Collapsed items can host a dropdown trigger while separators remain outside the popup.")
             ],
             "navigation.side-nav" =>
             [
-                Event("ValueChanged", "Raises old/new selected values, items, and indexes like Web onValueChange."),
-                Event("Pointer released", "Selects the clicked row through the root and clears sibling selected rows."),
-                Event("Keyboard activation", "Runs the same root selection path as pointer selection."),
+                Event("ValueChanged", "Raises old/new selected values, items, indexes, and source like Web onValueChange."),
+                Event("Primary pointer release", "Selects through the root with source=Pointer and clears sibling selected rows."),
+                Event("Keyboard activation", "Enter/Space runs the root selection path with source=Keyboard."),
+                Event("CanExecute", "Command CanExecuteChanged updates can-select and command-blocked before row selection."),
                 Event("Disabled row", "Does not become selected.")
             ],
             "navigation.segmented-control" =>
             [
-                Event("Pointer released", "Selects the clicked segment, emits ValueChanged, and updates the moving indicator."),
-                Event("ValueChanged", "Raises old/new selected values, items, and indexes like Web onValueChange."),
+                Event("Primary pointer release", "Selects the segment with source=Pointer, emits ValueChanged, and updates the moving indicator."),
+                Event("Keyboard activation", "Enter/Space selects the focused segment with source=Keyboard."),
+                Event("ValueChanged", "Raises old/new selected values, items, indexes, and source like Web onValueChange."),
                 Event("Layout updated", "Re-measures selected bounds for the indicator."),
+                Event("CanExecute", "Command-backed segments update can-select and command-blocked without moving the indicator."),
                 Event("Disabled segment", "Keeps sibling selection unchanged.")
             ],
             "navigation.dropdown" =>
             [
-                Event("Trigger click", "Toggles open state when content exists and emits OpenChanged."),
-                Event("Escape", "Dismisses, emits OpenChanged, and requests focus return."),
-                Event("Child select", "Button and leaf menu item selections close when CloseOnItemSelected is true.")
+                Event("Primary trigger", "Primary pointer release toggles open state when content exists and emits OpenChanged with source=Pointer."),
+                Event("Enter / Space / ArrowDown", "Opens the dropdown through the trigger keyboard path with source=Keyboard when enabled and loaded."),
+                Event("Escape", "Dismisses with source=Keyboard and requests focus return."),
+                Event("Child select", "Button and leaf menu item selections close with source=Selection when CloseOnItemSelected is true.")
             ],
             "navigation.navigation-menu" =>
             [
                 Event("Pointer enter", "Activates the item and opens the viewport."),
+                Event("Primary link", "Primary pointer release activates top-level link items, while content links use the same primary-release activation helper."),
+                Event("Command blocked", "Command CanExecute=false updates command-blocked state and suppresses link activation without opening the viewport."),
                 Event("Arrow / Home / End", "Moves active item through enabled triggers."),
                 Event("Escape", "Closes the viewport and clears active item.")
             ],
             "navigation.menubar" =>
             [
-                Event("Trigger click", "Toggles the top-level menu when it has content and the root is not loading."),
+                Event("Primary trigger", "Primary pointer release toggles the top-level menu when it has content and the root is not loading."),
                 Event("Arrow / Home / End", "Moves between enabled top-level triggers and preserves the open popup when active."),
                 Event("Enter / Space / Down", "Opens the focused trigger and moves focus into the popup content."),
                 Event("ItemSelected", "Leaf menu items raise source, checked state, command parameter, and close-on-select metadata."),
@@ -1999,19 +2438,23 @@ public sealed class MainWindow : Window
             [
                 Event("Search text", "Filters command items and updates searching, filtering, has-results, and empty-results classes."),
                 Event("Arrow / Home / End", "Moves the active result through enabled visible command items."),
-                Event("Enter", "Selects the active item, raises ItemSelected, and runs the item command."),
+                Event("Primary pointer release", "Selects an enabled item with source=Pointer while rejecting right and middle pointer releases."),
+                Event("Enter", "Selects the active item with source=Keyboard, raises ItemSelected, and runs the item command."),
                 Event("Pointer enter", "Moves the active result to the hovered enabled item."),
+                Event("ItemSelected", "Emits selected item, value, and source metadata for pointer, keyboard, and programmatic selection."),
+                Event("CanExecute", "Command item CanExecuteChanged updates can-select and command-blocked before ItemSelected."),
                 Event("Loading", "Suppresses selection and command execution while keeping the list mounted.")
             ],
             "navigation.menu" or "navigation.context-menu" =>
             [
-                Event("Pointer released", "Activates an enabled item when the root is not loading."),
+                Event("Primary pointer", "Primary pointer release activates an enabled item when the root is not loading."),
                 Event("Enter / Space", "Runs the same activation path as pointer input."),
                 Event("ItemSelected", "Leaf items raise Web onSelect-style source, checked state, and close-on-select metadata."),
                 Event("Submenu open", "Applies side-aware submenu classes and motion.")
             ],
             "navigation.accordion" =>
             [
+                Event("Primary trigger", "Primary pointer release toggles the focused item through the Web disclosure path."),
                 Event("Enter / Space", "Toggles the focused item through the same path as pointer activation."),
                 Event("Arrow / Home / End", "Moves focus through enabled triggers in the active orientation."),
                 Event("ValueChanged", "Publishes old/new values with changed item, index, and source metadata like Web onValueChange."),
@@ -2019,93 +2462,98 @@ public sealed class MainWindow : Window
             ],
             "navigation.collapsible" =>
             [
-                Event("Trigger click", "Toggles open state when enabled and emits OpenChanged."),
-                Event("Enter / Space", "Runs the same toggle path as pointer input and emits OpenChanged."),
+                Event("Primary trigger", "Primary pointer release toggles open state when enabled and emits OpenChanged with source=Pointer."),
+                Event("Enter / Space", "Runs the same toggle path as pointer input and emits OpenChanged with source=Keyboard."),
+                Event("Programmatic state", "Direct IsOpen or Toggle() updates emit OpenChanged with source=Programmatic."),
                 Event("Reduced motion", "Jumps to the final measured height.")
             ],
             "overlay.alert-dialog" =>
             [
-                Event("Trigger click", "Opens or closes the alert dialog when enabled and emits OpenChanged."),
+                Event("Primary trigger", "Primary pointer release opens or closes the alert dialog when enabled and emits OpenChanged with source=Pointer."),
                 Event("Enter / Space", "Toggles from the trigger like Web AlertDialog.Trigger."),
-                Event("Escape", "Closes the alert dialog and restores focus to the trigger."),
-                Event("Outside pointer", "Ignored by default because an explicit response is required."),
+                Event("Escape", "Closes the alert dialog with source=Keyboard and restores focus to the trigger."),
+                Event("Outside pointer", "Ignored by default because an explicit response is required; enabled outside dismissal reports source=Pointer."),
                 Event("Cancel / action", "Runs the dedicated command path and closes only when the close-on flag allows it."),
-                Event("OpenChanged", "Raises the inherited open boolean for controlled onOpenChange-style hosts.")
+                Event("CanExecute", "Host command CanExecuteChanged updates cancel and action button availability immediately."),
+                Event("OpenChanged", "Raises inherited open boolean plus Pointer, Keyboard, or Programmatic source metadata.")
             ],
             "overlay.dialog" =>
             [
-                Event("Trigger click", "Toggles open state when enabled and emits OpenChanged."),
-                Event("Enter / Space", "Toggles from the trigger like Web Dialog.Trigger."),
-                Event("Escape", "Dismisses when CloseOnEscape is true and requests trigger focus restoration."),
-                Event("Outside pointer", "Dismisses when outside dismissal is enabled."),
+                Event("Primary trigger", "Primary pointer release toggles open state when enabled and emits OpenChanged with source=Pointer."),
+                Event("Enter / Space", "Toggles from the trigger like Web Dialog.Trigger and reports source=Keyboard."),
+                Event("Escape", "Dismisses with source=Keyboard when CloseOnEscape is true and requests trigger focus restoration."),
+                Event("Outside pointer", "Dismisses with source=Pointer when outside dismissal is enabled."),
                 Event("Close button", "Runs the shared Dismiss command without replacing trigger or content."),
-                Event("OpenChanged", "Raises the new open boolean for controlled onOpenChange-style hosts.")
+                Event("OpenChanged", "Raises open boolean plus Pointer, Keyboard, or Programmatic source metadata.")
             ],
             "overlay.command-dialog" =>
             [
-                Event("Trigger click", "Toggles open state when enabled and emits OpenChanged."),
-                Event("Enter / Space", "Toggles from the trigger like Web CommandDialog examples."),
-                Event("OpenChanged", "Raises the inherited open boolean for controlled onOpenChange-style hosts."),
-                Event("ItemSelected", "Emits the selected command item and value before close-on-select dismissal."),
+                Event("Primary trigger", "Primary pointer release toggles open state when enabled and emits OpenChanged with source=Pointer."),
+                Event("Enter / Space", "Toggles from the trigger like Web CommandDialog examples and reports source=Keyboard."),
+                Event("OpenChanged", "Raises inherited open boolean plus Pointer, Keyboard, or Programmatic source metadata."),
+                Event("ItemSelected", "Emits the selected command item, value, and source metadata before close-on-select dismissal."),
                 Event("Close on select", "Enabled items dismiss unless CloseOnItemSelected is false or loading is active."),
-                Event("Escape", "Dismisses when CloseOnEscape is true."),
-                Event("Outside pointer", "Dismisses when outside dismissal is enabled."),
+                Event("Escape", "Dismisses with source=Keyboard when CloseOnEscape is true."),
+                Event("Outside pointer", "Dismisses with source=Pointer when outside dismissal is enabled."),
                 Event("Dismiss", "Executes close command and requests focus restoration.")
             ],
             "overlay.popover" =>
             [
-                Event("Trigger click", "Toggles open state when enabled and emits OpenChanged."),
-                Event("Enter / Space", "Toggles from the trigger like Web Popover.Trigger."),
-                Event("Escape", "Dismisses when CloseOnEscape is true and requests trigger focus restoration."),
-                Event("Outside pointer", "Dismisses when outside dismissal is enabled."),
+                Event("Primary trigger", "Primary pointer release toggles open state when enabled and emits OpenChanged with source=Pointer."),
+                Event("Enter / Space", "Toggles from the trigger like Web Popover.Trigger and reports source=Keyboard."),
+                Event("Escape", "Dismisses with source=Keyboard when CloseOnEscape is true and requests trigger focus restoration."),
+                Event("Outside pointer", "Dismisses with source=Pointer when outside dismissal is enabled."),
                 Event("Close button", "Runs the shared Dismiss command without replacing trigger or content."),
-                Event("OpenChanged", "Raises the new open boolean for controlled onOpenChange-style hosts.")
+                Event("OpenChanged", "Raises open boolean plus Pointer, Keyboard, or Programmatic source metadata.")
             ],
             "overlay.tooltip" =>
             [
-                Event("Pointer enter", "Schedules open through OpenDelay or the nearest TooltipProvider delay."),
-                Event("Keyboard focus", "Opens immediately like Web Tab navigation without waiting for hover delay."),
-                Event("Pointer exit / blur", "Closes immediately or after CloseDelay when configured."),
-                Event("Escape", "Dismisses when CloseOnEscape is true and emits OpenChanged."),
+                Event("Pointer enter", "Schedules open through OpenDelay or the nearest TooltipProvider delay and reports source=Pointer."),
+                Event("Keyboard focus", "Opens immediately like Web Tab navigation and reports source=Focus."),
+                Event("Pointer exit / blur", "Closes immediately or after CloseDelay with source=Pointer or source=Focus."),
+                Event("Escape", "Dismisses when CloseOnEscape is true and emits OpenChanged with source=Keyboard."),
                 Event("Enter / Space", "Closes an open tooltip without delay while leaving trigger activation to the trigger."),
-                Event("OpenChanged", "Raises the new open boolean for controlled onOpenChange-style hosts."),
+                Event("OpenChanged", "Raises open boolean plus Pointer, Focus, Keyboard, or Programmatic source metadata."),
                 Event("Disabled trigger wrapper", "Wrapper can receive hover/focus while the inner disabled button remains disabled.")
             ],
             "overlay.sheet" =>
             [
-                Event("Trigger click", "Toggles open state when enabled and emits OpenChanged."),
-                Event("Enter / Space", "Toggles from the trigger like Web SheetTrigger."),
+                Event("Primary trigger", "Primary pointer release toggles open state when enabled and emits OpenChanged with source=Pointer."),
+                Event("Enter / Space", "Toggles from the trigger like Web SheetTrigger and reports source=Keyboard."),
                 Event("Side changed", "Updates side placement classes and edge slide direction."),
                 Event("Dismiss", "Sets IsOpen false, executes CloseCommand, and requests focus restoration."),
                 Event("Manual policy", "CloseOnEscape and DismissOnOutsidePointer can be disabled for host-managed flows."),
-                Event("OpenChanged", "Raises the inherited open boolean for controlled onOpenChange-style hosts.")
+                Event("OpenChanged", "Raises inherited open boolean plus Pointer, Keyboard, or Programmatic source metadata.")
             ],
             "overlay.drawer" =>
             [
-                Event("Trigger click", "Toggles open state when enabled and emits OpenChanged."),
-                Event("Enter / Space", "Toggles from the trigger like Web DrawerTrigger."),
-                Event("OpenChanged", "Raises the inherited open boolean for controlled onOpenChange-style hosts."),
-                Event("Handle drag", "Outward drag updates DragOffset and dragging classes."),
-                Event("Drag release", "Dismisses when DragOffset crosses DragDismissThreshold and CloseOnDragDismiss is enabled."),
+                Event("Primary trigger", "Primary pointer release toggles open state when enabled and emits OpenChanged with source=Pointer."),
+                Event("Enter / Space", "Toggles from the trigger like Web DrawerTrigger and reports source=Keyboard."),
+                Event("OpenChanged", "Raises inherited open boolean plus Pointer, Keyboard, or Programmatic source metadata."),
+                Event("Primary handle drag", "Primary outward drag updates DragOffset and dragging classes."),
+                Event("Primary drag release", "Primary release dismisses with source=Pointer when DragOffset crosses DragDismissThreshold and CloseOnDragDismiss is enabled."),
                 Event("Direction changed", "Updates direction placement classes and edge slide direction."),
                 Event("Dismiss", "Sets IsOpen false, executes CloseCommand, and requests focus restoration."),
                 Event("Manual policy", "Escape, outside pointer, handle, and close button policies stay host configurable.")
             ],
             "overlay.hover-card" =>
             [
-                Event("Pointer enter / focus", "Schedules open after OpenDelay and emits OpenChanged when the root opens."),
-                Event("Pointer exit / blur", "Schedules close after CloseDelay."),
-                Event("Escape", "Dismisses the surface when open and emits OpenChanged."),
+                Event("Pointer enter / focus", "Schedules open after OpenDelay and emits source-aware OpenChanged when the root opens."),
+                Event("Pointer exit / blur", "Schedules close after CloseDelay with source=Pointer or source=Focus."),
+                Event("Escape", "Dismisses the surface when open and emits OpenChanged with source=Keyboard."),
                 Event("Disabled root", "Suppresses pointer and focus open requests.")
             ],
             "data.pagination" =>
             [
                 Event("PageChanged", "Raises old page, new page, and source metadata for Web-style onPageChange handlers."),
                 Event("Page item", "Reports PageItem when a numbered page button changes the page."),
+                Event("Primary action release", "First, previous, next, and last buttons only change pages on primary pointer release."),
+                Event("Enter / Space action", "Focused action buttons keep keyboard activation separate from pointer release handling."),
                 Event("Home / End", "Moves to the first or last page."),
                 Event("Left / PageUp", "Requests previous page."),
                 Event("Right / PageDown", "Requests next page."),
                 Event("Programmatic", "SelectPage reports Programmatic for host-owned page changes."),
+                Event("CanExecute", "Page item commands update can-activate and command-blocked before PageChanged."),
                 Event("Loading", "Suppresses all page changes.")
             ],
             "data.data-table" =>
@@ -2123,7 +2571,7 @@ public sealed class MainWindow : Window
                 Event("Arrow keys", "Left/Right or Up/Down move by orientation and report keyboard source."),
                 Event("Home / End", "Moves directly to the first or last slide and report keyboard source."),
                 Event("Loop edge", "Wraps at the start or end when Loop is true."),
-                Event("Boundary edge", "Disables unavailable commands when Loop is false.")
+                Event("Boundary edge", "Updates previous-disabled and next-disabled before suppressing unavailable moves when Loop is false.")
             ],
             "data.chart" =>
             [
@@ -2152,9 +2600,11 @@ public sealed class MainWindow : Window
             ],
             "data.item" =>
             [
-                Event("Pointer released", "Activates an interactive row when enabled, not loading, and command CanExecute is true."),
-                Event("Enter / Space", "Runs the same activation path as pointer release."),
+                Event("Primary pointer", "Primary pointer release activates an interactive row when enabled, not loading, command CanExecute is true, and reports Pointer source."),
+                Event("Enter / Space", "Runs the same activation path as primary pointer release and reports Keyboard source."),
+                Event("Programmatic", "TryActivate reports Programmatic source while using the same command and guard path."),
                 Event("Nested action", "Button slots execute their own command without replacing item row state."),
+                Event("Command blocked", "ActivateCommand CanExecuteChanged updates can-activate and command-blocked before suppressing Activated."),
                 Event("Loading", "Blocks activation while preserving selected, media, and action slots."),
                 Event("Disabled", "Removes activation and applies disabled opacity.")
             ],
@@ -2181,8 +2631,11 @@ public sealed class MainWindow : Window
             ],
             "data.provider-card" =>
             [
-                Event("Pointer released", "Selects the clicked provider and clears sibling active cards."),
-                Event("Drag state", "Applies dragging visual feedback without selecting another card."),
+                Event("Primary pointer release", "Only left-button pointer release selects the provider, clears sibling active cards, and reports Pointer source; right and middle releases are ignored."),
+                Event("Enter / Space", "Keyboard activation keeps the Button command path and reports Keyboard source metadata."),
+                Event("Programmatic", "TrySelect reports Programmatic source while using the same CanExecute and dragging guards."),
+                Event("Drag state", "Applies dragging visual feedback while suppressing selection and command activation."),
+                Event("CanExecute", "Command CanExecuteChanged updates can-select and command-blocked before row selection."),
                 Event("Action click", "Runs action content while the row slots remain mounted.")
             ],
             "data.scroll-area" =>
@@ -2557,12 +3010,19 @@ public sealed class MainWindow : Window
 
     private Control BuildInlineExample(DocsExampleCase example)
     {
-        var codeBlock = new DocsCodeBlock
+        var codeBlocks = new StackPanel
         {
-            Title = example.SamplePath,
-            Code = DocsCodeSamples.Load(example.SamplePath),
+            Spacing = 12,
             IsVisible = false
         };
+        foreach (var codeSample in example.CodeSamples)
+        {
+            codeBlocks.Children.Add(new DocsCodeBlock
+            {
+                Title = codeSample.Title,
+                Code = DocsCodeSamples.Load(codeSample.SamplePath)
+            });
+        }
 
         var toggleCode = new CodexButton
         {
@@ -2573,8 +3033,8 @@ public sealed class MainWindow : Window
         };
         toggleCode.Click += (_, _) =>
         {
-            codeBlock.IsVisible = !codeBlock.IsVisible;
-            toggleCode.Content = codeBlock.IsVisible ? "Hide code" : "Show code";
+            codeBlocks.IsVisible = !codeBlocks.IsVisible;
+            toggleCode.Content = codeBlocks.IsVisible ? "Hide code" : "Show code";
         };
 
         return new StackPanel
@@ -2585,7 +3045,7 @@ public sealed class MainWindow : Window
                 SectionHeader(example.Title, example.Description),
                 example.BuildPreview(),
                 toggleCode,
-                codeBlock
+                codeBlocks
             }
         };
     }
@@ -2796,6 +3256,237 @@ public sealed class MainWindow : Window
         }
 
         return grid;
+    }
+
+    private static Control BuildOverviewAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 14,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Page registry",
+                    Description = "Each menu row maps to a DocsPage with its own default AXAML sample.",
+                    Content = new Grid
+                    {
+                        ColumnDefinitions =
+                        {
+                            new ColumnDefinition(GridLength.Star),
+                            new ColumnDefinition(GridLength.Star)
+                        },
+                        ColumnSpacing = 10,
+                        Children =
+                        {
+                            SidebarPrimitiveStat("Categories", Categories.Length.ToString(CultureInfo.InvariantCulture), "navigation"),
+                            GridCell(SidebarPrimitiveStat("Pages", Categories.Sum(category => category.Pages.Count).ToString(CultureInfo.InvariantCulture), "independent"), row: 0, column: 1)
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Example case",
+                    Description = "The rendered preview, local toggle, and code blocks are composed per case.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexBadge { Content = "preview", Variant = CodexControlVariant.Secondary },
+                            new CodexButton { Content = "Source", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary, HorizontalAlignment = HorizontalAlignment.Left },
+                            Text("foreach (var codeSample in example.CodeSamples)", CodexTextRole.Code)
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Behavior sections",
+                    Description = "State and event matrices make Web parity checks visible beside every component.",
+                    Content = new Grid
+                    {
+                        ColumnDefinitions =
+                        {
+                            new ColumnDefinition(GridLength.Star),
+                            new ColumnDefinition(GridLength.Star)
+                        },
+                        ColumnSpacing = 10,
+                        Children =
+                        {
+                            SidebarPrimitiveStat("States", "matrix", "classes"),
+                            GridCell(SidebarPrimitiveStat("Events", "matrix", "triggers"), row: 0, column: 1)
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Source surface",
+                    Description = "AXAML stays selectable and copyable from the expanded code block.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            Text("sample path resolves from the current example case", CodexTextRole.Code),
+                            Muted("The code block remains below the current rendered case.")
+                        }
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
+    private static Control BuildOverviewWorkflowPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(new GridLength(280)),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 16,
+            Children =
+            {
+                new CodexSidebar
+                {
+                    Content = new StackPanel
+                    {
+                        Children =
+                        {
+                            new CodexSidebarHeader
+                            {
+                                Content = new StackPanel
+                                {
+                                    Spacing = 8,
+                                    Children =
+                                    {
+                                        Text("Docs workflow", CodexTextRole.Subtitle),
+                                        new CodexTextBox
+                                        {
+                                            PlaceholderText = "Search components",
+                                            Text = "button"
+                                        }
+                                    }
+                                }
+                            },
+                            new CodexSidebarContent
+                            {
+                                Content = new StackPanel
+                                {
+                                    Spacing = 6,
+                                    Children =
+                                    {
+                                        new CodexSidebarGroupLabel { Content = "Forms" },
+                                        new CodexSidebarMenuButton { Content = "Button", IsActive = true, Badge = "4" },
+                                        new CodexSidebarMenuButton { Content = "Select", Badge = "4" },
+                                        new CodexSidebarMenuButton { Content = "Date Picker", Badge = "4" },
+                                        new CodexSidebarGroupLabel { Content = "Data Display" },
+                                        new CodexSidebarMenuButton { Content = "Data Table", Badge = "4" }
+                                    }
+                                }
+                            },
+                            new CodexSidebarFooter
+                            {
+                                Content = new StackPanel
+                                {
+                                    Orientation = Orientation.Horizontal,
+                                    Spacing = 8,
+                                    Children =
+                                    {
+                                        new CodexButton { Content = "Light", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary },
+                                        new CodexButton { Content = "Dark", Size = CodexControlSize.Small, Variant = CodexControlVariant.Ghost }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                GridCell(new CodexSection
+                {
+                    Title = "Review sequence",
+                    Description = "Navigate, inspect rendered behavior, expand source, then compare state and event contracts.",
+                    Actions = new CodexButton { Content = "Inspect source", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary },
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            ProviderCard("Rendered example", "First-class preview surface", true),
+                            new CodexCard
+                            {
+                                Title = "Copyable AXAML",
+                                Description = "The code block opens directly below this case.",
+                                Content = Text("<controls:CodexButton Content=\"Save\" />", CodexTextRole.Code)
+                            }
+                        }
+                    }
+                }, row: 0, column: 1)
+            }
+        };
+    }
+
+    private static Control BuildOverviewSourcePreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "AXAML file",
+                    Description = "One sample path per case.",
+                    Content = Text("Forms/Button sample path", CodexTextRole.Code)
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Code block",
+                    Description = "Selectable text and copy command.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexBadge { Content = "Menlo", Variant = CodexControlVariant.Secondary },
+                            new CodexBadge { Content = "line numbers", Variant = CodexControlVariant.Outline },
+                            new CodexBadge { Content = "copy", Variant = CodexControlVariant.Success }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Render tests",
+                    Description = "Lifecycle coverage catches detach and transition crashes.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            Text("DocsMultiCaseExamples", CodexTextRole.Code),
+                            Text("DocsVisualFingerprints", CodexTextRole.Code)
+                        }
+                    }
+                }, row: 0, column: 2)
+            }
+        };
     }
 
     private static Control BuildSidebarPreview()
@@ -3196,6 +3887,133 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildApplicationShellAnatomyPreview()
+    {
+        return new Grid
+        {
+            Height = 380,
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(new GridLength(270)),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 18,
+            Children =
+            {
+                new CodexSidebar
+                {
+                    Content = new StackPanel
+                    {
+                        Children =
+                        {
+                            new CodexSidebarHeader
+                            {
+                                Content = new StackPanel
+                                {
+                                    Spacing = 4,
+                                    Children =
+                                    {
+                                        Text("Header slot", CodexTextRole.Subtitle),
+                                        Muted("Workspace identity")
+                                    }
+                                }
+                            },
+                            new CodexSidebarContent
+                            {
+                                Content = new StackPanel
+                                {
+                                    Spacing = 14,
+                                    Children =
+                                    {
+                                        new CodexSidebarGroup
+                                        {
+                                            Content = new StackPanel
+                                            {
+                                                Spacing = 6,
+                                                Children =
+                                                {
+                                                    new CodexSidebarGroupLabel { Content = "Group label" },
+                                                    new CodexSidebarMenuButton { Content = "Active menu row", IsActive = true, Badge = "12" },
+                                                    new CodexSidebarMenuButton { Content = "Default menu row" },
+                                                    new CodexSidebarMenuButton { Content = "Disabled row", IsEnabled = false }
+                                                }
+                                            }
+                                        },
+                                        new CodexSidebarGroup
+                                        {
+                                            Content = new StackPanel
+                                            {
+                                                Spacing = 6,
+                                                Children =
+                                                {
+                                                    new CodexSidebarGroupLabel { Content = "Nested group" },
+                                                    new CodexSidebarMenuSub
+                                                    {
+                                                        Items =
+                                                        {
+                                                            new CodexSidebarMenuSubItem { Content = new CodexSidebarMenuSubButton { Content = "Sub route", IsActive = true } },
+                                                            new CodexSidebarMenuSubItem { Content = new CodexSidebarMenuSubButton { Content = "Sub route" } }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            new CodexSidebarFooter
+                            {
+                                Content = new CodexButton
+                                {
+                                    Content = "Footer action",
+                                    Size = CodexControlSize.Small,
+                                    HorizontalAlignment = HorizontalAlignment.Stretch
+                                }
+                            }
+                        }
+                    }
+                },
+                GridCell(new CodexSection
+                {
+                    Title = "Section slot anatomy",
+                    Description = "Application shell pairs sidebar slots with a stable content section.",
+                    Actions = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexButton { Content = "Refresh", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary },
+                            new CodexButton { Content = "Add", Size = CodexControlSize.Small }
+                        }
+                    },
+                    Content = new Grid
+                    {
+                        ColumnDefinitions =
+                        {
+                            new ColumnDefinition(GridLength.Star),
+                            new ColumnDefinition(GridLength.Star)
+                        },
+                        RowDefinitions =
+                        {
+                            new RowDefinition(GridLength.Auto),
+                            new RowDefinition(GridLength.Auto)
+                        },
+                        ColumnSpacing = 12,
+                        RowSpacing = 12,
+                        Children =
+                        {
+                            SidebarPrimitiveStat("Sidebar", "header", "slot"),
+                            GridCell(SidebarPrimitiveStat("Menu", "active", "state"), row: 0, column: 1),
+                            GridCell(SidebarPrimitiveStat("Section", "actions", "slot"), row: 1, column: 0),
+                            GridCell(SidebarPrimitiveStat("Body", "content", "slot"), row: 1, column: 1)
+                        }
+                    }
+                }, row: 0, column: 1)
+            }
+        };
+    }
+
     private static Control BuildApplicationShellStatesPreview()
     {
         return new Grid
@@ -3568,6 +4386,141 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildSidebarPrimitivesAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(new GridLength(300)),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 18,
+            Children =
+            {
+                new CodexSidebar
+                {
+                    Content = new StackPanel
+                    {
+                        Children =
+                        {
+                            new CodexSidebarHeader
+                            {
+                                Content = new StackPanel
+                                {
+                                    Spacing = 3,
+                                    Children =
+                                    {
+                                        Text("Header", CodexTextRole.Subtitle),
+                                        Muted("Optional workspace summary")
+                                    }
+                                }
+                            },
+                            new CodexSidebarContent
+                            {
+                                Content = new StackPanel
+                                {
+                                    Spacing = 16,
+                                    Children =
+                                    {
+                                        new CodexSidebarGroup
+                                        {
+                                            Content = new CodexSidebarGroupContent
+                                            {
+                                                Content = new StackPanel
+                                                {
+                                                    Spacing = 6,
+                                                    Children =
+                                                    {
+                                                        new Grid
+                                                        {
+                                                            ColumnDefinitions =
+                                                            {
+                                                                new ColumnDefinition(GridLength.Star),
+                                                                new ColumnDefinition(GridLength.Auto)
+                                                            },
+                                                            Children =
+                                                            {
+                                                                new CodexSidebarGroupLabel { Content = "Group label" },
+                                                                GridCell(new CodexSidebarGroupAction { Content = "+" }, row: 0, column: 1)
+                                                            }
+                                                        },
+                                                        new Grid
+                                                        {
+                                                            ColumnDefinitions =
+                                                            {
+                                                                new ColumnDefinition(GridLength.Star),
+                                                                new ColumnDefinition(GridLength.Auto)
+                                                            },
+                                                            Children =
+                                                            {
+                                                                new CodexSidebarMenuButton
+                                                                {
+                                                                    Content = "Menu button",
+                                                                    Icon = "M",
+                                                                    IsActive = true,
+                                                                    Badge = new CodexSidebarMenuBadge { Content = "12" }
+                                                                },
+                                                                GridCell(new CodexSidebarMenuAction { Content = "...", IsShowOnHover = true }, row: 0, column: 1)
+                                                            }
+                                                        },
+                                                        new CodexSidebarMenuSub
+                                                        {
+                                                            Items =
+                                                            {
+                                                                new CodexSidebarMenuSubItem { Content = new CodexSidebarMenuSubButton { Content = "Sub button", IsActive = true } },
+                                                                new CodexSidebarMenuSubItem { Content = new CodexSidebarMenuSubButton { Content = "Disabled sub", IsEnabled = false } }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            new CodexSidebarFooter
+                            {
+                                Content = new CodexButton
+                                {
+                                    Content = "Footer",
+                                    Size = CodexControlSize.Small,
+                                    Variant = CodexControlVariant.Secondary,
+                                    HorizontalAlignment = HorizontalAlignment.Stretch
+                                }
+                            }
+                        }
+                    }
+                },
+                GridCell(new Grid
+                {
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition(GridLength.Star),
+                        new ColumnDefinition(GridLength.Star)
+                    },
+                    RowDefinitions =
+                    {
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(GridLength.Auto)
+                    },
+                    ColumnSpacing = 12,
+                    RowSpacing = 12,
+                    Children =
+                    {
+                        SidebarPrimitiveStat("Header", "slot", "top"),
+                        GridCell(SidebarPrimitiveStat("Content", "scroll", "middle"), row: 0, column: 1),
+                        GridCell(SidebarPrimitiveStat("Group", "label/action", "row"), row: 1, column: 0),
+                        GridCell(SidebarPrimitiveStat("Menu", "button/badge", "item"), row: 1, column: 1),
+                        GridCell(SidebarPrimitiveStat("Submenu", "nested", "item"), row: 2, column: 0),
+                        GridCell(SidebarPrimitiveStat("Footer", "slot", "bottom"), row: 2, column: 1)
+                    }
+                }, row: 0, column: 1)
+            }
+        };
+    }
+
     private static Control BuildSidebarPrimitivesStatesPreview()
     {
         return new Grid
@@ -3894,6 +4847,71 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildSectionComponentAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 16,
+            Children =
+            {
+                new CodexSection
+                {
+                    Title = "Section anatomy",
+                    Description = "Title, description, actions, and body content are owned by the section primitive.",
+                    Actions = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexButton { Content = "Secondary", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary },
+                            new CodexButton { Content = "Primary", Size = CodexControlSize.Small }
+                        }
+                    },
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            ProviderCard("OpenAI", "Body content keeps component spacing.", true),
+                            new CodexProgress { Value = 72, Variant = CodexControlVariant.Success }
+                        }
+                    }
+                },
+                GridCell(new Grid
+                {
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition(GridLength.Star),
+                        new ColumnDefinition(GridLength.Star)
+                    },
+                    RowDefinitions =
+                    {
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(GridLength.Auto),
+                        new RowDefinition(GridLength.Auto)
+                    },
+                    ColumnSpacing = 12,
+                    RowSpacing = 12,
+                    Children =
+                    {
+                        SidebarPrimitiveStat("Title", "text", "header"),
+                        GridCell(SidebarPrimitiveStat("Description", "helper", "header"), row: 0, column: 1),
+                        GridCell(SidebarPrimitiveStat("Actions", "slot", "trailing"), row: 1, column: 0),
+                        GridCell(SidebarPrimitiveStat("Content", "slot", "body"), row: 1, column: 1),
+                        GridCell(SidebarPrimitiveStat("Empty", "compact", "state"), row: 2, column: 0),
+                        GridCell(SidebarPrimitiveStat("Dense", "nested", "content"), row: 2, column: 1)
+                    }
+                }, row: 0, column: 1)
+            }
+        };
+    }
+
     private static Control BuildSectionComponentStatesPreview()
     {
         return new Grid
@@ -4157,6 +5175,80 @@ public sealed class MainWindow : Window
                     ResizablePanel("Min", "Cannot shrink below 20%", 20, 20, 60),
                     ResizablePanel("Large", "Thick handle", 80, 30)
                 ], size: CodexControlSize.Large, withHandles: true)), row: 1, column: 1)
+            }
+        };
+    }
+
+    private static Control BuildResizableAnatomyPreview()
+    {
+        var handleGroup = new CodexResizablePanelGroup
+        {
+            Width = 360,
+            Height = 180,
+            Orientation = Orientation.Horizontal,
+            Size = CodexControlSize.Small,
+            Children =
+            {
+                ResizablePanel("Files", string.Empty, 24, 16, content: Text("Files", CodexTextRole.Subtitle)),
+                new CodexResizableHandle { WithHandle = true },
+                ResizablePanel("Preview", string.Empty, 48, 30, content: Text("Preview", CodexTextRole.Subtitle)),
+                new CodexResizableHandle(),
+                ResizablePanel("Inspector", string.Empty, 28, 18, content: Text("Inspector", CodexTextRole.Subtitle))
+            }
+        };
+
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Panel group anatomy",
+                    Description = "PanelGroup owns orientation, percentage layout, border, and panel count.",
+                    Content = BuildResizableGroup(360, 180, Orientation.Horizontal,
+                    [
+                        ResizablePanel("Sidebar", "Default 32%", 32, 20, 60),
+                        ResizablePanel("Workspace", "Remaining surface", 68, 30)
+                    ], withHandles: true)
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Handle anatomy",
+                    Description = "WithHandle shows the grip while the track keeps a stable drag target.",
+                    Content = handleGroup
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Vertical anatomy",
+                    Description = "Vertical orientation rotates panel sizing and handle direction.",
+                    Content = BuildResizableGroup(360, 220, Orientation.Vertical,
+                    [
+                        ResizablePanel("Header", string.Empty, 36, 24, content: Text("Header", CodexTextRole.Subtitle)),
+                        ResizablePanel("Body", string.Empty, 64, 32, content: Text("Body", CodexTextRole.Subtitle))
+                    ], withHandles: true)
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Constraint anatomy",
+                    Description = "MinSize and MaxSize clamp pointer, keyboard, and programmatic resizing.",
+                    Content = BuildResizableGroup(360, 220, Orientation.Horizontal,
+                    [
+                        ResizablePanel("Constrained", "30-55%", 40, 30, 55),
+                        ResizablePanel("Flexible", "Receives delta", 60, 35)
+                    ], size: CodexControlSize.Large, withHandles: true)
+                }, row: 1, column: 1)
             }
         };
     }
@@ -4673,6 +5765,98 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildButtonGroupAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Connected actions",
+                    Description = "The group owns first, middle, and last item shape while each button keeps its own activation.",
+                    Content = new CodexButtonGroup
+                    {
+                        Variant = CodexControlVariant.Outline,
+                        Items =
+                        {
+                            new CodexButton { Content = "Preview" },
+                            new CodexButton { Content = "Code" },
+                            new CodexButton { Content = "Events" }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Text and separator",
+                    Description = "Text and separator primitives share the connected row contract.",
+                    Content = new CodexButtonGroup
+                    {
+                        Items =
+                        {
+                            new CodexButtonGroupText { Content = "Mode" },
+                            new CodexButton { Content = "Read", Variant = CodexControlVariant.Secondary },
+                            new CodexButtonGroupSeparator(),
+                            new CodexIconButton { Content = "+", Variant = CodexControlVariant.Secondary }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Vertical group",
+                    Description = "Vertical orientation rotates the item position classes and separator sizing.",
+                    Content = new CodexButtonGroup
+                    {
+                        Orientation = Orientation.Vertical,
+                        Variant = CodexControlVariant.Outline,
+                        Items =
+                        {
+                            new CodexButton { Content = "Today" },
+                            new CodexButton { Content = "This week" },
+                            new CodexButton { Content = "This month" }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Mixed controls",
+                    Description = "TextBox and NativeSelect can join the same connected action surface.",
+                    Content = new CodexButtonGroup
+                    {
+                        Items =
+                        {
+                            new CodexButtonGroupText { Content = "Route" },
+                            new CodexTextBox { Text = "/v1/responses", MinWidth = 150 },
+                            new CodexNativeSelect
+                            {
+                                SelectedIndex = 0,
+                                MinWidth = 96,
+                                Items =
+                                {
+                                    new CodexNativeSelectOption { Value = "prod", Content = "Prod" },
+                                    new CodexNativeSelectOption { Value = "dev", Content = "Dev" }
+                                }
+                            },
+                            new CodexButton { Content = "Apply", Variant = CodexControlVariant.Secondary }
+                        }
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildButtonGroupCompositionPreview()
     {
         return new Grid
@@ -5040,6 +6224,131 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildInputGroupAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Inline addon anatomy",
+                    Description = "Inline addons, input, and trailing text share one root border and focus ring.",
+                    Content = new CodexInputGroup
+                    {
+                        MinWidth = 320,
+                        Items =
+                        {
+                            new CodexInputGroupAddon { Content = "https://" },
+                            new CodexInputGroupInput { Text = "api.openai.com" },
+                            new CodexInputGroupAddon
+                            {
+                                Align = CodexInputGroupAddonAlign.InlineEnd,
+                                Content = new CodexInputGroupText { Content = ".com" }
+                            }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Action addon anatomy",
+                    Description = "Addon content can host a loading-capable button without replacing the input root.",
+                    Content = new CodexInputGroup
+                    {
+                        MinWidth = 320,
+                        Items =
+                        {
+                            new CodexInputGroupAddon { Content = "Route" },
+                            new CodexInputGroupInput { Text = "/v1/responses" },
+                            new CodexInputGroupAddon
+                            {
+                                Align = CodexInputGroupAddonAlign.InlineEnd,
+                                Content = new CodexInputGroupButton { Content = "Copy" }
+                            }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Block addon anatomy",
+                    Description = "Block start and block end addons switch the root into vertical layout.",
+                    Content = new CodexInputGroup
+                    {
+                        MinWidth = 320,
+                        Items =
+                        {
+                            new CodexInputGroupAddon { Align = CodexInputGroupAddonAlign.BlockStart, Content = "prompt.cs" },
+                            new CodexInputGroupTextarea { Text = "await agent.RunAsync();", MinHeight = 88 },
+                            new CodexInputGroupAddon
+                            {
+                                Align = CodexInputGroupAddonAlign.BlockEnd,
+                                Content = new StackPanel
+                                {
+                                    Orientation = Orientation.Horizontal,
+                                    HorizontalAlignment = HorizontalAlignment.Right,
+                                    Spacing = 8,
+                                    Children =
+                                    {
+                                        new CodexInputGroupText { Content = "42 tokens" },
+                                        new CodexInputGroupButton { Content = "Send" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Intent and select anatomy",
+                    Description = "Intent, child select controls, and keyboard hints stay inside the shared group chrome.",
+                    Intent = CodexControlIntent.Warning,
+                    Message = "Review the selected target before saving.",
+                    Content = new CodexInputGroup
+                    {
+                        Intent = CodexControlIntent.Warning,
+                        MinWidth = 320,
+                        Items =
+                        {
+                            new CodexInputGroupInput { PlaceholderText = "Model alias" },
+                            new CodexInputGroupAddon
+                            {
+                                Align = CodexInputGroupAddonAlign.InlineEnd,
+                                Content = new CodexSelect
+                                {
+                                    Width = 120,
+                                    SelectedIndex = 0,
+                                    Items =
+                                    {
+                                        "Fast",
+                                        "Balanced",
+                                        "Deep"
+                                    }
+                                }
+                            },
+                            new CodexInputGroupAddon
+                            {
+                                Align = CodexInputGroupAddonAlign.InlineEnd,
+                                Content = new CodexKbd { Content = "Ctrl K" }
+                            }
+                        }
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildInputGroupCompositionPreview()
     {
         return new Grid
@@ -5309,6 +6618,66 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildInputOtpAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Root and groups",
+                    Description = "The root owns text, max length, pattern filtering, and grouped slot sync.",
+                    Content = BuildInputOtp("123456", 6, CodexInputOtp.DigitsPattern)
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Slot anatomy",
+                    Description = "Slots expose character, active, invalid, and size state independently.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexInputOtpSlot { Index = 0, Character = "4" },
+                            new CodexInputOtpSlot { Index = 1, Character = "9", IsActive = true },
+                            new CodexInputOtpSlot { Index = 2, IsInvalid = true },
+                            new CodexInputOtpSeparator(),
+                            new CodexInputOtpSlot { Index = 3, Size = CodexControlSize.Small, Character = "A" }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Recovery grouping",
+                    Description = "Separators can split longer recovery codes into readable groups.",
+                    Content = BuildInputOtp("12AB34CD", 8, CodexInputOtp.DigitsAndLettersPattern, size: CodexControlSize.Small, groupSizes: [2, 2, 2, 2])
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Invalid anatomy",
+                    Description = "Invalid intent flows from the root to every owned slot.",
+                    Intent = CodexControlIntent.Error,
+                    Message = "The verification code is incorrect.",
+                    Content = BuildInputOtp("000000", 6, null, CodexControlIntent.Error, isInvalid: true)
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildInputOtpCompositionPreview()
     {
         return new StackPanel
@@ -5546,6 +6915,95 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildLabelAnatomyPreview()
+    {
+        var routing = new CodexCheckBox { IsChecked = true };
+        var lockedRoute = new CodexTextBox
+        {
+            Text = "locked-route",
+            IsEnabled = false,
+            MinWidth = 260
+        };
+
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Target anatomy",
+                    Description = "Target association gives the label pointer and access-key focus behavior.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 10,
+                        Children =
+                        {
+                            routing,
+                            new CodexLabel { Target = routing, Content = "Enable provider routing" }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Required anatomy",
+                    Description = "The required marker is owned by the label template, not by surrounding text.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 6,
+                        Children =
+                        {
+                            new CodexLabel { Content = "_Provider name", IsRequired = true },
+                            new CodexTextBox { PlaceholderText = "OpenAI", MinWidth = 260 }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Intent anatomy",
+                    Description = "Intent changes label foreground while the target keeps its own validation state.",
+                    Intent = CodexControlIntent.Error,
+                    Message = "Base URL is required.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 6,
+                        Children =
+                        {
+                            new CodexLabel { Content = "Base URL", Intent = CodexControlIntent.Error, IsRequired = true },
+                            new CodexTextBox { Intent = CodexControlIntent.Error, PlaceholderText = "https://api.example.com", MinWidth = 260 }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Disabled target anatomy",
+                    Description = "Target-disabled state mutes the label while preserving layout.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 6,
+                        Children =
+                        {
+                            lockedRoute,
+                            new CodexLabel { Target = lockedRoute, Content = "Locked route" }
+                        }
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildLabelCompositionPreview()
     {
         var routing = new CodexCheckBox { IsChecked = true };
@@ -5746,6 +7204,91 @@ public sealed class MainWindow : Window
                 IconButtonState("Destructive", new CodexIconButton { Content = "x", Variant = CodexControlVariant.Destructive }, 1, 0),
                 IconButtonState("Loading", new CodexIconButton { Content = ">", IsLoading = true, LoadingContent = "..." }, 1, 1),
                 IconButtonState("Disabled", new CodexIconButton { Content = "i", IsEnabled = false }, 1, 2)
+            }
+        };
+    }
+
+    private static Control BuildIconButtonAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Icon-sized chrome",
+                    Description = "IconButton inherits the CodexButton template and fixes the control to icon dimensions.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexIconButton { Content = "+", Variant = CodexControlVariant.Default },
+                            new CodexIconButton { Content = "i", Variant = CodexControlVariant.Secondary },
+                            new CodexIconButton { Content = "...", Variant = CodexControlVariant.Ghost }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Round geometry",
+                    Description = "Round only changes radius; hover, pressed, loading, and focus-visible still come from CodexButton.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexIconButton { Content = "+", IsRound = true, Variant = CodexControlVariant.Default },
+                            new CodexIconButton { Content = "?", IsRound = true, Variant = CodexControlVariant.Secondary },
+                            new CodexIconButton { Content = "x", IsRound = true, Variant = CodexControlVariant.Destructive }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Loading slot",
+                    Description = "Loading content replaces the glyph without changing the toolbar hit target.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexIconButton { Content = ">", IsLoading = true },
+                            new CodexIconButton { Content = "*", IsLoading = true, LoadingContent = "...", Variant = CodexControlVariant.Secondary }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Semantic toolbar",
+                    Description = "Icon-only actions preserve square rhythm across destructive, disabled, and outline variants.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexIconButton { Content = "x", Variant = CodexControlVariant.Destructive },
+                            new CodexIconButton { Content = "o", Variant = CodexControlVariant.Outline },
+                            new CodexIconButton { Content = "i", IsEnabled = false }
+                        }
+                    }
+                }, row: 1, column: 1)
             }
         };
     }
@@ -5962,9 +7505,85 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildSplitButtonAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 14,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Primary and trigger parts",
+                    Description = "The root composes a primary CodexButton, divider, menu CodexButton, and rotating chevron.",
+                    Content = new CodexSplitButton
+                    {
+                        Content = "Run sync",
+                        IsOpen = true,
+                        IsArrowVisible = true,
+                        DropDownContent = ActionMenu("Run once", "Schedule", "Stop")
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Popup surface",
+                    Description = "Dropdown content lives in the owned popup surface with side-aware opacity and transform motion.",
+                    Content = new CodexSplitButton
+                    {
+                        Content = "Deploy",
+                        IsOpen = true,
+                        Placement = PlacementMode.Top,
+                        Align = CodexDropdownAlign.End,
+                        Variant = CodexControlVariant.Secondary,
+                        DropDownContent = ActionMenu("Preview", "Promote", "Rollback")
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Loading and disabled",
+                    Description = "Loading suppresses both child buttons; disabled keeps the popup trigger unavailable.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexSplitButton { Content = "Publishing", IsLoading = true, DropDownContent = Muted("Loading state keeps content mounted.") },
+                            new CodexSplitButton { Content = "Locked", IsEnabled = false, DropDownContent = Muted("Disabled trigger never opens.") }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Close policy",
+                    Description = "CloseOnItemSelected and arrow visibility are root-owned so menus can match Web disclosure behavior.",
+                    Content = new CodexSplitButton
+                    {
+                        Content = "Keep open",
+                        IsOpen = true,
+                        CloseOnItemSelected = false,
+                        IsArrowVisible = false,
+                        Variant = CodexControlVariant.Outline,
+                        DropDownContent = ActionMenu("Preview", "Copy command", "Open logs")
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildSplitButtonInteractionPreview()
     {
-        var status = Muted("OpenChanged: split menu starts open.");
+        var status = Muted("OpenChanged: split menu starts open (source=Programmatic).");
         var openSplitButton = new CodexSplitButton
         {
             Content = "Run sync",
@@ -5975,7 +7594,7 @@ public sealed class MainWindow : Window
         };
         openSplitButton.OpenChanged += (_, args) =>
         {
-            status.Text = args.IsOpen ? "OpenChanged: split menu opened." : "OpenChanged: split menu closed.";
+            status.Text = $"OpenChanged: split menu {(args.IsOpen ? "opened" : "closed")} (source={args.Source}).";
         };
 
         var grid = new Grid
@@ -6100,6 +7719,77 @@ public sealed class MainWindow : Window
                 {
                     Label = "Disabled",
                     Content = new CodexTextBox { Text = "Locked", IsEnabled = false, MinWidth = 240 }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
+    private static Control BuildTextBoxAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Presenter and placeholder",
+                    Description = "The owned template keeps placeholder, presenter, border, and focus ring in one mounted input surface.",
+                    Content = new CodexTextBox
+                    {
+                        PlaceholderText = "Provider name",
+                        MinWidth = 280
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Inline slot anatomy",
+                    Description = "Left and right content slots stay outside the text presenter while sharing the same border and padding.",
+                    Content = new CodexTextBox
+                    {
+                        Text = "openai",
+                        InnerLeftContent = "cs://",
+                        InnerRightContent = ".local",
+                        MinWidth = 280
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Selection and caret",
+                    Description = "Selection brush, selection foreground, and caret brush come from Codex tokens instead of default input chrome.",
+                    Content = new CodexTextBox
+                    {
+                        Text = "https://api.openai.com/v1",
+                        SelectionStart = 8,
+                        SelectionEnd = 21,
+                        CaretIndex = 21,
+                        MinWidth = 280
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Intent and size",
+                    Description = "Intent and size classes change border, caret, selection, height, padding, and text scale together.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexTextBox { Text = "gpt-5", Size = CodexControlSize.Small, MinWidth = 280 },
+                            new CodexTextBox { Text = "/v1/chat/completions", Intent = CodexControlIntent.Warning, Size = CodexControlSize.Large, MinWidth = 280 }
+                        }
+                    }
                 }, row: 1, column: 1)
             }
         };
@@ -6256,6 +7946,76 @@ public sealed class MainWindow : Window
                 {
                     Label = "Disabled",
                     Content = new CodexTextarea { Text = "Locked", IsEnabled = false, Size = CodexControlSize.Large, MinHeight = 96 }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
+    private static Control BuildTextareaAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Wrapped text presenter",
+                    Description = "Textarea owns AcceptsReturn, wrapping, scroll viewer, placeholder, and focus ring in one template.",
+                    Content = new CodexTextarea
+                    {
+                        Text = "stream: true\ntemperature: 0.7",
+                        MinHeight = 112
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Placeholder surface",
+                    Description = "Empty multiline values show the muted placeholder inside the same scroll presenter.",
+                    Content = new CodexTextarea
+                    {
+                        PlaceholderText = "Optional JSON payload",
+                        MinLines = 5,
+                        MinHeight = 132
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Selection and caret",
+                    Description = "Caret and selection tokens stay aligned with single-line inputs while preserving multiline layout.",
+                    Content = new CodexTextarea
+                    {
+                        Text = "model: gpt-5\nreasoning: medium\nstream: true",
+                        SelectionStart = 7,
+                        SelectionEnd = 12,
+                        CaretIndex = 12,
+                        MinHeight = 118
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Tall and semantic",
+                    Description = "MinLines drives the tall class while intent changes caret, selection, and border tone.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexTextarea { Text = "cache: warm", Size = CodexControlSize.Small, MinHeight = 80 },
+                            new CodexTextarea { Text = "invalid: true", Intent = CodexControlIntent.Error, MinLines = 5, MinHeight = 132 }
+                        }
+                    }
                 }, row: 1, column: 1)
             }
         };
@@ -6443,7 +8203,7 @@ public sealed class MainWindow : Window
 
     private static Control BuildSelectInteractionPreview()
     {
-        var status = Muted("OpenChanged and ValueChanged update this status.");
+        var status = Muted("OpenChanged and source-aware ValueChanged update this status.");
         var select = new CodexSelect
         {
             ItemsSource = new[] { "OpenAI", "Claude", "Responses" },
@@ -6453,11 +8213,11 @@ public sealed class MainWindow : Window
         };
         select.OpenChanged += (_, args) =>
         {
-            status.Text = args.IsOpen ? "OpenChanged: popup opened." : "OpenChanged: popup closed.";
+            status.Text = $"OpenChanged: popup {(args.IsOpen ? "opened" : "closed")} (source={args.Source}).";
         };
         select.ValueChanged += (_, args) =>
         {
-            status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"}.";
+            status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"} (source={args.Source}).";
         };
         var chooseClaude = new CodexButton
         {
@@ -6493,7 +8253,7 @@ public sealed class MainWindow : Window
                 new CodexField
                 {
                     Label = "Open popup",
-                    Description = "Trigger, selected item, popup-open class, OpenChanged, and ValueChanged share one state path.",
+                    Description = "Trigger, selected item, popup-open class, OpenChanged, and source-aware ValueChanged share one state path.",
                     Content = new StackPanel
                     {
                         Spacing = 8,
@@ -6690,7 +8450,7 @@ public sealed class MainWindow : Window
 
     private static Control BuildComboboxInteractionPreview()
     {
-        var status = Muted("No framework selected.");
+        var status = Muted("OpenChanged and SelectionChanged update this status.");
         var combobox = new CodexCombobox
         {
             ItemsSource = ComboboxFrameworks(),
@@ -6698,6 +8458,10 @@ public sealed class MainWindow : Window
             IsOpen = true,
             AutoHighlight = true,
             MinWidth = 240
+        };
+        combobox.OpenChanged += (_, args) =>
+        {
+            status.Text = $"OpenChanged: popup {(args.IsOpen ? "opened" : "closed")} (source={args.Source}).";
         };
         combobox.SelectionChanged += (_, args) =>
         {
@@ -6921,6 +8685,100 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildNativeSelectAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Trigger anatomy",
+                    Description = "The trigger owns placeholder, selected content, chevron, focus ring, and has-selection state.",
+                    Content = new CodexNativeSelect
+                    {
+                        SelectedIndex = 0,
+                        MinWidth = 260,
+                        Items =
+                        {
+                            new CodexNativeSelectOption { Value = "", Content = "Select route" },
+                            new CodexNativeSelectOption { Value = "primary", Content = "Primary" },
+                            new CodexNativeSelectOption { Value = "fallback", Content = "Fallback" }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Popup anatomy",
+                    Description = "Open state exposes the popup surface with option rows and disabled optgroup labels.",
+                    Content = new CodexNativeSelect
+                    {
+                        SelectedIndex = 2,
+                        IsDropDownOpen = true,
+                        MinWidth = 280,
+                        Items =
+                        {
+                            new CodexNativeSelectOptGroup { Label = "Production" },
+                            new CodexNativeSelectOption { Value = "openai", Content = "OpenAI" },
+                            new CodexNativeSelectOption { Value = "claude", Content = "Claude" },
+                            new CodexNativeSelectOptGroup { Label = "Local" },
+                            new CodexNativeSelectOption { Value = "proxy", Content = "Local proxy" }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Disabled option anatomy",
+                    Description = "Disabled options remain visible in the native list but do not enter value selection.",
+                    Content = new CodexNativeSelect
+                    {
+                        SelectedIndex = 1,
+                        MinWidth = 260,
+                        Items =
+                        {
+                            new CodexNativeSelectOption { Value = "", Content = "Select model" },
+                            new CodexNativeSelectOption { Value = "gpt-5", Content = "gpt-5" },
+                            new CodexNativeSelectOption { Value = "legacy", Content = "Legacy model", IsEnabled = false },
+                            new CodexNativeSelectOption { Value = "mini", Content = "gpt-5-mini" }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Invalid compact anatomy",
+                    Description = "Invalid, size, placeholder-visible, and field message states stay independent.",
+                    Intent = CodexControlIntent.Error,
+                    Message = "Choose a provider before saving.",
+                    Content = new CodexNativeSelect
+                    {
+                        SelectedIndex = 0,
+                        IsInvalid = true,
+                        Size = CodexControlSize.Small,
+                        MinWidth = 260,
+                        Items =
+                        {
+                            new CodexNativeSelectOption { Value = "", Content = "Select provider" },
+                            new CodexNativeSelectOption { Value = "openai", Content = "OpenAI" },
+                            new CodexNativeSelectOption { Value = "claude", Content = "Claude" }
+                        }
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildNativeSelectCompositionPreview()
     {
         return new StackPanel
@@ -6975,7 +8833,7 @@ public sealed class MainWindow : Window
 
     private static Control BuildNativeSelectInteractionPreview()
     {
-        var status = Muted("Native select events update this status.");
+        var status = Muted("Native select events update this status with source metadata.");
         var select = new CodexNativeSelect
         {
             SelectedIndex = 1,
@@ -6990,11 +8848,11 @@ public sealed class MainWindow : Window
         };
         select.OpenChanged += (_, args) =>
         {
-            status.Text = args.IsOpen ? "OpenChanged: native list opened." : "OpenChanged: native list closed.";
+            status.Text = $"OpenChanged: native list {(args.IsOpen ? "opened" : "closed")} (source={args.Source}).";
         };
         select.ValueChanged += (_, args) =>
         {
-            status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"}.";
+            status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"} (source={args.Source}).";
         };
         var chooseClaude = new CodexButton
         {
@@ -7037,7 +8895,7 @@ public sealed class MainWindow : Window
                 new CodexField
                 {
                     Label = "Open list",
-                    Description = "OpenChanged, ValueChanged, and popup-open are triggered without keeping offscreen popups mounted.",
+                    Description = "OpenChanged, source-aware ValueChanged, and popup-open are triggered without keeping offscreen popups mounted.",
                     Content = new StackPanel
                     {
                         Spacing = 8,
@@ -7192,6 +9050,74 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildCalendarAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Single grid anatomy",
+                    Description = "Header, weekday row, outside days, selected day, and active roving target stay component-owned.",
+                    Content = BuildCalendar(
+                        new DateTime(2026, 5, 1),
+                        selectedDate: new DateTime(2026, 5, 20),
+                        activeDate: new DateTime(2026, 5, 22))
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Range anatomy",
+                    Description = "Range edges and middle days map to separate classes for Web-equivalent styling.",
+                    Content = BuildCalendar(
+                        new DateTime(2026, 2, 1),
+                        rangeStart: new DateTime(2026, 2, 9),
+                        rangeEnd: new DateTime(2026, 2, 18),
+                        activeDate: new DateTime(2026, 2, 18),
+                        selectionMode: CodexCalendarSelectionMode.Range)
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Week number anatomy",
+                    Description = "Monday-first layout adds a leading week-number column without changing day button slots.",
+                    Content = BuildCalendar(
+                        new DateTime(2026, 1, 1),
+                        selectedDate: new DateTime(2026, 1, 14),
+                        activeDate: new DateTime(2026, 1, 14),
+                        firstDayOfWeek: DayOfWeek.Monday,
+                        showWeekNumbers: true,
+                        size: CodexControlSize.Small)
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Bounded day anatomy",
+                    Description = "MinDate and MaxDate produce unavailable day cells while preserving grid rhythm.",
+                    Intent = CodexControlIntent.Warning,
+                    Message = "Unavailable days remain visible but cannot activate.",
+                    Content = BuildCalendar(
+                        new DateTime(2026, 3, 1),
+                        selectedDate: new DateTime(2026, 3, 16),
+                        activeDate: new DateTime(2026, 3, 16),
+                        minDate: new DateTime(2026, 3, 9),
+                        maxDate: new DateTime(2026, 3, 23),
+                        intent: CodexControlIntent.Warning)
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildCalendarCompositionPreview()
     {
         var trigger = new CodexButton
@@ -7268,15 +9194,15 @@ public sealed class MainWindow : Window
             activeDate: new DateTime(2026, 5, 22));
         eventCalendar.SelectedDateChanged += (_, args) =>
         {
-            singleStatus.Text = $"SelectedDateChanged: {DateLabel(args.OldDate)} -> {DateLabel(args.NewDate)}.";
+            singleStatus.Text = $"SelectedDateChanged: {DateLabel(args.OldDate)} -> {DateLabel(args.NewDate)} (source={args.Source}).";
         };
         eventCalendar.DisplayDateChanged += (_, args) =>
         {
-            singleStatus.Text = $"DisplayDateChanged: {args.OldDisplayDate:MMM yyyy} -> {args.NewDisplayDate:MMM yyyy}.";
+            singleStatus.Text = $"DisplayDateChanged: {args.OldDisplayDate:MMM yyyy} -> {args.NewDisplayDate:MMM yyyy} (source={args.Source}).";
         };
         eventCalendar.ActiveDateChanged += (_, args) =>
         {
-            singleStatus.Text = $"ActiveDateChanged: {DateLabel(args.OldDate)} -> {DateLabel(args.NewDate)}.";
+            singleStatus.Text = $"ActiveDateChanged: {DateLabel(args.OldDate)} -> {DateLabel(args.NewDate)} (source={args.Source}).";
         };
 
         var selectMay25 = new CodexButton
@@ -7318,7 +9244,7 @@ public sealed class MainWindow : Window
         rangeCalendar.RangeChanged += (_, args) =>
         {
             var suffix = args.IsComplete ? "complete" : "open";
-            rangeStatus.Text = $"RangeChanged: {DateLabel(args.NewStart)} -> {DateLabel(args.NewEnd)} ({suffix}).";
+            rangeStatus.Text = $"RangeChanged: {DateLabel(args.NewStart)} -> {DateLabel(args.NewEnd)} ({suffix}, source={args.Source}).";
         };
 
         var startRange = new CodexButton
@@ -7337,6 +9263,14 @@ public sealed class MainWindow : Window
         };
         finishRange.Click += (_, _) => rangeCalendar.SelectDate(new DateTime(2026, 3, 12));
 
+        var blockedCalendar = BuildCalendar(
+            new DateTime(2026, 8, 1),
+            selectedDate: new DateTime(2026, 8, 10),
+            activeDate: new DateTime(2026, 8, 17),
+            size: CodexControlSize.Small);
+        var blockedDay = blockedCalendar.Items.OfType<CodexCalendarDayButton>().Single(button => button.Date == new DateTime(2026, 8, 17));
+        blockedDay.Command = new DocsActionCommand(() => singleStatus.Text = "Blocked day command executed.", () => false);
+
         return new Grid
         {
             ColumnDefinitions =
@@ -7346,6 +9280,7 @@ public sealed class MainWindow : Window
             },
             RowDefinitions =
             {
+                new RowDefinition(GridLength.Auto),
                 new RowDefinition(GridLength.Auto),
                 new RowDefinition(GridLength.Auto)
             },
@@ -7416,6 +9351,12 @@ public sealed class MainWindow : Window
                 }, row: 1, column: 0),
                 GridCell(new CodexField
                 {
+                    Label = "Command blocked",
+                    Description = "CanExecute=false keeps the current date selected and exposes command-blocked.",
+                    Content = blockedCalendar
+                }, row: 1, column: 1),
+                GridCell(new CodexField
+                {
                     Label = "Compact month",
                     Description = "Small size keeps day hit targets stable for dense popovers.",
                     Content = BuildCalendar(
@@ -7423,7 +9364,7 @@ public sealed class MainWindow : Window
                         selectedDate: new DateTime(2026, 12, 11),
                         activeDate: new DateTime(2026, 12, 11),
                         size: CodexControlSize.Small)
-                }, row: 1, column: 1)
+                }, row: 2, column: 0)
             }
         };
     }
@@ -7598,6 +9539,40 @@ public sealed class MainWindow : Window
 
     private static Control BuildDatePickerInteractionPreview()
     {
+        static string DateLabel(DateTime? date)
+        {
+            return date.HasValue
+                ? date.Value.ToString("MMM d, yyyy", CultureInfo.CurrentCulture)
+                : "empty";
+        }
+
+        var openStatus = Muted("OpenChanged: picker starts open (source=Programmatic).");
+        var keyboardPicker = BuildDatePicker(
+            new DateTime(2026, 5, 1),
+            selectedDate: new DateTime(2026, 5, 13),
+            isOpen: true,
+            closeOnSelect: false);
+        keyboardPicker.OpenChanged += (_, args) =>
+        {
+            openStatus.Text = $"OpenChanged: {(args.IsOpen ? "open" : "closed")} (source={args.Source}).";
+        };
+        keyboardPicker.SelectedDateChanged += (_, args) =>
+        {
+            openStatus.Text = $"SelectedDateChanged: {DateLabel(args.NewDate)} (source={args.Source}).";
+        };
+
+        var rangeStatus = Muted("RangeChanged: waiting for the second date.");
+        var rangePicker = BuildDatePicker(
+            new DateTime(2026, 2, 1),
+            rangeStart: new DateTime(2026, 2, 9),
+            selectionMode: CodexCalendarSelectionMode.Range,
+            isOpen: true);
+        rangePicker.RangeChanged += (_, args) =>
+        {
+            var suffix = args.End.HasValue ? "complete" : "open";
+            rangeStatus.Text = $"RangeChanged: {DateLabel(args.Start)} -> {DateLabel(args.End)} ({suffix}, source={args.Source}).";
+        };
+
         return new Grid
         {
             ColumnDefinitions =
@@ -7617,22 +9592,30 @@ public sealed class MainWindow : Window
                 new CodexField
                 {
                     Label = "Keyboard open",
-                    Description = "Enter, Space, and ArrowDown open; Escape closes.",
-                    Content = BuildDatePicker(
-                        new DateTime(2026, 5, 1),
-                        selectedDate: new DateTime(2026, 5, 13),
-                        isOpen: true,
-                        closeOnSelect: false)
+                    Description = "Enter, Space, and ArrowDown open; Escape closes with source metadata.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            keyboardPicker,
+                            openStatus
+                        }
+                    }
                 },
                 GridCell(new CodexField
                 {
                     Label = "Range completion",
-                    Description = "Second date completes the range and can close the popover.",
-                    Content = BuildDatePicker(
-                        new DateTime(2026, 2, 1),
-                        rangeStart: new DateTime(2026, 2, 9),
-                        selectionMode: CodexCalendarSelectionMode.Range,
-                        isOpen: true)
+                    Description = "Second date completes the range, reports source, and can close the popover.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            rangePicker,
+                            rangeStatus
+                        }
+                    }
                 }, row: 0, column: 1),
                 GridCell(new CodexField
                 {
@@ -7928,6 +9911,13 @@ public sealed class MainWindow : Window
                                 }
                             }
                         },
+                        new CodexFieldLegend { Content = "Account settings" },
+                        new CodexFieldLegend
+                        {
+                            Content = "Inline label",
+                            Variant = CodexFieldLegendVariant.Label,
+                            Size = CodexControlSize.Small
+                        },
                         new CodexFieldSeparator { Content = "Validation" },
                         new CodexFieldError
                         {
@@ -8209,6 +10199,29 @@ public sealed class MainWindow : Window
 
     private static Control BuildCheckboxInteractionPreview()
     {
+        static string FormatCheckedState(bool? value)
+        {
+            return value switch
+            {
+                true => "checked",
+                false => "unchecked",
+                _ => "indeterminate"
+            };
+        }
+
+        var status = Muted("CheckedStateChanged: routing is checked (source=Programmatic).");
+        var routing = new CodexCheckBox { Content = "Enable provider routing", IsChecked = true };
+        routing.CheckedStateChanged += (_, args) =>
+        {
+            status.Text = $"Routing changed from {FormatCheckedState(args.OldValue)} to {FormatCheckedState(args.NewValue)} (source={args.Source}).";
+        };
+
+        var sync = new CodexCheckBox { Content = "Sync archived sessions" };
+        sync.CheckedStateChanged += (_, args) =>
+        {
+            status.Text = $"Sync changed from {FormatCheckedState(args.OldValue)} to {FormatCheckedState(args.NewValue)} (source={args.Source}).";
+        };
+
         return new Grid
         {
             ColumnDefinitions =
@@ -8228,14 +10241,15 @@ public sealed class MainWindow : Window
                 new CodexField
                 {
                     Label = "Pointer toggle",
-                    Description = "Pointer release and Space use the same native checked path.",
+                    Description = "Pointer release and Space use the same checked path and report source metadata.",
                     Content = new StackPanel
                     {
                         Spacing = 10,
                         Children =
                         {
-                            new CodexCheckBox { Content = "Enable provider routing", IsChecked = true },
-                            new CodexCheckBox { Content = "Sync archived sessions" }
+                            routing,
+                            sync,
+                            status
                         }
                     }
                 },
@@ -8311,6 +10325,89 @@ public sealed class MainWindow : Window
                 new CodexRadio { GroupName = "docs-radio-states", Content = "Warning intent", Intent = CodexControlIntent.Warning },
                 new CodexRadio { GroupName = "docs-radio-disabled", Content = "Disabled checked", IsChecked = true, IsEnabled = false },
                 new CodexRadio { GroupName = "docs-radio-disabled", Content = "Disabled unchecked", IsEnabled = false }
+            }
+        };
+    }
+
+    private static Control BuildRadioAnatomyPreview()
+    {
+        var labelTarget = new CodexRadio { GroupName = "radio-anatomy-label", IsChecked = true };
+
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Ring and dot",
+                    Description = "The template owns PART_Ring, PART_Dot, and the focus ring instead of inheriting native chrome.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexRadio { GroupName = "radio-anatomy-ring", Content = "Checked route", IsChecked = true },
+                            new CodexRadio { GroupName = "radio-anatomy-ring", Content = "Unchecked route" },
+                            new CodexRadio { GroupName = "radio-anatomy-ring", Content = "Warning intent", Intent = CodexControlIntent.Warning }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Label target",
+                    Description = "CodexLabel targets the radio without adding page-local click handlers.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 10,
+                        Children =
+                        {
+                            labelTarget,
+                            new CodexLabel { Target = labelTarget, Content = "Use cached provider health" }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Size classes",
+                    Description = "Small, default, large, and icon geometry keep stable hit targets.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexRadio { GroupName = "radio-anatomy-size", Content = "Small", Size = CodexControlSize.Small },
+                            new CodexRadio { GroupName = "radio-anatomy-size", Content = "Default", IsChecked = true },
+                            new CodexRadio { GroupName = "radio-anatomy-size", Content = "Large", Size = CodexControlSize.Large }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Disabled surface",
+                    Description = "Disabled opacity and cursor are token-owned while checked state remains visible.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexRadio { GroupName = "radio-anatomy-disabled", Content = "Locked checked", IsChecked = true, IsEnabled = false },
+                            new CodexRadio { GroupName = "radio-anatomy-disabled", Content = "Locked unchecked", IsEnabled = false }
+                        }
+                    }
+                }, row: 1, column: 1)
             }
         };
     }
@@ -8513,7 +10610,7 @@ public sealed class MainWindow : Window
         };
         group.ValueChanged += (_, args) =>
         {
-            status.Text = $"ValueChanged: [{args.OldIndex}] {args.OldValue ?? "none"} -> [{args.NewIndex}] {args.NewValue ?? "none"}.";
+            status.Text = $"ValueChanged({args.Source}): [{args.OldIndex}] {args.OldValue ?? "none"} -> [{args.NewIndex}] {args.NewValue ?? "none"}.";
         };
 
         var cycleValue = new CodexButton
@@ -8577,7 +10674,7 @@ public sealed class MainWindow : Window
                 new CodexField
                 {
                     Label = "Value and events",
-                    Description = "Buttons mutate the same root value that pointer and keyboard selection update.",
+                    Description = "Primary pointer release, Space/Enter, and roving arrows update the same root value with source metadata.",
                     Content = new StackPanel
                     {
                         Spacing = 10,
@@ -8683,23 +10780,101 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildSwitchAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Track and thumb",
+                    Description = "PART_Track owns the shell, PART_Thumb owns checked-position motion.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexSwitch { Content = "Streaming enabled", IsChecked = true },
+                            new CodexSwitch { Content = "Fallback routing" }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Content slot",
+                    Description = "The optional content presenter is hidden for icon-only switch surfaces.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexSwitch { IsChecked = true },
+                            new CodexSwitch { Content = "With label content", IsChecked = true }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Size and intent",
+                    Description = "Size classes update track/thumb geometry while intent recolors the checked track.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexSwitch { Content = "Small success", Size = CodexControlSize.Small, Intent = CodexControlIntent.Success, IsChecked = true },
+                            new CodexSwitch { Content = "Large warning", Size = CodexControlSize.Large, Intent = CodexControlIntent.Warning, IsChecked = true }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Disabled state",
+                    Description = "Disabled switches keep checked state readable while pointer and key input are blocked.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexSwitch { Content = "Locked on", IsChecked = true, IsEnabled = false },
+                            new CodexSwitch { Content = "Locked off", IsEnabled = false }
+                        }
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildSwitchInteractionPreview()
     {
-        var status = Muted("Streaming is on.");
+        var status = Muted("Streaming is on (source=Programmatic).");
         var streaming = new CodexSwitch { Content = "Streaming", IsChecked = true };
         streaming.CheckedChanged += (_, args) =>
         {
             var oldValue = args.OldValue ? "on" : "off";
             var newValue = args.NewValue ? "on" : "off";
-            status.Text = $"Streaming changed from {oldValue} to {newValue}.";
+            status.Text = $"Streaming changed from {oldValue} to {newValue} (source={args.Source}).";
         };
 
         var fallback = new CodexSwitch { Content = "Fallback routing" };
         fallback.CheckedChanged += (_, args) =>
         {
             status.Text = args.NewValue
-                ? "Fallback routing enabled."
-                : "Fallback routing disabled.";
+                ? $"Fallback routing enabled (source={args.Source})."
+                : $"Fallback routing disabled (source={args.Source}).";
         };
 
         return new Grid
@@ -8721,7 +10896,7 @@ public sealed class MainWindow : Window
                 new CodexField
                 {
                     Label = "Pointer toggle",
-                    Description = "Pointer release and Space update the same checked state.",
+                    Description = "Pointer release, Space, and Enter update the same checked state with source metadata.",
                     Content = new StackPanel
                     {
                         Spacing = 12,
@@ -8850,6 +11025,70 @@ public sealed class MainWindow : Window
                     {
                         new CodexToggle { Content = "Disabled on", IsPressed = true, IsEnabled = false },
                         new CodexToggle { Content = "Disabled off", IsEnabled = false }
+                    }
+                }), row: 1, column: 1)
+            }
+        };
+    }
+
+    private static Control BuildToggleAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                ToggleStateBlock("Root and content", new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 8,
+                    Children =
+                    {
+                        new CodexToggle { Content = "Bookmark", IsPressed = true },
+                        new CodexToggle { Content = "Code" }
+                    }
+                }),
+                GridCell(ToggleStateBlock("Variant surface", new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 8,
+                    Children =
+                    {
+                        new CodexToggle { Content = "Default", IsPressed = true },
+                        new CodexToggle { Content = "Outline", Variant = CodexControlVariant.Outline, IsPressed = true },
+                        new CodexToggle { Content = "Ghost", Variant = CodexControlVariant.Ghost }
+                    }
+                }), row: 0, column: 1),
+                GridCell(ToggleStateBlock("Pressed classes", new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 8,
+                    Children =
+                    {
+                        new CodexToggle { Content = "state-on", IsPressed = true },
+                        new CodexToggle { Content = "state-off" },
+                        new CodexToggle { Content = "size-icon", Size = CodexControlSize.Icon, Variant = CodexControlVariant.Ghost }
+                    }
+                }), row: 1, column: 0),
+                GridCell(ToggleStateBlock("Disabled guard", new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 8,
+                    Children =
+                    {
+                        new CodexToggle { Content = "Locked on", IsPressed = true, IsEnabled = false },
+                        new CodexToggle { Content = "Locked off", Variant = CodexControlVariant.Outline, IsEnabled = false }
                     }
                 }), row: 1, column: 1)
             }
@@ -9000,17 +11239,21 @@ public sealed class MainWindow : Window
 
     private static Control BuildToggleInteractionPreview()
     {
-        var status = Muted("Bookmark is on.");
+        var status = Muted("Bookmark is on (source=Programmatic).");
         var bookmark = new CodexToggle { Content = "Bookmark", IsPressed = true };
         bookmark.PressedChanged += (_, args) =>
         {
-            status.Text = args.NewValue ? "Bookmark is on." : "Bookmark is off.";
+            status.Text = args.NewValue
+                ? $"Bookmark is on (source={args.Source})."
+                : $"Bookmark is off (source={args.Source}).";
         };
 
         var bold = new CodexToggle { Content = "Bold", Variant = CodexControlVariant.Outline };
         bold.PressedChanged += (_, args) =>
         {
-            status.Text = args.NewValue ? "Bold enabled." : "Bold disabled.";
+            status.Text = args.NewValue
+                ? $"Bold enabled (source={args.Source})."
+                : $"Bold disabled (source={args.Source}).";
         };
 
         return new Grid
@@ -9069,7 +11312,7 @@ public sealed class MainWindow : Window
 
     private static Control BuildToggleGroupInteractionPreview()
     {
-        var singleStatus = Muted("Single value: center.");
+        var singleStatus = Muted("Single value: center (source=Programmatic).");
         var single = new CodexToggleGroup
         {
             Spacing = 0,
@@ -9084,11 +11327,11 @@ public sealed class MainWindow : Window
         single.ValueChanged += (_, args) =>
         {
             singleStatus.Text = string.IsNullOrWhiteSpace(args.NewValue)
-                ? "Single value cleared."
-                : $"Single value: {args.NewValue}.";
+                ? $"Single value cleared (source={args.Source})."
+                : $"Single value: {args.NewValue} (source={args.Source}).";
         };
 
-        var multiStatus = Muted("Multiple values: bold, italic.");
+        var multiStatus = Muted("Multiple values: bold, italic (source=Programmatic).");
         var multiple = new CodexToggleGroup
         {
             Type = CodexToggleGroupType.Multiple,
@@ -9104,8 +11347,8 @@ public sealed class MainWindow : Window
         multiple.ValueChanged += (_, args) =>
         {
             multiStatus.Text = args.NewValues.Count == 0
-                ? "Multiple values cleared."
-                : $"Multiple values: {string.Join(", ", args.NewValues)}.";
+                ? $"Multiple values cleared (source={args.Source})."
+                : $"Multiple values: {string.Join(", ", args.NewValues)} (source={args.Source}).";
         };
 
         return new Grid
@@ -9252,6 +11495,83 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildSliderAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Track and fill",
+                    Description = "The root owns track background, filled range, invisible hit buttons, and thumb parts.",
+                    Content = new CodexSlider
+                    {
+                        Minimum = 0,
+                        Maximum = 100,
+                        Value = 48,
+                        TickFrequency = 1,
+                        MinWidth = 320
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Thumb geometry",
+                    Description = "Size and intent change the same Codex-owned thumb and border contract.",
+                    Content = new CodexSlider
+                    {
+                        Minimum = 0,
+                        Maximum = 100,
+                        Value = 76,
+                        Size = CodexControlSize.Large,
+                        Intent = CodexControlIntent.Success,
+                        MinWidth = 320
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Vertical orientation",
+                    Description = "Vertical sliders reuse the same track, fill, hit buttons, and thumb template parts.",
+                    Content = new CodexSlider
+                    {
+                        Minimum = 0,
+                        Maximum = 100,
+                        Value = 64,
+                        Orientation = Orientation.Vertical,
+                        Intent = CodexControlIntent.Warning,
+                        Height = 132
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Boundary classes",
+                    Description = "Minimum, maximum, disabled, and has-value classes stay component-owned.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexSlider { Minimum = 0, Maximum = 100, Value = 0, MinWidth = 320 },
+                            new CodexSlider { Minimum = 0, Maximum = 100, Value = 100, Intent = CodexControlIntent.Success, IsEnabled = false, MinWidth = 320 }
+                        }
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildSliderInteractionPreview()
     {
         var status = Muted("ValueChanging and ValueCommitted update this status.");
@@ -9341,7 +11661,7 @@ public sealed class MainWindow : Window
                 new CodexField
                 {
                     Label = "Value events",
-                    Description = "Pointer drag, track click, and host updates raise ValueChanging before ValueCommitted.",
+                    Description = "Primary pointer drag, track click, and host updates raise ValueChanging before ValueCommitted.",
                     Content = new StackPanel
                     {
                         Spacing = 8,
@@ -9896,15 +12216,15 @@ public sealed class MainWindow : Window
             Variant = CodexControlVariant.Link,
             IsInteractive = true
         };
-        linkBadge.Activated += (_, _) =>
+        linkBadge.Activated += (_, args) =>
         {
-            status.Text = "Link badge activated through the badge event path.";
+            status.Text = $"Link badge activated: source={args.Source}.";
         };
 
         var linkField = new CodexField
         {
             Label = "Link badge activation",
-            Description = "Interactive badges mirror the Web asChild/link case with focus, pointer, and keyboard activation.",
+            Description = "Interactive badges mirror the Web asChild/link case with focus, pointer, keyboard, and source-aware activation.",
             Content = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
@@ -10292,6 +12612,317 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildAvatarGroupPreview()
+    {
+        return new StackPanel
+        {
+            Spacing = 14,
+            Children =
+            {
+                BuildAvatarGroupStack(CodexControlSize.Medium, overlap: 12, isStacked: true, includeCount: true),
+                new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 18,
+                    Children =
+                    {
+                        BuildAvatarGroupStack(CodexControlSize.Small, overlap: 8, isStacked: true, includeCount: true),
+                        BuildAvatarGroupStack(CodexControlSize.Medium, overlap: 0, isStacked: false, includeCount: false),
+                        BuildAvatarGroupStack(CodexControlSize.Large, overlap: 14, isStacked: true, includeCount: true)
+                    }
+                }
+            }
+        };
+    }
+
+    private static Control BuildAvatarGroupStatesPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Stacked",
+                    Description = "Default overlap mirrors Web team and assignee stacks.",
+                    Content = BuildAvatarGroupStack(CodexControlSize.Medium, overlap: 12, isStacked: true, includeCount: true)
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Inline",
+                    Description = "Inline mode keeps full avatar width for compact rosters.",
+                    Content = BuildAvatarGroupStack(CodexControlSize.Medium, overlap: 0, isStacked: false, includeCount: false)
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Compact",
+                    Description = "Small size cascades to every avatar and overflow count.",
+                    Content = BuildAvatarGroupStack(CodexControlSize.Small, overlap: 8, isStacked: true, includeCount: true)
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Large",
+                    Description = "Large avatars keep the same overlap and border contract.",
+                    Content = BuildAvatarGroupStack(CodexControlSize.Large, overlap: 14, isStacked: true, includeCount: true)
+                }, row: 1, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Hidden member",
+                    Description = "Invisible children are skipped when ItemCount and classes update.",
+                    Content = new CodexAvatarGroup
+                    {
+                        Size = CodexControlSize.Medium,
+                        Overlap = 12,
+                        Children =
+                        {
+                            new CodexAvatar { Fallback = "CN", Variant = CodexControlVariant.Default },
+                            new CodexAvatar { Fallback = "LR", Variant = CodexControlVariant.Secondary, IsVisible = false },
+                            new CodexAvatar { Fallback = "ER", Variant = CodexControlVariant.Warning },
+                            new CodexAvatarGroupCount { Count = 2 }
+                        }
+                    }
+                }, row: 2, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Disabled",
+                    Description = "Disabled groups preserve identity while using shared opacity.",
+                    Content = new CodexAvatarGroup
+                    {
+                        Size = CodexControlSize.Medium,
+                        Overlap = 12,
+                        IsEnabled = false,
+                        Children =
+                        {
+                            new CodexAvatar { Fallback = "RO", Variant = CodexControlVariant.Outline },
+                            new CodexAvatar { Fallback = "QA", Variant = CodexControlVariant.Secondary },
+                            new CodexAvatarGroupCount { Count = 4 }
+                        }
+                    }
+                }, row: 2, column: 1)
+            }
+        };
+    }
+
+    private static Control BuildAvatarGroupAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Root panel",
+                    Description = "The group measures visible children and owns the overlap math.",
+                    Content = BuildAvatarGroupStack(CodexControlSize.Medium, overlap: 12, isStacked: true, includeCount: true)
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Inherited size",
+                    Description = "Child avatars and count slots receive the group Size.",
+                    Content = BuildAvatarGroupStack(CodexControlSize.Large, overlap: 16, isStacked: true, includeCount: true)
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Overflow count",
+                    Description = "AvatarGroupCount is a final slot rather than page-local text.",
+                    Content = new CodexAvatarGroup
+                    {
+                        Size = CodexControlSize.Medium,
+                        Overlap = 12,
+                        Children =
+                        {
+                            new CodexAvatar { Fallback = "CN", Variant = CodexControlVariant.Default },
+                            new CodexAvatar { Fallback = "LR", Variant = CodexControlVariant.Secondary },
+                            new CodexAvatar { Fallback = "ER", Variant = CodexControlVariant.Outline },
+                            new CodexAvatarGroupCount { Count = 8 }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Status composition",
+                    Description = "Every avatar keeps independent status tone inside the group.",
+                    Content = new CodexAvatarGroup
+                    {
+                        Size = CodexControlSize.Medium,
+                        Overlap = 12,
+                        Children =
+                        {
+                            new CodexAvatar { Fallback = "ON", Variant = CodexControlVariant.Default, StatusVariant = CodexControlVariant.Success, IsStatusVisible = true },
+                            new CodexAvatar { Fallback = "BK", Variant = CodexControlVariant.Secondary, StatusVariant = CodexControlVariant.Warning, IsStatusVisible = true },
+                            new CodexAvatar { Fallback = "OF", Variant = CodexControlVariant.Outline, StatusVariant = CodexControlVariant.Destructive, IsStatusVisible = true }
+                        }
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
+    private static Control BuildAvatarGroupInteractionPreview()
+    {
+        var status = Muted("Stacked group: overlap=12; visible members=4.");
+        var optionalMember = new CodexAvatar
+        {
+            Fallback = "QA",
+            Variant = CodexControlVariant.Warning,
+            StatusVariant = CodexControlVariant.Warning,
+            IsStatusVisible = true
+        };
+        var group = new CodexAvatarGroup
+        {
+            Size = CodexControlSize.Medium,
+            Overlap = 12,
+            Children =
+            {
+                new CodexAvatar { Fallback = "CN", ImagePath = IconPath("openai.png"), IsStatusVisible = true },
+                new CodexAvatar { Fallback = "LR", ImagePath = IconPath("claude.png"), Variant = CodexControlVariant.Secondary },
+                optionalMember,
+                new CodexAvatarGroupCount { Count = 5 }
+            }
+        };
+
+        var toggleStacking = new CodexButton
+        {
+            Content = "Toggle stacking",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        toggleStacking.Click += (_, _) =>
+        {
+            group.IsStacked = !group.IsStacked;
+            status.Text = group.IsStacked
+                ? $"Stacked group: overlap={group.Overlap:0}; visible members={VisibleAvatarGroupMembers(group)}."
+                : $"Inline group: full-width members={VisibleAvatarGroupMembers(group)}.";
+        };
+
+        var changeOverlap = new CodexButton
+        {
+            Content = "Cycle overlap",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        changeOverlap.Click += (_, _) =>
+        {
+            group.Overlap = group.Overlap >= 16 ? 6 : group.Overlap + 5;
+            status.Text = $"Overlap changed to {group.Overlap:0}; visible members={VisibleAvatarGroupMembers(group)}.";
+        };
+
+        var toggleMember = new CodexButton
+        {
+            Content = "Toggle member",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        toggleMember.Click += (_, _) =>
+        {
+            optionalMember.IsVisible = !optionalMember.IsVisible;
+            group.InvalidateMeasure();
+            status.Text = $"Optional member {(optionalMember.IsVisible ? "shown" : "hidden")}; visible members={VisibleAvatarGroupMembers(group)}.";
+        };
+
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 16,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Layout controls",
+                    Description = "Stacking and overlap update the same measured group without rebuilding children.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            status,
+                            group,
+                            new StackPanel
+                            {
+                                Orientation = Orientation.Horizontal,
+                                Spacing = 8,
+                                Children =
+                                {
+                                    toggleStacking,
+                                    changeOverlap,
+                                    toggleMember
+                                }
+                            }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Disabled host",
+                    Description = "Host controls can disable the whole group without removing avatar identity.",
+                    Content = new CodexButton
+                    {
+                        Content = "Assign reviewers",
+                        IsEnabled = false,
+                        LeadingIcon = BuildAvatarGroupStack(CodexControlSize.Small, overlap: 8, isStacked: true, includeCount: true)
+                    }
+                }, row: 0, column: 1)
+            }
+        };
+    }
+
+    private static CodexAvatarGroup BuildAvatarGroupStack(CodexControlSize size, double overlap, bool isStacked, bool includeCount)
+    {
+        var group = new CodexAvatarGroup
+        {
+            Size = size,
+            Overlap = overlap,
+            IsStacked = isStacked,
+            Children =
+            {
+                new CodexAvatar { Fallback = "CN", ImagePath = IconPath("openai.png"), IsStatusVisible = true },
+                new CodexAvatar { Fallback = "LR", ImagePath = IconPath("claude.png"), Variant = CodexControlVariant.Secondary },
+                new CodexAvatar { Fallback = "ER", Variant = CodexControlVariant.Outline }
+            }
+        };
+
+        if (includeCount)
+        {
+            group.Children.Add(new CodexAvatarGroupCount { Count = 3 });
+        }
+
+        return group;
+    }
+
+    private static int VisibleAvatarGroupMembers(CodexAvatarGroup group)
+    {
+        return group.Children.Count(child => child.IsVisible);
+    }
+
     private static Control BuildEmptyStatePreview()
     {
         return new CodexEmptyState
@@ -10358,6 +12989,53 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildEmptyStateAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 14,
+            Children =
+            {
+                new CodexEmptyState
+                {
+                    Icon = "i",
+                    Title = "No provider events",
+                    Description = "The header, helper text, content slot, and action row all live inside the component template.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        Children =
+                        {
+                            new CodexBadge { Content = "empty", Variant = CodexControlVariant.Secondary },
+                            new CodexBadge { Content = "slot content", Variant = CodexControlVariant.Outline }
+                        }
+                    },
+                    Action = "Refresh",
+                    SecondaryAction = "Clear filter",
+                    MinHeight = 220
+                },
+                SecondColumn(new CodexEmptyState
+                {
+                    Icon = "!",
+                    Title = "Fallback queue paused",
+                    Description = "Semantic variants recolor the owned icon shell while actions continue through CodexButton slots.",
+                    Variant = CodexControlVariant.Warning,
+                    Size = CodexControlSize.Large,
+                    Action = "Inspect",
+                    SecondaryAction = "Dismiss",
+                    MinHeight = 220
+                })
+            }
+        };
+    }
+
     private static Control BuildEmptyStateInteractionPreview()
     {
         return new Grid
@@ -10407,12 +13085,14 @@ public sealed class MainWindow : Window
                 }, row: 1, column: 0),
                 GridCell(new CodexEmptyState
                 {
-                    Title = "Semantic recovery",
-                    Description = "Warning and success variants keep the same action contract.",
+                    Title = "Command blocked",
+                    Description = "CanExecute=false disables host actions while the empty surface stays mounted.",
                     Icon = "?",
                     Variant = CodexControlVariant.Warning,
                     Action = "Inspect",
                     SecondaryAction = "Ignore",
+                    ActionCommand = new DocsActionCommand(() => { }, () => false),
+                    SecondaryActionCommand = new DocsActionCommand(() => { }, () => false),
                     MinHeight = 190
                 }, row: 1, column: 1)
             }
@@ -10815,7 +13495,77 @@ public sealed class MainWindow : Window
         };
     }
 
-    private static Control BuildSonnerLifecyclePreview()
+    private static Control BuildSonnerAnatomyPreview()
+    {
+        CodexSonnerService.Clear();
+        CodexSonnerService.Success("Provider saved", new CodexSonnerOptions
+        {
+            Description = "Rich colors flow through the toast variant while the host owns row motion.",
+            Action = new CodexSonnerAction("View", () => { })
+        });
+        CodexSonnerService.Warning("Fallback active", new CodexSonnerOptions
+        {
+            Description = "Cancel and action buttons stay inside the toast action slot.",
+            Cancel = new CodexSonnerAction("Dismiss", () => { }),
+            Action = new CodexSonnerAction("Inspect", () => { })
+        });
+        CodexSonnerService.Loading("Refreshing usage", new CodexSonnerOptions
+        {
+            Description = "Loading toast uses the spinner icon path and host entrance motion.",
+            CloseButton = false
+        });
+
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Expanded rich viewport",
+                    Description = "The viewport owns placement, offset, visible count, animated host rows, and toast rich-color styling.",
+                    Content = new Border
+                    {
+                        MinHeight = 250,
+                        Child = new CodexSonner
+                        {
+                            Position = CodexSonnerPosition.TopRight,
+                            RichColors = true,
+                            Expand = true,
+                            VisibleToasts = 3,
+                            CloseButton = true,
+                            Offset = new Thickness(0)
+                        }
+                    }
+                },
+                SecondColumn(new CodexField
+                {
+                    Label = "Compact close policy",
+                    Description = "Compact mode renders one host row while close-hidden styling remains scoped to CodexToast close chrome.",
+                    Content = new Border
+                    {
+                        MinHeight = 250,
+                        Child = new CodexSonner
+                        {
+                            Position = CodexSonnerPosition.BottomLeft,
+                            RichColors = false,
+                            Expand = false,
+                            VisibleToasts = 3,
+                            CloseButton = false,
+                            Offset = new Thickness(0)
+                        }
+                    }
+                })
+            }
+        };
+    }
+
+    private static Control BuildSonnerInteractionPreview()
     {
         CodexSonnerService.Clear();
         CodexSonnerService.Success("Provider saved", new CodexSonnerOptions
@@ -10903,6 +13653,70 @@ public sealed class MainWindow : Window
                 new CodexSpinner { Size = CodexControlSize.Large, Label = "Large" },
                 new CodexSpinner { IsActive = false, Label = "Paused" },
                 new CodexSpinner { RotationDuration = TimeSpan.Zero, Label = "Reduced motion" }
+            }
+        };
+    }
+
+    private static Control BuildSpinnerAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Spokes and stroke",
+                    Description = "The spinner renders its own spokes, size classes, and stroke thickness instead of inheriting native chrome.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 16,
+                        Children =
+                        {
+                            new CodexSpinner { Size = CodexControlSize.Small, StrokeThickness = 1.75, Label = "Small sync" },
+                            new CodexSpinner { StrokeThickness = 2, Label = "Default sync" },
+                            new CodexSpinner { Size = CodexControlSize.Large, StrokeThickness = 2.25, Label = "Large sync" }
+                        }
+                    }
+                },
+                SecondColumn(new CodexField
+                {
+                    Label = "Semantic composition",
+                    Description = "Foreground and live label can change while the spinner remains non-focusable and hit-test transparent.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new StackPanel
+                            {
+                                Orientation = Orientation.Horizontal,
+                                Spacing = 10,
+                                Children =
+                                {
+                                    new CodexSpinner { Foreground = ThemeBrush(CodexSwitchResourceKeys.SuccessBrush), Label = "Sync complete soon" },
+                                    new CodexText { Text = "Syncing provider metadata", Role = CodexTextRole.Body }
+                                }
+                            },
+                            new StackPanel
+                            {
+                                Orientation = Orientation.Horizontal,
+                                Spacing = 10,
+                                Children =
+                                {
+                                    new CodexSpinner { IsActive = false, Foreground = ThemeBrush(CodexSwitchResourceKeys.MutedForegroundBrush), Label = "Paused sync" },
+                                    Muted("Paused state keeps layout while the timer is stopped.")
+                                }
+                            }
+                        }
+                    }
+                })
             }
         };
     }
@@ -11028,6 +13842,51 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildProgressAnatomyPreview()
+    {
+        return new Grid
+        {
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Track and indicator",
+                    Description = "Determinate progress owns the rounded track, filled indicator, optional percentage text, and semantic foreground.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexProgress { Minimum = 0, Maximum = 100, Value = 72, ShowProgressText = true, MinWidth = 420 },
+                            new CodexProgress { Minimum = 0, Maximum = 100, Value = 48, Variant = CodexControlVariant.Success, Size = CodexControlSize.Small, MinWidth = 420 },
+                            new CodexProgress { Minimum = 0, Maximum = 100, Value = 88, Variant = CodexControlVariant.Warning, Size = CodexControlSize.Large, MinWidth = 420 }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Indeterminate segment",
+                    Description = "Unknown-duration work uses the Codex-owned moving segment and can resolve to a static frame for reduced motion.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexProgress { IsIndeterminate = true, Variant = CodexControlVariant.Destructive, MinWidth = 420 },
+                            new CodexProgress { IsIndeterminate = true, IndeterminateAnimationDuration = TimeSpan.Zero, Variant = CodexControlVariant.Secondary, MinWidth = 420 }
+                        }
+                    }
+                }, row: 1, column: 0)
+            }
+        };
+    }
+
     private static Control BuildProgressInteractionPreview()
     {
         return new Grid
@@ -11144,6 +14003,80 @@ public sealed class MainWindow : Window
                         new CodexSkeleton { Width = 130, Height = 56, CornerRadius = new CornerRadius(8) }
                     }
                 }
+            }
+        };
+    }
+
+    private static Control BuildSkeletonAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 16,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Text and media placeholders",
+                    Description = "Skeleton surfaces own radius, pulse opacity, and line widths so loading layouts do not rely on page-local rectangles.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new StackPanel
+                            {
+                                Orientation = Orientation.Horizontal,
+                                Spacing = 12,
+                                Children =
+                                {
+                                    new CodexSkeleton { Width = 48, Height = 48, CornerRadius = new CornerRadius(24) },
+                                    new StackPanel
+                                    {
+                                        Spacing = 8,
+                                        Children =
+                                        {
+                                            new CodexSkeleton { Width = 240, Height = 16 },
+                                            new CodexSkeleton { Width = 180, Height = 16 }
+                                        }
+                                    }
+                                }
+                            },
+                            new CodexSkeleton { Width = 380, Height = 88, CornerRadius = new CornerRadius(8) }
+                        }
+                    }
+                },
+                SecondColumn(new CodexField
+                {
+                    Label = "Pulse and shimmer layer",
+                    Description = "The shimmer overlay is a template part, while static skeletons keep the same measured footprint.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexSkeleton
+                            {
+                                Width = 360,
+                                Height = 18,
+                                PulseLowOpacity = 0.42,
+                                PulseHighOpacity = 1,
+                                ShimmerHighOpacity = 0.18
+                            },
+                            new CodexSkeleton
+                            {
+                                Width = 260,
+                                Height = 18,
+                                IsAnimated = false
+                            },
+                            Muted("Static mode is the reduced-motion fallback, not a different visual component.")
+                        }
+                    }
+                })
             }
         };
     }
@@ -11352,7 +14285,7 @@ public sealed class MainWindow : Window
 
     private static Control BuildTabsInteractionPreview()
     {
-        var status = Muted("ValueChanged updates this status.");
+        var status = Muted("ValueChanged reports value and source metadata.");
         var valueTabs = new CodexTabs
         {
             Items =
@@ -11366,7 +14299,7 @@ public sealed class MainWindow : Window
         valueTabs.SelectedValue = "code";
         valueTabs.ValueChanged += (_, args) =>
         {
-            status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"}.";
+            status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"} ({args.Source}).";
         };
         var selectPreview = new CodexButton
         {
@@ -11383,7 +14316,7 @@ public sealed class MainWindow : Window
         };
         selectEvents.Click += (_, _) => valueTabs.SelectedValue = "events";
 
-        var manualStatus = Muted("Manual activation keeps value on home until Enter or Space.");
+        var manualStatus = Muted("Manual activation keeps value on home until Enter or Space, then reports source=Keyboard.");
         var manualTabs = new CodexTabs
         {
             Variant = CodexTabsVariant.Line,
@@ -11399,7 +14332,7 @@ public sealed class MainWindow : Window
         };
         manualTabs.ValueChanged += (_, args) =>
         {
-            manualStatus.Text = $"Manual ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"}.";
+            manualStatus.Text = $"Manual ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"} ({args.Source}).";
         };
 
         return new Grid
@@ -11547,9 +14480,91 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildSideNavAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 14,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Root and value",
+                    Description = "SelectedValue flows from the root to child item selection classes.",
+                    Content = new CodexSideNav
+                    {
+                        SelectedValue = "providers",
+                        Content = new StackPanel
+                        {
+                            Spacing = 6,
+                            Children =
+                            {
+                                new CodexSideNavItem { Value = "providers", Icon = "P", Content = "Providers", Detail = "Root selected" },
+                                new CodexSideNavItem { Value = "sessions", Icon = "S", Content = "Sessions", Detail = "Sibling row" }
+                            }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Icon and detail",
+                    Description = "Icon and detail slots align without page-local row templates.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 6,
+                        Children =
+                        {
+                            new CodexSideNavItem { Value = "icon", Icon = "I", Content = "Icon row", Detail = "Secondary metadata" },
+                            new CodexSideNavItem { Value = "plain", Content = "No icon row", Detail = "Content still aligns" }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Selected row",
+                    Description = "Selected state owns background, border, foreground, and pressed feedback.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 6,
+                        Children =
+                        {
+                            new CodexSideNavItem { Value = "active", Icon = "A", Content = "Active route", Detail = "selected", IsSelected = true },
+                            new CodexSideNavItem { Value = "normal", Icon = "N", Content = "Normal route", Detail = "idle" }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Disabled row",
+                    Description = "Disabled rows remain visible and cannot become the root selected value.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 6,
+                        Children =
+                        {
+                            new CodexSideNavItem { Value = "enabled", Icon = "E", Content = "Enabled row", Detail = "available" },
+                            new CodexSideNavItem { Value = "locked", Icon = "L", Content = "Locked row", Detail = "disabled", IsEnabled = false }
+                        }
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildSideNavInteractionPreview()
     {
-        var status = Muted("ValueChanged: providers -> sessions");
+        var status = Muted("ValueChanged: providers -> sessions (source=Programmatic)");
         var primaryNav = new CodexSideNav
         {
             SelectedValue = "sessions",
@@ -11566,7 +14581,7 @@ public sealed class MainWindow : Window
         };
         primaryNav.ValueChanged += (_, args) =>
         {
-            status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"}";
+            status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"} (source={args.Source})";
         };
         Grid.SetRow(status, 2);
         Grid.SetColumn(status, 0);
@@ -11600,7 +14615,14 @@ public sealed class MainWindow : Window
                         {
                             new CodexSideNavItem { Value = "keyboard", Icon = "K", Content = "Keyboard select", Detail = "Enter / Space route" },
                             new CodexSideNavItem { Value = "disabled", Icon = "D", Content = "Disabled", Detail = "Cannot become selected", IsEnabled = false },
-                            new CodexSideNavItem { Value = "plain", Content = "No icon row", Detail = "Content still aligns" }
+                            new CodexSideNavItem
+                            {
+                                Value = "blocked",
+                                Icon = "B",
+                                Content = "Command blocked",
+                                Detail = "CanExecute=false",
+                                Command = new DocsActionCommand(() => status.Text = "Blocked row executed", () => false)
+                            }
                         }
                     }
                 }, row: 0, column: 1),
@@ -11665,7 +14687,7 @@ public sealed class MainWindow : Window
 
     private static Control BuildSegmentedControlInteractionPreview()
     {
-        var status = Muted("ValueChanged: code is selected.");
+        var status = Muted("ValueChanged: code is selected (source=Programmatic).");
         var preview = new CodexSegmentedButton { Content = "Preview", Value = "preview" };
         var code = new CodexSegmentedButton { Content = "Code", Value = "code", IsSelected = true };
         var events = new CodexSegmentedButton { Content = "Events", Value = "events" };
@@ -11686,7 +14708,7 @@ public sealed class MainWindow : Window
         };
         valueControl.ValueChanged += (_, args) =>
         {
-            status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"}.";
+            status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"} (source={args.Source}).";
         };
 
         var grid = new Grid
@@ -11712,7 +14734,7 @@ public sealed class MainWindow : Window
                     {
                         valueControl,
                         status,
-                        Muted("Clicked segment clears siblings, emits ValueChanged, and moves the indicator.")
+                        Muted("Primary pointer release or keyboard activation clears siblings, emits source metadata, and moves the indicator.")
                     }
                 },
                 GridCell(SegmentedInteractionBlock(
@@ -11729,7 +14751,12 @@ public sealed class MainWindow : Window
                 GridCell(SegmentedInteractionBlock(
                     "Command-backed segments can keep selection external.",
                     new CodexSegmentedButton { Content = "Auto", Value = "auto", IsSelected = true },
-                    new CodexSegmentedButton { Content = "Manual", Value = "manual" },
+                    new CodexSegmentedButton
+                    {
+                        Content = "Manual",
+                        Value = "manual",
+                        Command = new DocsActionCommand(() => status.Text = "Command-backed segment executed.", () => false)
+                    },
                     new CodexSegmentedButton { Content = "Off", Value = "off", IsEnabled = false }), row: 1, column: 1)
             }
         };
@@ -11795,6 +14822,107 @@ public sealed class MainWindow : Window
                         }
                     }
                 }
+            }
+        };
+    }
+
+    private static Control BuildSegmentedControlAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 14,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Indicator host",
+                    Description = "The moving indicator is measured from the selected child segment after layout.",
+                    Content = new CodexSegmentedControl
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        SelectedValue = "code",
+                        Content = new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new CodexSegmentedButton { Content = "Preview", Value = "preview" },
+                                new CodexSegmentedButton { Content = "Code", Value = "code", IsSelected = true },
+                                new CodexSegmentedButton { Content = "Events", Value = "events" }
+                            }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Value fallback",
+                    Description = "Segments can use explicit values or fall back to text content.",
+                    Content = new CodexSegmentedControl
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Content = new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new CodexSegmentedButton { Content = "1h" },
+                                new CodexSegmentedButton { Content = "24h", IsSelected = true },
+                                new CodexSegmentedButton { Content = "7d" }
+                            }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Disabled segment",
+                    Description = "Disabled segments keep indicator geometry and cannot take selection.",
+                    Content = new CodexSegmentedControl
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        SelectedValue = "dark",
+                        Content = new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new CodexSegmentedButton { Content = "Light", Value = "light" },
+                                new CodexSegmentedButton { Content = "Dark", Value = "dark", IsSelected = true },
+                                new CodexSegmentedButton { Content = "System", Value = "system", IsEnabled = false }
+                            }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Remeasure path",
+                    Description = "Different-width segments animate indicator width, height, and margin with motion tokens.",
+                    Content = new CodexSegmentedControl
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        SelectedValue = "long",
+                        Content = new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Children =
+                            {
+                                new CodexSegmentedButton { Content = "S", Value = "short" },
+                                new CodexSegmentedButton { Content = "Selected long segment", Value = "long", IsSelected = true },
+                                new CodexSegmentedButton { Content = "M", Value = "middle" }
+                            }
+                        }
+                    }
+                }, row: 1, column: 1)
             }
         };
     }
@@ -12210,6 +15338,139 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildMenubarAnatomyPreview()
+    {
+        var share = new CodexMenubarItem
+        {
+            Header = "Share",
+            IsSubMenuOpen = true,
+            Items =
+            {
+                new CodexMenubarItem { Header = "Copy link" },
+                new CodexMenubarItem { Header = "Invite member" }
+            }
+        };
+        var file = new CodexMenubarMenu
+        {
+            Header = "File",
+            Items =
+            {
+                new CodexMenubarLabel { Content = "Workspace" },
+                new CodexMenubarGroup
+                {
+                    Header = "Workspace",
+                    Items =
+                    {
+                        new CodexMenubarItem { Header = "New tab", Shortcut = "Cmd+T", IsActive = true },
+                        new CodexMenubarItem { Header = "New window", Shortcut = "Cmd+N" },
+                        new CodexMenubarItem { Header = "New private window", IsEnabled = false }
+                    }
+                },
+                new CodexMenubarSeparator(),
+                share,
+                new CodexMenubarSeparator(),
+                new CodexMenubarItem { Header = "Print", Shortcut = "Cmd+P" }
+            }
+        };
+        var root = new CodexMenubar
+        {
+            Loop = true,
+            Items =
+            {
+                file,
+                BuildMenubarEditMenu(),
+                BuildMenubarViewMenu()
+            }
+        };
+        root.OpenMenu(file);
+
+        var view = new CodexMenubarMenu
+        {
+            Header = "View",
+            Items =
+            {
+                new CodexMenubarCheckboxItem { Header = "Show sidebar", IsChecked = true },
+                new CodexMenubarCheckboxItem { Header = "Compact rows" },
+                new CodexMenubarSeparator(),
+                new CodexMenubarRadioItem { Header = "Comfortable" },
+                new CodexMenubarRadioItem { Header = "Dense", IsChecked = true }
+            }
+        };
+        var indicators = new CodexMenubar
+        {
+            Size = CodexControlSize.Small,
+            Items =
+            {
+                view,
+                new CodexMenubarMenu
+                {
+                    Header = "Mode",
+                    Items =
+                    {
+                        new CodexMenubarRadioItem { Header = "Fast" },
+                        new CodexMenubarRadioItem { Header = "Balanced", IsChecked = true },
+                        new CodexMenubarRadioItem { Header = "Deep reasoning" }
+                    }
+                }
+            }
+        };
+        indicators.OpenMenu(view);
+
+        var window = new CodexMenubarMenu
+        {
+            Header = "Window",
+            Items =
+            {
+                new CodexMenubarLabel { Content = "Window" },
+                new CodexMenubarItem { Header = "Minimize" },
+                new CodexMenubarItem { Header = "Zoom" },
+                new CodexMenubarSeparator(),
+                new CodexMenubarItem { Header = "Toggle fullscreen" }
+            }
+        };
+        var vertical = new CodexMenubar
+        {
+            Orientation = Orientation.Vertical,
+            Size = CodexControlSize.Small,
+            Items =
+            {
+                window,
+                new CodexMenubarMenu
+                {
+                    Header = "Help",
+                    Items =
+                    {
+                        new CodexMenubarItem { Header = "Search docs" },
+                        new CodexMenubarItem { Header = "Keyboard shortcuts" }
+                    }
+                }
+            }
+        };
+        vertical.OpenMenu(window);
+
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 14,
+            RowSpacing = 16,
+            Children =
+            {
+                root,
+                GridCell(indicators, row: 0, column: 1),
+                GridCell(vertical, row: 1, column: 0)
+            }
+        };
+    }
+
     private static Control BuildMenubarCompositionPreview()
     {
         var composition = new CodexMenubar
@@ -12241,6 +15502,7 @@ public sealed class MainWindow : Window
                             Header = "Project",
                             Items =
                             {
+                                new CodexMenubarLabel { Content = "Workspace" },
                                 new CodexMenubarGroup
                                 {
                                     Header = "Workspace",
@@ -12395,6 +15657,7 @@ public sealed class MainWindow : Window
             Header = "File",
             Items =
             {
+                new CodexMenubarLabel { Content = "Workspace" },
                 new CodexMenubarGroup
                 {
                     Header = "File",
@@ -12583,9 +15846,89 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildDropdownAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 14,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexDropdownButton
+                {
+                    Content = "Trigger and chevron",
+                    IsOpen = true,
+                    IsArrowVisible = true,
+                    Align = CodexDropdownAlign.Start,
+                    DropDownContent = new StackPanel
+                    {
+                        Width = 210,
+                        Spacing = 6,
+                        Children =
+                        {
+                            Muted("PART_Trigger owns button states."),
+                            new CodexButton { Content = "Primary action", Variant = CodexControlVariant.Ghost, HorizontalAlignment = HorizontalAlignment.Stretch },
+                            new CodexButton { Content = "Destructive action", Variant = CodexControlVariant.Destructive, HorizontalAlignment = HorizontalAlignment.Stretch }
+                        }
+                    }
+                },
+                GridCell(new CodexDropdownButton
+                {
+                    Content = "Popup surface",
+                    IsOpen = true,
+                    Align = CodexDropdownAlign.End,
+                    Placement = PlacementMode.Bottom,
+                    DropDownContent = new StackPanel
+                    {
+                        Width = 216,
+                        Spacing = 6,
+                        Children =
+                        {
+                            Muted("PART_Surface fades and scales from the trigger edge."),
+                            new CodexSeparator(),
+                            new CodexButton { Content = "Close on select", Variant = CodexControlVariant.Ghost, HorizontalAlignment = HorizontalAlignment.Stretch }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexDropdownButton
+                {
+                    Content = "Keep open",
+                    IsOpen = true,
+                    CloseOnItemSelected = false,
+                    DropDownContent = new StackPanel
+                    {
+                        Width = 198,
+                        Spacing = 6,
+                        Children =
+                        {
+                            new CodexSwitch { Content = "Pin menu", IsChecked = true },
+                            new CodexCheckBox { Content = "Show shortcuts", IsChecked = true }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexDropdownButton
+                {
+                    Content = "Loading guard",
+                    IsLoading = true,
+                    DropDownContent = Muted("Loading keeps trigger chrome visible while blocking open/close actions.")
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildDropdownInteractionPreview()
     {
-        var status = Muted("OpenChanged: dropdown starts open.");
+        var status = Muted("OpenChanged: dropdown starts open (source=Programmatic).");
         var openDropdown = new CodexDropdownButton
         {
             Content = "Provider actions",
@@ -12596,7 +15939,7 @@ public sealed class MainWindow : Window
         };
         openDropdown.OpenChanged += (_, args) =>
         {
-            status.Text = args.IsOpen ? "OpenChanged: dropdown opened." : "OpenChanged: dropdown closed.";
+            status.Text = $"OpenChanged: dropdown {(args.IsOpen ? "opened" : "closed")} (source={args.Source}).";
         };
 
         var grid = new Grid
@@ -13214,14 +16557,36 @@ public sealed class MainWindow : Window
             ColumnSpacing = 14,
             Children =
             {
-                new CodexCard
+                new StackPanel
                 {
-                    Title = "Command input",
-                    Description = "The input primitive can be mounted and tested directly.",
-                    Content = new CodexCommandInput
+                    Spacing = 12,
+                    Children =
                     {
-                        PlaceholderText = "Filter commands...",
-                        Text = "provider"
+                        new CodexCard
+                        {
+                            Title = "Command input",
+                            Description = "The input primitive can be mounted and tested directly.",
+                            Content = new CodexCommandInput
+                            {
+                                PlaceholderText = "Filter commands...",
+                                Text = "provider"
+                            }
+                        },
+                        new CodexCard
+                        {
+                            Title = "Shortcut primitive",
+                            Description = "Shortcut chips can be composed outside an item when a custom command row needs them.",
+                            Content = new StackPanel
+                            {
+                                Orientation = Orientation.Horizontal,
+                                Spacing = 8,
+                                Children =
+                                {
+                                    new CodexCommandShortcut { Content = "Cmd+K" },
+                                    new CodexCommandShortcut { Content = "Shift+P" }
+                                }
+                            }
+                        }
                     }
                 },
                 GridCell(new CodexCommand
@@ -13375,6 +16740,30 @@ public sealed class MainWindow : Window
 
     private static Control BuildCommandInteractionPreview()
     {
+        var sourceStatus = Muted("ItemSelected: select a command item.");
+        var sourceCommand = new CodexCommand
+        {
+            Placeholder = "Search providers...",
+            Content = new CodexCommandList
+            {
+                Items =
+                {
+                    new CodexCommandGroup
+                    {
+                        Header = "Sibling selection",
+                        Items =
+                        {
+                            new CodexCommandItem { Content = "OpenAI", Value = "openai", Icon = "O", Shortcut = "Enter" },
+                            new CodexCommandItem { Content = "Claude", Value = "claude", Icon = "C", Shortcut = "Cmd+2", IsActive = true },
+                            new CodexCommandItem { Content = "Local", Value = "local", Icon = "L" }
+                        }
+                    }
+                }
+            }
+        };
+        sourceCommand.ItemSelected += (_, args) =>
+            sourceStatus.Text = $"ItemSelected: {args.Value ?? args.Item.Content} source={args.Source}.";
+
         return new Grid
         {
             ColumnDefinitions =
@@ -13391,24 +16780,13 @@ public sealed class MainWindow : Window
             RowSpacing = 14,
             Children =
             {
-                new CodexCommand
+                new StackPanel
                 {
-                    Placeholder = "Search providers...",
-                    Content = new CodexCommandList
+                    Spacing = 8,
+                    Children =
                     {
-                        Items =
-                        {
-                            new CodexCommandGroup
-                            {
-                                Header = "Sibling selection",
-                                Items =
-                                {
-                                    new CodexCommandItem { Content = "OpenAI", Icon = "O", Shortcut = "Enter" },
-                                    new CodexCommandItem { Content = "Claude", Icon = "C", Shortcut = "Cmd+2", IsActive = true },
-                                    new CodexCommandItem { Content = "Local", Icon = "L" }
-                                }
-                            }
-                        }
+                        sourceCommand,
+                        sourceStatus
                     }
                 },
                 GridCell(new CodexCommand
@@ -13455,7 +16833,14 @@ public sealed class MainWindow : Window
                                 Header = "Disabled results",
                                 Items =
                                 {
-                                    new CodexCommandItem { Content = "Unavailable action", Icon = "X", IsEnabled = false }
+                                    new CodexCommandItem { Content = "Unavailable action", Icon = "X", IsEnabled = false },
+                                    new CodexCommandItem
+                                    {
+                                        Content = "Command blocked",
+                                        Icon = "B",
+                                        Shortcut = "CanExecute=false",
+                                        Command = new DocsActionCommand(() => { }, () => false)
+                                    }
                                 }
                             }
                         }
@@ -13826,6 +17211,81 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildCollapsibleAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 14,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexCollapsible
+                {
+                    Header = "Trigger and chevron",
+                    IsOpen = true,
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            Muted("PART_Trigger, PART_TriggerRoot, focus ring, and PART_Chevron stay in one template."),
+                            new CodexButton { Content = "Nested action", Size = CodexControlSize.Small, HorizontalAlignment = HorizontalAlignment.Left }
+                        }
+                    }
+                },
+                GridCell(new CodexCollapsible
+                {
+                    Header = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children =
+                        {
+                            Text("Header slot", CodexTextRole.Body),
+                            new CodexBadge { Content = "Open", Size = CodexControlSize.Small }
+                        }
+                    },
+                    IsOpen = true,
+                    ContentPadding = new Thickness(0, 10, 0, 0),
+                    Content = Muted("Header can be rich content while measured body stays in PART_ContentClip.")
+                }, row: 0, column: 1),
+                GridCell(new CodexCollapsible
+                {
+                    Header = "Measured content",
+                    IsOpen = true,
+                    AnimationDuration = TimeSpan.FromMilliseconds(220),
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexCheckBox { Content = "Prefer cached sessions", IsChecked = true },
+                            new CodexCheckBox { Content = "Enable fallback route" },
+                            Muted("Height animates from the measured content value.")
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexCollapsible
+                {
+                    Header = "Closed and disabled",
+                    IsOpen = false,
+                    IsEnabled = false,
+                    Content = Muted("Closed content remains available for measurement, while disabled blocks trigger input.")
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildCollapsibleInteractionPreview()
     {
         var status = Muted("OpenChanged: measured disclosure starts open.");
@@ -14117,7 +17577,7 @@ public sealed class MainWindow : Window
         };
         routeBreadcrumb.LinkActivated += (_, args) =>
         {
-            status.Text = $"LinkActivated: index {args.Index}, href {args.Href ?? "none"}.";
+            status.Text = $"LinkActivated: index {args.Index}, href {args.Href ?? "none"}, source={args.Source}.";
         };
         var activateDocs = new CodexButton
         {
@@ -14282,6 +17742,90 @@ public sealed class MainWindow : Window
                         Muted("After")
                     }
                 }
+            }
+        };
+    }
+
+    private static Control BuildSeparatorAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Line template",
+                    Description = "PART_Line owns the visual surface and tokenized brush transition.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            Text("Before divider", CodexTextRole.Subtitle),
+                            new CodexSeparator(),
+                            Muted("After divider")
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Vertical slot",
+                    Description = "Vertical orientation keeps explicit width and height stable in tool rows.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexButton { Content = "Undo", Size = CodexControlSize.Small },
+                            new CodexSeparator { Orientation = Orientation.Vertical, Height = 36 },
+                            new CodexButton { Content = "Redo", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Density classes",
+                    Description = "Small, medium, large, and icon sizes map to stable line dimensions.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexSeparator { Size = CodexControlSize.Small },
+                            new CodexSeparator(),
+                            new CodexSeparator { Size = CodexControlSize.Large }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Composition",
+                    Description = "Separator stays decorative and lets surrounding controls own interaction.",
+                    Content = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexButton { Content = "Cut", Size = CodexControlSize.Small, Variant = CodexControlVariant.Ghost },
+                            new CodexSeparator { Orientation = Orientation.Vertical, Size = CodexControlSize.Large, Height = 34 },
+                            new CodexButton { Content = "Paste", Size = CodexControlSize.Small, Variant = CodexControlVariant.Ghost }
+                        }
+                    }
+                }, row: 1, column: 1)
             }
         };
     }
@@ -16166,7 +19710,7 @@ public sealed class MainWindow : Window
         };
         closeOnSelectDialog.ItemSelected += (_, args) =>
         {
-            status.Text = $"Selected {args.Value}; close-on-select will dismiss when allowed.";
+            status.Text = $"Selected {args.Value} via {args.Source}; close-on-select will dismiss when allowed.";
         };
 
         return new Grid
@@ -17154,9 +20698,20 @@ public sealed class MainWindow : Window
             status.Text = $"{model} selected; sibling rows cleared and content transition restarted.";
         }
 
-        gpt.PointerReleased += (_, _) => SelectRow(gpt, "gpt-5");
-        claude.PointerReleased += (_, _) => SelectRow(claude, "claude-sonnet");
-        mini.PointerReleased += (_, _) => SelectRow(mini, "o4-mini");
+        void SelectRowFromPointer(PointerReleasedEventArgs args, CodexTableRow row, string model)
+        {
+            if (args.GetCurrentPoint(row).Properties.PointerUpdateKind != PointerUpdateKind.LeftButtonReleased)
+            {
+                return;
+            }
+
+            SelectRow(row, model);
+            args.Handled = true;
+        }
+
+        gpt.PointerReleased += (_, args) => SelectRowFromPointer(args, gpt, "gpt-5");
+        claude.PointerReleased += (_, args) => SelectRowFromPointer(args, claude, "claude-sonnet");
+        mini.PointerReleased += (_, args) => SelectRowFromPointer(args, mini, "o4-mini");
 
         var density = new CodexButton
         {
@@ -17540,6 +21095,31 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildPinnedTableAnatomyPreview()
+    {
+        return new StackPanel
+        {
+            Spacing = 12,
+            Children =
+            {
+                CreatePinnedTable(isCompact: false, isLoading: false, transitionKey: "providers-anatomy"),
+                new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 8,
+                    Children =
+                    {
+                        new CodexBadge { Content = "PART_StartHeader", Variant = CodexControlVariant.Outline },
+                        new CodexBadge { Content = "PART_HeaderScrollViewer", Variant = CodexControlVariant.Outline },
+                        new CodexBadge { Content = "PART_BodyScrollViewer", Variant = CodexControlVariant.Outline },
+                        new CodexBadge { Content = "PART_EndItemsControl", Variant = CodexControlVariant.Outline }
+                    }
+                },
+                Muted("The middle header and body use scoped ScrollViewer templates so pinned regions do not inherit platform scrollbar chrome.")
+            }
+        };
+    }
+
     private static Control BuildPinnedTableInteractionPreview()
     {
         var table = CreatePinnedTable(isCompact: false, isLoading: false, transitionKey: "providers-live");
@@ -17639,6 +21219,76 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildPaginationAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Action parts",
+                    Description = "First, previous, next, and last controls are CodexButton parts, not native pager chrome.",
+                    Content = new CodexPagination
+                    {
+                        Page = 6,
+                        PageCount = 18,
+                        BoundaryCount = 1,
+                        SiblingCount = 1
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Page item parts",
+                    Description = "Page buttons expose page-item, current, and ellipsis classes.",
+                    Content = new CodexPagination
+                    {
+                        Page = 9,
+                        PageCount = 42,
+                        SiblingCount = 1,
+                        BoundaryCount = 1
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Compact shell",
+                    Description = "Compact mode hides first/last and tightens spacing without changing the event contract.",
+                    Content = new CodexPagination
+                    {
+                        Page = 3,
+                        PageCount = 8,
+                        IsCompact = true,
+                        ShowFirstLast = false,
+                        Size = CodexControlSize.Small
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Loading guard",
+                    Description = "Loading keeps the current page visible and suppresses navigation.",
+                    Content = new CodexPagination
+                    {
+                        Page = 5,
+                        PageCount = 18,
+                        IsLoading = true
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildPaginationInteractionPreview()
     {
         var eventStatus = Muted("PageChanged: interact with page buttons, action buttons, keyboard, or host jump.");
@@ -17684,7 +21334,7 @@ public sealed class MainWindow : Window
                     Spacing = 8,
                     Children =
                     {
-                        Muted("Home/End, arrow keys, page buttons, and host calls emit source-aware PageChanged events."),
+                        Muted("Home/End, arrow keys, primary action releases, page buttons, and host calls emit source-aware PageChanged events."),
                         interactive,
                         eventStatus,
                         hostJump
@@ -17704,8 +21354,23 @@ public sealed class MainWindow : Window
                     Spacing = 8,
                     Children =
                     {
-                        Muted("Loading suppresses pointer and keyboard page changes."),
-                        new CodexPagination { Page = 6, PageCount = 18, IsLoading = true }
+                        Muted("Loading suppresses primary pointer and keyboard page changes."),
+                        new CodexPagination { Page = 6, PageCount = 18, IsLoading = true },
+                        new StackPanel
+                        {
+                            Orientation = Orientation.Horizontal,
+                            Spacing = 8,
+                            Children =
+                            {
+                                Muted("Command blocked"),
+                                new CodexPaginationPageButton
+                                {
+                                    Content = "7",
+                                    Page = 7,
+                                    Command = new DocsActionCommand(() => eventStatus.Text = "Blocked page executed", () => false)
+                                }
+                            }
+                        }
                     }
                 }, row: 1, column: 0),
                 GridCell(new StackPanel
@@ -17800,6 +21465,62 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildCardAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 16,
+            Children =
+            {
+                new CodexCard
+                {
+                    Title = "Card slots",
+                    Description = "Header, title, description, content, and footer stay independently mounted.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexBadge { Content = "PART_Content", Variant = CodexControlVariant.Secondary },
+                            Muted("Content can host metrics, progress, lists, or any Avalonia control.")
+                        }
+                    },
+                    Footer = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexBadge { Content = "PART_Footer", Variant = CodexControlVariant.Outline },
+                            new CodexButton { Content = "Action", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary }
+                        }
+                    }
+                },
+                GridCell(new CodexCard
+                {
+                    IsInteractive = true,
+                    Title = "Interactive surface",
+                    Description = "The interactive class owns hover motion and border emphasis.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexProgress { Value = 72, Variant = CodexControlVariant.Success },
+                            Muted("Pointerover changes the card surface without replacing slots.")
+                        }
+                    },
+                    Footer = new CodexBadge { Content = "interactive", Variant = CodexControlVariant.Success }
+                }, row: 0, column: 1)
+            }
+        };
+    }
+
     private static Control BuildCardInteractionPreview()
     {
         var status = Muted("Click the interactive card or footer action.");
@@ -17819,12 +21540,18 @@ public sealed class MainWindow : Window
                 }
             }
         };
-        card.PointerReleased += (_, _) =>
+        card.PointerReleased += (_, args) =>
         {
+            if (args.GetCurrentPoint(card).Properties.PointerUpdateKind != PointerUpdateKind.LeftButtonReleased)
+            {
+                return;
+            }
+
             actionCount++;
             card.Title = "Fallback selected";
             card.Description = $"Card selected {actionCount} time(s).";
             status.Text = "Interactive card pointer release updated header text.";
+            args.Handled = true;
         };
 
         var configure = new CodexButton
@@ -18017,19 +21744,28 @@ public sealed class MainWindow : Window
             {
                 new CodexItem
                 {
-                    Header = new CodexBadge { Content = "Route", Variant = CodexControlVariant.Secondary },
+                    Header = new CodexItemHeader
+                    {
+                        Content = new CodexBadge { Content = "Route", Variant = CodexControlVariant.Secondary }
+                    },
                     Title = "OpenAI Responses",
                     Description = "Header, media, title, description, content, actions, footer, and separator slots.",
                     Media = new CodexItemMedia { Content = "AI", Variant = CodexControlVariant.Success, Size = CodexControlSize.Large },
-                    Content = new CodexProgress { Value = 72, Variant = CodexControlVariant.Success },
-                    Actions = new StackPanel
+                    Content = new CodexItemContent
                     {
-                        Orientation = Orientation.Horizontal,
-                        Spacing = 8,
-                        Children =
+                        Content = new CodexProgress { Value = 72, Variant = CodexControlVariant.Success }
+                    },
+                    Actions = new CodexItemActions
+                    {
+                        Content = new StackPanel
                         {
-                            new CodexButton { Content = "Edit", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary },
-                            new CodexButton { Content = "Disable", Size = CodexControlSize.Small, Variant = CodexControlVariant.Ghost }
+                            Orientation = Orientation.Horizontal,
+                            Spacing = 8,
+                            Children =
+                            {
+                                new CodexButton { Content = "Edit", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary },
+                                new CodexButton { Content = "Disable", Size = CodexControlSize.Small, Variant = CodexControlVariant.Ghost }
+                            }
                         }
                     },
                     Footer = "Updated 2 minutes ago",
@@ -18040,14 +21776,17 @@ public sealed class MainWindow : Window
                 {
                     Title = "Composition primitives",
                     Description = "Slot controls can be used directly when a page needs custom layout.",
-                    Content = new StackPanel
+                    Content = new CodexItemContent
                     {
-                        Spacing = 4,
-                        Children =
+                        Content = new StackPanel
                         {
-                            new CodexItemTitle { Content = "Title primitive" },
-                            new CodexItemDescription { Content = "Description primitive" },
-                            new CodexItemFooter { Content = "Footer primitive" }
+                            Spacing = 4,
+                            Children =
+                            {
+                                new CodexItemTitle { Content = "Title primitive" },
+                                new CodexItemDescription { Content = "Description primitive" },
+                                new CodexItemFooter { Content = "Footer primitive" }
+                            }
                         }
                     }
                 }
@@ -18065,11 +21804,12 @@ public sealed class MainWindow : Window
             "K",
             CodexControlVariant.Secondary,
             selected: true);
-        route.Activated += (_, _) =>
+        route.ActivateCommandParameter = "route";
+        route.Activated += (_, args) =>
         {
             selectedCount++;
-            route.Footer = $"Activated {selectedCount} time(s).";
-            status.Text = "Interactive item activation updated the footer slot.";
+            route.Footer = $"Activated {selectedCount} time(s), source={args.Source}.";
+            status.Text = $"Activated: source={args.Source}, parameter={args.CommandParameter ?? "none"}.";
         };
 
         var nestedAction = new CodexButton
@@ -18079,7 +21819,12 @@ public sealed class MainWindow : Window
         };
         nestedAction.Click += (_, _) => status.Text = "Nested action clicked without replacing item layout.";
 
-        var blocked = ItemRow("Command blocked", "Loading blocks activation while media and copy stay mounted.", "B", CodexControlVariant.Warning, loading: true);
+        var blocked = ItemRow(
+            "Command blocked",
+            "CanExecute=false removes row activation while media and copy stay mounted.",
+            "B",
+            CodexControlVariant.Warning);
+        blocked.ActivateCommand = new DocsActionCommand(() => status.Text = "Blocked item command executed.", () => false);
 
         var activate = new CodexButton
         {
@@ -18129,7 +21874,7 @@ public sealed class MainWindow : Window
                 GridCell(new CodexField
                 {
                     Label = "Command guard",
-                    Description = "Loading blocks row activation.",
+                    Description = "CanExecute=false blocks row activation.",
                     Content = blocked
                 }, row: 1, column: 0),
                 GridCell(new CodexField
@@ -18532,6 +22277,80 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildCarouselAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 16,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Root anatomy",
+                    Description = "Viewport, items, previous, next, and status parts stay in the Carousel template.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            BuildCarousel(selectedIndex: 1, slides:
+                            [
+                                CarouselSlide("Viewport", "PART_Viewport clips the item rail.", "Root", CodexControlVariant.Secondary),
+                                CarouselSlide("Selected item", "CodexCarouselItem exposes selected state.", "Item", CodexControlVariant.Success),
+                                CarouselSlide("Controls", "Previous, next, and status are template-owned.", "Actions", CodexControlVariant.Outline)
+                            ]),
+                            CarouselAnatomyBadges("PART_Viewport", "PART_PreviousButton / PART_NextButton", "PART_Status")
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Boundary anatomy",
+                    Description = "SelectedIndex drives boundary classes before previous or next commands execute.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            BuildCarousel(slides:
+                            [
+                                CarouselSlide("At start", "at-start / previous-disabled", "Boundary", CodexControlVariant.Secondary),
+                                CarouselSlide("Middle", "Both commands enabled", "State", CodexControlVariant.Outline),
+                                CarouselSlide("At end", "at-end / next-disabled", "Boundary", CodexControlVariant.Warning)
+                            ]),
+                            CarouselAnatomyBadges("at-start", "previous-disabled", "next-disabled")
+                        }
+                    }
+                }, row: 0, column: 1)
+            }
+        };
+    }
+
+    private static StackPanel CarouselAnatomyBadges(params string[] labels)
+    {
+        var stack = new StackPanel
+        {
+            Spacing = 6
+        };
+
+        foreach (var label in labels)
+        {
+            stack.Children.Add(new CodexBadge
+            {
+                Content = label,
+                Variant = stack.Children.Count == 0 ? CodexControlVariant.Secondary : CodexControlVariant.Outline,
+                HorizontalAlignment = HorizontalAlignment.Left
+            });
+        }
+
+        return stack;
+    }
+
     private static Control BuildCarouselCompositionPreview()
     {
         return new StackPanel
@@ -18566,9 +22385,9 @@ public sealed class MainWindow : Window
             selectedIndex: 0,
             slides:
             [
-                CarouselSlide("Start", "Previous disabled", "1", CodexControlVariant.Secondary),
+                CarouselSlide("Start", "at-start / previous-disabled", "1", CodexControlVariant.Secondary),
                 CarouselSlide("Middle", "Arrow keys move here", "2", CodexControlVariant.Success),
-                CarouselSlide("End", "Next disabled", "3", CodexControlVariant.Warning)
+                CarouselSlide("End", "at-end / next-disabled", "3", CodexControlVariant.Warning)
             ]);
         carousel.SelectionChanged += (_, args) =>
         {
@@ -18803,6 +22622,59 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildMetricAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 16,
+            Children =
+            {
+                new CodexStatCard
+                {
+                    Label = "StatCard",
+                    Value = Text("42.7K", CodexTextRole.Subtitle),
+                    Detail = "Label, value, detail, and icon slots",
+                    Icon = new CodexBadge { Content = "Icon", Variant = CodexControlVariant.Secondary },
+                    AccentBrush = ThemeBrush(CodexSwitchResourceKeys.PrimaryBrush)
+                },
+                GridCell(new CodexCard
+                {
+                    Title = "Metric primitive",
+                    Description = "Compact Metric keeps the same label/value/detail contract for dense surfaces.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexMetric
+                            {
+                                Label = "Fallbacks",
+                                Value = Text("7", CodexTextRole.Subtitle),
+                                Detail = "Last hour"
+                            },
+                            new StackPanel
+                            {
+                                Orientation = Orientation.Horizontal,
+                                Spacing = 8,
+                                Children =
+                                {
+                                    new CodexBadge { Content = "PART_Label", Variant = CodexControlVariant.Outline },
+                                    new CodexBadge { Content = "PART_Value", Variant = CodexControlVariant.Outline },
+                                    new CodexBadge { Content = "PART_Detail", Variant = CodexControlVariant.Outline }
+                                }
+                            }
+                        }
+                    }
+                }, row: 0, column: 1)
+            }
+        };
+    }
+
     private static Control BuildMetricInteractionPreview()
     {
         var status = Muted("Refresh metric values from the host data model.");
@@ -18993,6 +22865,65 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildImageIconAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 14,
+            Children =
+            {
+                new CodexCard
+                {
+                    Title = "Loaded source",
+                    Description = "Path resolves to Source and applies has-source.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexImageIcon { Path = IconPath("openai.png"), Width = 44, Height = 44 },
+                            new CodexBadge { Content = "has-source", Variant = CodexControlVariant.Success }
+                        }
+                    }
+                },
+                GridCell(new CodexCard
+                {
+                    Title = "Missing source",
+                    Description = "Failed loads clear Source and keep a missing-source class.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexImageIcon { Path = IconPath("missing-provider.png"), Width = 44, Height = 44 },
+                            new CodexBadge { Content = "missing-source", Variant = CodexControlVariant.Warning }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexCard
+                {
+                    Title = "Empty source",
+                    Description = "No path stays non-throwing and visibly muted.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 10,
+                        Children =
+                        {
+                            new CodexImageIcon { Width = 44, Height = 44 },
+                            new CodexBadge { Content = "empty-source", Variant = CodexControlVariant.Secondary }
+                        }
+                    }
+                }, row: 0, column: 2)
+            }
+        };
+    }
+
     private static Control BuildImageIconInteractionPreview()
     {
         var status = Muted("Waiting for provider image lifecycle event.");
@@ -19175,12 +23106,64 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildProviderCardAnatomyPreview()
+    {
+        return new StackPanel
+        {
+            Spacing = 12,
+            Children =
+            {
+                new CodexProviderCard
+                {
+                    Leading = new CodexBadge { Content = "Default", Variant = CodexControlVariant.Secondary },
+                    Header = Text("OpenAI Responses", CodexTextRole.Body),
+                    Meta = new CodexBadge { Content = "Active", Variant = CodexControlVariant.Success },
+                    Description = "Leading, icon, header, meta, description, status, usage, and actions are separate slots.",
+                    Icon = "AI",
+                    Status = new CodexBadge { Content = "Healthy", Variant = CodexControlVariant.Success, IsStatusVisible = true },
+                    Usage = new CodexMetric { Label = "Tokens", Value = Text("42.7K", CodexTextRole.Body), Detail = "24h" },
+                    Actions = new CodexIconButton { Content = "...", Variant = CodexControlVariant.Ghost },
+                    IsActive = true
+                },
+                new CodexProviderCard
+                {
+                    Leading = new CodexBadge { Content = "Fallback", Variant = CodexControlVariant.Outline },
+                    Header = Text("Claude", CodexTextRole.Body),
+                    Meta = new CodexBadge { Content = "Ready", Variant = CodexControlVariant.Secondary },
+                    Description = "Dragging keeps the same slot structure while suppressing hover emphasis.",
+                    Icon = "C",
+                    Status = new CodexBadge { Content = "Queued", Variant = CodexControlVariant.Secondary },
+                    Usage = new CodexMetric { Label = "Tokens", Value = Text("7.1K", CodexTextRole.Body) },
+                    Actions = new CodexButton { Content = "Route", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary },
+                    IsDragging = true
+                }
+            }
+        };
+    }
+
     private static Control BuildProviderCardInteractionPreview()
     {
-        var selected = Muted("Selected: OpenAI");
+        var selected = Muted("Selected: OpenAI (initial)");
         var openAi = ProviderCard("OpenAI", "Primary Responses route", true);
         var claude = ProviderCard("Claude", "Fallback route", false);
         var gemini = ProviderCard("Gemini", "Cost-aware route", false);
+        var commandBlocked = new CodexField
+        {
+            Label = "Command blocked",
+            Description = "Host CanExecute=false keeps the current provider selected and exposes command-blocked styling.",
+            Content = new CodexProviderCard
+            {
+                Header = Text("Staged route", CodexTextRole.Body),
+                Meta = new CodexBadge { Content = "Blocked", Variant = CodexControlVariant.Warning },
+                Description = "Validation must pass before this provider row can become active.",
+                Icon = "S",
+                Status = new CodexBadge { Content = "Waiting", Variant = CodexControlVariant.Warning },
+                Usage = new CodexMetric { Label = "Tokens", Value = Text("0", CodexTextRole.Body) },
+                Command = new DocsActionCommand(() => selected.Text = "Selected: Staged route", () => false)
+            }
+        };
+        Grid.SetRow(commandBlocked, 2);
+        Grid.SetColumnSpan(commandBlocked, 2);
         var cards = new[]
         {
             (Card: openAi, Name: "OpenAI"),
@@ -19190,14 +23173,14 @@ public sealed class MainWindow : Window
 
         foreach (var item in cards)
         {
-            item.Card.Click += (_, _) =>
+            item.Card.Selected += (_, args) =>
             {
                 foreach (var sibling in cards)
                 {
                     sibling.Card.Meta = ProviderCardMeta(ReferenceEquals(sibling.Card, item.Card));
                 }
 
-                selected.Text = $"Selected: {item.Name}";
+                selected.Text = $"Selected: {item.Name}, source={args.Source}.";
             };
         }
 
@@ -19211,6 +23194,7 @@ public sealed class MainWindow : Window
             RowDefinitions =
             {
                 new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto),
                 new RowDefinition(GridLength.Auto)
             },
             ColumnSpacing = 16,
@@ -19220,7 +23204,7 @@ public sealed class MainWindow : Window
                 new CodexField
                 {
                     Label = "Sibling selection",
-                    Description = "Pointer and keyboard activation mark one row active and clear sibling active rows.",
+                    Description = "Left-button pointer release and keyboard activation mark one row active and clear sibling active rows.",
                     Content = new StackPanel
                     {
                         Spacing = 10,
@@ -19260,7 +23244,8 @@ public sealed class MainWindow : Window
                     Label = "Disabled guard",
                     Description = "Disabled rows keep their active and slot state unchanged.",
                     Content = ProviderCard("Locked route", "Credentials are required before selection", false, isEnabled: false)
-                }, row: 1, column: 1)
+                }, row: 1, column: 1),
+                commandBlocked
             }
         };
     }
@@ -19319,6 +23304,61 @@ public sealed class MainWindow : Window
                     VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                     Content = ScrollAreaRows("Disabled", "Hover", "Scrollbar", "State", "Rows")
                 })
+            }
+        };
+    }
+
+    private static Control BuildScrollAreaAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 16,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Viewport anatomy",
+                    Description = "Root, viewport, content presenter, vertical scrollbar, corner, track, and thumb are Codex-owned.",
+                    Content = new CodexScrollArea
+                    {
+                        Type = CodexScrollAreaType.Always,
+                        IsInsetContent = true,
+                        Width = 320,
+                        Height = 180,
+                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        Content = ScrollAreaRows("PART_Root", "PART_Viewport", "PART_ContentPresenter", "PART_VerticalScrollBar", "PART_Track", "PART_Thumb")
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Visibility and boundary",
+                    Description = "Hover/scroll visibility and can-scroll/at-edge classes are state-driven.",
+                    Content = new CodexScrollArea
+                    {
+                        Type = CodexScrollAreaType.Hover,
+                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        Width = 320,
+                        Height = 180,
+                        Content = new StackPanel
+                        {
+                            Width = 460,
+                            Spacing = 8,
+                            Children =
+                            {
+                                new CodexBadge { Content = "type-hover", Variant = CodexControlVariant.Secondary },
+                                new CodexBadge { Content = "can-scroll-x / can-scroll-y", Variant = CodexControlVariant.Outline },
+                                new CodexBadge { Content = "at-start / at-top", Variant = CodexControlVariant.Outline },
+                                Muted("Wide content exercises both scrollbar templates without replacing the viewport.")
+                            }
+                        }
+                    }
+                }, row: 0, column: 1)
             }
         };
     }
@@ -19435,7 +23475,7 @@ public sealed class MainWindow : Window
 
     private static Control BuildChartPreview()
     {
-        return new CodexChartContainer
+        return new CodexChart
         {
             Width = 620,
             Title = "Visitors",
@@ -20304,6 +24344,67 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildRankedBarChartAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 16,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Rank row anatomy",
+                    Description = "Each row paints label, track, fill, value, detail, and active-row background in the chart render path.",
+                    Content = new CodexRankedBarChart
+                    {
+                        Width = 420,
+                        ActiveIndex = 1,
+                        MaxVisibleItems = 4,
+                        ItemsSource =
+                        [
+                            new CodexRankedBarChartItem("gpt-5", 42.7, "42.7K", "$0.84", ThemeBrush(CodexSwitchResourceKeys.PrimaryBrush)),
+                            new CodexRankedBarChartItem("claude", 18.3, "18.3K", "$0.41", ThemeBrush(CodexSwitchResourceKeys.SuccessBrush)),
+                            new CodexRankedBarChartItem("gemini", 10.6, "10.6K", "$0.18", ThemeBrush(CodexSwitchResourceKeys.WarningBrush)),
+                            new CodexRankedBarChartItem("local", 5.7, "5.7K", "$0.00")
+                        ]
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Compact and empty anatomy",
+                    Description = "Compact, max-visible, and empty states keep the same owned drawing surface.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexRankedBarChart
+                            {
+                                Width = 360,
+                                IsCompact = true,
+                                RowHeight = 28,
+                                RowSpacing = 6,
+                                MaxVisibleItems = 2,
+                                ItemsSource = RankedBarChartItems()
+                            },
+                            new CodexRankedBarChart
+                            {
+                                Width = 360,
+                                ItemsSource = [],
+                                EmptyText = "No ranked usage"
+                            }
+                        }
+                    }
+                }, row: 0, column: 1)
+            }
+        };
+    }
+
     private static Control BuildRankedBarChartInteractionPreview()
     {
         var status = Muted("Move across rows to reveal ActiveItemChanged, or refresh the ranked chart.");
@@ -20497,6 +24598,67 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildUsagePieChartAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 16,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Slice anatomy",
+                    Description = "Slices, center label/value, legend text, and active tooltip are drawn by the chart surface.",
+                    Content = new CodexUsagePieChart
+                    {
+                        Width = 420,
+                        Height = 236,
+                        TotalLabel = "Tokens",
+                        TotalValue = "89.4K",
+                        ActiveIndex = 1,
+                        AnimationDuration = TimeSpan.Zero,
+                        ItemsSource = UsagePieChartBurstItems()
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Motion and fallback anatomy",
+                    Description = "AnimationDuration controls collection refresh motion; empty and compact states stay chart-owned.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 12,
+                        Children =
+                        {
+                            new CodexUsagePieChart
+                            {
+                                Width = 340,
+                                Height = 178,
+                                IsCompact = true,
+                                TotalLabel = "Requests",
+                                TotalValue = "1.2K",
+                                AnimationDuration = TimeSpan.Zero,
+                                ItemsSource = UsagePieChartCompactItems()
+                            },
+                            new CodexUsagePieChart
+                            {
+                                Width = 340,
+                                Height = 150,
+                                TotalLabel = "Tokens",
+                                TotalValue = "0",
+                                ItemsSource = []
+                            }
+                        }
+                    }
+                }, row: 0, column: 1)
+            }
+        };
+    }
+
     private static Control BuildUsagePieChartInteractionPreview()
     {
         var chart = new CodexUsagePieChart
@@ -20671,6 +24833,57 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildUsageTrendChartAnatomyPreview()
+    {
+        return new CodexChartContainer
+        {
+            Width = 660,
+            Title = "Usage trend anatomy",
+            Description = "Plot, stacked token bands, request bars, cost line, refresh overlay, marker, and tooltip are drawn by the trend surface.",
+            IsRefreshing = true,
+            Legend = new CodexChartLegend
+            {
+                Items =
+                {
+                    new CodexChartLegendItem { Content = "Tokens", Value = "bands", IndicatorStyle = CodexChartIndicatorStyle.Line, IndicatorBrush = ThemeBrush(CodexSwitchResourceKeys.PrimaryBrush) },
+                    new CodexChartLegendItem { Content = "Requests", Value = "bars", IndicatorStyle = CodexChartIndicatorStyle.Square, IndicatorBrush = ThemeBrush(CodexSwitchResourceKeys.SuccessBrush) },
+                    new CodexChartLegendItem { Content = "Cost", Value = "line", IndicatorStyle = CodexChartIndicatorStyle.Line, IndicatorBrush = ThemeBrush(CodexSwitchResourceKeys.WarningBrush) }
+                }
+            },
+            Tooltip = new CodexChartTooltipContent
+            {
+                Label = "Pointer marker",
+                IsOpen = true,
+                Items =
+                {
+                    new CodexChartTooltipItem { Content = "Input", Value = "24.2K", IndicatorBrush = ThemeBrush(CodexSwitchResourceKeys.PrimaryBrush) },
+                    new CodexChartTooltipItem { Content = "Output", Value = "26.8K", IndicatorBrush = ThemeBrush(CodexSwitchResourceKeys.SuccessBrush) },
+                    new CodexChartTooltipItem { Content = "Cost", Value = "$0.78", IndicatorBrush = ThemeBrush(CodexSwitchResourceKeys.WarningBrush) }
+                }
+            },
+            Content = new CsUsageTrendChart
+            {
+                Width = 600,
+                Height = 300,
+                Granularity = UsageTrendChartGranularity.Hour,
+                ItemsSource = UsageTrendChartBurstItems(),
+                IsRefreshing = true,
+                RefreshingText = "Refreshing usage"
+            },
+            Footer = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Spacing = 8,
+                Children =
+                {
+                    new CodexBadge { Content = "Granularity=Hour", Variant = CodexControlVariant.Secondary },
+                    new CodexBadge { Content = "IsRefreshing", Variant = CodexControlVariant.Warning },
+                    new CodexBadge { Content = "EmptyText", Variant = CodexControlVariant.Outline }
+                }
+            }
+        };
+    }
+
     private static Control BuildUsageTrendChartInteractionPreview()
     {
         var chart = new CsUsageTrendChart
@@ -20780,6 +24993,74 @@ public sealed class MainWindow : Window
                 Text("Body role keeps readable line height for product copy.", CodexTextRole.Body),
                 Text("Muted role is used for helper text and metadata.", CodexTextRole.Muted),
                 Text("code-role: var(--motion-default)", CodexTextRole.Code)
+            }
+        };
+    }
+
+    private static Control BuildTypographyAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Display hierarchy",
+                    Description = "Title and subtitle roles create the page and section rhythm.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            Text("Provider routing", CodexTextRole.Title),
+                            Text("Routing summary", CodexTextRole.Subtitle)
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Body and metadata",
+                    Description = "Body and muted roles keep dense product surfaces readable.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            Text("42.7K tokens routed through the primary provider.", CodexTextRole.Body),
+                            Muted("Updated 12 seconds ago")
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Code role",
+                    Description = "Inline code uses compact typography and tokenized surface color.",
+                    Content = Text("route=openai/default", CodexTextRole.Code)
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Wrapping",
+                    Description = "Long copy wraps inside the primitive instead of overflowing panels.",
+                    Content = new CodexText
+                    {
+                        Width = 320,
+                        Role = CodexTextRole.Body,
+                        TextWrapping = TextWrapping.Wrap,
+                        Text = "Long descriptive text wraps at the component boundary while preserving line height and color tokens."
+                    }
+                }, row: 1, column: 1)
             }
         };
     }
@@ -20966,6 +25247,80 @@ public sealed class MainWindow : Window
                     IsRingVisible = false,
                     Content = new CodexButton { Content = "Hidden ring", Variant = CodexControlVariant.Secondary }
                 }
+            }
+        };
+    }
+
+    private static Control BuildFocusRingAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Wrapped button",
+                    Description = "The ring wraps the focusable child without changing the child template.",
+                    Content = new CodexFocusRing
+                    {
+                        IsRingVisible = true,
+                        RingOffset = new Thickness(4),
+                        Content = new CodexButton { Content = "Visible ring" }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Geometry",
+                    Description = "Thickness, offset, radius, and brush are primitive properties.",
+                    Content = new CodexFocusRing
+                    {
+                        IsRingVisible = true,
+                        RingThickness = new Thickness(4),
+                        RingOffset = new Thickness(6),
+                        CornerRadius = new CornerRadius(10),
+                        Content = new CodexButton { Content = "Large target", Variant = CodexControlVariant.Secondary }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Wrapped input",
+                    Description = "Any focusable content can use the same focus-visible shell.",
+                    Content = new CodexFocusRing
+                    {
+                        RingOffset = new Thickness(3),
+                        Content = new CodexTextBox
+                        {
+                            Width = 260,
+                            Text = "Keyboard target"
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Disabled child",
+                    Description = "Disabled children keep layout while ignoring activation.",
+                    Content = new CodexFocusRing
+                    {
+                        IsRingVisible = true,
+                        Content = new CodexButton
+                        {
+                            Content = "Disabled",
+                            IsEnabled = false
+                        }
+                    }
+                }, row: 1, column: 1)
             }
         };
     }
@@ -21186,6 +25541,63 @@ public sealed class MainWindow : Window
             {
                 DirectionSurface("Left to right", CodexDirectionMode.LeftToRight, "Primary actions stay at the inline end."),
                 GridCell(DirectionSurface("Right to left", CodexDirectionMode.RightToLeft, "The same row mirrors through FlowDirection."), row: 0, column: 1)
+            }
+        };
+    }
+
+    private static Control BuildDirectionAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                DirectionSurface("LTR provider", CodexDirectionMode.LeftToRight, "FlowDirection.LeftToRight with direction-ltr class."),
+                GridCell(DirectionSurface("RTL provider", CodexDirectionMode.RightToLeft, "FlowDirection.RightToLeft with direction-rtl class."), row: 0, column: 1),
+                GridCell(new CodexDirection
+                {
+                    Direction = CodexDirectionMode.RightToLeft,
+                    Content = new CodexField
+                    {
+                        Label = "Nested override",
+                        Description = "Outer content mirrors; inner code can opt back into LTR.",
+                        Content = new StackPanel
+                        {
+                            Spacing = 10,
+                            Children =
+                            {
+                                DirectionRow("RTL actions", "Back", "Continue"),
+                                new CodexDirection
+                                {
+                                    Direction = CodexDirectionMode.LeftToRight,
+                                    Content = Text("route=openai/default", CodexTextRole.Code)
+                                }
+                            }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexDirection
+                {
+                    Direction = CodexDirectionMode.RightToLeft,
+                    IsEnabled = false,
+                    Content = new CodexField
+                    {
+                        Label = "Disabled RTL",
+                        Description = "Disabled state applies opacity without losing direction.",
+                        Content = DirectionRow("Disabled", "Cancel", "Save")
+                    }
+                }, row: 1, column: 1)
             }
         };
     }
@@ -21504,6 +25916,119 @@ public sealed class MainWindow : Window
         };
     }
 
+    private static Control BuildOverlayPrimitiveAnatomyPreview()
+    {
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Open layer",
+                    Description = "Scrim and content are aligned by the overlay primitive.",
+                    Content = new Grid
+                    {
+                        Height = 170,
+                        Children =
+                        {
+                            new CodexOverlay
+                            {
+                                IsOpen = true,
+                                HorizontalContentAlignment = HorizontalAlignment.Center,
+                                VerticalContentAlignment = VerticalAlignment.Center,
+                                Content = new CodexCard
+                                {
+                                    Width = 220,
+                                    Title = "Content",
+                                    Description = "Centered slot.",
+                                    Content = new CodexButton { Content = "Close", Size = CodexControlSize.Small }
+                                }
+                            }
+                        }
+                    }
+                },
+                GridCell(new CodexField
+                {
+                    Label = "No scrim",
+                    Description = "The content layer can stay mounted with scrim hidden.",
+                    Content = new Grid
+                    {
+                        Height = 170,
+                        Children =
+                        {
+                            new CodexOverlay
+                            {
+                                IsOpen = true,
+                                IsScrimVisible = false,
+                                HorizontalContentAlignment = HorizontalAlignment.Center,
+                                VerticalContentAlignment = VerticalAlignment.Center,
+                                Content = new CodexCard
+                                {
+                                    Width = 220,
+                                    Title = "Inline",
+                                    Description = "No backdrop.",
+                                    Content = new CodexButton { Content = "Apply", Size = CodexControlSize.Small }
+                                }
+                            }
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Dismiss policy",
+                    Description = "Escape and outside-pointer paths are explicit properties.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexBadge { Content = "CloseOnEscape", Variant = CodexControlVariant.Secondary },
+                            new CodexBadge { Content = "DismissOnOutsidePointer", Variant = CodexControlVariant.Secondary },
+                            new CodexBadge { Content = "DismissCommand", Variant = CodexControlVariant.Outline }
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Closed layer",
+                    Description = "Closed overlays stay composed while opacity and hit testing change.",
+                    Content = new Grid
+                    {
+                        Height = 150,
+                        Children =
+                        {
+                            new CodexOverlay
+                            {
+                                IsOpen = false,
+                                HorizontalContentAlignment = HorizontalAlignment.Center,
+                                VerticalContentAlignment = VerticalAlignment.Center,
+                                Content = new CodexCard
+                                {
+                                    Width = 220,
+                                    Title = "Closed",
+                                    Description = "Mounted content.",
+                                    Content = new CodexButton { Content = "Hidden", Size = CodexControlSize.Small }
+                                }
+                            }
+                        }
+                    }
+                }, row: 1, column: 1)
+            }
+        };
+    }
+
     private static Control BuildOverlayPrimitiveInteractionPreview()
     {
         var status = Muted("Overlay is open with Escape and outside-pointer dismissal enabled.");
@@ -21737,6 +26262,100 @@ public sealed class MainWindow : Window
                 MotionToken("Fast", "120ms", "focus and hover", 0),
                 MotionToken("Default", "150ms", "surface and content", 1),
                 MotionToken("Slow", "220ms", "overlay entrance", 2)
+            }
+        };
+    }
+
+    private static Control BuildMotionAnatomyPreview()
+    {
+        var transform = new TranslateTransform { Y = 8 };
+        var surface = new CodexCard
+        {
+            Width = 300,
+            Title = "Motion surface",
+            Description = "Opacity and translate transitions resolve through theme tokens.",
+            Opacity = 0.9,
+            RenderTransform = transform,
+            Content = new CodexBadge
+            {
+                Content = "tokenized",
+                Variant = CodexControlVariant.Secondary
+            }
+        };
+        CodexMotion.ApplyOpacityTransition(surface, CodexMotion.ResolveDefaultDuration(surface), CodexMotion.ResolveEaseOut(surface));
+        CodexMotion.ApplyTranslateYTransition(transform, CodexMotion.ResolveDefaultDuration(surface), CodexMotion.ResolveEaseOut(surface));
+
+        return new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star)
+            },
+            RowDefinitions =
+            {
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto)
+            },
+            ColumnSpacing = 16,
+            RowSpacing = 14,
+            Children =
+            {
+                new CodexField
+                {
+                    Label = "Transition target",
+                    Description = "Surface properties receive duration and easing from CodexMotion.",
+                    Content = surface
+                },
+                GridCell(new CodexField
+                {
+                    Label = "Duration tiers",
+                    Description = "Fast, default, and slow match Web-style interaction timing.",
+                    Content = new Grid
+                    {
+                        ColumnDefinitions =
+                        {
+                            new ColumnDefinition(GridLength.Star),
+                            new ColumnDefinition(GridLength.Star),
+                            new ColumnDefinition(GridLength.Star)
+                        },
+                        ColumnSpacing = 10,
+                        Children =
+                        {
+                            MotionToken("Fast", $"{CodexMotion.ResolveFastDuration().TotalMilliseconds:0}ms", "hover", 0),
+                            MotionToken("Default", $"{CodexMotion.ResolveDefaultDuration().TotalMilliseconds:0}ms", "surface", 1),
+                            MotionToken("Slow", $"{CodexMotion.ResolveSlowDuration().TotalMilliseconds:0}ms", "overlay", 2)
+                        }
+                    }
+                }, row: 0, column: 1),
+                GridCell(new CodexField
+                {
+                    Label = "Easing",
+                    Description = "Ease resources are resolved from theme resources at runtime.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            Text("CodexSwitch.MotionEaseOut", CodexTextRole.Code),
+                            Text("CodexSwitch.MotionDurationDefault", CodexTextRole.Code)
+                        }
+                    }
+                }, row: 1, column: 0),
+                GridCell(new CodexField
+                {
+                    Label = "Reduced motion",
+                    Description = "Zero-duration handoff keeps final state deterministic.",
+                    Content = new StackPanel
+                    {
+                        Spacing = 8,
+                        Children =
+                        {
+                            new CodexKbd { Content = "0ms", Size = CodexControlSize.Small },
+                            Muted("The same event path completes without visible motion.")
+                        }
+                    }
+                }, row: 1, column: 1)
             }
         };
     }
@@ -22328,7 +26947,16 @@ public sealed class MainWindow : Window
 
         if (onActivated is not null)
         {
-            row.PointerReleased += (_, _) => onActivated(payment);
+            row.PointerReleased += (_, args) =>
+            {
+                if (args.GetCurrentPoint(row).Properties.PointerUpdateKind != PointerUpdateKind.LeftButtonReleased)
+                {
+                    return;
+                }
+
+                onActivated(payment);
+                args.Handled = true;
+            };
         }
 
         return row;
@@ -23067,7 +27695,7 @@ public sealed class MainWindow : Window
         return Brushes.Transparent;
     }
 
-    private sealed class DocsActionCommand(Action execute) : ICommand
+    private sealed class DocsActionCommand(Action execute, Func<bool>? canExecute = null) : ICommand
     {
         public event EventHandler? CanExecuteChanged
         {
@@ -23077,7 +27705,7 @@ public sealed class MainWindow : Window
 
         public bool CanExecute(object? parameter)
         {
-            return true;
+            return canExecute?.Invoke() ?? true;
         }
 
         public void Execute(object? parameter)

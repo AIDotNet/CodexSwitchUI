@@ -10,19 +10,32 @@ using Avalonia.VisualTree;
 
 namespace CodexSwitchUI.Controls;
 
-public sealed class CodexCalendarSelectedDateChangedEventArgs(DateTime? oldDate, DateTime? newDate)
+public enum CodexCalendarChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public sealed class CodexCalendarSelectedDateChangedEventArgs(
+    DateTime? oldDate,
+    DateTime? newDate,
+    CodexCalendarChangeSource source = CodexCalendarChangeSource.Programmatic)
     : EventArgs
 {
     public DateTime? OldDate { get; } = oldDate;
 
     public DateTime? NewDate { get; } = newDate;
+
+    public CodexCalendarChangeSource Source { get; } = source;
 }
 
 public sealed class CodexCalendarRangeChangedEventArgs(
     DateTime? oldStart,
     DateTime? oldEnd,
     DateTime? newStart,
-    DateTime? newEnd)
+    DateTime? newEnd,
+    CodexCalendarChangeSource source = CodexCalendarChangeSource.Programmatic)
     : EventArgs
 {
     public DateTime? OldStart { get; } = oldStart;
@@ -34,9 +47,15 @@ public sealed class CodexCalendarRangeChangedEventArgs(
     public DateTime? NewEnd { get; } = newEnd;
 
     public bool IsComplete => NewStart.HasValue && NewEnd.HasValue;
+
+    public CodexCalendarChangeSource Source { get; } = source;
 }
 
-public sealed class CodexCalendarDisplayDateChangedEventArgs(DateTime oldDisplayDate, DateTime newDisplayDate, int monthDelta)
+public sealed class CodexCalendarDisplayDateChangedEventArgs(
+    DateTime oldDisplayDate,
+    DateTime newDisplayDate,
+    int monthDelta,
+    CodexCalendarChangeSource source = CodexCalendarChangeSource.Programmatic)
     : EventArgs
 {
     public DateTime OldDisplayDate { get; } = oldDisplayDate;
@@ -44,14 +63,21 @@ public sealed class CodexCalendarDisplayDateChangedEventArgs(DateTime oldDisplay
     public DateTime NewDisplayDate { get; } = newDisplayDate;
 
     public int MonthDelta { get; } = monthDelta;
+
+    public CodexCalendarChangeSource Source { get; } = source;
 }
 
-public sealed class CodexCalendarActiveDateChangedEventArgs(DateTime? oldDate, DateTime? newDate)
+public sealed class CodexCalendarActiveDateChangedEventArgs(
+    DateTime? oldDate,
+    DateTime? newDate,
+    CodexCalendarChangeSource source = CodexCalendarChangeSource.Programmatic)
     : EventArgs
 {
     public DateTime? OldDate { get; } = oldDate;
 
     public DateTime? NewDate { get; } = newDate;
+
+    public CodexCalendarChangeSource Source { get; } = source;
 }
 
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
@@ -61,6 +87,7 @@ public class CodexCalendar : ItemsControl
     private readonly CalendarPartCommand _nextMonthCommand;
     private string _monthTitle = FormatMonthTitle(FirstDayOfMonth(DateTime.Today));
     private bool _isRebuilding;
+    private CodexCalendarChangeSource? _pendingChangeSource;
 
     public static readonly StyledProperty<DateTime> DisplayDateProperty =
         AvaloniaProperty.Register<CodexCalendar, DateTime>(nameof(DisplayDate), FirstDayOfMonth(DateTime.Today));
@@ -123,6 +150,7 @@ public class CodexCalendar : ItemsControl
         ShowWeekNumbersProperty.Changed.AddClassHandler<CodexCalendar>((calendar, _) => calendar.RebuildCalendar());
         IntentProperty.Changed.AddClassHandler<CodexCalendar>((calendar, _) => calendar.SyncClasses());
         SizeProperty.Changed.AddClassHandler<CodexCalendar>((calendar, _) => calendar.RebuildCalendar());
+        IsEnabledProperty.Changed.AddClassHandler<CodexCalendar>((calendar, _) => calendar.SyncDayStates());
     }
 
     public CodexCalendar()
@@ -242,25 +270,40 @@ public class CodexCalendar : ItemsControl
 
     public void NavigatePreviousMonth()
     {
+        NavigatePreviousMonth(CodexCalendarChangeSource.Programmatic);
+    }
+
+    internal void NavigatePreviousMonth(CodexCalendarChangeSource source)
+    {
         if (!CanGoPreviousMonth)
         {
             return;
         }
 
-        DisplayDate = DisplayDate.AddMonths(-1);
+        RunWithChangeSource(source, () => DisplayDate = DisplayDate.AddMonths(-1));
     }
 
     public void NavigateNextMonth()
+    {
+        NavigateNextMonth(CodexCalendarChangeSource.Programmatic);
+    }
+
+    internal void NavigateNextMonth(CodexCalendarChangeSource source)
     {
         if (!CanGoNextMonth)
         {
             return;
         }
 
-        DisplayDate = DisplayDate.AddMonths(1);
+        RunWithChangeSource(source, () => DisplayDate = DisplayDate.AddMonths(1));
     }
 
     public void SelectDate(DateTime date)
+    {
+        SelectDate(date, CodexCalendarChangeSource.Programmatic);
+    }
+
+    internal void SelectDate(DateTime date, CodexCalendarChangeSource source)
     {
         date = date.Date;
 
@@ -269,33 +312,41 @@ public class CodexCalendar : ItemsControl
             return;
         }
 
-        SetCurrentValue(ActiveDateProperty, date);
-
-        if (SelectionMode == CodexCalendarSelectionMode.Range)
+        RunWithChangeSource(source, () =>
         {
-            if (!RangeStart.HasValue || RangeEnd.HasValue)
+            SetCurrentValue(ActiveDateProperty, date);
+
+            if (SelectionMode == CodexCalendarSelectionMode.Range)
             {
-                SetCurrentValue(RangeStartProperty, date);
-                SetCurrentValue(RangeEndProperty, null);
-            }
-            else if (date < RangeStart.Value)
-            {
-                SetCurrentValue(RangeEndProperty, RangeStart.Value);
-                SetCurrentValue(RangeStartProperty, date);
+                if (!RangeStart.HasValue || RangeEnd.HasValue)
+                {
+                    SetCurrentValue(RangeStartProperty, date);
+                    SetCurrentValue(RangeEndProperty, null);
+                }
+                else if (date < RangeStart.Value)
+                {
+                    SetCurrentValue(RangeEndProperty, RangeStart.Value);
+                    SetCurrentValue(RangeStartProperty, date);
+                }
+                else
+                {
+                    SetCurrentValue(RangeEndProperty, date);
+                }
             }
             else
             {
-                SetCurrentValue(RangeEndProperty, date);
+                SetCurrentValue(SelectedDateProperty, date);
+                SetCurrentValue(RangeStartProperty, null);
+                SetCurrentValue(RangeEndProperty, null);
             }
-        }
-        else
-        {
-            SetCurrentValue(SelectedDateProperty, date);
-            SetCurrentValue(RangeStartProperty, null);
-            SetCurrentValue(RangeEndProperty, null);
-        }
+        });
 
         RebuildCalendar();
+    }
+
+    internal bool CanSelectDate(DateTime date)
+    {
+        return IsEnabled && !IsDateUnavailable(date.Date);
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
@@ -331,42 +382,42 @@ public class CodexCalendar : ItemsControl
         switch (e.Key)
         {
             case Key.Left:
-                MoveActiveDate(activeDate.AddDays(-1));
+                MoveActiveDate(activeDate.AddDays(-1), CodexCalendarChangeSource.Keyboard);
                 e.Handled = true;
                 break;
             case Key.Right:
-                MoveActiveDate(activeDate.AddDays(1));
+                MoveActiveDate(activeDate.AddDays(1), CodexCalendarChangeSource.Keyboard);
                 e.Handled = true;
                 break;
             case Key.Up:
-                MoveActiveDate(activeDate.AddDays(-7));
+                MoveActiveDate(activeDate.AddDays(-7), CodexCalendarChangeSource.Keyboard);
                 e.Handled = true;
                 break;
             case Key.Down:
-                MoveActiveDate(activeDate.AddDays(7));
+                MoveActiveDate(activeDate.AddDays(7), CodexCalendarChangeSource.Keyboard);
                 e.Handled = true;
                 break;
             case Key.Home:
-                MoveActiveDate(activeDate.AddDays(-WeekdayOffset(activeDate.DayOfWeek)));
+                MoveActiveDate(activeDate.AddDays(-WeekdayOffset(activeDate.DayOfWeek)), CodexCalendarChangeSource.Keyboard);
                 e.Handled = true;
                 break;
             case Key.End:
-                MoveActiveDate(activeDate.AddDays(6 - WeekdayOffset(activeDate.DayOfWeek)));
+                MoveActiveDate(activeDate.AddDays(6 - WeekdayOffset(activeDate.DayOfWeek)), CodexCalendarChangeSource.Keyboard);
                 e.Handled = true;
                 break;
             case Key.PageUp:
-                NavigatePreviousMonth();
-                MoveActiveDate(FirstSelectableDateInMonth());
+                NavigatePreviousMonth(CodexCalendarChangeSource.Keyboard);
+                MoveActiveDate(FirstSelectableDateInMonth(), CodexCalendarChangeSource.Keyboard);
                 e.Handled = true;
                 break;
             case Key.PageDown:
-                NavigateNextMonth();
-                MoveActiveDate(FirstSelectableDateInMonth());
+                NavigateNextMonth(CodexCalendarChangeSource.Keyboard);
+                MoveActiveDate(FirstSelectableDateInMonth(), CodexCalendarChangeSource.Keyboard);
                 e.Handled = true;
                 break;
             case Key.Enter:
             case Key.Space:
-                SelectDate(activeDate);
+                SelectDate(activeDate, CodexCalendarChangeSource.Keyboard);
                 e.Handled = true;
                 break;
         }
@@ -476,18 +527,22 @@ public class CodexCalendar : ItemsControl
         button.SetCurrentValue(CodexCalendarDayButton.IsActiveProperty, ActiveDate.HasValue && date == ActiveDate.Value.Date);
         button.SetCurrentValue(CodexCalendarDayButton.SizeProperty, Size);
         button.SetCurrentValue(InputElement.IsEnabledProperty, !unavailable);
+        button.SyncOwnerState();
     }
 
-    private void MoveActiveDate(DateTime date)
+    private void MoveActiveDate(DateTime date, CodexCalendarChangeSource source = CodexCalendarChangeSource.Programmatic)
     {
         date = date.Date;
 
-        if (date.Month != DisplayDate.Month || date.Year != DisplayDate.Year)
+        RunWithChangeSource(source, () =>
         {
-            SetCurrentValue(DisplayDateProperty, FirstDayOfMonth(date));
-        }
+            if (date.Month != DisplayDate.Month || date.Year != DisplayDate.Year)
+            {
+                SetCurrentValue(DisplayDateProperty, FirstDayOfMonth(date));
+            }
 
-        SetCurrentValue(ActiveDateProperty, date);
+            SetCurrentValue(ActiveDateProperty, date);
+        });
         Focus();
     }
 
@@ -565,7 +620,7 @@ public class CodexCalendar : ItemsControl
         {
             DisplayDateChanged?.Invoke(
                 this,
-                new CodexCalendarDisplayDateChangedEventArgs(oldDate, newDate, MonthDelta(oldDate, newDate)));
+                new CodexCalendarDisplayDateChangedEventArgs(oldDate, newDate, MonthDelta(oldDate, newDate), CurrentChangeSource));
         }
     }
 
@@ -588,7 +643,7 @@ public class CodexCalendar : ItemsControl
         RebuildCalendar();
         SelectedDateChanged?.Invoke(
             this,
-            new CodexCalendarSelectedDateChangedEventArgs(DateOnlyFromObject(args.OldValue), SelectedDate));
+            new CodexCalendarSelectedDateChangedEventArgs(DateOnlyFromObject(args.OldValue), SelectedDate, CurrentChangeSource));
     }
 
     private void OnRangeStartChanged(AvaloniaPropertyChangedEventArgs args)
@@ -618,7 +673,7 @@ public class CodexCalendar : ItemsControl
         }
 
         RebuildCalendar();
-        RangeChanged?.Invoke(this, new CodexCalendarRangeChangedEventArgs(oldStart, oldEnd, newStart, newEnd));
+        RangeChanged?.Invoke(this, new CodexCalendarRangeChangedEventArgs(oldStart, oldEnd, newStart, newEnd, CurrentChangeSource));
     }
 
     private void OnActiveDateChanged(AvaloniaPropertyChangedEventArgs args)
@@ -627,7 +682,7 @@ public class CodexCalendar : ItemsControl
         SyncClasses();
         ActiveDateChanged?.Invoke(
             this,
-            new CodexCalendarActiveDateChangedEventArgs(DateOnlyFromObject(args.OldValue), ActiveDate));
+            new CodexCalendarActiveDateChangedEventArgs(DateOnlyFromObject(args.OldValue), ActiveDate, CurrentChangeSource));
     }
 
     private void OnSelectionModeChanged()
@@ -658,6 +713,33 @@ public class CodexCalendar : ItemsControl
     private static int MonthDelta(DateTime oldDate, DateTime newDate)
     {
         return ((newDate.Year - oldDate.Year) * 12) + newDate.Month - oldDate.Month;
+    }
+
+    internal CodexCalendarChangeSource CurrentChangeSource => _pendingChangeSource ?? CodexCalendarChangeSource.Programmatic;
+
+    internal CodexCalendarChangeSource? BeginChangeSource(CodexCalendarChangeSource source)
+    {
+        var previousSource = _pendingChangeSource;
+        _pendingChangeSource = source;
+        return previousSource;
+    }
+
+    internal void RestoreChangeSource(CodexCalendarChangeSource? source)
+    {
+        _pendingChangeSource = source;
+    }
+
+    private void RunWithChangeSource(CodexCalendarChangeSource source, Action action)
+    {
+        var previousSource = BeginChangeSource(source);
+        try
+        {
+            action();
+        }
+        finally
+        {
+            RestoreChangeSource(previousSource);
+        }
     }
 
     private sealed class CalendarPartCommand(
@@ -692,6 +774,9 @@ public enum CodexCalendarSelectionMode
 
 public class CodexCalendarDayButton : Button
 {
+    private ICommand? _subscribedCommand;
+    private bool _hasPrimaryPointerPress;
+
     public static readonly StyledProperty<DateTime> DateProperty =
         AvaloniaProperty.Register<CodexCalendarDayButton, DateTime>(nameof(Date), DateTime.Today);
 
@@ -742,6 +827,9 @@ public class CodexCalendarDayButton : Button
         IsActiveProperty.Changed.AddClassHandler<CodexCalendarDayButton>((button, _) => button.SyncClasses());
         IsBlankProperty.Changed.AddClassHandler<CodexCalendarDayButton>((button, _) => button.SyncClasses());
         SizeProperty.Changed.AddClassHandler<CodexCalendarDayButton>((button, _) => button.SyncClasses());
+        CommandProperty.Changed.AddClassHandler<CodexCalendarDayButton>((button, args) => button.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        CommandParameterProperty.Changed.AddClassHandler<CodexCalendarDayButton>((button, _) => button.SyncClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexCalendarDayButton>((button, _) => button.SyncClasses());
     }
 
     public CodexCalendarDayButton()
@@ -823,11 +911,89 @@ public class CodexCalendarDayButton : Button
 
     internal CodexCalendar? Owner { get; set; }
 
+    internal bool CanActivate => IsEnabled
+                                 && !IsBlank
+                                 && !IsUnavailable
+                                 && CanExecuteCommand()
+                                 && (Owner?.CanSelectDate(Date) ?? true);
+
+    internal void SyncOwnerState()
+    {
+        SyncClasses();
+    }
+
     protected override void OnClick()
     {
-        Owner?.SelectDate(Date);
-        Owner?.Focus();
+        if (!CanActivate)
+        {
+            return;
+        }
+
         base.OnClick();
+        if (Owner is { } owner)
+        {
+            owner.SelectDate(Date, owner.CurrentChangeSource);
+            owner.Focus();
+        }
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        _hasPrimaryPointerPress = e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed;
+        base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        var previousSource = Owner?.BeginChangeSource(_hasPrimaryPointerPress
+            ? CodexCalendarChangeSource.Pointer
+            : CodexCalendarChangeSource.Programmatic);
+        try
+        {
+            base.OnPointerReleased(e);
+        }
+        finally
+        {
+            Owner?.RestoreChangeSource(previousSource);
+            _hasPrimaryPointerPress = false;
+        }
+    }
+
+    protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+    {
+        _hasPrimaryPointerPress = false;
+        base.OnPointerCaptureLost(e);
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (e.Key is Key.Enter or Key.Space && Owner is { } owner)
+        {
+            var previousSource = owner.BeginChangeSource(CodexCalendarChangeSource.Keyboard);
+            try
+            {
+                base.OnKeyDown(e);
+            }
+            finally
+            {
+                owner.RestoreChangeSource(previousSource);
+            }
+
+            return;
+        }
+
+        base.OnKeyDown(e);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
     }
 
     private void SyncClasses()
@@ -844,6 +1010,40 @@ public class CodexCalendarDayButton : Button
         Classes.Set("unavailable", IsUnavailable);
         Classes.Set("active", IsActive);
         Classes.Set("blank", IsBlank);
+        Classes.Set("can-activate", CanActivate);
+        Classes.Set("command-blocked", Command is not null && IsEnabled && !IsBlank && !IsUnavailable && !CanExecuteCommand());
+    }
+
+    private bool CanExecuteCommand()
+    {
+        return Command?.CanExecute(CommandParameter) ?? true;
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncClasses();
     }
 }
 

@@ -162,8 +162,21 @@
     <Setter Property="IsVisible" Value="True" />
   </Style>
 
+  <Style Selector="controls|CodexToast /template/ Button#PART_Close">
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        <BrushTransition Property="Background" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+      </Transitions>
+    </Setter>
+  </Style>
+
   <Style Selector="controls|CodexToast /template/ Button#PART_Close:pointerover">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexToast /template/ Button#PART_Close:pressed">
+    <Setter Property="Opacity" Value="0.7" />
   </Style>
 
   <Style Selector="controls|CodexToast.variant-destructive">

@@ -5,7 +5,7 @@
       ColumnSpacing="16"
       RowSpacing="14">
   <controls:CodexField Label="Open list"
-                       Description="OpenChanged, ValueChanged, and popup-open are triggered without keeping offscreen popups mounted.">
+                       Description="OpenChanged, source-aware ValueChanged, and popup-open are triggered without keeping offscreen popups mounted.">
     <StackPanel Spacing="8">
       <controls:CodexNativeSelect SelectedIndex="1"
                                   MinWidth="240">
@@ -18,7 +18,7 @@
         <controls:CodexNativeSelectOption Value="responses"
                                           Content="Responses" />
       </controls:CodexNativeSelect>
-      <TextBlock Text="Native select events update this status."
+      <TextBlock Text="Native select events update this status with source metadata."
                  TextWrapping="Wrap" />
       <StackPanel Orientation="Horizontal"
                   Spacing="8">
@@ -37,7 +37,7 @@
 
   <controls:CodexField Grid.Column="1"
                        Label="Keyboard target"
-                       Description="Arrow keys and Enter stay on the native selection path.">
+                       Description="Arrow keys and Enter stay on the native path and report source=Keyboard.">
     <controls:CodexNativeSelect SelectedIndex="2"
                                 MinWidth="240">
       <controls:CodexNativeSelectOption Value=""

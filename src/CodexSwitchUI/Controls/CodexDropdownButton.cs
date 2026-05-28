@@ -14,15 +14,28 @@ public enum CodexDropdownAlign
     End
 }
 
-public sealed class CodexDropdownButtonOpenChangedEventArgs(bool isOpen) : EventArgs
+public enum CodexDropdownButtonOpenChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard,
+    Selection
+}
+
+public sealed class CodexDropdownButtonOpenChangedEventArgs(
+    bool isOpen,
+    CodexDropdownButtonOpenChangeSource source = CodexDropdownButtonOpenChangeSource.Programmatic) : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexDropdownButtonOpenChangeSource Source { get; } = source;
 }
 
 public class CodexDropdownButton : ContentControl
 {
     private CodexButton? _trigger;
     private Control? _surface;
+    private CodexDropdownButtonOpenChangeSource? _pendingOpenChangeSource;
 
     public static readonly StyledProperty<object?> DropDownContentProperty =
         AvaloniaProperty.Register<CodexDropdownButton, object?>(nameof(DropDownContent));
@@ -180,34 +193,64 @@ public class CodexDropdownButton : ContentControl
 
     public bool Open()
     {
+        return Open(CodexDropdownButtonOpenChangeSource.Programmatic);
+    }
+
+    internal bool Open(CodexDropdownButtonOpenChangeSource source)
+    {
         if (!CanToggle())
         {
             return false;
         }
 
-        IsOpen = true;
+        RunWithOpenChangeSource(source, () => IsOpen = true);
         return true;
     }
 
     public bool Dismiss()
+    {
+        return Dismiss(CodexDropdownButtonOpenChangeSource.Programmatic);
+    }
+
+    internal bool Dismiss(CodexDropdownButtonOpenChangeSource source)
     {
         if (!IsOpen)
         {
             return false;
         }
 
-        IsOpen = false;
+        RunWithOpenChangeSource(source, () => IsOpen = false);
         return true;
     }
 
     public bool Toggle()
     {
-        return IsOpen ? Dismiss() : Open();
+        return Toggle(CodexDropdownButtonOpenChangeSource.Programmatic);
+    }
+
+    internal bool Toggle(CodexDropdownButtonOpenChangeSource source)
+    {
+        return IsOpen ? Dismiss(source) : Open(source);
     }
 
     internal bool TryHandleDismissKey(Key key)
     {
-        return key == Key.Escape && CloseOnEscape && Dismiss();
+        return key == Key.Escape && CloseOnEscape && Dismiss(CodexDropdownButtonOpenChangeSource.Keyboard);
+    }
+
+    internal bool TryHandleTriggerKey(Key key)
+    {
+        if (key is not (Key.Enter or Key.Space or Key.Down))
+        {
+            return false;
+        }
+
+        return Open(CodexDropdownButtonOpenChangeSource.Keyboard);
+    }
+
+    internal bool TryHandleTriggerPointerRelease(PointerUpdateKind updateKind)
+    {
+        return updateKind == PointerUpdateKind.LeftButtonReleased && Toggle(CodexDropdownButtonOpenChangeSource.Pointer);
     }
 
     internal bool TryCloseFromDropDownAction(Button action)
@@ -217,7 +260,7 @@ public class CodexDropdownButton : ContentControl
             return false;
         }
 
-        return Dismiss();
+        return Dismiss(CodexDropdownButtonOpenChangeSource.Selection);
     }
 
     internal bool TryCloseFromDropDownMenuItem(MenuItem item)
@@ -228,7 +271,7 @@ public class CodexDropdownButton : ContentControl
         }
 
         CodexMenuActivation.TryCloseOnSelect(item);
-        return Dismiss();
+        return Dismiss(CodexDropdownButtonOpenChangeSource.Selection);
     }
 
     public bool TryRestoreFocus()
@@ -241,7 +284,8 @@ public class CodexDropdownButton : ContentControl
     {
         if (_trigger is not null)
         {
-            _trigger.Click -= OnTriggerClick;
+            _trigger.RemoveHandler(InputElement.PointerReleasedEvent, OnTriggerPointerReleased);
+            _trigger.RemoveHandler(InputElement.KeyDownEvent, OnTriggerKeyDown);
         }
 
         if (_surface is not null)
@@ -257,7 +301,16 @@ public class CodexDropdownButton : ContentControl
 
         if (_trigger is not null)
         {
-            _trigger.Click += OnTriggerClick;
+            _trigger.AddHandler(
+                InputElement.PointerReleasedEvent,
+                OnTriggerPointerReleased,
+                RoutingStrategies.Bubble,
+                handledEventsToo: true);
+            _trigger.AddHandler(
+                InputElement.KeyDownEvent,
+                OnTriggerKeyDown,
+                RoutingStrategies.Bubble,
+                handledEventsToo: true);
         }
 
         if (_surface is not null)
@@ -288,9 +341,21 @@ public class CodexDropdownButton : ContentControl
         base.OnKeyDown(e);
     }
 
-    private void OnTriggerClick(object? sender, RoutedEventArgs e)
+    private void OnTriggerPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        Toggle();
+        var updateKind = e.GetCurrentPoint((Control?)_trigger ?? this).Properties.PointerUpdateKind;
+        if (TryHandleTriggerPointerRelease(updateKind))
+        {
+            e.Handled = true;
+        }
+    }
+
+    private void OnTriggerKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (TryHandleTriggerKey(e.Key))
+        {
+            e.Handled = true;
+        }
     }
 
     private void OnDropDownActionClicked(object? sender, RoutedEventArgs e)
@@ -315,7 +380,7 @@ public class CodexDropdownButton : ContentControl
 
         if (args.OldValue is bool oldValue && args.NewValue is bool newValue && oldValue != newValue)
         {
-            OpenChanged?.Invoke(this, new CodexDropdownButtonOpenChangedEventArgs(newValue));
+            OpenChanged?.Invoke(this, new CodexDropdownButtonOpenChangedEventArgs(newValue, CurrentOpenChangeSource));
         }
 
         if (args.OldValue is true && args.NewValue is false)
@@ -366,5 +431,22 @@ public class CodexDropdownButton : ContentControl
     private static bool HasValue(object? value)
     {
         return value is string text ? !string.IsNullOrWhiteSpace(text) : value is not null;
+    }
+
+    private CodexDropdownButtonOpenChangeSource CurrentOpenChangeSource =>
+        _pendingOpenChangeSource ?? CodexDropdownButtonOpenChangeSource.Programmatic;
+
+    private void RunWithOpenChangeSource(CodexDropdownButtonOpenChangeSource source, Action action)
+    {
+        var previousSource = _pendingOpenChangeSource;
+        _pendingOpenChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingOpenChangeSource = previousSource;
+        }
     }
 }

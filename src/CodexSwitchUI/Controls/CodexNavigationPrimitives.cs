@@ -3,9 +3,11 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
@@ -43,7 +45,8 @@ public sealed class CodexSegmentedControlValueChangedEventArgs(
     int oldIndex,
     int newIndex,
     string? oldValue,
-    string? newValue) : EventArgs
+    string? newValue,
+    CodexSegmentedControlValueChangeSource source = CodexSegmentedControlValueChangeSource.Programmatic) : EventArgs
 {
     public CodexSegmentedButton? OldItem { get; } = oldItem;
 
@@ -56,6 +59,15 @@ public sealed class CodexSegmentedControlValueChangedEventArgs(
     public string? OldValue { get; } = oldValue;
 
     public string? NewValue { get; } = newValue;
+
+    public CodexSegmentedControlValueChangeSource Source { get; } = source;
+}
+
+public enum CodexSegmentedControlValueChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
 }
 
 public sealed class CodexSideNavValueChangedEventArgs(
@@ -64,7 +76,8 @@ public sealed class CodexSideNavValueChangedEventArgs(
     int oldIndex,
     int newIndex,
     string? oldValue,
-    string? newValue) : EventArgs
+    string? newValue,
+    CodexSideNavValueChangeSource source = CodexSideNavValueChangeSource.Programmatic) : EventArgs
 {
     public CodexSideNavItem? OldItem { get; } = oldItem;
 
@@ -77,6 +90,15 @@ public sealed class CodexSideNavValueChangedEventArgs(
     public string? OldValue { get; } = oldValue;
 
     public string? NewValue { get; } = newValue;
+
+    public CodexSideNavValueChangeSource Source { get; } = source;
+}
+
+public enum CodexSideNavValueChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
 }
 
 public class CodexSideNav : ContentControl
@@ -115,11 +137,11 @@ public class CodexSideNav : ContentControl
         SyncItemsForCurrentValue();
     }
 
-    internal void SelectItem(CodexSideNavItem item)
+    internal bool SelectItem(CodexSideNavItem item, CodexSideNavValueChangeSource source = CodexSideNavValueChangeSource.Programmatic)
     {
-        if (!item.IsEnabled)
+        if (!item.CanSelect)
         {
-            return;
+            return false;
         }
 
         var items = GetSideNavItems();
@@ -131,7 +153,7 @@ public class CodexSideNav : ContentControl
 
         if (ReferenceEquals(oldItem, item) && string.Equals(SelectedValue, newValue, StringComparison.Ordinal))
         {
-            return;
+            return false;
         }
 
         _syncingSelection = true;
@@ -149,7 +171,8 @@ public class CodexSideNav : ContentControl
             _syncingSelection = false;
         }
 
-        RaiseValueChanged(oldItem, item, oldIndex, newIndex, oldValue, newValue);
+        RaiseValueChanged(oldItem, item, oldIndex, newIndex, oldValue, newValue, source);
+        return true;
     }
 
     private void OnSelectedValueChanged(AvaloniaPropertyChangedEventArgs args)
@@ -180,7 +203,7 @@ public class CodexSideNav : ContentControl
             _syncingSelection = false;
         }
 
-        RaiseValueChanged(oldItem, newItem, oldIndex, newIndex, oldValue, newValue);
+        RaiseValueChanged(oldItem, newItem, oldIndex, newIndex, oldValue, newValue, CodexSideNavValueChangeSource.Programmatic);
     }
 
     private void SyncItemsForCurrentValue()
@@ -260,7 +283,8 @@ public class CodexSideNav : ContentControl
         int oldIndex,
         int newIndex,
         string? oldValue,
-        string? newValue)
+        string? newValue,
+        CodexSideNavValueChangeSource source)
     {
         if (ReferenceEquals(oldItem, newItem) && string.Equals(oldValue, newValue, StringComparison.Ordinal))
         {
@@ -269,7 +293,7 @@ public class CodexSideNav : ContentControl
 
         ValueChanged?.Invoke(
             this,
-            new CodexSideNavValueChangedEventArgs(oldItem, newItem, oldIndex, newIndex, oldValue, newValue));
+            new CodexSideNavValueChangedEventArgs(oldItem, newItem, oldIndex, newIndex, oldValue, newValue, source));
     }
 
     private static int IndexOf(IReadOnlyList<CodexSideNavItem> items, CodexSideNavItem? item)
@@ -308,6 +332,11 @@ public class CodexSideNav : ContentControl
 
 public class CodexSideNavItem : Button
 {
+    private ICommand? _subscribedCommand;
+    private bool _hasPrimaryPointerPress;
+    private PointerUpdateKind? _pendingPointerReleaseKind;
+    private bool _selectionHandledByPointerRelease;
+
     public static readonly StyledProperty<string?> ValueProperty =
         AvaloniaProperty.Register<CodexSideNavItem, string?>(nameof(Value));
 
@@ -331,6 +360,9 @@ public class CodexSideNavItem : Button
         IconProperty.Changed.AddClassHandler<CodexSideNavItem>((item, _) => item.SyncClasses());
         IsSelectedProperty.Changed.AddClassHandler<CodexSideNavItem>((item, _) => item.SyncClasses());
         DetailProperty.Changed.AddClassHandler<CodexSideNavItem>((item, _) => item.SyncClasses());
+        CommandProperty.Changed.AddClassHandler<CodexSideNavItem>((item, args) => item.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        CommandParameterProperty.Changed.AddClassHandler<CodexSideNavItem>((item, _) => item.SyncClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexSideNavItem>((item, _) => item.SyncClasses());
     }
 
     public CodexSideNavItem()
@@ -366,24 +398,103 @@ public class CodexSideNavItem : Button
 
     public bool HasDetail => GetValue(HasDetailProperty);
 
+    internal bool CanSelect => IsEnabled && (Command?.CanExecute(CommandParameter) ?? true);
+
     protected override void OnClick()
     {
+        if (_pendingPointerReleaseKind is { } updateKind)
+        {
+            if (updateKind != PointerUpdateKind.LeftButtonReleased || !CanSelect)
+            {
+                return;
+            }
+
+            base.OnClick();
+            _selectionHandledByPointerRelease = TryHandlePointerActivation(updateKind);
+            return;
+        }
+
+        if (!CanSelect)
+        {
+            return;
+        }
+
         base.OnClick();
+        _ = TrySelect(CodexSideNavValueChangeSource.Keyboard);
+    }
+
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        return TrySelect(CodexSideNavValueChangeSource.Pointer);
+    }
+
+    internal bool TrySelect(CodexSideNavValueChangeSource source = CodexSideNavValueChangeSource.Programmatic)
+    {
+        if (!CanSelect)
+        {
+            return false;
+        }
 
         var owner = this.GetVisualAncestors().OfType<CodexSideNav>().FirstOrDefault()
             ?? this.GetLogicalAncestors().OfType<CodexSideNav>().FirstOrDefault();
 
         if (owner is not null)
         {
-            owner.SelectItem(this);
-            return;
+            return owner.SelectItem(this, source);
         }
 
         SelectSiblingItems();
+        return true;
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        _hasPrimaryPointerPress = e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed;
+        base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        var canActivateFromPointer = _hasPrimaryPointerPress && IsPointerOver;
+        _hasPrimaryPointerPress = false;
+
+        if (canActivateFromPointer)
+        {
+            _pendingPointerReleaseKind = updateKind;
+            try
+            {
+                base.OnPointerReleased(e);
+            }
+            finally
+            {
+                _pendingPointerReleaseKind = null;
+            }
+
+            if (_selectionHandledByPointerRelease)
+            {
+                _selectionHandledByPointerRelease = false;
+                e.Handled = true;
+            }
+
+            return;
+        }
+
+        base.OnPointerReleased(e);
     }
 
     private void SelectSiblingItems()
     {
+        if (!CanSelect)
+        {
+            return;
+        }
+
         var parent = this.GetLogicalParent();
         if (parent is null)
         {
@@ -403,8 +514,48 @@ public class CodexSideNavItem : Button
     private void SyncClasses()
     {
         Classes.Set("selected", IsSelected);
+        Classes.Set("can-select", CanSelect);
+        Classes.Set("command-blocked", Command is not null && IsEnabled && !CanSelect);
         SetValue(HasIconProperty, Icon is not null);
         SetValue(HasDetailProperty, !string.IsNullOrWhiteSpace(Detail));
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncClasses();
     }
 }
 
@@ -476,11 +627,13 @@ public class CodexSegmentedControl : ContentControl
         Dispatcher.UIThread.Post(UpdateSelectionIndicator, DispatcherPriority.Loaded);
     }
 
-    internal void SelectButton(CodexSegmentedButton button)
+    internal bool SelectButton(
+        CodexSegmentedButton button,
+        CodexSegmentedControlValueChangeSource source = CodexSegmentedControlValueChangeSource.Programmatic)
     {
-        if (!button.IsEnabled)
+        if (!button.CanSelect)
         {
-            return;
+            return false;
         }
 
         var buttons = GetSegmentedButtons();
@@ -493,7 +646,7 @@ public class CodexSegmentedControl : ContentControl
         if (ReferenceEquals(oldButton, button) && string.Equals(SelectedValue, newValue, StringComparison.Ordinal))
         {
             QueueSelectionIndicatorUpdate();
-            return;
+            return false;
         }
 
         _syncingSelection = true;
@@ -512,7 +665,8 @@ public class CodexSegmentedControl : ContentControl
         }
 
         QueueSelectionIndicatorUpdate();
-        RaiseValueChanged(oldButton, button, oldIndex, newIndex, oldValue, newValue);
+        RaiseValueChanged(oldButton, button, oldIndex, newIndex, oldValue, newValue, source);
+        return true;
     }
 
     internal void UpdateSelectionIndicator()
@@ -565,7 +719,7 @@ public class CodexSegmentedControl : ContentControl
         }
 
         QueueSelectionIndicatorUpdate();
-        RaiseValueChanged(oldButton, newButton, oldIndex, newIndex, oldValue, newValue);
+        RaiseValueChanged(oldButton, newButton, oldIndex, newIndex, oldValue, newValue, CodexSegmentedControlValueChangeSource.Programmatic);
     }
 
     private IReadOnlyList<CodexSegmentedButton> GetSegmentedButtons()
@@ -595,7 +749,8 @@ public class CodexSegmentedControl : ContentControl
         int oldIndex,
         int newIndex,
         string? oldValue,
-        string? newValue)
+        string? newValue,
+        CodexSegmentedControlValueChangeSource source)
     {
         if (ReferenceEquals(oldButton, newButton) && string.Equals(oldValue, newValue, StringComparison.Ordinal))
         {
@@ -604,7 +759,7 @@ public class CodexSegmentedControl : ContentControl
 
         ValueChanged?.Invoke(
             this,
-            new CodexSegmentedControlValueChangedEventArgs(oldButton, newButton, oldIndex, newIndex, oldValue, newValue));
+            new CodexSegmentedControlValueChangedEventArgs(oldButton, newButton, oldIndex, newIndex, oldValue, newValue, source));
     }
 
     private static int IndexOf(IReadOnlyList<CodexSegmentedButton> buttons, CodexSegmentedButton? button)
@@ -643,6 +798,11 @@ public class CodexSegmentedControl : ContentControl
 
 public class CodexSegmentedButton : Button
 {
+    private ICommand? _subscribedCommand;
+    private bool _hasPrimaryPointerPress;
+    private PointerUpdateKind? _pendingPointerReleaseKind;
+    private bool _selectionHandledByPointerRelease;
+
     public static readonly StyledProperty<string?> ValueProperty =
         AvaloniaProperty.Register<CodexSegmentedButton, string?>(nameof(Value));
 
@@ -652,6 +812,9 @@ public class CodexSegmentedButton : Button
     static CodexSegmentedButton()
     {
         IsSelectedProperty.Changed.AddClassHandler<CodexSegmentedButton>((button, _) => button.SyncClasses());
+        CommandProperty.Changed.AddClassHandler<CodexSegmentedButton>((button, args) => button.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        CommandParameterProperty.Changed.AddClassHandler<CodexSegmentedButton>((button, _) => button.SyncClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexSegmentedButton>((button, _) => button.SyncClasses());
     }
 
     public CodexSegmentedButton()
@@ -671,8 +834,31 @@ public class CodexSegmentedButton : Button
         set => SetValue(IsSelectedProperty, value);
     }
 
+    internal bool CanSelect => IsEnabled && (Command?.CanExecute(CommandParameter) ?? true);
+
     protected override void OnClick()
     {
+        if (_pendingPointerReleaseKind is { } updateKind)
+        {
+            if (updateKind != PointerUpdateKind.LeftButtonReleased || !CanSelect)
+            {
+                return;
+            }
+
+            base.OnClick();
+            if (Command is null)
+            {
+                _selectionHandledByPointerRelease = TryHandlePointerActivation(updateKind);
+            }
+
+            return;
+        }
+
+        if (!CanSelect)
+        {
+            return;
+        }
+
         base.OnClick();
 
         if (Command is not null)
@@ -680,20 +866,81 @@ public class CodexSegmentedButton : Button
             return;
         }
 
+        _ = TrySelect(CodexSegmentedControlValueChangeSource.Keyboard);
+    }
+
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased || Command is not null)
+        {
+            return false;
+        }
+
+        return TrySelect(CodexSegmentedControlValueChangeSource.Pointer);
+    }
+
+    internal bool TrySelect(CodexSegmentedControlValueChangeSource source = CodexSegmentedControlValueChangeSource.Programmatic)
+    {
+        if (!CanSelect || Command is not null)
+        {
+            return false;
+        }
+
         var owner = this.GetVisualAncestors().OfType<CodexSegmentedControl>().FirstOrDefault()
             ?? this.GetLogicalAncestors().OfType<CodexSegmentedControl>().FirstOrDefault();
 
         if (owner is not null)
         {
-            owner.SelectButton(this);
-            return;
+            return owner.SelectButton(this, source);
         }
 
         SelectSiblingButtons();
+        return true;
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        _hasPrimaryPointerPress = e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed;
+        base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        var canActivateFromPointer = _hasPrimaryPointerPress && IsPointerOver;
+        _hasPrimaryPointerPress = false;
+
+        if (canActivateFromPointer)
+        {
+            _pendingPointerReleaseKind = updateKind;
+            try
+            {
+                base.OnPointerReleased(e);
+            }
+            finally
+            {
+                _pendingPointerReleaseKind = null;
+            }
+
+            if (_selectionHandledByPointerRelease)
+            {
+                _selectionHandledByPointerRelease = false;
+                e.Handled = true;
+            }
+
+            return;
+        }
+
+        base.OnPointerReleased(e);
     }
 
     private void SelectSiblingButtons()
     {
+        if (!CanSelect)
+        {
+            return;
+        }
+
         var parent = this.GetLogicalParent();
         if (parent is null)
         {
@@ -718,9 +965,49 @@ public class CodexSegmentedButton : Button
     private void SyncClasses()
     {
         Classes.Set("selected", IsSelected);
+        Classes.Set("can-select", CanSelect);
+        Classes.Set("command-blocked", Command is not null && IsEnabled && !CanSelect);
         this.GetVisualAncestors()
             .OfType<CodexSegmentedControl>()
             .FirstOrDefault()
             ?.QueueSelectionIndicatorUpdate();
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncClasses();
     }
 }

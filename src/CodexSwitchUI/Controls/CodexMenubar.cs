@@ -180,6 +180,18 @@ public class CodexMenubar : Menu
         return OpenMenu(item);
     }
 
+    internal bool TryHandleTopLevelPointerRelease(CodexMenubarItem item, PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased
+            || !ReferenceEquals(FindOwner(item), this)
+            || !item.HasSubMenu)
+        {
+            return false;
+        }
+
+        return ToggleMenu(item);
+    }
+
     internal void NotifyTopLevelOpenStateChanged(CodexMenubarItem item)
     {
         if (!ReferenceEquals(FindOwner(item), this))
@@ -525,7 +537,8 @@ public class CodexMenubarItem : CodexMenuItem
     {
         if (_isTopLevel && HasSubMenu)
         {
-            if (CodexMenubar.FindOwner(this)?.ToggleMenu(this) == true)
+            var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+            if (CodexMenubar.FindOwner(this)?.TryHandleTopLevelPointerRelease(this, updateKind) == true)
             {
                 e.Handled = true;
             }

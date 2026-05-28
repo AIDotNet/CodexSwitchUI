@@ -1,0 +1,108 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="270,*"
+      ColumnSpacing="18"
+      Height="380">
+  <controls:CodexSidebar>
+    <StackPanel>
+      <controls:CodexSidebarHeader>
+        <StackPanel Spacing="4">
+          <primitives:CodexText Role="Subtitle"
+                                Text="Header slot" />
+          <primitives:CodexText Role="Muted"
+                                Text="Workspace identity" />
+        </StackPanel>
+      </controls:CodexSidebarHeader>
+
+      <controls:CodexSidebarContent>
+        <StackPanel Spacing="14">
+          <controls:CodexSidebarGroup>
+            <StackPanel Spacing="6">
+              <controls:CodexSidebarGroupLabel Content="Group label" />
+              <controls:CodexSidebarMenuButton Content="Active menu row"
+                                               IsActive="True"
+                                               Badge="12" />
+              <controls:CodexSidebarMenuButton Content="Default menu row" />
+              <controls:CodexSidebarMenuButton Content="Disabled row"
+                                               IsEnabled="False" />
+            </StackPanel>
+          </controls:CodexSidebarGroup>
+
+          <controls:CodexSidebarGroup>
+            <StackPanel Spacing="6">
+              <controls:CodexSidebarGroupLabel Content="Nested group" />
+              <controls:CodexSidebarMenuSub>
+                <controls:CodexSidebarMenuSubItem>
+                  <controls:CodexSidebarMenuSubButton Content="Sub route"
+                                                      IsActive="True" />
+                </controls:CodexSidebarMenuSubItem>
+                <controls:CodexSidebarMenuSubItem>
+                  <controls:CodexSidebarMenuSubButton Content="Sub route" />
+                </controls:CodexSidebarMenuSubItem>
+              </controls:CodexSidebarMenuSub>
+            </StackPanel>
+          </controls:CodexSidebarGroup>
+        </StackPanel>
+      </controls:CodexSidebarContent>
+
+      <controls:CodexSidebarFooter>
+        <controls:CodexButton Content="Footer action"
+                              Size="Small"
+                              HorizontalAlignment="Stretch" />
+      </controls:CodexSidebarFooter>
+    </StackPanel>
+  </controls:CodexSidebar>
+
+  <controls:CodexSection Grid.Column="1"
+                         Title="Section slot anatomy"
+                         Description="Application shell pairs sidebar slots with a stable content section.">
+    <controls:CodexSection.Actions>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="Refresh"
+                              Size="Small"
+                              Variant="Secondary" />
+        <controls:CodexButton Content="Add"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexSection.Actions>
+    <Grid ColumnDefinitions="*,*"
+          RowDefinitions="Auto,Auto"
+          ColumnSpacing="12"
+          RowSpacing="12">
+      <controls:CodexStatCard Label="Sidebar"
+                              Detail="slot">
+        <controls:CodexStatCard.Value>
+          <primitives:CodexText Role="Body"
+                                Text="header" />
+        </controls:CodexStatCard.Value>
+      </controls:CodexStatCard>
+      <controls:CodexStatCard Grid.Column="1"
+                              Label="Menu"
+                              Detail="state">
+        <controls:CodexStatCard.Value>
+          <primitives:CodexText Role="Body"
+                                Text="active" />
+        </controls:CodexStatCard.Value>
+      </controls:CodexStatCard>
+      <controls:CodexStatCard Grid.Row="1"
+                              Label="Section"
+                              Detail="slot">
+        <controls:CodexStatCard.Value>
+          <primitives:CodexText Role="Body"
+                                Text="actions" />
+        </controls:CodexStatCard.Value>
+      </controls:CodexStatCard>
+      <controls:CodexStatCard Grid.Row="1"
+                              Grid.Column="1"
+                              Label="Body"
+                              Detail="slot">
+        <controls:CodexStatCard.Value>
+          <primitives:CodexText Role="Body"
+                                Text="content" />
+        </controls:CodexStatCard.Value>
+      </controls:CodexStatCard>
+    </Grid>
+  </controls:CodexSection>
+</Grid>

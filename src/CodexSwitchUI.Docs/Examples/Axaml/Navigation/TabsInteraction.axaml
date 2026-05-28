@@ -30,7 +30,7 @@
                               Role="Muted" />
       </controls:CodexTabItem>
     </controls:CodexTabs>
-    <primitives:CodexText Text="ValueChanged updates this status."
+    <primitives:CodexText Text="ValueChanged reports value and source metadata."
                           Role="Muted" />
     <StackPanel Orientation="Horizontal"
                 Spacing="8">
@@ -58,7 +58,7 @@
       <controls:CodexTabItem Header="End"
                              Value="end" />
     </controls:CodexTabs>
-    <primitives:CodexText Text="Manual activation keeps value on home until Enter or Space."
+    <primitives:CodexText Text="Manual activation keeps value on home until Enter or Space, then reports source=Keyboard."
                           Role="Muted" />
   </StackPanel>
 
@@ -90,7 +90,7 @@
     </controls:CodexTabItem>
     <controls:CodexTabItem Header="Space"
                            Value="second">
-      <primitives:CodexText Text="Space follows the same selection path."
+      <primitives:CodexText Text="Space follows the same keyboard source path."
                             Role="Muted" />
     </controls:CodexTabItem>
     <controls:CodexTabItem Header="Boundary"

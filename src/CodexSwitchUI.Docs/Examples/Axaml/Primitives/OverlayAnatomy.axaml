@@ -1,0 +1,72 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Open layer"
+                       Description="Scrim and content are aligned by the overlay primitive.">
+    <Grid Height="170">
+      <primitives:CodexOverlay IsOpen="True"
+                               HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center">
+        <controls:CodexCard Width="220"
+                            Title="Content"
+                            Description="Centered slot.">
+          <controls:CodexButton Content="Close"
+                                Size="Small" />
+        </controls:CodexCard>
+      </primitives:CodexOverlay>
+    </Grid>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="No scrim"
+                       Description="The content layer can stay mounted with scrim hidden.">
+    <Grid Height="170">
+      <primitives:CodexOverlay IsOpen="True"
+                               IsScrimVisible="False"
+                               HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center">
+        <controls:CodexCard Width="220"
+                            Title="Inline"
+                            Description="No backdrop.">
+          <controls:CodexButton Content="Apply"
+                                Size="Small" />
+        </controls:CodexCard>
+      </primitives:CodexOverlay>
+    </Grid>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Dismiss policy"
+                       Description="Escape and outside-pointer paths are explicit properties.">
+    <StackPanel Spacing="8">
+      <controls:CodexBadge Content="CloseOnEscape"
+                           Variant="Secondary" />
+      <controls:CodexBadge Content="DismissOnOutsidePointer"
+                           Variant="Secondary" />
+      <controls:CodexBadge Content="DismissCommand"
+                           Variant="Outline" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Closed layer"
+                       Description="Closed overlays stay composed while opacity and hit testing change.">
+    <Grid Height="150">
+      <primitives:CodexOverlay IsOpen="False"
+                               HorizontalContentAlignment="Center"
+                               VerticalContentAlignment="Center">
+        <controls:CodexCard Width="220"
+                            Title="Closed"
+                            Description="Mounted content.">
+          <controls:CodexButton Content="Hidden"
+                                Size="Small" />
+        </controls:CodexCard>
+      </primitives:CodexOverlay>
+    </Grid>
+  </controls:CodexField>
+</Grid>

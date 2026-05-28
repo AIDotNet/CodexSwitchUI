@@ -7,13 +7,28 @@ using Avalonia.Threading;
 
 namespace CodexSwitchUI.Controls;
 
+public enum CodexNativeSelectValueChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public enum CodexNativeSelectOpenChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
 public sealed class CodexNativeSelectValueChangedEventArgs(
     object? oldItem,
     object? newItem,
     int oldIndex,
     int newIndex,
     string? oldValue,
-    string? newValue)
+    string? newValue,
+    CodexNativeSelectValueChangeSource source = CodexNativeSelectValueChangeSource.Programmatic)
     : EventArgs
 {
     public object? OldItem { get; } = oldItem;
@@ -27,12 +42,18 @@ public sealed class CodexNativeSelectValueChangedEventArgs(
     public string? OldValue { get; } = oldValue;
 
     public string? NewValue { get; } = newValue;
+
+    public CodexNativeSelectValueChangeSource Source { get; } = source;
 }
 
-public sealed class CodexNativeSelectOpenChangedEventArgs(bool isOpen)
+public sealed class CodexNativeSelectOpenChangedEventArgs(
+    bool isOpen,
+    CodexNativeSelectOpenChangeSource source = CodexNativeSelectOpenChangeSource.Programmatic)
     : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexNativeSelectOpenChangeSource Source { get; } = source;
 }
 
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
@@ -41,6 +62,10 @@ public class CodexNativeSelect : ComboBox
     private object? _lastSelectedItem;
     private int _lastSelectedIndex = -1;
     private string? _lastSelectedValue;
+    private CodexNativeSelectValueChangeSource? _pendingValueChangeSource;
+    private CodexNativeSelectValueChangeSource? _nextInteractionSource;
+    private CodexNativeSelectOpenChangeSource? _pendingOpenChangeSource;
+    private CodexNativeSelectOpenChangeSource? _nextOpenChangeSource;
 
     public static readonly StyledProperty<CodexControlIntent> IntentProperty =
         AvaloniaProperty.Register<CodexNativeSelect, CodexControlIntent>(nameof(Intent), CodexControlIntent.Default);
@@ -105,7 +130,44 @@ public class CodexNativeSelect : ComboBox
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
+        _nextInteractionSource = CodexNativeSelectValueChangeSource.Pointer;
+        _nextOpenChangeSource = CodexNativeSelectOpenChangeSource.Pointer;
         base.OnPointerPressed(e);
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (IsSelectionKey(e.Key))
+        {
+            _nextInteractionSource = CodexNativeSelectValueChangeSource.Keyboard;
+            _nextOpenChangeSource = CodexNativeSelectOpenChangeSource.Keyboard;
+        }
+
+        base.OnKeyDown(e);
+    }
+
+    internal bool SetDropDownOpen(
+        bool isOpen,
+        CodexNativeSelectOpenChangeSource source = CodexNativeSelectOpenChangeSource.Programmatic)
+    {
+        if (IsDropDownOpen == isOpen)
+        {
+            return false;
+        }
+
+        RunWithOpenChangeSource(source, () => IsDropDownOpen = isOpen);
+        return true;
+    }
+
+    internal bool SelectIndex(int index, CodexNativeSelectValueChangeSource source = CodexNativeSelectValueChangeSource.Programmatic)
+    {
+        if (index < -1 || index >= ItemsView.Count)
+        {
+            return false;
+        }
+
+        RunWithValueChangeSource(source, () => SelectedIndex = index);
+        return true;
     }
 
     private void OnOpenChanged(AvaloniaPropertyChangedEventArgs args)
@@ -117,7 +179,9 @@ public class CodexNativeSelect : ComboBox
             return;
         }
 
-        OpenChanged?.Invoke(this, new CodexNativeSelectOpenChangedEventArgs(IsDropDownOpen));
+        var source = _pendingOpenChangeSource ?? _nextOpenChangeSource ?? CodexNativeSelectOpenChangeSource.Programmatic;
+        _nextOpenChangeSource = null;
+        OpenChanged?.Invoke(this, new CodexNativeSelectOpenChangedEventArgs(IsDropDownOpen, source));
     }
 
     private void OnSelectionChanged(SelectionChangedEventArgs args)
@@ -137,6 +201,9 @@ public class CodexNativeSelect : ComboBox
             return;
         }
 
+        var source = _pendingValueChangeSource ?? _nextInteractionSource ?? CodexNativeSelectValueChangeSource.Programmatic;
+        _nextInteractionSource = null;
+
         ValueChanged?.Invoke(
             this,
             new CodexNativeSelectValueChangedEventArgs(
@@ -145,7 +212,8 @@ public class CodexNativeSelect : ComboBox
                 oldIndex,
                 newIndex,
                 oldValue,
-                newValue));
+                newValue,
+                source));
     }
 
     private void SyncClasses()
@@ -187,6 +255,46 @@ public class CodexNativeSelect : ComboBox
         _lastSelectedItem = SelectedItem;
         _lastSelectedIndex = SelectedIndex;
         _lastSelectedValue = GetItemValue(SelectedItem);
+    }
+
+    private void RunWithValueChangeSource(CodexNativeSelectValueChangeSource source, Action action)
+    {
+        var previousSource = _pendingValueChangeSource;
+        _pendingValueChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingValueChangeSource = previousSource;
+        }
+    }
+
+    private void RunWithOpenChangeSource(CodexNativeSelectOpenChangeSource source, Action action)
+    {
+        var previousSource = _pendingOpenChangeSource;
+        _pendingOpenChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingOpenChangeSource = previousSource;
+        }
+    }
+
+    private static bool IsSelectionKey(Key key)
+    {
+        return key is Key.Enter
+            or Key.Space
+            or Key.Up
+            or Key.Down
+            or Key.PageUp
+            or Key.PageDown
+            or Key.Home
+            or Key.End;
     }
 
     private static string? GetItemValue(object? item)

@@ -184,13 +184,17 @@ public class CodexMenuItem : MenuItem
 
     protected override void OnPointerReleased(PointerReleasedEventArgs e)
     {
-        if (!CodexMenuActivation.CanActivate(this))
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        if (!TryHandlePointerSelection(updateKind))
         {
-            e.Handled = true;
+            if (!CodexMenuActivation.CanActivate(this))
+            {
+                e.Handled = true;
+            }
+
             return;
         }
 
-        _pendingSelectSource = CodexMenuItemSelectSource.Pointer;
         try
         {
             base.OnPointerReleased(e);
@@ -199,6 +203,18 @@ public class CodexMenuItem : MenuItem
         {
             ClearPendingSelectSourceLater(CodexMenuItemSelectSource.Pointer);
         }
+    }
+
+    internal bool TryHandlePointerSelection(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased
+            || !CodexMenuActivation.CanActivate(this))
+        {
+            return false;
+        }
+
+        _pendingSelectSource = CodexMenuItemSelectSource.Pointer;
+        return true;
     }
 
     protected override void OnKeyDown(KeyEventArgs e)

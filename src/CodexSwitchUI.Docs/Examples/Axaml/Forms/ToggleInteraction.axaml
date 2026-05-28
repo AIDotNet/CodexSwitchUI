@@ -14,7 +14,7 @@
         <controls:CodexToggle Content="Disabled"
                               IsEnabled="False" />
       </StackPanel>
-      <TextBlock Text="Bookmark is on."
+      <TextBlock Text="Bookmark is on (source=Programmatic)."
                  Opacity="0.72" />
     </StackPanel>
   </controls:CodexField>

@@ -8,11 +8,29 @@ internal sealed record DocsStateCase(string State, string Surface, string Contra
 
 internal sealed record DocsEventCase(string Input, string Expected);
 
+internal sealed record DocsCodeSnippet(string Title, string SamplePath);
+
 internal sealed record DocsExampleCase(
     string Title,
     string Description,
     string SamplePath,
-    Func<Control> BuildPreview);
+    Func<Control> BuildPreview,
+    IReadOnlyList<DocsCodeSnippet>? AdditionalCodeSamples = null)
+{
+    public IReadOnlyList<DocsCodeSnippet> CodeSamples
+    {
+        get
+        {
+            var samples = new List<DocsCodeSnippet> { new(SamplePath, SamplePath) };
+            if (AdditionalCodeSamples is not null)
+            {
+                samples.AddRange(AdditionalCodeSamples);
+            }
+
+            return samples;
+        }
+    }
+}
 
 internal sealed record DocsPage(
     string Id,

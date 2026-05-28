@@ -205,7 +205,7 @@ public class CodexAccordion : ItemsControl
             _isUpdatingItems = true;
             try
             {
-                SetItemOpen(item, !item.IsOpen);
+                SetItemOpen(item, !item.IsOpen, source);
             }
             finally
             {
@@ -223,7 +223,7 @@ public class CodexAccordion : ItemsControl
                 _isUpdatingItems = true;
                 try
                 {
-                    SetItemOpen(item, false);
+                    SetItemOpen(item, false, source);
                 }
                 finally
                 {
@@ -241,7 +241,7 @@ public class CodexAccordion : ItemsControl
         {
             foreach (var candidate in GetAccordionItems())
             {
-                SetItemOpen(candidate, ReferenceEquals(candidate, item));
+                SetItemOpen(candidate, ReferenceEquals(candidate, item), source);
             }
         }
         finally
@@ -269,7 +269,7 @@ public class CodexAccordion : ItemsControl
                 {
                     if (!ReferenceEquals(candidate, item))
                     {
-                        SetItemOpen(candidate, false);
+                        SetItemOpen(candidate, false, CodexAccordionValueChangeSource.Programmatic);
                     }
                 }
             }
@@ -342,7 +342,7 @@ public class CodexAccordion : ItemsControl
                         continue;
                     }
 
-                    SetItemOpen(item, false);
+                        SetItemOpen(item, false, CodexAccordionValueChangeSource.Normalization);
                 }
             }
             finally
@@ -385,12 +385,25 @@ public class CodexAccordion : ItemsControl
         item.Classes.Set("horizontal", Orientation == Orientation.Horizontal);
     }
 
-    private void SetItemOpen(CodexAccordionItem item, bool isOpen)
+    private void SetItemOpen(
+        CodexAccordionItem item,
+        bool isOpen,
+        CodexAccordionValueChangeSource source = CodexAccordionValueChangeSource.Programmatic)
     {
         if (item.IsOpen != isOpen)
         {
-            item.IsOpen = isOpen;
+            item.SetOpen(isOpen, ToCollapsibleOpenChangeSource(source));
         }
+    }
+
+    private static CodexCollapsibleOpenChangeSource ToCollapsibleOpenChangeSource(CodexAccordionValueChangeSource source)
+    {
+        return source switch
+        {
+            CodexAccordionValueChangeSource.Keyboard => CodexCollapsibleOpenChangeSource.Keyboard,
+            CodexAccordionValueChangeSource.Trigger => CodexCollapsibleOpenChangeSource.Pointer,
+            _ => CodexCollapsibleOpenChangeSource.Programmatic
+        };
     }
 
     private void UpdateOpenValues(
@@ -515,23 +528,63 @@ public class CodexAccordionItem : CodexCollapsible
 
     internal override bool TryHandleTriggerKey(Key key)
     {
+        if (!IsEnabled)
+        {
+            return false;
+        }
+
+        var accordion = FindAccordion();
+        if (accordion?.IsEnabled == false)
+        {
+            return false;
+        }
+
         if (key is Key.Enter or Key.Space)
         {
-            var accordion = FindAccordion();
             if (accordion is not null)
             {
                 accordion.ToggleItem(this, CodexAccordionValueChangeSource.Keyboard);
             }
             else
             {
-                base.Toggle();
+                base.Toggle(CodexCollapsibleOpenChangeSource.Keyboard);
             }
 
             return true;
         }
 
-        return FindAccordion()?.TryHandleItemNavigationKey(this, key) == true
+        return accordion?.TryHandleItemNavigationKey(this, key) == true
             || base.TryHandleTriggerKey(key);
+    }
+
+    internal override bool TryHandleTriggerPointerRelease(PointerUpdateKind updateKind)
+    {
+        if (!IsEnabled)
+        {
+            return false;
+        }
+
+        var accordion = FindAccordion();
+        if (accordion?.IsEnabled == false)
+        {
+            return false;
+        }
+
+        if (updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        if (accordion is not null)
+        {
+            accordion.ToggleItem(this);
+        }
+        else
+        {
+            base.Toggle(CodexCollapsibleOpenChangeSource.Pointer);
+        }
+
+        return true;
     }
 
     protected override void OnGotFocus(FocusChangedEventArgs e)

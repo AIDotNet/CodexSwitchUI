@@ -16,15 +16,28 @@ public enum CodexHoverCardAlign
     End
 }
 
-public sealed class CodexHoverCardOpenChangedEventArgs(bool isOpen) : EventArgs
+public enum CodexHoverCardOpenChangeSource
+{
+    Programmatic,
+    Pointer,
+    Focus,
+    Keyboard
+}
+
+public sealed class CodexHoverCardOpenChangedEventArgs(
+    bool isOpen,
+    CodexHoverCardOpenChangeSource source = CodexHoverCardOpenChangeSource.Programmatic) : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexHoverCardOpenChangeSource Source { get; } = source;
 }
 
 public class CodexHoverCard : ContentControl
 {
     private DispatcherTimer? _openTimer;
     private DispatcherTimer? _closeTimer;
+    private CodexHoverCardOpenChangeSource? _pendingOpenChangeSource;
 
     public static readonly StyledProperty<object?> TriggerProperty =
         AvaloniaProperty.Register<CodexHoverCard, object?>(nameof(Trigger));
@@ -150,16 +163,26 @@ public class CodexHoverCard : ContentControl
 
     public void Open()
     {
+        Open(CodexHoverCardOpenChangeSource.Programmatic);
+    }
+
+    internal void Open(CodexHoverCardOpenChangeSource source)
+    {
         if (!IsEnabled)
         {
             return;
         }
 
         StopTimers();
-        IsOpen = true;
+        RunWithOpenChangeSource(source, () => IsOpen = true);
     }
 
     public bool Dismiss()
+    {
+        return Dismiss(CodexHoverCardOpenChangeSource.Programmatic);
+    }
+
+    internal bool Dismiss(CodexHoverCardOpenChangeSource source)
     {
         StopTimers();
 
@@ -168,11 +191,11 @@ public class CodexHoverCard : ContentControl
             return false;
         }
 
-        IsOpen = false;
+        RunWithOpenChangeSource(source, () => IsOpen = false);
         return true;
     }
 
-    internal bool RequestOpen()
+    internal bool RequestOpen(CodexHoverCardOpenChangeSource source = CodexHoverCardOpenChangeSource.Pointer)
     {
         if (!IsEnabled)
         {
@@ -188,15 +211,15 @@ public class CodexHoverCard : ContentControl
 
         if (OpenDelay <= TimeSpan.Zero)
         {
-            Open();
+            Open(source);
             return true;
         }
 
-        StartTimer(ref _openTimer, OpenDelay, Open);
+        StartTimer(ref _openTimer, OpenDelay, () => Open(source));
         return true;
     }
 
-    internal bool RequestClose()
+    internal bool RequestClose(CodexHoverCardOpenChangeSource source = CodexHoverCardOpenChangeSource.Pointer)
     {
         StopOpenTimer();
 
@@ -207,40 +230,40 @@ public class CodexHoverCard : ContentControl
 
         if (CloseDelay <= TimeSpan.Zero)
         {
-            return Dismiss();
+            return Dismiss(source);
         }
 
-        StartTimer(ref _closeTimer, CloseDelay, () => IsOpen = false);
+        StartTimer(ref _closeTimer, CloseDelay, () => Dismiss(source));
         return true;
     }
 
     internal bool TryHandleDismissKey(Key key)
     {
-        return key == Key.Escape && CloseOnEscape && Dismiss();
+        return key == Key.Escape && CloseOnEscape && Dismiss(CodexHoverCardOpenChangeSource.Keyboard);
     }
 
     protected override void OnPointerEntered(PointerEventArgs e)
     {
         base.OnPointerEntered(e);
-        RequestOpen();
+        RequestOpen(CodexHoverCardOpenChangeSource.Pointer);
     }
 
     protected override void OnPointerExited(PointerEventArgs e)
     {
         base.OnPointerExited(e);
-        RequestClose();
+        RequestClose(CodexHoverCardOpenChangeSource.Pointer);
     }
 
     protected override void OnGotFocus(FocusChangedEventArgs e)
     {
         base.OnGotFocus(e);
-        RequestOpen();
+        RequestOpen(CodexHoverCardOpenChangeSource.Focus);
     }
 
     protected override void OnLostFocus(FocusChangedEventArgs e)
     {
         base.OnLostFocus(e);
-        RequestClose();
+        RequestClose(CodexHoverCardOpenChangeSource.Focus);
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -287,7 +310,7 @@ public class CodexHoverCard : ContentControl
 
         if (args.OldValue is bool oldValue && oldValue != IsOpen)
         {
-            OpenChanged?.Invoke(this, new CodexHoverCardOpenChangedEventArgs(IsOpen));
+            OpenChanged?.Invoke(this, new CodexHoverCardOpenChangedEventArgs(IsOpen, CurrentOpenChangeSource));
         }
     }
 
@@ -339,5 +362,22 @@ public class CodexHoverCard : ContentControl
     private static bool HasValue(object? value)
     {
         return value is string text ? !string.IsNullOrWhiteSpace(text) : value is not null;
+    }
+
+    private CodexHoverCardOpenChangeSource CurrentOpenChangeSource =>
+        _pendingOpenChangeSource ?? CodexHoverCardOpenChangeSource.Programmatic;
+
+    private void RunWithOpenChangeSource(CodexHoverCardOpenChangeSource source, Action action)
+    {
+        var previousSource = _pendingOpenChangeSource;
+        _pendingOpenChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingOpenChangeSource = previousSource;
+        }
     }
 }

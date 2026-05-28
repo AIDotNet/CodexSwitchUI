@@ -58,15 +58,16 @@
                                     Variant="Ghost"
                                     Command="{Binding NextMonthCommand, RelativeSource={RelativeSource TemplatedParent}}" />
             </Grid>
-            <Border x:Name="PART_FocusRing"
-                    BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
-                    BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
-                    CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
-                    IsHitTestVisible="False"
-                    Opacity="0">
+            <Grid>
               <ItemsPresenter x:Name="PART_ItemsPresenter"
                               ItemsPanel="{TemplateBinding ItemsPanel}" />
-            </Border>
+              <Border x:Name="PART_FocusRing"
+                      BorderBrush="{DynamicResource CodexSwitch.RingBrush}"
+                      BorderThickness="{DynamicResource CodexSwitch.FocusThickness}"
+                      CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                      IsHitTestVisible="False"
+                      Opacity="0" />
+            </Grid>
           </StackPanel>
         </Border>
       </ControlTemplate>
@@ -218,6 +219,10 @@
     <Setter Property="Opacity" Value="1" />
   </Style>
 
+  <Style Selector="controls|CodexCalendarDayButton.can-activate">
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
   <Style Selector="controls|CodexCalendarDayButton:pointerover /template/ Border#PART_DayRoot">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.RingBrush}" />
@@ -225,6 +230,20 @@
 
   <Style Selector="controls|CodexCalendarDayButton:pressed">
     <Setter Property="RenderTransform" Value="scale(0.96)" />
+  </Style>
+
+  <Style Selector="controls|CodexCalendarDayButton.command-blocked">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexCalendarDayButton.command-blocked:pointerover /template/ Border#PART_DayRoot">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexCalendarDayButton.command-blocked:pressed">
+    <Setter Property="RenderTransform" Value="scale(1)" />
   </Style>
 
   <Style Selector="controls|CodexCalendarDayButton.today /template/ Border#PART_DayRoot">

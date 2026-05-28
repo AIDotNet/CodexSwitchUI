@@ -1,0 +1,83 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <controls:CodexSection Title="Section anatomy"
+                         Description="Title, description, actions, and body are owned by the section primitive.">
+    <controls:CodexSection.Actions>
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="Secondary"
+                              Size="Small"
+                              Variant="Secondary" />
+        <controls:CodexButton Content="Primary"
+                              Size="Small" />
+      </StackPanel>
+    </controls:CodexSection.Actions>
+    <StackPanel Spacing="10">
+      <controls:CodexProviderCard Header="OpenAI"
+                                  Description="Body content keeps component spacing."
+                                  Icon="O"
+                                  IsActive="True" />
+      <controls:CodexProgress Value="72"
+                              Variant="Success" />
+    </StackPanel>
+  </controls:CodexSection>
+
+  <Grid Grid.Column="1"
+        ColumnDefinitions="*,*"
+        RowDefinitions="Auto,Auto,Auto"
+        ColumnSpacing="12"
+        RowSpacing="12">
+    <controls:CodexStatCard Label="Title"
+                            Detail="header">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="text" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+    <controls:CodexStatCard Grid.Column="1"
+                            Label="Description"
+                            Detail="header">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="helper" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+    <controls:CodexStatCard Grid.Row="1"
+                            Label="Actions"
+                            Detail="trailing">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="slot" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+    <controls:CodexStatCard Grid.Row="1"
+                            Grid.Column="1"
+                            Label="Content"
+                            Detail="body">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="slot" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+    <controls:CodexStatCard Grid.Row="2"
+                            Label="Empty"
+                            Detail="state">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="compact" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+    <controls:CodexStatCard Grid.Row="2"
+                            Grid.Column="1"
+                            Label="Dense"
+                            Detail="content">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="nested" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+  </Grid>
+</Grid>

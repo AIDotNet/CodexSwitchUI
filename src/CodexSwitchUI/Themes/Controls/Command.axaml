@@ -257,6 +257,10 @@
     <Setter Property="IsVisible" Value="False" />
   </Style>
 
+  <Style Selector="controls|CodexCommandItem.can-select">
+    <Setter Property="Cursor" Value="Hand" />
+  </Style>
+
   <Style Selector="controls|CodexCommandItem:pointerover">
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.AccentForegroundBrush}" />
   </Style>
@@ -280,6 +284,21 @@
 
   <Style Selector="controls|CodexCommandItem.active /template/ Border#PART_ItemRoot">
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.AccentBrush}" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem.command-blocked">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem.command-blocked:pointerover, controls|CodexCommandItem.command-blocked:focus-visible, controls|CodexCommandItem.command-blocked.active">
+    <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
+  </Style>
+
+  <Style Selector="controls|CodexCommandItem.command-blocked:pointerover /template/ Border#PART_ItemRoot, controls|CodexCommandItem.command-blocked:focus-visible /template/ Border#PART_ItemRoot, controls|CodexCommandItem.command-blocked.active /template/ Border#PART_ItemRoot">
+    <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderBrush" Value="Transparent" />
   </Style>
 

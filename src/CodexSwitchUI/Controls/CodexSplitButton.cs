@@ -8,9 +8,21 @@ using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
-public sealed class CodexSplitButtonOpenChangedEventArgs(bool isOpen) : EventArgs
+public enum CodexSplitButtonOpenChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard,
+    Selection
+}
+
+public sealed class CodexSplitButtonOpenChangedEventArgs(
+    bool isOpen,
+    CodexSplitButtonOpenChangeSource source = CodexSplitButtonOpenChangeSource.Programmatic) : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexSplitButtonOpenChangeSource Source { get; } = source;
 }
 
 public class CodexSplitButton : ContentControl
@@ -19,6 +31,7 @@ public class CodexSplitButton : ContentControl
     private CodexButton? _menuTrigger;
     private Control? _surface;
     private ICommand? _subscribedCommand;
+    private CodexSplitButtonOpenChangeSource? _pendingOpenChangeSource;
 
     public static readonly StyledProperty<object?> DropDownContentProperty =
         AvaloniaProperty.Register<CodexSplitButton, object?>(nameof(DropDownContent));
@@ -215,29 +228,44 @@ public class CodexSplitButton : ContentControl
 
     public bool Open()
     {
+        return Open(CodexSplitButtonOpenChangeSource.Programmatic);
+    }
+
+    internal bool Open(CodexSplitButtonOpenChangeSource source)
+    {
         if (!CanToggleDropDown())
         {
             return false;
         }
 
-        IsOpen = true;
+        RunWithOpenChangeSource(source, () => IsOpen = true);
         return true;
     }
 
     public bool Dismiss()
+    {
+        return Dismiss(CodexSplitButtonOpenChangeSource.Programmatic);
+    }
+
+    internal bool Dismiss(CodexSplitButtonOpenChangeSource source)
     {
         if (!IsOpen)
         {
             return false;
         }
 
-        IsOpen = false;
+        RunWithOpenChangeSource(source, () => IsOpen = false);
         return true;
     }
 
     public bool Toggle()
     {
-        return IsOpen ? Dismiss() : Open();
+        return Toggle(CodexSplitButtonOpenChangeSource.Programmatic);
+    }
+
+    internal bool Toggle(CodexSplitButtonOpenChangeSource source)
+    {
+        return IsOpen ? Dismiss(source) : Open(source);
     }
 
     public bool TryExecutePrimaryAction()
@@ -254,7 +282,22 @@ public class CodexSplitButton : ContentControl
 
     internal bool TryHandleDismissKey(Key key)
     {
-        return key == Key.Escape && CloseOnEscape && Dismiss();
+        return key == Key.Escape && CloseOnEscape && Dismiss(CodexSplitButtonOpenChangeSource.Keyboard);
+    }
+
+    internal bool TryHandleMenuTriggerKey(Key key)
+    {
+        if (key is not (Key.Enter or Key.Space or Key.Down))
+        {
+            return false;
+        }
+
+        return Open(CodexSplitButtonOpenChangeSource.Keyboard);
+    }
+
+    internal bool TryHandleMenuTriggerPointerRelease(PointerUpdateKind updateKind)
+    {
+        return updateKind == PointerUpdateKind.LeftButtonReleased && Toggle(CodexSplitButtonOpenChangeSource.Pointer);
     }
 
     internal bool TryCloseFromDropDownAction(Button action)
@@ -264,7 +307,7 @@ public class CodexSplitButton : ContentControl
             return false;
         }
 
-        return Dismiss();
+        return Dismiss(CodexSplitButtonOpenChangeSource.Selection);
     }
 
     internal bool TryCloseFromDropDownMenuItem(MenuItem item)
@@ -275,7 +318,7 @@ public class CodexSplitButton : ContentControl
         }
 
         CodexMenuActivation.TryCloseOnSelect(item);
-        return Dismiss();
+        return Dismiss(CodexSplitButtonOpenChangeSource.Selection);
     }
 
     public bool TryRestoreFocus()
@@ -293,7 +336,8 @@ public class CodexSplitButton : ContentControl
 
         if (_menuTrigger is not null)
         {
-            _menuTrigger.Click -= OnMenuTriggerClick;
+            _menuTrigger.RemoveHandler(InputElement.PointerReleasedEvent, OnMenuTriggerPointerReleased);
+            _menuTrigger.RemoveHandler(InputElement.KeyDownEvent, OnMenuTriggerKeyDown);
         }
 
         if (_surface is not null)
@@ -315,7 +359,16 @@ public class CodexSplitButton : ContentControl
 
         if (_menuTrigger is not null)
         {
-            _menuTrigger.Click += OnMenuTriggerClick;
+            _menuTrigger.AddHandler(
+                InputElement.PointerReleasedEvent,
+                OnMenuTriggerPointerReleased,
+                RoutingStrategies.Bubble,
+                handledEventsToo: true);
+            _menuTrigger.AddHandler(
+                InputElement.KeyDownEvent,
+                OnMenuTriggerKeyDown,
+                RoutingStrategies.Bubble,
+                handledEventsToo: true);
         }
 
         if (_surface is not null)
@@ -361,9 +414,21 @@ public class CodexSplitButton : ContentControl
         TryExecutePrimaryAction();
     }
 
-    private void OnMenuTriggerClick(object? sender, RoutedEventArgs e)
+    private void OnMenuTriggerPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        Toggle();
+        var updateKind = e.GetCurrentPoint((Control?)_menuTrigger ?? this).Properties.PointerUpdateKind;
+        if (TryHandleMenuTriggerPointerRelease(updateKind))
+        {
+            e.Handled = true;
+        }
+    }
+
+    private void OnMenuTriggerKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (TryHandleMenuTriggerKey(e.Key))
+        {
+            e.Handled = true;
+        }
     }
 
     private void OnDropDownActionClicked(object? sender, RoutedEventArgs e)
@@ -388,7 +453,7 @@ public class CodexSplitButton : ContentControl
 
         if (args.OldValue is bool oldValue && args.NewValue is bool newValue && oldValue != newValue)
         {
-            OpenChanged?.Invoke(this, new CodexSplitButtonOpenChangedEventArgs(newValue));
+            OpenChanged?.Invoke(this, new CodexSplitButtonOpenChangedEventArgs(newValue, CurrentOpenChangeSource));
         }
 
         if (args.OldValue is true && args.NewValue is false)
@@ -482,5 +547,22 @@ public class CodexSplitButton : ContentControl
     private static bool HasValue(object? value)
     {
         return value is string text ? !string.IsNullOrWhiteSpace(text) : value is not null;
+    }
+
+    private CodexSplitButtonOpenChangeSource CurrentOpenChangeSource =>
+        _pendingOpenChangeSource ?? CodexSplitButtonOpenChangeSource.Programmatic;
+
+    private void RunWithOpenChangeSource(CodexSplitButtonOpenChangeSource source, Action action)
+    {
+        var previousSource = _pendingOpenChangeSource;
+        _pendingOpenChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingOpenChangeSource = previousSource;
+        }
     }
 }

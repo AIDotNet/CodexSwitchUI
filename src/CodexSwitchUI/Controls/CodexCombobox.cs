@@ -18,6 +18,17 @@ public enum CodexComboboxSelectionChangeSource
     Clear
 }
 
+public enum CodexComboboxOpenChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard,
+    Input,
+    Focus,
+    Clear,
+    Item
+}
+
 public sealed class CodexComboboxSelectionChangedEventArgs(
     object? oldItem,
     object? newItem,
@@ -51,10 +62,14 @@ public sealed class CodexComboboxInputChangedEventArgs(string? oldText, string? 
     public string? NewText { get; } = newText;
 }
 
-public sealed class CodexComboboxOpenChangedEventArgs(bool isOpen)
+public sealed class CodexComboboxOpenChangedEventArgs(
+    bool isOpen,
+    CodexComboboxOpenChangeSource source = CodexComboboxOpenChangeSource.Programmatic)
     : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexComboboxOpenChangeSource Source { get; } = source;
 }
 
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
@@ -65,7 +80,9 @@ public class CodexCombobox : TemplatedControl
     private Button? _trigger;
     private Button? _clear;
     private bool _syncingText;
+    private bool _suppressOpenOnTextChange;
     private CodexComboboxSelectionChangeSource? _pendingSelectionSource;
+    private CodexComboboxOpenChangeSource? _pendingOpenChangeSource;
 
     public static readonly StyledProperty<IEnumerable?> ItemsSourceProperty =
         AvaloniaProperty.Register<CodexCombobox, IEnumerable?>(nameof(ItemsSource));
@@ -311,29 +328,44 @@ public class CodexCombobox : TemplatedControl
 
     public bool Open()
     {
+        return Open(CodexComboboxOpenChangeSource.Programmatic);
+    }
+
+    internal bool Open(CodexComboboxOpenChangeSource source)
+    {
         if (!IsEnabled || IsLoading || IsOpen)
         {
             return false;
         }
 
-        IsOpen = true;
+        RunWithOpenChangeSource(source, () => IsOpen = true);
         return true;
     }
 
     public bool Close()
+    {
+        return Close(CodexComboboxOpenChangeSource.Programmatic);
+    }
+
+    internal bool Close(CodexComboboxOpenChangeSource source)
     {
         if (!IsOpen)
         {
             return false;
         }
 
-        IsOpen = false;
+        RunWithOpenChangeSource(source, () => IsOpen = false);
         return true;
     }
 
     public bool TogglePopup()
     {
-        return IsOpen ? Close() : Open();
+        return TogglePopup(CodexComboboxOpenChangeSource.Programmatic);
+    }
+
+    internal bool TogglePopup(CodexComboboxOpenChangeSource source)
+    {
+        return IsOpen ? Close(source) : Open(source);
     }
 
     public bool ClearSelection()
@@ -357,8 +389,18 @@ public class CodexCombobox : TemplatedControl
             _pendingSelectionSource = null;
         }
 
-        Text = string.Empty;
+        _suppressOpenOnTextChange = true;
+        try
+        {
+            Text = string.Empty;
+        }
+        finally
+        {
+            _suppressOpenOnTextChange = false;
+        }
+
         RefreshFilteredItems();
+        Open(CodexComboboxOpenChangeSource.Clear);
         return true;
     }
 
@@ -391,7 +433,7 @@ public class CodexCombobox : TemplatedControl
 
         if (CloseOnSelect)
         {
-            Close();
+            Close(ToOpenChangeSource(source));
         }
 
         return true;
@@ -421,7 +463,7 @@ public class CodexCombobox : TemplatedControl
             case Key.Down:
                 if (!IsOpen)
                 {
-                    Open();
+                    Open(CodexComboboxOpenChangeSource.Keyboard);
                     SetHighlightedIndex(HighlightedIndex < 0 ? 0 : HighlightedIndex);
                     return true;
                 }
@@ -431,7 +473,7 @@ public class CodexCombobox : TemplatedControl
             case Key.Up:
                 if (!IsOpen)
                 {
-                    Open();
+                    Open(CodexComboboxOpenChangeSource.Keyboard);
                     SetHighlightedIndex(_filteredItems.Count - 1);
                     return true;
                 }
@@ -449,17 +491,22 @@ public class CodexCombobox : TemplatedControl
             case Key.Enter:
                 if (!IsOpen)
                 {
-                    return Open();
+                    return Open(CodexComboboxOpenChangeSource.Keyboard);
                 }
 
                 return SelectItem(HighlightedItem, CodexComboboxSelectionChangeSource.Keyboard);
 
             case Key.Escape:
-                return CloseOnEscape && Close();
+                return CloseOnEscape && Close(CodexComboboxOpenChangeSource.Keyboard);
 
             default:
                 return false;
         }
+    }
+
+    internal bool TryHandleTriggerPointerRelease(PointerUpdateKind updateKind)
+    {
+        return updateKind == PointerUpdateKind.LeftButtonReleased && TogglePopup(CodexComboboxOpenChangeSource.Pointer);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -472,7 +519,7 @@ public class CodexCombobox : TemplatedControl
 
         if (_trigger is not null)
         {
-            _trigger.Click -= OnTriggerClick;
+            _trigger.RemoveHandler(InputElement.PointerReleasedEvent, OnTriggerPointerReleased);
         }
 
         if (_clear is not null)
@@ -494,7 +541,11 @@ public class CodexCombobox : TemplatedControl
 
         if (_trigger is not null)
         {
-            _trigger.Click += OnTriggerClick;
+            _trigger.AddHandler(
+                InputElement.PointerReleasedEvent,
+                OnTriggerPointerReleased,
+                RoutingStrategies.Bubble,
+                handledEventsToo: true);
         }
 
         if (_clear is not null)
@@ -533,19 +584,25 @@ public class CodexCombobox : TemplatedControl
     {
         if (OpenOnInput && !IsOpen)
         {
-            Open();
+            Open(CodexComboboxOpenChangeSource.Focus);
         }
     }
 
-    private void OnTriggerClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnTriggerPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        TogglePopup();
+        var updateKind = e.GetCurrentPoint((Control?)_trigger ?? this).Properties.PointerUpdateKind;
+        if (TryHandleTriggerPointerRelease(updateKind))
+        {
+            e.Handled = true;
+        }
     }
 
     private void OnClearClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        ClearSelection();
-        Open();
+        if (!ClearSelection())
+        {
+            Open(CodexComboboxOpenChangeSource.Clear);
+        }
     }
 
     private void OnOpenChanged(AvaloniaPropertyChangedEventArgs args)
@@ -557,7 +614,7 @@ public class CodexCombobox : TemplatedControl
             HighlightInitialItem();
         }
 
-        OpenChanged?.Invoke(this, new CodexComboboxOpenChangedEventArgs(IsOpen));
+        OpenChanged?.Invoke(this, new CodexComboboxOpenChangedEventArgs(IsOpen, CurrentOpenChangeSource));
     }
 
     private void OnSelectedItemChanged(AvaloniaPropertyChangedEventArgs args)
@@ -596,9 +653,9 @@ public class CodexCombobox : TemplatedControl
 
         if (!_syncingText)
         {
-            if (OpenOnInput && IsEnabled && !IsLoading)
+            if (!_suppressOpenOnTextChange && OpenOnInput && IsEnabled && !IsLoading)
             {
-                Open();
+                Open(CodexComboboxOpenChangeSource.Input);
             }
 
             RefreshFilteredItems();
@@ -789,6 +846,34 @@ public class CodexCombobox : TemplatedControl
     private static bool AreEqual(object? left, object? right)
     {
         return Equals(left, right);
+    }
+
+    private CodexComboboxOpenChangeSource CurrentOpenChangeSource =>
+        _pendingOpenChangeSource ?? CodexComboboxOpenChangeSource.Programmatic;
+
+    private void RunWithOpenChangeSource(CodexComboboxOpenChangeSource source, Action action)
+    {
+        var previousSource = _pendingOpenChangeSource;
+        _pendingOpenChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingOpenChangeSource = previousSource;
+        }
+    }
+
+    private static CodexComboboxOpenChangeSource ToOpenChangeSource(CodexComboboxSelectionChangeSource source)
+    {
+        return source switch
+        {
+            CodexComboboxSelectionChangeSource.Item => CodexComboboxOpenChangeSource.Item,
+            CodexComboboxSelectionChangeSource.Keyboard => CodexComboboxOpenChangeSource.Keyboard,
+            CodexComboboxSelectionChangeSource.Clear => CodexComboboxOpenChangeSource.Clear,
+            _ => CodexComboboxOpenChangeSource.Programmatic
+        };
     }
 }
 

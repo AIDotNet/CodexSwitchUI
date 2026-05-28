@@ -60,8 +60,8 @@ public class ControlStateTests
         new("Accordion", "controls|CodexAccordion", () => new CodexAccordion(), (control, size) => ((CodexAccordion)control).Size = size),
         new("Collapsible", "controls|CodexCollapsible", () => new CodexCollapsible(), (control, size) => ((CodexCollapsible)control).Size = size),
         new("Avatar", "controls|CodexAvatar", () => new CodexAvatar(), (control, size) => ((CodexAvatar)control).Size = size),
-        new("Avatar", "controls|CodexAvatarGroup", () => new CodexAvatarGroup(), (control, size) => ((CodexAvatarGroup)control).Size = size),
-        new("Avatar", "controls|CodexAvatarGroupCount", () => new CodexAvatarGroupCount(), (control, size) => ((CodexAvatarGroupCount)control).Size = size),
+        new("AvatarGroup", "controls|CodexAvatarGroup", () => new CodexAvatarGroup(), (control, size) => ((CodexAvatarGroup)control).Size = size),
+        new("AvatarGroup", "controls|CodexAvatarGroupCount", () => new CodexAvatarGroupCount(), (control, size) => ((CodexAvatarGroupCount)control).Size = size),
         new("Separator", "controls|CodexSeparator", () => new CodexSeparator(), (control, size) => ((CodexSeparator)control).Size = size),
         new("Kbd", "controls|CodexKbd", () => new CodexKbd(), (control, size) => ((CodexKbd)control).Size = size)
     ];
@@ -262,6 +262,7 @@ public class ControlStateTests
         Assert.Equal(1, clickChange.NewIndex);
         Assert.Equal("home", clickChange.OldValue);
         Assert.Equal("sessions", clickChange.NewValue);
+        Assert.Equal(CodexSideNavValueChangeSource.Keyboard, clickChange.Source);
 
         InvokeClick(disabled);
 
@@ -278,6 +279,123 @@ public class ControlStateTests
         Assert.Same(home, changes[1].NewItem);
         Assert.Equal("sessions", changes[1].OldValue);
         Assert.Equal("home", changes[1].NewValue);
+        Assert.Equal(CodexSideNavValueChangeSource.Programmatic, changes[1].Source);
+    }
+
+    [Fact]
+    public void SideNavItemPointerActivationUsesPrimaryReleaseOnly()
+    {
+        var changes = new List<CodexSideNavValueChangedEventArgs>();
+        var home = new CodexSideNavItem { Content = "Home", Value = "home" };
+        var sessions = new CodexSideNavItem { Content = "Sessions", Value = "sessions" };
+        var disabled = new CodexSideNavItem { Content = "Disabled", Value = "disabled", IsEnabled = false };
+        var blockedCommand = new TestCommand(() => { })
+        {
+            CanExecuteValue = false
+        };
+        var blocked = new CodexSideNavItem
+        {
+            Content = "Blocked",
+            Value = "blocked",
+            Command = blockedCommand
+        };
+        var nav = new CodexSideNav
+        {
+            Content = new StackPanel
+            {
+                Children =
+                {
+                    home,
+                    sessions,
+                    disabled,
+                    blocked
+                }
+            }
+        };
+        nav.SelectedValue = "home";
+        nav.ValueChanged += (_, args) => changes.Add(args);
+
+        Assert.False(sessions.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(sessions.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.True(home.IsSelected);
+        Assert.False(sessions.IsSelected);
+
+        Assert.True(sessions.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+
+        Assert.False(home.IsSelected);
+        Assert.True(sessions.IsSelected);
+        Assert.Equal("sessions", nav.SelectedValue);
+        var pointerChange = Assert.Single(changes);
+        Assert.Equal(CodexSideNavValueChangeSource.Pointer, pointerChange.Source);
+        Assert.Same(home, pointerChange.OldItem);
+        Assert.Same(sessions, pointerChange.NewItem);
+
+        Assert.False(disabled.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(blocked.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Contains("command-blocked", blocked.Classes);
+        Assert.Single(changes);
+    }
+
+    [Fact]
+    public void SideNavCommandCanExecuteSuppressesSelectionAndSyncsClasses()
+    {
+        var commandExecutions = 0;
+        var changes = new List<CodexSideNavValueChangedEventArgs>();
+        var home = new CodexSideNavItem { Content = "Home", Value = "home" };
+        var blockedCommand = new TestCommand(() => commandExecutions++)
+        {
+            CanExecuteValue = false
+        };
+        var blocked = new CodexSideNavItem
+        {
+            Content = "Blocked",
+            Value = "blocked",
+            Command = blockedCommand
+        };
+        var nav = new CodexSideNav
+        {
+            SelectedValue = "home",
+            Content = new StackPanel
+            {
+                Children =
+                {
+                    home,
+                    blocked
+                }
+            }
+        };
+        nav.ValueChanged += (_, args) => changes.Add(args);
+        nav.SelectedValue = "home";
+
+        Assert.False(blocked.CanSelect);
+        Assert.Contains("command-blocked", blocked.Classes);
+        Assert.DoesNotContain("can-select", blocked.Classes);
+
+        InvokeClick(blocked);
+
+        Assert.Equal(0, commandExecutions);
+        Assert.True(home.IsSelected);
+        Assert.False(blocked.IsSelected);
+        Assert.Equal("home", nav.SelectedValue);
+        Assert.Empty(changes);
+
+        blockedCommand.CanExecuteValue = true;
+        blockedCommand.RaiseCanExecuteChanged();
+
+        Assert.True(blocked.CanSelect);
+        Assert.Contains("can-select", blocked.Classes);
+        Assert.DoesNotContain("command-blocked", blocked.Classes);
+
+        InvokeClick(blocked);
+
+        Assert.Equal(1, commandExecutions);
+        Assert.False(home.IsSelected);
+        Assert.True(blocked.IsSelected);
+        Assert.Equal("blocked", nav.SelectedValue);
+        var change = Assert.Single(changes);
+        Assert.Same(home, change.OldItem);
+        Assert.Same(blocked, change.NewItem);
+        Assert.Equal(CodexSideNavValueChangeSource.Keyboard, change.Source);
     }
 
     [Fact]
@@ -351,6 +469,7 @@ public class ControlStateTests
         Assert.Equal(2, change.NewIndex);
         Assert.Equal("code", change.OldValue);
         Assert.Equal("events", change.NewValue);
+        Assert.Equal(CodexSegmentedControlValueChangeSource.Keyboard, change.Source);
 
         control.SelectedValue = "preview";
 
@@ -361,17 +480,70 @@ public class ControlStateTests
         Assert.Same(preview, changes[1].NewItem);
         Assert.Equal("events", changes[1].OldValue);
         Assert.Equal("preview", changes[1].NewValue);
+        Assert.Equal(CodexSegmentedControlValueChangeSource.Programmatic, changes[1].Source);
+    }
+
+    [Fact]
+    public void SegmentedButtonPointerActivationUsesPrimaryReleaseOnly()
+    {
+        var changes = new List<CodexSegmentedControlValueChangedEventArgs>();
+        var preview = new CodexSegmentedButton { Content = "Preview", Value = "preview", IsSelected = true };
+        var code = new CodexSegmentedButton { Content = "Code", Value = "code" };
+        var disabled = new CodexSegmentedButton { Content = "Disabled", Value = "disabled", IsEnabled = false };
+        var commandBacked = new CodexSegmentedButton
+        {
+            Content = "Command",
+            Value = "command",
+            Command = new TestCommand(() => { })
+        };
+        var control = new CodexSegmentedControl
+        {
+            SelectedValue = "preview",
+            Content = new StackPanel
+            {
+                Children =
+                {
+                    preview,
+                    code,
+                    disabled,
+                    commandBacked
+                }
+            }
+        };
+        control.ValueChanged += (_, args) => changes.Add(args);
+
+        Assert.False(code.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(code.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.True(preview.IsSelected);
+        Assert.False(code.IsSelected);
+
+        Assert.True(code.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+
+        Assert.False(preview.IsSelected);
+        Assert.True(code.IsSelected);
+        Assert.Equal("code", control.SelectedValue);
+        var pointerChange = Assert.Single(changes);
+        Assert.Equal(CodexSegmentedControlValueChangeSource.Pointer, pointerChange.Source);
+        Assert.Same(preview, pointerChange.OldItem);
+        Assert.Same(code, pointerChange.NewItem);
+
+        Assert.False(disabled.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(commandBacked.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.True(commandBacked.CanSelect);
+        Assert.True(code.IsSelected);
+        Assert.Single(changes);
     }
 
     [Fact]
     public void SegmentedButtonsWithCommandsUseControlledSelection()
     {
-        var executed = false;
+        var executionCount = 0;
         var current = new CodexSegmentedButton { Content = "Current", IsSelected = true };
+        var command = new TestCommand(() => executionCount++);
         var controlled = new CodexSegmentedButton
         {
             Content = "Controlled",
-            Command = new TestCommand(() => executed = true)
+            Command = command
         };
         _ = new StackPanel
         {
@@ -384,9 +556,30 @@ public class ControlStateTests
 
         InvokeClick(controlled);
 
-        Assert.True(executed);
+        Assert.Equal(1, executionCount);
         Assert.True(current.IsSelected);
         Assert.False(controlled.IsSelected);
+        Assert.True(controlled.CanSelect);
+        Assert.Contains("can-select", controlled.Classes);
+
+        command.CanExecuteValue = false;
+        command.RaiseCanExecuteChanged();
+
+        Assert.False(controlled.CanSelect);
+        Assert.Contains("command-blocked", controlled.Classes);
+        Assert.DoesNotContain("can-select", controlled.Classes);
+
+        InvokeClick(controlled);
+
+        Assert.Equal(1, executionCount);
+        Assert.True(current.IsSelected);
+        Assert.False(controlled.IsSelected);
+
+        command.CanExecuteValue = true;
+        command.RaiseCanExecuteChanged();
+
+        Assert.True(controlled.CanSelect);
+        Assert.DoesNotContain("command-blocked", controlled.Classes);
     }
 
     [Fact]
@@ -413,7 +606,14 @@ public class ControlStateTests
         Assert.Contains("active", switchTheme.Classes);
 
         var openAi = new CodexProviderCard { Header = "OpenAI", IsActive = true };
-        var anthropic = new CodexProviderCard { Header = "Anthropic" };
+        var anthropic = new CodexProviderCard { Header = "Anthropic", CommandParameter = "anthropic" };
+        var providerSelectionParameters = new List<object?>();
+        var providerSelectionSources = new List<CodexProviderCardSelectionSource>();
+        anthropic.Selected += (_, args) =>
+        {
+            providerSelectionParameters.Add(args.CommandParameter);
+            providerSelectionSources.Add(args.Source);
+        };
         _ = new StackPanel
         {
             Children =
@@ -429,12 +629,164 @@ public class ControlStateTests
         Assert.True(anthropic.IsActive);
         Assert.DoesNotContain("active", openAi.Classes);
         Assert.Contains("active", anthropic.Classes);
+        Assert.Equal(["anthropic"], providerSelectionParameters);
+        Assert.Equal([CodexProviderCardSelectionSource.Programmatic], providerSelectionSources);
+    }
+
+    [Fact]
+    public void ProviderCardPointerActivationUsesPrimaryReleaseAndSelectionGuards()
+    {
+        var openAi = new CodexProviderCard { Header = "OpenAI", IsActive = true };
+        var anthropic = new CodexProviderCard { Header = "Anthropic", CommandParameter = "anthropic" };
+        var selectionParameters = new List<object?>();
+        var selectionSources = new List<CodexProviderCardSelectionSource>();
+        anthropic.Selected += (_, args) =>
+        {
+            selectionParameters.Add(args.CommandParameter);
+            selectionSources.Add(args.Source);
+        };
+        _ = new StackPanel
+        {
+            Children =
+            {
+                openAi,
+                anthropic
+            }
+        };
+
+        Assert.False(anthropic.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(anthropic.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.True(openAi.IsActive);
+        Assert.False(anthropic.IsActive);
+
+        Assert.True(anthropic.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(openAi.IsActive);
+        Assert.True(anthropic.IsActive);
+        Assert.Equal(["anthropic"], selectionParameters);
+        Assert.Equal([CodexProviderCardSelectionSource.Pointer], selectionSources);
+
+        Assert.True(anthropic.TrySelect(CodexProviderCardSelectionSource.Keyboard));
+        Assert.Equal(["anthropic", "anthropic"], selectionParameters);
+        Assert.Equal(
+            [
+                CodexProviderCardSelectionSource.Pointer,
+                CodexProviderCardSelectionSource.Keyboard
+            ],
+            selectionSources);
+
+        var dragging = new CodexProviderCard { Header = "Dragging", IsDragging = true };
+        var disabled = new CodexProviderCard { Header = "Disabled", IsEnabled = false };
+        var blockedCommand = new TestCommand(() => { })
+        {
+            CanExecuteValue = false
+        };
+        var blocked = new CodexProviderCard { Header = "Blocked", Command = blockedCommand };
+
+        Assert.False(dragging.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(disabled.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(blocked.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Contains("command-blocked", blocked.Classes);
+        Assert.Equal(2, selectionSources.Count);
+    }
+
+    [Fact]
+    public void ProviderCardDraggingAndDisabledStatesSuppressSelectionAndCommand()
+    {
+        var commandExecutions = 0;
+        var openAi = new CodexProviderCard { Header = "OpenAI", IsActive = true };
+        var dragging = new CodexProviderCard
+        {
+            Header = "Dragging",
+            IsDragging = true,
+            Command = new TestCommand(() => commandExecutions++)
+        };
+        var disabled = new CodexProviderCard
+        {
+            Header = "Disabled",
+            IsEnabled = false,
+            Command = new TestCommand(() => commandExecutions++)
+        };
+        _ = new StackPanel
+        {
+            Children =
+            {
+                openAi,
+                dragging,
+                disabled
+            }
+        };
+
+        Assert.False(dragging.TrySelect());
+        Assert.False(disabled.TrySelect());
+        Assert.True(openAi.IsActive);
+        Assert.False(dragging.IsActive);
+        Assert.False(disabled.IsActive);
+
+        InvokeClick(dragging);
+        InvokeClick(disabled);
+
+        Assert.Equal(0, commandExecutions);
+        Assert.True(openAi.IsActive);
+        Assert.False(dragging.IsActive);
+        Assert.False(disabled.IsActive);
+
+        dragging.IsDragging = false;
+        Assert.True(dragging.TrySelect());
+        Assert.False(openAi.IsActive);
+        Assert.True(dragging.IsActive);
+    }
+
+    [Fact]
+    public void ProviderCardCommandCanExecuteSuppressesSelectionAndSyncsClasses()
+    {
+        var commandExecutions = 0;
+        var openAi = new CodexProviderCard { Header = "OpenAI", IsActive = true };
+        var blockedCommand = new TestCommand(() => commandExecutions++)
+        {
+            CanExecuteValue = false
+        };
+        var blocked = new CodexProviderCard
+        {
+            Header = "Blocked",
+            Command = blockedCommand
+        };
+        _ = new StackPanel
+        {
+            Children =
+            {
+                openAi,
+                blocked
+            }
+        };
+
+        Assert.False(blocked.TrySelect());
+        Assert.Contains("command-blocked", blocked.Classes);
+        Assert.DoesNotContain("can-select", blocked.Classes);
+
+        InvokeClick(blocked);
+
+        Assert.Equal(0, commandExecutions);
+        Assert.True(openAi.IsActive);
+        Assert.False(blocked.IsActive);
+
+        blockedCommand.CanExecuteValue = true;
+        blockedCommand.RaiseCanExecuteChanged();
+
+        Assert.Contains("can-select", blocked.Classes);
+        Assert.DoesNotContain("command-blocked", blocked.Classes);
+
+        InvokeClick(blocked);
+
+        Assert.Equal(1, commandExecutions);
+        Assert.False(openAi.IsActive);
+        Assert.True(blocked.IsActive);
     }
 
     [Fact]
     public void LoadingCommandSuppressesItemActivationAndCommandExecution()
     {
         var executionCount = 0;
+        var selectedSources = new List<CodexCommandItemSelectSource>();
         var active = new CodexCommandItem { Content = "Current", IsActive = true };
         var target = new CodexCommandItem
         {
@@ -453,6 +805,7 @@ public class ControlStateTests
                 }
             }
         };
+        command.ItemSelected += (_, args) => selectedSources.Add(args.Source);
 
         InvokeClick(target);
 
@@ -460,6 +813,7 @@ public class ControlStateTests
         Assert.Equal(0, executionCount);
         Assert.True(active.IsActive);
         Assert.False(target.IsActive);
+        Assert.Empty(selectedSources);
 
         command.IsLoading = false;
         InvokeClick(target);
@@ -467,6 +821,90 @@ public class ControlStateTests
         Assert.Equal(1, executionCount);
         Assert.False(active.IsActive);
         Assert.True(target.IsActive);
+        Assert.Equal([CodexCommandItemSelectSource.Keyboard], selectedSources);
+    }
+
+    [Fact]
+    public void CommandItemPointerActivationUsesPrimaryReleaseAndSourceMetadata()
+    {
+        var executionCount = 0;
+        var selectedValues = new List<string?>();
+        var selectedSources = new List<CodexCommandItemSelectSource>();
+        var active = new CodexCommandItem { Content = "Current", Value = "current", IsActive = true };
+        var pointer = new CodexCommandItem
+        {
+            Content = "Run",
+            Value = "run",
+            Command = new TestCommand(() => executionCount++)
+        };
+        var programmatic = new CodexCommandItem { Content = "Programmatic", Value = "programmatic" };
+        var keyboard = new CodexCommandItem { Content = "Keyboard", Value = "keyboard" };
+        var disabled = new CodexCommandItem { Content = "Disabled", IsEnabled = false };
+        var blockedCommand = new TestCommand(() => executionCount++)
+        {
+            CanExecuteValue = false
+        };
+        var blocked = new CodexCommandItem { Content = "Blocked", Command = blockedCommand };
+        var command = new CodexCommand
+        {
+            Content = new CodexCommandList
+            {
+                Items =
+                {
+                    new CodexCommandGroup
+                    {
+                        Header = "Actions",
+                        Items =
+                        {
+                            active,
+                            pointer,
+                            programmatic,
+                            keyboard,
+                            disabled,
+                            blocked
+                        }
+                    }
+                }
+            }
+        };
+        command.ItemSelected += (_, args) =>
+        {
+            selectedValues.Add(args.Value);
+            selectedSources.Add(args.Source);
+        };
+
+        Assert.False(pointer.TryHandlePointerActivation(PointerUpdateKind.RightButtonReleased));
+        Assert.False(pointer.TryHandlePointerActivation(PointerUpdateKind.MiddleButtonReleased));
+        Assert.True(active.IsActive);
+        Assert.False(pointer.IsActive);
+        Assert.Empty(selectedSources);
+
+        Assert.True(pointer.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+
+        Assert.Equal(1, executionCount);
+        Assert.False(active.IsActive);
+        Assert.True(pointer.IsActive);
+        Assert.Same(pointer, command.SelectedItem);
+        Assert.Equal(["run"], selectedValues);
+        Assert.Equal([CodexCommandItemSelectSource.Pointer], selectedSources);
+
+        Assert.True(programmatic.TrySelect());
+        InvokeClick(keyboard);
+
+        Assert.Equal(["run", "programmatic", "keyboard"], selectedValues);
+        Assert.Equal(
+            [
+                CodexCommandItemSelectSource.Pointer,
+                CodexCommandItemSelectSource.Programmatic,
+                CodexCommandItemSelectSource.Keyboard
+            ],
+            selectedSources);
+
+        Assert.False(disabled.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.False(blocked.TryHandlePointerActivation(PointerUpdateKind.LeftButtonReleased));
+        Assert.Contains("command-blocked", blocked.Classes);
+        Assert.Equal(1, executionCount);
+        Assert.Equal(3, selectedSources.Count);
     }
 
     [Fact]
@@ -474,6 +912,7 @@ public class ControlStateTests
     {
         var executionCount = 0;
         var selectedValues = new List<string?>();
+        var selectedSources = new List<CodexCommandItemSelectSource>();
         var provider = new CodexCommandItem
         {
             Content = "Switch provider",
@@ -518,7 +957,11 @@ public class ControlStateTests
                 }
             }
         };
-        command.ItemSelected += (_, args) => selectedValues.Add(args.Value);
+        command.ItemSelected += (_, args) =>
+        {
+            selectedValues.Add(args.Value);
+            selectedSources.Add(args.Source);
+        };
         command.SearchText = "provider";
 
         Assert.Contains("searching", command.Classes);
@@ -538,6 +981,7 @@ public class ControlStateTests
         Assert.Equal(1, executionCount);
         Assert.Same(preferences, command.SelectedItem);
         Assert.Equal(["preferences"], selectedValues);
+        Assert.Equal([CodexCommandItemSelectSource.Keyboard], selectedSources);
 
         command.SearchText = "missing";
 
@@ -766,9 +1210,11 @@ public class ControlStateTests
     {
         public event EventHandler? CanExecuteChanged;
 
+        public bool CanExecuteValue { get; set; } = true;
+
         public bool CanExecute(object? parameter)
         {
-            return true;
+            return CanExecuteValue;
         }
 
         public void Execute(object? parameter)

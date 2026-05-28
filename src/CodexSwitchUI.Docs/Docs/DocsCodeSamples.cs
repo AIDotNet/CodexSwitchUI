@@ -6,14 +6,22 @@ internal static class DocsCodeSamples
     {
         foreach (var root in CandidateRoots())
         {
-            var path = Path.Combine(root, "Examples", "Axaml", relativePath);
-            if (File.Exists(path))
+            foreach (var path in CandidateSamplePaths(root, relativePath))
             {
-                return File.ReadAllText(path);
+                if (File.Exists(path))
+                {
+                    return File.ReadAllText(path);
+                }
             }
         }
 
-        return $"<!-- Missing AXAML sample: {relativePath} -->";
+        return $"<!-- Missing code sample: {relativePath} -->";
+    }
+
+    private static IEnumerable<string> CandidateSamplePaths(string root, string relativePath)
+    {
+        yield return Path.Combine(root, "Examples", relativePath.Replace('/', Path.DirectorySeparatorChar));
+        yield return Path.Combine(root, "Examples", "Axaml", relativePath.Replace('/', Path.DirectorySeparatorChar));
     }
 
     private static IEnumerable<string> CandidateRoots()

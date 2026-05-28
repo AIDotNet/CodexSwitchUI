@@ -1,0 +1,83 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="14"
+      RowSpacing="16">
+  <controls:CodexMenubar Loop="True">
+    <controls:CodexMenubarMenu Header="File"
+                                IsSubMenuOpen="True">
+      <controls:CodexMenubarLabel Content="Workspace" />
+      <controls:CodexMenubarGroup Header="Workspace">
+        <controls:CodexMenubarItem Header="New tab"
+                                   Shortcut="Cmd+T"
+                                   IsActive="True" />
+        <controls:CodexMenubarItem Header="New window"
+                                   Shortcut="Cmd+N" />
+        <controls:CodexMenubarItem Header="New private window"
+                                   IsEnabled="False" />
+      </controls:CodexMenubarGroup>
+      <controls:CodexMenubarSeparator />
+      <controls:CodexMenubarItem Header="Share"
+                                 IsSubMenuOpen="True">
+        <controls:CodexMenubarItem Header="Copy link" />
+        <controls:CodexMenubarItem Header="Invite member" />
+      </controls:CodexMenubarItem>
+      <controls:CodexMenubarSeparator />
+      <controls:CodexMenubarItem Header="Print"
+                                 Shortcut="Cmd+P" />
+    </controls:CodexMenubarMenu>
+
+    <controls:CodexMenubarMenu Header="Edit">
+      <controls:CodexMenubarItem Header="Undo"
+                                 Shortcut="Cmd+Z" />
+      <controls:CodexMenubarItem Header="Redo"
+                                 Shortcut="Shift+Cmd+Z" />
+    </controls:CodexMenubarMenu>
+
+    <controls:CodexMenubarMenu Header="View">
+      <controls:CodexMenubarCheckboxItem Header="Always show bookmarks bar" />
+      <controls:CodexMenubarCheckboxItem Header="Always show full URLs"
+                                         IsChecked="True" />
+    </controls:CodexMenubarMenu>
+  </controls:CodexMenubar>
+
+  <controls:CodexMenubar Grid.Column="1"
+                         Size="Small">
+    <controls:CodexMenubarMenu Header="View"
+                                IsSubMenuOpen="True">
+      <controls:CodexMenubarCheckboxItem Header="Show sidebar"
+                                         IsChecked="True" />
+      <controls:CodexMenubarCheckboxItem Header="Compact rows" />
+      <controls:CodexMenubarSeparator />
+      <controls:CodexMenubarRadioItem Header="Comfortable" />
+      <controls:CodexMenubarRadioItem Header="Dense"
+                                      IsChecked="True" />
+    </controls:CodexMenubarMenu>
+
+    <controls:CodexMenubarMenu Header="Mode">
+      <controls:CodexMenubarRadioItem Header="Fast" />
+      <controls:CodexMenubarRadioItem Header="Balanced"
+                                      IsChecked="True" />
+      <controls:CodexMenubarRadioItem Header="Deep reasoning" />
+    </controls:CodexMenubarMenu>
+  </controls:CodexMenubar>
+
+  <controls:CodexMenubar Grid.Row="1"
+                         Orientation="Vertical"
+                         Size="Small">
+    <controls:CodexMenubarMenu Header="Window"
+                                IsSubMenuOpen="True">
+      <controls:CodexMenubarLabel Content="Window" />
+      <controls:CodexMenubarItem Header="Minimize" />
+      <controls:CodexMenubarItem Header="Zoom" />
+      <controls:CodexMenubarSeparator />
+      <controls:CodexMenubarItem Header="Toggle fullscreen" />
+    </controls:CodexMenubarMenu>
+
+    <controls:CodexMenubarMenu Header="Help">
+      <controls:CodexMenubarItem Header="Search docs" />
+      <controls:CodexMenubarItem Header="Keyboard shortcuts" />
+    </controls:CodexMenubarMenu>
+  </controls:CodexMenubar>
+</Grid>

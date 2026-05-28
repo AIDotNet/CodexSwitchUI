@@ -160,11 +160,41 @@ public class CodexDrawer : CodexDialog
 
         if (shouldDismiss)
         {
-            Dismiss();
+            Dismiss(CodexDialogOpenChangeSource.Pointer);
         }
 
         DragCompleted?.Invoke(this, new CodexDrawerDragCompletedEventArgs(offset, shouldDismiss));
         return shouldDismiss;
+    }
+
+    internal bool TryBeginHandleDrag(PointerUpdateKind updateKind, Point startPoint, IPointer? pointer = null)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonPressed || !BeginDrag())
+        {
+            return false;
+        }
+
+        _dragStart = startPoint;
+        _dragPointer = pointer;
+        return true;
+    }
+
+    internal bool TryCompleteHandleDrag(PointerUpdateKind updateKind, IPointer? pointer = null)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased || !IsDragging)
+        {
+            return false;
+        }
+
+        if (_dragPointer is not null && pointer is not null && !ReferenceEquals(pointer, _dragPointer))
+        {
+            return false;
+        }
+
+        CompleteDrag();
+        _dragStart = null;
+        _dragPointer = null;
+        return true;
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -196,15 +226,13 @@ public class CodexDrawer : CodexDialog
 
     private void OnHandlePointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (!CanDrag() || e.GetCurrentPoint(_handle).Properties.IsLeftButtonPressed is false)
+        var updateKind = e.GetCurrentPoint(_handle).Properties.PointerUpdateKind;
+        if (!TryBeginHandleDrag(updateKind, e.GetPosition(this), e.Pointer))
         {
             return;
         }
 
-        _dragStart = e.GetPosition(this);
-        _dragPointer = e.Pointer;
-        _dragPointer.Capture(_handle);
-        BeginDrag();
+        e.Pointer.Capture(_handle);
         e.Handled = true;
     }
 
@@ -221,14 +249,13 @@ public class CodexDrawer : CodexDialog
 
     private void OnHandlePointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        if (_dragPointer is not null && ReferenceEquals(e.Pointer, _dragPointer))
+        var updateKind = e.GetCurrentPoint(_handle).Properties.PointerUpdateKind;
+        if (!TryCompleteHandleDrag(updateKind, e.Pointer))
         {
-            e.Pointer.Capture(null);
+            return;
         }
 
-        CompleteDrag();
-        _dragStart = null;
-        _dragPointer = null;
+        e.Pointer.Capture(null);
         e.Handled = true;
     }
 

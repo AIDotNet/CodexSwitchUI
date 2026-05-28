@@ -159,6 +159,15 @@
     <Setter Property="IsHitTestVisible" Value="False" />
   </Style>
 
+  <Style Selector="controls|CodexPaginationPageButton.command-blocked">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
+  <Style Selector="controls|CodexPaginationPageButton.command-blocked:pressed">
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
   <Style Selector="controls|CodexPagination.size-sm controls|CodexPaginationPageButton">
     <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightSm}" />
     <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightSm}" />

@@ -1,0 +1,57 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <controls:CodexField Label="Viewport anatomy"
+                       Description="Root, viewport, content presenter, vertical scrollbar, corner, track, and thumb are Codex-owned.">
+    <controls:CodexScrollArea Type="Always"
+                              IsInsetContent="True"
+                              Width="320"
+                              Height="180"
+                              VerticalScrollBarVisibility="Auto">
+      <StackPanel Spacing="8">
+        <controls:CodexButton Content="PART_Root"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+        <controls:CodexButton Content="PART_Viewport"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+        <controls:CodexButton Content="PART_ContentPresenter"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+        <controls:CodexButton Content="PART_VerticalScrollBar"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+        <controls:CodexButton Content="PART_Track"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+        <controls:CodexButton Content="PART_Thumb"
+                              Variant="Ghost"
+                              HorizontalAlignment="Stretch" />
+      </StackPanel>
+    </controls:CodexScrollArea>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Visibility and boundary"
+                       Description="Hover/scroll visibility and can-scroll/at-edge classes are state-driven.">
+    <controls:CodexScrollArea Type="Hover"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Auto"
+                              Width="320"
+                              Height="180">
+      <StackPanel Width="460"
+                  Spacing="8">
+        <controls:CodexBadge Content="type-hover"
+                             Variant="Secondary" />
+        <controls:CodexBadge Content="can-scroll-x / can-scroll-y"
+                             Variant="Outline" />
+        <controls:CodexBadge Content="at-start / at-top"
+                             Variant="Outline" />
+        <TextBlock Text="Wide content exercises both scrollbar templates without replacing the viewport."
+                   TextWrapping="Wrap"
+                   Opacity="0.72" />
+      </StackPanel>
+    </controls:CodexScrollArea>
+  </controls:CodexField>
+</Grid>

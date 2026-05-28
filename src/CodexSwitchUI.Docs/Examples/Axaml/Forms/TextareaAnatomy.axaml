@@ -1,0 +1,45 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Wrapped text presenter"
+                       Description="Textarea owns AcceptsReturn, wrapping, scroll viewer, placeholder, and focus ring in one template.">
+    <controls:CodexTextarea Text="stream: true&#x0a;temperature: 0.7"
+                            MinHeight="112" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Placeholder surface"
+                       Description="Empty multiline values show the muted placeholder inside the same scroll presenter.">
+    <controls:CodexTextarea PlaceholderText="Optional JSON payload"
+                            MinLines="5"
+                            MinHeight="132" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Selection and caret"
+                       Description="Caret and selection tokens stay aligned with single-line inputs while preserving multiline layout.">
+    <controls:CodexTextarea Text="model: gpt-5&#x0a;reasoning: medium&#x0a;stream: true"
+                            SelectionStart="7"
+                            SelectionEnd="12"
+                            CaretIndex="12"
+                            MinHeight="118" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Tall and semantic"
+                       Description="MinLines drives the tall class while intent changes caret, selection, and border tone.">
+    <StackPanel Spacing="10">
+      <controls:CodexTextarea Text="cache: warm"
+                              Size="Small"
+                              MinHeight="80" />
+      <controls:CodexTextarea Text="invalid: true"
+                              Intent="Error"
+                              MinLines="5"
+                              MinHeight="132" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

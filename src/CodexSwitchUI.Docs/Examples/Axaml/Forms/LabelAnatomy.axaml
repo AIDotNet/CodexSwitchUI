@@ -1,0 +1,58 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Target anatomy"
+                       Description="Target association gives the label pointer and access-key focus behavior.">
+    <StackPanel Orientation="Horizontal"
+                Spacing="10">
+      <controls:CodexCheckBox x:Name="routing"
+                              IsChecked="True" />
+      <controls:CodexLabel Target="{Binding #routing}"
+                           Content="Enable provider routing" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Required anatomy"
+                       Description="The required marker is owned by the label template, not by surrounding text.">
+    <StackPanel Spacing="6">
+      <controls:CodexLabel Content="_Provider name"
+                           IsRequired="True" />
+      <controls:CodexTextBox PlaceholderText="OpenAI"
+                             MinWidth="260" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Intent anatomy"
+                       Description="Intent changes label foreground while the target keeps its own validation state."
+                       Intent="Error"
+                       Message="Base URL is required.">
+    <StackPanel Spacing="6">
+      <controls:CodexLabel Content="Base URL"
+                           Intent="Error"
+                           IsRequired="True" />
+      <controls:CodexTextBox Intent="Error"
+                             PlaceholderText="https://api.example.com"
+                             MinWidth="260" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Disabled target anatomy"
+                       Description="Target-disabled state mutes the label while preserving layout.">
+    <StackPanel Spacing="6">
+      <controls:CodexTextBox x:Name="lockedRoute"
+                             Text="locked-route"
+                             IsEnabled="False"
+                             MinWidth="260" />
+      <controls:CodexLabel Target="{Binding #lockedRoute}"
+                           Content="Locked route" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

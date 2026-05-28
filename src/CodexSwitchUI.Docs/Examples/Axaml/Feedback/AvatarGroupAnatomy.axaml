@@ -1,0 +1,75 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Root panel"
+                       Description="The group measures visible children and owns the overlap math.">
+    <controls:CodexAvatarGroup Size="Medium"
+                               Overlap="12">
+      <controls:CodexAvatar Fallback="CN"
+                            ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                            IsStatusVisible="True" />
+      <controls:CodexAvatar Fallback="LR"
+                            ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+      <controls:CodexAvatarGroupCount Count="3" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Inherited size"
+                       Description="Child avatars and count slots receive the group Size.">
+    <controls:CodexAvatarGroup Size="Large"
+                               Overlap="16">
+      <controls:CodexAvatar Fallback="CN"
+                            ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/openai.png"
+                            IsStatusVisible="True" />
+      <controls:CodexAvatar Fallback="LR"
+                            ImagePath="avares://CodexSwitchUI.Docs/Assets/icons/claude.png"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+      <controls:CodexAvatarGroupCount Count="3" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Overflow count"
+                       Description="AvatarGroupCount is a final slot rather than page-local text.">
+    <controls:CodexAvatarGroup Size="Medium"
+                               Overlap="12">
+      <controls:CodexAvatar Fallback="CN"
+                            Variant="Default" />
+      <controls:CodexAvatar Fallback="LR"
+                            Variant="Secondary" />
+      <controls:CodexAvatar Fallback="ER"
+                            Variant="Outline" />
+      <controls:CodexAvatarGroupCount Count="8" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Status composition"
+                       Description="Every avatar keeps independent status tone inside the group.">
+    <controls:CodexAvatarGroup Size="Medium"
+                               Overlap="12">
+      <controls:CodexAvatar Fallback="ON"
+                            Variant="Default"
+                            StatusVariant="Success"
+                            IsStatusVisible="True" />
+      <controls:CodexAvatar Fallback="BK"
+                            Variant="Secondary"
+                            StatusVariant="Warning"
+                            IsStatusVisible="True" />
+      <controls:CodexAvatar Fallback="OF"
+                            Variant="Outline"
+                            StatusVariant="Destructive"
+                            IsStatusVisible="True" />
+    </controls:CodexAvatarGroup>
+  </controls:CodexField>
+</Grid>

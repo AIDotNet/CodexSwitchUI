@@ -1,0 +1,95 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:animation="using:Avalonia.Animation"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:media="using:Avalonia.Media"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Transition target"
+                       Description="Surface properties receive duration and easing from CodexMotion.">
+    <controls:CodexCard Width="300"
+                        Title="Motion surface"
+                        Description="Opacity and translate transitions resolve through theme tokens."
+                        Opacity="0.9">
+      <controls:CodexCard.Transitions>
+        <Transitions>
+          <animation:DoubleTransition Property="Opacity"
+                                      Duration="{DynamicResource CodexSwitch.MotionDurationDefault}"
+                                      Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+        </Transitions>
+      </controls:CodexCard.Transitions>
+      <controls:CodexCard.RenderTransform>
+        <media:TranslateTransform Y="8">
+          <media:TranslateTransform.Transitions>
+            <Transitions>
+              <animation:DoubleTransition Property="Y"
+                                          Duration="{DynamicResource CodexSwitch.MotionDurationDefault}"
+                                          Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
+            </Transitions>
+          </media:TranslateTransform.Transitions>
+        </media:TranslateTransform>
+      </controls:CodexCard.RenderTransform>
+      <controls:CodexBadge Content="tokenized"
+                           Variant="Secondary" />
+    </controls:CodexCard>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Duration tiers"
+                       Description="Fast, default, and slow match Web-style interaction timing.">
+    <Grid ColumnDefinitions="*,*,*"
+          ColumnSpacing="10">
+      <StackPanel Spacing="8">
+        <controls:CodexKbd Content="120ms"
+                           Size="Small" />
+        <primitives:CodexText Role="Subtitle"
+                              Text="Fast" />
+        <primitives:CodexText Role="Muted"
+                              Text="hover" />
+      </StackPanel>
+      <StackPanel Grid.Column="1"
+                  Spacing="8">
+        <controls:CodexKbd Content="150ms"
+                           Size="Small" />
+        <primitives:CodexText Role="Subtitle"
+                              Text="Default" />
+        <primitives:CodexText Role="Muted"
+                              Text="surface" />
+      </StackPanel>
+      <StackPanel Grid.Column="2"
+                  Spacing="8">
+        <controls:CodexKbd Content="220ms"
+                           Size="Small" />
+        <primitives:CodexText Role="Subtitle"
+                              Text="Slow" />
+        <primitives:CodexText Role="Muted"
+                              Text="overlay" />
+      </StackPanel>
+    </Grid>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Easing"
+                       Description="Ease resources are resolved from theme resources at runtime.">
+    <StackPanel Spacing="8">
+      <primitives:CodexText Role="Code"
+                            Text="CodexSwitch.MotionEaseOut" />
+      <primitives:CodexText Role="Code"
+                            Text="CodexSwitch.MotionDurationDefault" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Reduced motion"
+                       Description="Zero-duration handoff keeps final state deterministic.">
+    <StackPanel Spacing="8">
+      <controls:CodexKbd Content="0ms"
+                         Size="Small" />
+      <primitives:CodexText Role="Muted"
+                            Text="The same event path completes without visible motion." />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

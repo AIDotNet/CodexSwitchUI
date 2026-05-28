@@ -44,7 +44,8 @@
                           VerticalScrollBarVisibility="Disabled"
                           AllowAutoHide="True"
                           ClipToBounds="True">
-              <ItemsPresenter x:Name="PART_ItemsPresenter" />
+              <ItemsPresenter x:Name="PART_ItemsPresenter"
+                              ItemsPanel="{TemplateBinding ItemsPanel}" />
             </ScrollViewer>
           </Border>
 
@@ -142,6 +143,12 @@
     <Setter Property="Opacity" Value="1" />
   </Style>
 
+  <Style Selector="controls|CodexCarousel.at-start.previous-disabled /template/ controls|CodexButton#PART_PreviousButton,
+                   controls|CodexCarousel.at-end.next-disabled /template/ controls|CodexButton#PART_NextButton">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Opacity" Value="{DynamicResource CodexSwitch.DisabledOpacity}" />
+  </Style>
+
   <Style Selector="controls|CodexCarousel.size-sm">
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
     <Setter Property="MinHeight" Value="150" />
@@ -186,6 +193,7 @@
           <ContentPresenter x:Name="PART_ItemContent"
                             Content="{TemplateBinding Content}"
                             ContentTemplate="{TemplateBinding ContentTemplate}"
+                            Foreground="{TemplateBinding Foreground}"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
         </Border>

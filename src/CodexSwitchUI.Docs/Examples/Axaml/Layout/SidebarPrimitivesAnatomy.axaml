@@ -1,0 +1,117 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      xmlns:primitives="using:CodexSwitchUI.Primitives"
+      ColumnDefinitions="300,*"
+      ColumnSpacing="18">
+  <controls:CodexSidebar>
+    <StackPanel>
+      <controls:CodexSidebarHeader>
+        <StackPanel Spacing="3">
+          <primitives:CodexText Role="Subtitle"
+                                Text="Header" />
+          <primitives:CodexText Role="Muted"
+                                Text="Optional workspace summary" />
+        </StackPanel>
+      </controls:CodexSidebarHeader>
+
+      <controls:CodexSidebarContent>
+        <controls:CodexSidebarGroup>
+          <controls:CodexSidebarGroupContent>
+            <StackPanel Spacing="6">
+              <Grid ColumnDefinitions="*,Auto">
+                <controls:CodexSidebarGroupLabel Content="Group label" />
+                <controls:CodexSidebarGroupAction Grid.Column="1"
+                                                  Content="+" />
+              </Grid>
+              <Grid ColumnDefinitions="*,Auto">
+                <controls:CodexSidebarMenuButton Content="Menu button"
+                                                 Icon="M"
+                                                 IsActive="True">
+                  <controls:CodexSidebarMenuButton.Badge>
+                    <controls:CodexSidebarMenuBadge Content="12" />
+                  </controls:CodexSidebarMenuButton.Badge>
+                </controls:CodexSidebarMenuButton>
+                <controls:CodexSidebarMenuAction Grid.Column="1"
+                                                 Content="..."
+                                                 IsShowOnHover="True" />
+              </Grid>
+              <controls:CodexSidebarMenuSub>
+                <controls:CodexSidebarMenuSubItem>
+                  <controls:CodexSidebarMenuSubButton Content="Sub button"
+                                                      IsActive="True" />
+                </controls:CodexSidebarMenuSubItem>
+                <controls:CodexSidebarMenuSubItem>
+                  <controls:CodexSidebarMenuSubButton Content="Disabled sub"
+                                                      IsEnabled="False" />
+                </controls:CodexSidebarMenuSubItem>
+              </controls:CodexSidebarMenuSub>
+            </StackPanel>
+          </controls:CodexSidebarGroupContent>
+        </controls:CodexSidebarGroup>
+      </controls:CodexSidebarContent>
+
+      <controls:CodexSidebarFooter>
+        <controls:CodexButton Content="Footer"
+                              Size="Small"
+                              Variant="Secondary"
+                              HorizontalAlignment="Stretch" />
+      </controls:CodexSidebarFooter>
+    </StackPanel>
+  </controls:CodexSidebar>
+
+  <Grid Grid.Column="1"
+        ColumnDefinitions="*,*"
+        RowDefinitions="Auto,Auto,Auto"
+        ColumnSpacing="12"
+        RowSpacing="12">
+    <controls:CodexStatCard Label="Header"
+                            Detail="top">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="slot" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+    <controls:CodexStatCard Grid.Column="1"
+                            Label="Content"
+                            Detail="middle">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="scroll" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+    <controls:CodexStatCard Grid.Row="1"
+                            Label="Group"
+                            Detail="row">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="label/action" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+    <controls:CodexStatCard Grid.Row="1"
+                            Grid.Column="1"
+                            Label="Menu"
+                            Detail="item">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="button/badge" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+    <controls:CodexStatCard Grid.Row="2"
+                            Label="Submenu"
+                            Detail="item">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="nested" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+    <controls:CodexStatCard Grid.Row="2"
+                            Grid.Column="1"
+                            Label="Footer"
+                            Detail="bottom">
+      <controls:CodexStatCard.Value>
+        <primitives:CodexText Role="Body"
+                              Text="slot" />
+      </controls:CodexStatCard.Value>
+    </controls:CodexStatCard>
+  </Grid>
+</Grid>

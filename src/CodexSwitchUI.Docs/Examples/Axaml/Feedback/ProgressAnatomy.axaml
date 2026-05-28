@@ -1,0 +1,41 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      RowDefinitions="Auto,Auto"
+      RowSpacing="14">
+  <controls:CodexField Label="Track and indicator"
+                       Description="Determinate progress owns the rounded track, filled indicator, optional percentage text, and semantic foreground.">
+    <StackPanel Spacing="12">
+      <controls:CodexProgress Minimum="0"
+                              Maximum="100"
+                              Value="72"
+                              ShowProgressText="True"
+                              MinWidth="420" />
+      <controls:CodexProgress Minimum="0"
+                              Maximum="100"
+                              Value="48"
+                              Variant="Success"
+                              Size="Small"
+                              MinWidth="420" />
+      <controls:CodexProgress Minimum="0"
+                              Maximum="100"
+                              Value="88"
+                              Variant="Warning"
+                              Size="Large"
+                              MinWidth="420" />
+    </StackPanel>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Indeterminate segment"
+                       Description="Unknown-duration work uses the Codex-owned moving segment and can resolve to a static frame for reduced motion.">
+    <StackPanel Spacing="12">
+      <controls:CodexProgress IsIndeterminate="True"
+                              Variant="Destructive"
+                              MinWidth="420" />
+      <controls:CodexProgress IsIndeterminate="True"
+                              IndeterminateAnimationDuration="0:0:0"
+                              Variant="Secondary"
+                              MinWidth="420" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

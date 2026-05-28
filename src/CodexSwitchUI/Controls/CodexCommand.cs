@@ -6,14 +6,27 @@ using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
-public sealed class CodexCommandItemSelectedEventArgs(CodexCommandItem item, string? value) : EventArgs
+public sealed class CodexCommandItemSelectedEventArgs(
+    CodexCommandItem item,
+    string? value,
+    CodexCommandItemSelectSource source = CodexCommandItemSelectSource.Programmatic) : EventArgs
 {
     public CodexCommandItem Item { get; } = item;
 
     public string? Value { get; } = value;
+
+    public CodexCommandItemSelectSource Source { get; } = source;
+}
+
+public enum CodexCommandItemSelectSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
 }
 
 public class CodexCommand : CodexFrame
@@ -41,7 +54,11 @@ public class CodexCommand : CodexFrame
         SearchTextProperty.Changed.AddClassHandler<CodexCommand>((command, _) => command.SyncFilter());
         ShouldFilterProperty.Changed.AddClassHandler<CodexCommand>((command, _) => command.SyncFilter());
         LoopNavigationProperty.Changed.AddClassHandler<CodexCommand>((command, _) => command.SyncClasses());
-        IsLoadingProperty.Changed.AddClassHandler<CodexCommand>((command, _) => command.SyncClasses());
+        IsLoadingProperty.Changed.AddClassHandler<CodexCommand>((command, _) =>
+        {
+            command.SyncClasses();
+            command.SyncItemStates();
+        });
     }
 
     public CodexCommand()
@@ -101,7 +118,7 @@ public class CodexCommand : CodexFrame
             return true;
         }
 
-        var items = VisibleItems().Where(item => item.IsEnabled).ToList();
+        var items = VisibleItems().Where(item => item.CanSelect()).ToList();
         if (items.Count == 0)
         {
             return false;
@@ -138,16 +155,24 @@ public class CodexCommand : CodexFrame
             return true;
         }
 
-        var active = VisibleItems().FirstOrDefault(item => item.IsActive && item.IsEnabled)
-                     ?? VisibleItems().FirstOrDefault(item => item.IsEnabled);
+        var active = VisibleItems().FirstOrDefault(item => item.IsActive && item.CanSelect())
+                     ?? VisibleItems().FirstOrDefault(item => item.CanSelect());
 
-        return active?.TrySelect() == true;
+        return active?.TrySelect(CodexCommandItemSelectSource.Keyboard) == true;
     }
 
     private void SyncClasses()
     {
         Classes.Set("loading", IsLoading);
         Classes.Set("loop", LoopNavigation);
+    }
+
+    private void SyncItemStates()
+    {
+        foreach (var item in this.GetLogicalDescendants().OfType<CodexCommandItem>())
+        {
+            item.SyncOwnerState();
+        }
     }
 
     private void OnDescendantKeyDown(object? sender, KeyEventArgs e)
@@ -169,7 +194,9 @@ public class CodexCommand : CodexFrame
         }
     }
 
-    internal void NotifyItemSelected(CodexCommandItem item)
+    internal void NotifyItemSelected(
+        CodexCommandItem item,
+        CodexCommandItemSelectSource source = CodexCommandItemSelectSource.Programmatic)
     {
         if (!ReferenceEquals(FindOwner(item), this))
         {
@@ -177,7 +204,7 @@ public class CodexCommand : CodexFrame
         }
 
         SelectedItem = item;
-        ItemSelected?.Invoke(this, new CodexCommandItemSelectedEventArgs(item, item.ResolveValue()));
+        ItemSelected?.Invoke(this, new CodexCommandItemSelectedEventArgs(item, item.ResolveValue(), source));
     }
 
     private void SyncFilter()
@@ -220,9 +247,10 @@ public class CodexCommand : CodexFrame
         Classes.Set("has-results", itemCount > 0 && visibleCount > 0);
         Classes.Set("empty-results", shouldFilter && visibleCount == 0);
 
-        if (shouldFilter && visibleItems.Count > 0 && visibleItems.All(item => !item.IsActive))
+        var selectableItems = visibleItems.Where(item => item.CanSelect()).ToList();
+        if (shouldFilter && selectableItems.Count > 0 && selectableItems.All(item => !item.IsActive))
         {
-            SetActiveItem(visibleItems[0]);
+            SetActiveItem(selectableItems[0]);
         }
     }
 
@@ -343,6 +371,11 @@ public class CodexCommandGroup : ItemsControl
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
 public class CodexCommandItem : Button
 {
+    private ICommand? _subscribedCommand;
+    private bool _hasPrimaryPointerPress;
+    private PointerUpdateKind? _pendingPointerReleaseKind;
+    private bool _selectionHandledByPointerRelease;
+
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<CodexCommandItem, bool>(nameof(IsActive));
 
@@ -369,6 +402,9 @@ public class CodexCommandItem : Button
         IsActiveProperty.Changed.AddClassHandler<CodexCommandItem>((item, _) => item.SyncClasses());
         IconProperty.Changed.AddClassHandler<CodexCommandItem>((item, _) => item.SyncClasses());
         ShortcutProperty.Changed.AddClassHandler<CodexCommandItem>((item, _) => item.SyncClasses());
+        CommandProperty.Changed.AddClassHandler<CodexCommandItem>((item, args) => item.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        CommandParameterProperty.Changed.AddClassHandler<CodexCommandItem>((item, _) => item.SyncClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexCommandItem>((item, _) => item.SyncClasses());
     }
 
     public CodexCommandItem()
@@ -414,10 +450,15 @@ public class CodexCommandItem : Button
     {
         return IsEnabled
                && !IsInsideLoadingCommand()
-               && (Command?.CanExecute(CommandParameter) ?? true);
+               && CanExecuteCommand();
     }
 
     public bool TrySelect()
+    {
+        return TrySelect(CodexCommandItemSelectSource.Programmatic);
+    }
+
+    internal bool TrySelect(CodexCommandItemSelectSource source)
     {
         if (!CanSelect())
         {
@@ -426,8 +467,19 @@ public class CodexCommandItem : Button
 
         SelectSiblingItems();
         base.OnClick();
-        CodexCommand.FindOwner(this)?.NotifyItemSelected(this);
+        CodexCommand.FindOwner(this)?.NotifyItemSelected(this, source);
+        CodexCommandDialog.FindOwner(this)?.NotifyItemSelected(this, source);
         return true;
+    }
+
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        return TrySelect(CodexCommandItemSelectSource.Pointer);
     }
 
     protected override void OnGotFocus(FocusChangedEventArgs e)
@@ -444,8 +496,39 @@ public class CodexCommandItem : Button
 
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
+        _hasPrimaryPointerPress = e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed;
         PseudoClasses.Set(CodexFocusVisible.PseudoClass, false);
         base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        var canActivateFromPointer = _hasPrimaryPointerPress && IsPointerOver;
+        _hasPrimaryPointerPress = false;
+
+        if (canActivateFromPointer)
+        {
+            _pendingPointerReleaseKind = updateKind;
+            try
+            {
+                base.OnPointerReleased(e);
+            }
+            finally
+            {
+                _pendingPointerReleaseKind = null;
+            }
+
+            if (_selectionHandledByPointerRelease)
+            {
+                _selectionHandledByPointerRelease = false;
+                e.Handled = true;
+            }
+
+            return;
+        }
+
+        base.OnPointerReleased(e);
     }
 
     protected override void OnPointerEntered(PointerEventArgs e)
@@ -460,7 +543,29 @@ public class CodexCommandItem : Button
 
     protected override void OnClick()
     {
-        TrySelect();
+        if (_pendingPointerReleaseKind is { } updateKind)
+        {
+            _selectionHandledByPointerRelease = TryHandlePointerActivation(updateKind);
+            return;
+        }
+
+        TrySelect(CodexCommandItemSelectSource.Keyboard);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
+    internal void SyncOwnerState()
+    {
+        SyncClasses();
     }
 
     private bool IsInsideLoadingCommand()
@@ -505,8 +610,42 @@ public class CodexCommandItem : Button
         Classes.Set("active", IsActive);
         Classes.Set("has-icon", Icon is not null);
         Classes.Set("has-shortcut", !string.IsNullOrWhiteSpace(Shortcut));
+        Classes.Set("can-select", CanSelect());
+        Classes.Set("command-blocked", Command is not null && IsEnabled && !IsInsideLoadingCommand() && !CanExecuteCommand());
         SetValue(HasIconProperty, Icon is not null);
         SetValue(HasShortcutProperty, !string.IsNullOrWhiteSpace(Shortcut));
+    }
+
+    private bool CanExecuteCommand()
+    {
+        return Command?.CanExecute(CommandParameter) ?? true;
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncClasses();
     }
 
     internal bool MatchesSearch(string? search)

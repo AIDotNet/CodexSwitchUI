@@ -1,0 +1,71 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      ColumnDefinitions="*,*"
+      RowDefinitions="Auto,Auto"
+      ColumnSpacing="16"
+      RowSpacing="14">
+  <controls:CodexField Label="Inline addon anatomy"
+                       Description="Inline addons, input, and trailing text share one root border and focus ring.">
+    <controls:CodexInputGroup MinWidth="320">
+      <controls:CodexInputGroupAddon Content="https://" />
+      <controls:CodexInputGroupInput Text="api.openai.com" />
+      <controls:CodexInputGroupAddon Align="InlineEnd">
+        <controls:CodexInputGroupText Content=".com" />
+      </controls:CodexInputGroupAddon>
+    </controls:CodexInputGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Action addon anatomy"
+                       Description="Addon content can host a loading-capable button without replacing the input root.">
+    <controls:CodexInputGroup MinWidth="320">
+      <controls:CodexInputGroupAddon Content="Route" />
+      <controls:CodexInputGroupInput Text="/v1/responses" />
+      <controls:CodexInputGroupAddon Align="InlineEnd">
+        <controls:CodexInputGroupButton Content="Copy" />
+      </controls:CodexInputGroupAddon>
+    </controls:CodexInputGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Label="Block addon anatomy"
+                       Description="Block start and block end addons switch the root into vertical layout.">
+    <controls:CodexInputGroup MinWidth="320">
+      <controls:CodexInputGroupAddon Align="BlockStart"
+                                     Content="prompt.cs" />
+      <controls:CodexInputGroupTextarea Text="await agent.RunAsync();"
+                                        MinHeight="88" />
+      <controls:CodexInputGroupAddon Align="BlockEnd">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8">
+          <controls:CodexInputGroupText Content="42 tokens" />
+          <controls:CodexInputGroupButton Content="Send" />
+        </StackPanel>
+      </controls:CodexInputGroupAddon>
+    </controls:CodexInputGroup>
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Row="1"
+                       Grid.Column="1"
+                       Label="Intent and select anatomy"
+                       Description="Intent, child select controls, and keyboard hints stay inside the shared group chrome."
+                       Intent="Warning"
+                       Message="Review the selected target before saving.">
+    <controls:CodexInputGroup Intent="Warning"
+                              MinWidth="320">
+      <controls:CodexInputGroupInput PlaceholderText="Model alias" />
+      <controls:CodexInputGroupAddon Align="InlineEnd">
+        <controls:CodexSelect Width="120"
+                              SelectedIndex="0">
+          <ComboBoxItem Content="Fast" />
+          <ComboBoxItem Content="Balanced" />
+          <ComboBoxItem Content="Deep" />
+        </controls:CodexSelect>
+      </controls:CodexInputGroupAddon>
+      <controls:CodexInputGroupAddon Align="InlineEnd">
+        <controls:CodexKbd Content="Ctrl K" />
+      </controls:CodexInputGroupAddon>
+    </controls:CodexInputGroup>
+  </controls:CodexField>
+</Grid>

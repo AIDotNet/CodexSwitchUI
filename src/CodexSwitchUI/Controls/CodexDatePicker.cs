@@ -4,28 +4,50 @@ using Avalonia.Controls;
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace CodexSwitchUI.Controls;
 
-public sealed class CodexDatePickerSelectedDateChangedEventArgs(DateTime? oldDate, DateTime? newDate)
+public enum CodexDatePickerChangeSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public sealed class CodexDatePickerSelectedDateChangedEventArgs(
+    DateTime? oldDate,
+    DateTime? newDate,
+    CodexDatePickerChangeSource source = CodexDatePickerChangeSource.Programmatic)
     : EventArgs
 {
     public DateTime? OldDate { get; } = oldDate;
 
     public DateTime? NewDate { get; } = newDate;
+
+    public CodexDatePickerChangeSource Source { get; } = source;
 }
 
-public sealed class CodexDatePickerRangeChangedEventArgs(DateTime? start, DateTime? end)
+public sealed class CodexDatePickerRangeChangedEventArgs(
+    DateTime? start,
+    DateTime? end,
+    CodexDatePickerChangeSource source = CodexDatePickerChangeSource.Programmatic)
     : EventArgs
 {
     public DateTime? Start { get; } = start;
 
     public DateTime? End { get; } = end;
+
+    public CodexDatePickerChangeSource Source { get; } = source;
 }
 
-public sealed class CodexDatePickerOpenChangedEventArgs(bool isOpen) : EventArgs
+public sealed class CodexDatePickerOpenChangedEventArgs(
+    bool isOpen,
+    CodexDatePickerChangeSource source = CodexDatePickerChangeSource.Programmatic) : EventArgs
 {
     public bool IsOpen { get; } = isOpen;
+
+    public CodexDatePickerChangeSource Source { get; } = source;
 }
 
 [PseudoClasses(CodexFocusVisible.PseudoClass)]
@@ -34,6 +56,7 @@ public class CodexDatePicker : TemplatedControl
     private Button? _trigger;
     private Button? _clear;
     private CodexCalendar? _calendar;
+    private CodexDatePickerChangeSource? _pendingChangeSource;
 
     public static readonly StyledProperty<DateTime?> SelectedDateProperty =
         AvaloniaProperty.Register<CodexDatePicker, DateTime?>(nameof(SelectedDate));
@@ -283,47 +306,75 @@ public class CodexDatePicker : TemplatedControl
 
     public bool Open()
     {
+        return Open(CodexDatePickerChangeSource.Programmatic);
+    }
+
+    internal bool Open(CodexDatePickerChangeSource source)
+    {
         if (!IsEnabled || IsLoading || IsOpen)
         {
             return false;
         }
 
-        IsOpen = true;
+        RunWithChangeSource(source, () => IsOpen = true);
         return true;
     }
 
     public bool Close()
+    {
+        return Close(CodexDatePickerChangeSource.Programmatic);
+    }
+
+    internal bool Close(CodexDatePickerChangeSource source)
     {
         if (!IsOpen)
         {
             return false;
         }
 
-        IsOpen = false;
+        RunWithChangeSource(source, () => IsOpen = false);
         return true;
     }
 
     public bool TogglePopup()
     {
-        return IsOpen ? Close() : Open();
+        return TogglePopup(CodexDatePickerChangeSource.Programmatic);
+    }
+
+    internal bool TogglePopup(CodexDatePickerChangeSource source)
+    {
+        return IsOpen ? Close(source) : Open(source);
     }
 
     public bool ClearSelection()
+    {
+        return ClearSelection(CodexDatePickerChangeSource.Programmatic);
+    }
+
+    internal bool ClearSelection(CodexDatePickerChangeSource source)
     {
         if (!HasSelection)
         {
             return false;
         }
 
-        SetCurrentValue(SelectedDateProperty, null);
-        SetCurrentValue(RangeStartProperty, null);
-        SetCurrentValue(RangeEndProperty, null);
+        RunWithChangeSource(source, () =>
+        {
+            SetCurrentValue(SelectedDateProperty, null);
+            SetCurrentValue(RangeStartProperty, null);
+            SetCurrentValue(RangeEndProperty, null);
+        });
         SyncDisplayText();
         SyncClasses();
         return true;
     }
 
     public bool SelectDate(DateTime date)
+    {
+        return SelectDate(date, CodexDatePickerChangeSource.Programmatic);
+    }
+
+    internal bool SelectDate(DateTime date, CodexDatePickerChangeSource source)
     {
         date = date.Date;
 
@@ -332,37 +383,40 @@ public class CodexDatePicker : TemplatedControl
             return false;
         }
 
-        if (SelectionMode == CodexCalendarSelectionMode.Range)
+        RunWithChangeSource(source, () =>
         {
-            if (!RangeStart.HasValue || RangeEnd.HasValue)
+            if (SelectionMode == CodexCalendarSelectionMode.Range)
             {
-                SetCurrentValue(RangeStartProperty, date);
-                SetCurrentValue(RangeEndProperty, null);
-            }
-            else if (date < RangeStart.Value)
-            {
-                SetCurrentValue(RangeEndProperty, RangeStart.Value);
-                SetCurrentValue(RangeStartProperty, date);
+                if (!RangeStart.HasValue || RangeEnd.HasValue)
+                {
+                    SetCurrentValue(RangeStartProperty, date);
+                    SetCurrentValue(RangeEndProperty, null);
+                }
+                else if (date < RangeStart.Value)
+                {
+                    SetCurrentValue(RangeEndProperty, RangeStart.Value);
+                    SetCurrentValue(RangeStartProperty, date);
+                }
+                else
+                {
+                    SetCurrentValue(RangeEndProperty, date);
+                }
+
+                if (CloseOnSelect && RangeStart.HasValue && RangeEnd.HasValue)
+                {
+                    Close(source);
+                }
             }
             else
             {
-                SetCurrentValue(RangeEndProperty, date);
-            }
+                SetCurrentValue(SelectedDateProperty, date);
 
-            if (CloseOnSelect && RangeStart.HasValue && RangeEnd.HasValue)
-            {
-                Close();
+                if (CloseOnSelect)
+                {
+                    Close(source);
+                }
             }
-        }
-        else
-        {
-            SetCurrentValue(SelectedDateProperty, date);
-
-            if (CloseOnSelect)
-            {
-                Close();
-            }
-        }
+        });
 
         return true;
     }
@@ -379,22 +433,28 @@ public class CodexDatePicker : TemplatedControl
             case Key.Enter:
             case Key.Space:
             case Key.Down:
-                return Open();
+                return Open(CodexDatePickerChangeSource.Keyboard);
             case Key.Escape:
-                return CloseOnEscape && Close();
+                return CloseOnEscape && Close(CodexDatePickerChangeSource.Keyboard);
             case Key.Back:
             case Key.Delete:
-                return ClearSelection();
+                return ClearSelection(CodexDatePickerChangeSource.Keyboard);
             default:
                 return false;
         }
+    }
+
+    internal bool TryHandleTriggerPointerRelease(PointerUpdateKind updateKind)
+    {
+        return updateKind == PointerUpdateKind.LeftButtonReleased
+            && TogglePopup(CodexDatePickerChangeSource.Pointer);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         if (_trigger is not null)
         {
-            _trigger.Click -= OnTriggerClick;
+            _trigger.RemoveHandler(InputElement.PointerReleasedEvent, OnTriggerPointerReleased);
             _trigger.KeyDown -= OnTriggerKeyDown;
         }
 
@@ -417,7 +477,11 @@ public class CodexDatePicker : TemplatedControl
 
         if (_trigger is not null)
         {
-            _trigger.Click += OnTriggerClick;
+            _trigger.AddHandler(
+                InputElement.PointerReleasedEvent,
+                OnTriggerPointerReleased,
+                RoutingStrategies.Bubble,
+                handledEventsToo: true);
             _trigger.KeyDown += OnTriggerKeyDown;
         }
 
@@ -451,9 +515,13 @@ public class CodexDatePicker : TemplatedControl
         base.OnPointerPressed(e);
     }
 
-    private void OnTriggerClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnTriggerPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        TogglePopup();
+        var updateKind = e.GetCurrentPoint((Control?)_trigger ?? this).Properties.PointerUpdateKind;
+        if (TryHandleTriggerPointerRelease(updateKind))
+        {
+            e.Handled = true;
+        }
     }
 
     private void OnTriggerKeyDown(object? sender, KeyEventArgs e)
@@ -466,7 +534,7 @@ public class CodexDatePicker : TemplatedControl
 
     private void OnClearClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        if (ClearSelection())
+        if (ClearSelection(CodexDatePickerChangeSource.Pointer))
         {
             e.Handled = true;
         }
@@ -474,7 +542,22 @@ public class CodexDatePicker : TemplatedControl
 
     private void OnCalendarPointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        SyncFromCalendar();
+        var relativeTo = _calendar is not null ? (Visual)_calendar : this;
+        var updateKind = e.GetCurrentPoint(relativeTo).Properties.PointerUpdateKind;
+        if (TryHandleCalendarPointerRelease(updateKind))
+        {
+            e.Handled = true;
+        }
+    }
+
+    internal bool TryHandleCalendarPointerRelease(PointerUpdateKind updateKind, CodexCalendar? calendar = null)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased || IsLoading || !IsEnabled)
+        {
+            return false;
+        }
+
+        return SyncFromCalendar(calendar, CodexDatePickerChangeSource.Pointer);
     }
 
     private void OnCalendarKeyDown(object? sender, KeyEventArgs e)
@@ -485,32 +568,38 @@ public class CodexDatePicker : TemplatedControl
         }
     }
 
-    private void SyncFromCalendar()
+    private bool SyncFromCalendar(CodexCalendar? calendar = null, CodexDatePickerChangeSource source = CodexDatePickerChangeSource.Programmatic)
     {
-        if (_calendar is null)
+        calendar ??= _calendar;
+        if (calendar is null)
         {
-            return;
+            return false;
         }
 
-        if (SelectionMode == CodexCalendarSelectionMode.Range)
+        RunWithChangeSource(source, () =>
         {
-            SetCurrentValue(RangeStartProperty, _calendar.RangeStart);
-            SetCurrentValue(RangeEndProperty, _calendar.RangeEnd);
-
-            if (CloseOnSelect && RangeStart.HasValue && RangeEnd.HasValue)
+            if (SelectionMode == CodexCalendarSelectionMode.Range)
             {
-                Close();
-            }
-        }
-        else
-        {
-            SetCurrentValue(SelectedDateProperty, _calendar.SelectedDate);
+                SetCurrentValue(RangeStartProperty, calendar.RangeStart);
+                SetCurrentValue(RangeEndProperty, calendar.RangeEnd);
 
-            if (CloseOnSelect && SelectedDate.HasValue)
-            {
-                Close();
+                if (CloseOnSelect && RangeStart.HasValue && RangeEnd.HasValue)
+                {
+                    Close(source);
+                }
             }
-        }
+            else
+            {
+                SetCurrentValue(SelectedDateProperty, calendar.SelectedDate);
+
+                if (CloseOnSelect && SelectedDate.HasValue)
+                {
+                    Close(source);
+                }
+            }
+        });
+
+        return true;
     }
 
     private void OnSelectedDateChanged(AvaloniaPropertyChangedEventArgs args)
@@ -532,7 +621,7 @@ public class CodexDatePicker : TemplatedControl
         SyncDisplayText();
         SelectedDateChanged?.Invoke(
             this,
-            new CodexDatePickerSelectedDateChangedEventArgs(DateOnly(args.OldValue as DateTime?), SelectedDate));
+            new CodexDatePickerSelectedDateChangedEventArgs(DateOnly(args.OldValue as DateTime?), SelectedDate, CurrentChangeSource));
         SyncClasses();
     }
 
@@ -553,7 +642,7 @@ public class CodexDatePicker : TemplatedControl
         }
 
         SyncDisplayText();
-        RangeChanged?.Invoke(this, new CodexDatePickerRangeChangedEventArgs(RangeStart, RangeEnd));
+        RangeChanged?.Invoke(this, new CodexDatePickerRangeChangedEventArgs(RangeStart, RangeEnd, CurrentChangeSource));
         SyncClasses();
     }
 
@@ -577,7 +666,7 @@ public class CodexDatePicker : TemplatedControl
 
     private void OnOpenChanged()
     {
-        OpenChanged?.Invoke(this, new CodexDatePickerOpenChangedEventArgs(IsOpen));
+        OpenChanged?.Invoke(this, new CodexDatePickerOpenChangedEventArgs(IsOpen, CurrentChangeSource));
         SyncClasses();
     }
 
@@ -662,5 +751,21 @@ public class CodexDatePicker : TemplatedControl
     private static DateTime FirstDayOfMonth(DateTime value)
     {
         return new DateTime(value.Year, value.Month, 1);
+    }
+
+    private CodexDatePickerChangeSource CurrentChangeSource => _pendingChangeSource ?? CodexDatePickerChangeSource.Programmatic;
+
+    private void RunWithChangeSource(CodexDatePickerChangeSource source, Action action)
+    {
+        var previousSource = _pendingChangeSource;
+        _pendingChangeSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingChangeSource = previousSource;
+        }
     }
 }

@@ -1,13 +1,13 @@
-<controls:CodexChartContainer xmlns="https://github.com/avaloniaui"
-                              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                              xmlns:controls="using:CodexSwitchUI.Controls"
-                              xmlns:primitives="using:CodexSwitchUI.Primitives"
-                              x:CompileBindings="False"
-                              Width="620"
-                              Title="Visitors"
-                              Description="Showing total visitors for the last 3 months"
-                              IsInteractive="True">
-  <controls:CodexChartContainer.Legend>
+<controls:CodexChart xmlns="https://github.com/avaloniaui"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:controls="using:CodexSwitchUI.Controls"
+                     xmlns:primitives="using:CodexSwitchUI.Primitives"
+                     x:CompileBindings="False"
+                     Width="620"
+                     Title="Visitors"
+                     Description="Showing total visitors for the last 3 months"
+                     IsInteractive="True">
+  <controls:CodexChart.Legend>
     <controls:CodexChartLegend>
       <controls:CodexChartLegendItem Content="Desktop"
                                      Value="7,324"
@@ -16,9 +16,9 @@
                                      Value="7,250"
                                      IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
     </controls:CodexChartLegend>
-  </controls:CodexChartContainer.Legend>
+  </controls:CodexChart.Legend>
 
-  <controls:CodexChartContainer.Tooltip>
+  <controls:CodexChart.Tooltip>
     <controls:CodexChartTooltipContent Label="March"
                                        IsOpen="True">
       <controls:CodexChartTooltipItem Content="Desktop"
@@ -28,16 +28,16 @@
                                       Value="1,890"
                                       IndicatorBrush="{DynamicResource CodexSwitch.SuccessBrush}" />
     </controls:CodexChartTooltipContent>
-  </controls:CodexChartContainer.Tooltip>
+  </controls:CodexChart.Tooltip>
 
-  <controls:CodexChartContainer.Footer>
+  <controls:CodexChart.Footer>
     <primitives:CodexText Role="Muted"
                           Text="Desktop 7,324 · Mobile 7,250" />
-  </controls:CodexChartContainer.Footer>
+  </controls:CodexChart.Footer>
 
   <controls:CodexUsagePieChart Width="500"
                                Height="250"
                                TotalLabel="Visitors"
                                TotalValue="14,574"
                                ItemsSource="{Binding VisitorShareItems}" />
-</controls:CodexChartContainer>
+</controls:CodexChart>

@@ -1,0 +1,29 @@
+<Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:controls="using:CodexSwitchUI.Controls"
+      x:CompileBindings="False"
+      ColumnDefinitions="*,*"
+      ColumnSpacing="16">
+  <controls:CodexField Label="Rank row anatomy"
+                       Description="Each row paints label, track, fill, value, detail, and active-row background.">
+    <controls:CodexRankedBarChart Width="420"
+                                  ActiveIndex="1"
+                                  MaxVisibleItems="4"
+                                  ItemsSource="{Binding RankedBurstItems}" />
+  </controls:CodexField>
+
+  <controls:CodexField Grid.Column="1"
+                       Label="Compact and empty anatomy"
+                       Description="Compact, max-visible, and empty states keep the same drawing surface.">
+    <StackPanel Spacing="12">
+      <controls:CodexRankedBarChart Width="360"
+                                    IsCompact="True"
+                                    RowHeight="28"
+                                    RowSpacing="6"
+                                    MaxVisibleItems="2"
+                                    ItemsSource="{Binding RankedItems}" />
+      <controls:CodexRankedBarChart Width="360"
+                                    EmptyText="No ranked usage" />
+    </StackPanel>
+  </controls:CodexField>
+</Grid>

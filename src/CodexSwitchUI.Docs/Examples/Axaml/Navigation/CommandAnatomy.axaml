@@ -2,11 +2,22 @@
       xmlns:controls="using:CodexSwitchUI.Controls"
       ColumnDefinitions="0.85*,1.15*"
       ColumnSpacing="14">
-  <controls:CodexCard Title="Command input"
-                      Description="The input primitive can be mounted and tested directly.">
-    <controls:CodexCommandInput PlaceholderText="Filter commands..."
-                                Text="provider" />
-  </controls:CodexCard>
+  <StackPanel Spacing="12">
+    <controls:CodexCard Title="Command input"
+                        Description="The input primitive can be mounted and tested directly.">
+      <controls:CodexCommandInput PlaceholderText="Filter commands..."
+                                  Text="provider" />
+    </controls:CodexCard>
+
+    <controls:CodexCard Title="Shortcut primitive"
+                        Description="Shortcut chips can be composed outside an item when a custom command row needs them.">
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexCommandShortcut Content="Cmd+K" />
+        <controls:CodexCommandShortcut Content="Shift+P" />
+      </StackPanel>
+    </controls:CodexCard>
+  </StackPanel>
 
   <controls:CodexCommand Grid.Column="1"
                          Placeholder="Search actions..."

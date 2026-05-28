@@ -1,11 +1,36 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
+using System.Windows.Input;
 
 namespace CodexSwitchUI.Controls;
 
+public enum CodexProviderCardSelectionSource
+{
+    Programmatic,
+    Pointer,
+    Keyboard
+}
+
+public sealed class CodexProviderCardSelectedEventArgs(
+    object? commandParameter,
+    CodexProviderCardSelectionSource source = CodexProviderCardSelectionSource.Programmatic) : EventArgs
+{
+    public object? CommandParameter { get; } = commandParameter;
+
+    public CodexProviderCardSelectionSource Source { get; } = source;
+}
+
 public class CodexProviderCard : Button
 {
+    private ICommand? _subscribedCommand;
+    private bool _hasPrimaryPointerPress;
+    private PointerUpdateKind? _pendingPointerReleaseKind;
+    private CodexProviderCardSelectionSource? _pendingSelectionSource;
+    private bool _selectionHandledByPointerRelease;
+
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<CodexProviderCard, bool>(nameof(IsActive));
 
@@ -68,6 +93,9 @@ public class CodexProviderCard : Button
         StatusProperty.Changed.AddClassHandler<CodexProviderCard>((card, _) => card.SyncSlots());
         UsageProperty.Changed.AddClassHandler<CodexProviderCard>((card, _) => card.SyncSlots());
         ActionsProperty.Changed.AddClassHandler<CodexProviderCard>((card, _) => card.SyncSlots());
+        CommandProperty.Changed.AddClassHandler<CodexProviderCard>((card, args) => card.OnCommandChanged(args.OldValue as ICommand, args.NewValue as ICommand));
+        CommandParameterProperty.Changed.AddClassHandler<CodexProviderCard>((card, _) => card.SyncClasses());
+        IsEnabledProperty.Changed.AddClassHandler<CodexProviderCard>((card, _) => card.SyncClasses());
     }
 
     public CodexProviderCard()
@@ -75,6 +103,8 @@ public class CodexProviderCard : Button
         SyncClasses();
         SyncSlots();
     }
+
+    public event EventHandler<CodexProviderCardSelectedEventArgs>? Selected;
 
     public bool IsActive
     {
@@ -152,8 +182,128 @@ public class CodexProviderCard : Button
 
     protected override void OnClick()
     {
+        if (_pendingPointerReleaseKind is { } updateKind)
+        {
+            if (updateKind != PointerUpdateKind.LeftButtonReleased || !CanSelect())
+            {
+                return;
+            }
+
+            base.OnClick();
+            _selectionHandledByPointerRelease = TryHandlePointerActivation(updateKind);
+            return;
+        }
+
+        if (!CanSelect())
+        {
+            return;
+        }
+
         base.OnClick();
+        _ = TrySelect(_pendingSelectionSource ?? CodexProviderCardSelectionSource.Programmatic);
+    }
+
+    internal bool TrySelect()
+    {
+        return TrySelect(CodexProviderCardSelectionSource.Programmatic);
+    }
+
+    internal bool TrySelect(CodexProviderCardSelectionSource source)
+    {
+        if (!CanSelect())
+        {
+            return false;
+        }
+
         SelectSiblingCards();
+        Selected?.Invoke(this, new CodexProviderCardSelectedEventArgs(CommandParameter, source));
+        return true;
+    }
+
+    internal bool TryHandlePointerActivation(PointerUpdateKind updateKind)
+    {
+        if (updateKind != PointerUpdateKind.LeftButtonReleased)
+        {
+            return false;
+        }
+
+        return TrySelect(CodexProviderCardSelectionSource.Pointer);
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (e.Key is Key.Enter or Key.Space)
+        {
+            RunWithSelectionSource(CodexProviderCardSelectionSource.Keyboard, () => base.OnKeyDown(e));
+            return;
+        }
+
+        base.OnKeyDown(e);
+    }
+
+    protected override void OnKeyUp(KeyEventArgs e)
+    {
+        if (e.Key is Key.Enter or Key.Space)
+        {
+            RunWithSelectionSource(CodexProviderCardSelectionSource.Keyboard, () => base.OnKeyUp(e));
+            return;
+        }
+
+        base.OnKeyUp(e);
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        _hasPrimaryPointerPress = e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.LeftButtonPressed;
+        base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        var updateKind = e.GetCurrentPoint(this).Properties.PointerUpdateKind;
+        var canActivateFromPointer = _hasPrimaryPointerPress && IsPointerOver;
+        _hasPrimaryPointerPress = false;
+
+        if (canActivateFromPointer)
+        {
+            _pendingPointerReleaseKind = updateKind;
+            try
+            {
+                base.OnPointerReleased(e);
+            }
+            finally
+            {
+                _pendingPointerReleaseKind = null;
+            }
+
+            if (_selectionHandledByPointerRelease)
+            {
+                _selectionHandledByPointerRelease = false;
+                e.Handled = true;
+            }
+
+            return;
+        }
+
+        base.OnPointerReleased(e);
+    }
+
+    private bool CanSelect()
+    {
+        return IsEnabled
+               && !IsDragging
+               && (Command?.CanExecute(CommandParameter) ?? true);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+            _subscribedCommand = null;
+        }
+
+        base.OnDetachedFromVisualTree(e);
     }
 
     private void SelectSiblingCards()
@@ -178,6 +328,8 @@ public class CodexProviderCard : Button
     {
         Classes.Set("active", IsActive);
         Classes.Set("dragging", IsDragging);
+        Classes.Set("can-select", CanSelect());
+        Classes.Set("command-blocked", Command is not null && IsEnabled && !IsDragging && !CanSelect());
     }
 
     private void SyncSlots()
@@ -189,5 +341,46 @@ public class CodexProviderCard : Button
         SetValue(HasStatusProperty, Status is not null);
         SetValue(HasUsageProperty, Usage is not null);
         SetValue(HasActionsProperty, Actions is not null);
+    }
+
+    private void OnCommandChanged(ICommand? oldCommand, ICommand? newCommand)
+    {
+        if (ReferenceEquals(oldCommand, newCommand))
+        {
+            return;
+        }
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged -= OnCommandCanExecuteChanged;
+        }
+
+        _subscribedCommand = newCommand;
+
+        if (_subscribedCommand is not null)
+        {
+            _subscribedCommand.CanExecuteChanged += OnCommandCanExecuteChanged;
+        }
+
+        SyncClasses();
+    }
+
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
+    {
+        SyncClasses();
+    }
+
+    private void RunWithSelectionSource(CodexProviderCardSelectionSource source, Action action)
+    {
+        var previousSource = _pendingSelectionSource;
+        _pendingSelectionSource = source;
+        try
+        {
+            action();
+        }
+        finally
+        {
+            _pendingSelectionSource = previousSource;
+        }
     }
 }
