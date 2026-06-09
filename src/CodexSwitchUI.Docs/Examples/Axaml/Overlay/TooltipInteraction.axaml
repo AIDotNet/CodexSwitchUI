@@ -33,13 +33,17 @@
                          Content="Escape dismissal is disabled for persistent hints."
                          Placement="Right"
                          CloseOnEscape="False"
-                         IsOpen="True"
-                         IsArrowVisible="True" />
+                         IsArrowVisible="True">
+    <controls:CodexTooltip.Trigger>
+      <controls:CodexButton Content="Persistent hint"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexTooltip.Trigger>
+  </controls:CodexTooltip>
 
   <controls:CodexTooltip Grid.Row="1"
                          Content="Large top-aligned tooltip with arrow."
                          Placement="Top"
-                         IsOpen="True"
                          IsArrowVisible="True"
                          Size="Large">
     <controls:CodexTooltip.Trigger>

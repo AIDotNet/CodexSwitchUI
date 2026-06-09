@@ -2,16 +2,24 @@
             xmlns:controls="using:CodexSwitchUI.Controls"
             xmlns:primitives="using:CodexSwitchUI.Primitives"
             Spacing="12">
-  <primitives:CodexText Text="OpenChanged: measured disclosure starts open."
+  <primitives:CodexText Text="OpenChanged: measured disclosure starts closed."
                         Role="Muted"
                         TextWrapping="Wrap" />
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexButton Content="Toggle"
+                          Size="Small"
+                          Variant="Secondary" />
+    <controls:CodexButton Content="Reduce motion"
+                          Size="Small"
+                          Variant="Ghost" />
+  </StackPanel>
 
   <Grid ColumnDefinitions="*,*"
         RowDefinitions="Auto,Auto"
         ColumnSpacing="14"
         RowSpacing="14">
     <controls:CodexCollapsible Header="Measured disclosure"
-                               IsOpen="True"
                                AnimationDuration="0:0:0.22"
                                ContentPadding="0,10,0,0">
       <StackPanel Spacing="8">
@@ -28,7 +36,6 @@
 
     <controls:CodexCollapsible Grid.Column="1"
                                Header="Reduced motion"
-                               IsOpen="True"
                                AnimationDuration="0:0:0">
       <primitives:CodexText Text="Zero duration jumps to the final measured height."
                             Role="Muted"

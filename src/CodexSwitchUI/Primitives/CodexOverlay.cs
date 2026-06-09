@@ -14,7 +14,7 @@ public class CodexOverlay : ContentControl
     private ContentPresenter? _contentPresenter;
 
     public static readonly StyledProperty<bool> IsOpenProperty =
-        AvaloniaProperty.Register<CodexOverlay, bool>(nameof(IsOpen), true);
+        AvaloniaProperty.Register<CodexOverlay, bool>(nameof(IsOpen));
 
     public static readonly StyledProperty<IBrush?> ScrimBrushProperty =
         AvaloniaProperty.Register<CodexOverlay, IBrush?>(nameof(ScrimBrush));

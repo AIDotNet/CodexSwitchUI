@@ -38,6 +38,7 @@ public class CodexHoverCard : ContentControl
     private DispatcherTimer? _openTimer;
     private DispatcherTimer? _closeTimer;
     private CodexHoverCardOpenChangeSource? _pendingOpenChangeSource;
+    private Border? _surface;
 
     public static readonly StyledProperty<object?> TriggerProperty =
         AvaloniaProperty.Register<CodexHoverCard, object?>(nameof(Trigger));
@@ -50,6 +51,9 @@ public class CodexHoverCard : ContentControl
 
     public static readonly StyledProperty<PlacementMode> PlacementProperty =
         AvaloniaProperty.Register<CodexHoverCard, PlacementMode>(nameof(Placement), PlacementMode.Bottom);
+
+    public static readonly StyledProperty<PlacementMode> EffectivePlacementProperty =
+        AvaloniaProperty.Register<CodexHoverCard, PlacementMode>(nameof(EffectivePlacement), PlacementMode.Bottom);
 
     public static readonly StyledProperty<CodexHoverCardAlign> AlignProperty =
         AvaloniaProperty.Register<CodexHoverCard, CodexHoverCardAlign>(nameof(Align), CodexHoverCardAlign.Center);
@@ -119,6 +123,12 @@ public class CodexHoverCard : ContentControl
     {
         get => GetValue(PlacementProperty);
         set => SetValue(PlacementProperty, value);
+    }
+
+    public PlacementMode EffectivePlacement
+    {
+        get => GetValue(EffectivePlacementProperty);
+        private set => SetValue(EffectivePlacementProperty, value);
     }
 
     public CodexHoverCardAlign Align
@@ -277,14 +287,51 @@ public class CodexHoverCard : ContentControl
         base.OnKeyDown(e);
     }
 
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        if (_surface is not null)
+        {
+            _surface.PointerEntered -= OnSurfacePointerEntered;
+            _surface.PointerExited -= OnSurfacePointerExited;
+        }
+
+        base.OnApplyTemplate(e);
+
+        _surface = e.NameScope.Find<Border>("PART_Surface");
+
+        if (_surface is not null)
+        {
+            _surface.PointerEntered += OnSurfacePointerEntered;
+            _surface.PointerExited += OnSurfacePointerExited;
+        }
+    }
+
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
+        if (_surface is not null)
+        {
+            _surface.PointerEntered -= OnSurfacePointerEntered;
+            _surface.PointerExited -= OnSurfacePointerExited;
+            _surface = null;
+        }
+
         StopTimers();
         base.OnDetachedFromVisualTree(e);
     }
 
+    private void OnSurfacePointerEntered(object? sender, PointerEventArgs e)
+    {
+        RequestOpen(CodexHoverCardOpenChangeSource.Pointer);
+    }
+
+    private void OnSurfacePointerExited(object? sender, PointerEventArgs e)
+    {
+        RequestClose(CodexHoverCardOpenChangeSource.Pointer);
+    }
+
     private void SyncClasses()
     {
+        EffectivePlacement = CodexPopupPlacement.Resolve(Placement, Align);
         CodexClassSync.SetSize(Classes, Size);
         Classes.Set("open", IsOpen);
         Classes.Set("closed", !IsOpen);

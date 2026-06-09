@@ -1246,17 +1246,19 @@ public class ComponentStructureTests
 
         foreach (var (component, style) in overlayStyles)
         {
+            var closeTemplatePath = component == "Popover" ? "Popup#PART_Popup " : string.Empty;
+
             Assert.Contains("<Button x:Name=\"PART_Close\"", style);
             Assert.Contains("FocusAdorner=\"{x:Null}\"", style);
             Assert.Contains("<ControlTemplate TargetType=\"Button\">", style);
             Assert.Contains("PART_CloseSurface", style);
             Assert.Contains("PART_CloseIcon", style);
             Assert.Contains("PART_CloseContent", style);
-            Assert.Contains($"controls|Codex{component} /template/ Button#PART_Close", style);
-            Assert.Contains($"controls|Codex{component} /template/ Button#PART_Close:pointerover", style);
-            Assert.Contains($"controls|Codex{component} /template/ Button#PART_Close:pressed", style);
-            Assert.Contains($"controls|Codex{component}.has-close-content /template/ PathIcon#PART_CloseIcon", style);
-            Assert.Contains($"controls|Codex{component}.has-close-content /template/ ContentPresenter#PART_CloseContent", style);
+            Assert.Contains($"controls|Codex{component} /template/ {closeTemplatePath}Button#PART_Close", style);
+            Assert.Contains($"controls|Codex{component} /template/ {closeTemplatePath}Button#PART_Close:pointerover", style);
+            Assert.Contains($"controls|Codex{component} /template/ {closeTemplatePath}Button#PART_Close:pressed", style);
+            Assert.Contains($"controls|Codex{component}.has-close-content /template/ {closeTemplatePath}PathIcon#PART_CloseIcon", style);
+            Assert.Contains($"controls|Codex{component}.has-close-content /template/ {closeTemplatePath}ContentPresenter#PART_CloseContent", style);
             Assert.Contains("DoubleTransition Property=\"Opacity\" Duration=\"{DynamicResource CodexSwitch.MotionDurationDefault}", style);
             Assert.Contains("BrushTransition Property=\"Background\" Duration=\"{DynamicResource CodexSwitch.MotionDurationDefault}", style);
             Assert.Contains("CodexSwitch.MotionEaseOut", style);

@@ -10,6 +10,9 @@ namespace CodexSwitchUI.Docs.Controls;
 
 public sealed class DocsCodeBlock : Border
 {
+    private const double CodeInset = 16;
+    private const double LineNumberColumnWidth = 56;
+
     public static readonly StyledProperty<string> TitleProperty =
         AvaloniaProperty.Register<DocsCodeBlock, string>(nameof(Title), "Example.axaml");
 
@@ -50,7 +53,7 @@ public sealed class DocsCodeBlock : Border
             FontFamily = new FontFamily("Menlo, Consolas, monospace"),
             FontSize = 12,
             TextAlignment = TextAlignment.Right,
-            Padding = new Thickness(0, 2, 12, 2),
+            Padding = new Thickness(0, CodeInset, 12, CodeInset),
             IsHitTestVisible = false
         };
 
@@ -59,7 +62,7 @@ public sealed class DocsCodeBlock : Border
             Foreground = new SolidColorBrush(Color.Parse("#D6E4FF")),
             FontFamily = new FontFamily("Menlo, Consolas, monospace"),
             FontSize = 12,
-            Padding = new Thickness(0, 2, 18, 2),
+            Padding = new Thickness(0, CodeInset, CodeInset, CodeInset),
             TextWrapping = TextWrapping.NoWrap
         };
         Grid.SetColumn(_codeText, 1);
@@ -132,7 +135,7 @@ public sealed class DocsCodeBlock : Border
         {
             Height = 42,
             Background = new SolidColorBrush(Color.Parse("#10172A")),
-            Padding = new Thickness(14, 0),
+            Padding = new Thickness(CodeInset, 0),
             Child = titlebarContent
         };
 
@@ -145,7 +148,7 @@ public sealed class DocsCodeBlock : Border
             {
                 ColumnDefinitions =
                 {
-                    new ColumnDefinition(new GridLength(48)),
+                    new ColumnDefinition(new GridLength(LineNumberColumnWidth)),
                     new ColumnDefinition(GridLength.Auto)
                 },
                 Children =

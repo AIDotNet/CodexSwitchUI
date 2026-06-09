@@ -8,7 +8,7 @@
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
     <Setter Property="BorderThickness" Value="1" />
     <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
-    <Setter Property="Padding" Value="24" />
+    <Setter Property="Padding" Value="20" />
     <Setter Property="ClipToBounds" Value="True" />
     <Setter Property="Transitions">
       <Transitions>

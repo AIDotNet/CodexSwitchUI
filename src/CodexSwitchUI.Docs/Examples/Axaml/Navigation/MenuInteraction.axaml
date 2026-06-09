@@ -11,8 +11,7 @@
     <controls:CodexMenuGroup Header="Keyboard path" />
     <controls:CodexMenuItem Header="Focused submenu"
                             Shortcut="Right"
-                            IsActive="True"
-                            IsSubMenuOpen="True">
+                            IsActive="True">
       <controls:CodexMenuItem Header="Archive" />
       <controls:CodexMenuItem Header="Favorites" />
     </controls:CodexMenuItem>
@@ -24,8 +23,7 @@
                       MinWidth="230">
     <controls:CodexMenuGroup Header="Pointer path" />
     <controls:CodexMenuItem Header="Hover opens after delay"
-                            Shortcut="100ms"
-                            IsSubMenuOpen="True">
+                            Shortcut="100ms">
       <controls:CodexMenuItem Header="JSON" />
       <controls:CodexMenuItem Header="Markdown" />
     </controls:CodexMenuItem>

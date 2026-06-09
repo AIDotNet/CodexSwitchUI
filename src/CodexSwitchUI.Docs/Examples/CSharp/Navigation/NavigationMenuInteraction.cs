@@ -12,7 +12,7 @@ public static class NavigationMenuInteractionSample
         var status = new CodexText
         {
             Role = CodexTextRole.Muted,
-            Text = "ActiveItemChanged: Overview is open."
+            Text = "ActiveItemChanged: menu starts closed."
         };
 
         var overview = new CodexNavigationMenuItem
@@ -71,7 +71,6 @@ public static class NavigationMenuInteractionSample
 
         var menu = new CodexNavigationMenu
         {
-            ActiveValue = "overview",
             ItemsSource = new[] { overview, components, docsLink, blockedLink }
         };
         menu.ActiveItemChanged += (_, args) =>
@@ -80,9 +79,6 @@ public static class NavigationMenuInteractionSample
                 ? "ActiveItemChanged: viewport closed."
                 : $"ActiveItemChanged: {args.Value} opened at {menu.ViewportWidth:0}px.";
         };
-        menu.ActivateItem(overview);
-        menu.ActivateItem(components);
-
         var verticalSelected = new CodexNavigationMenuItem
         {
             Header = "Selected",
@@ -93,7 +89,6 @@ public static class NavigationMenuInteractionSample
         {
             Orientation = Orientation.Vertical,
             Size = CodexControlSize.Small,
-            ActiveValue = "selected",
             ItemsSource = new[]
             {
                 new CodexNavigationMenuItem { Header = "Up", Value = "up", Content = "Vertical previous item" },
@@ -102,7 +97,22 @@ public static class NavigationMenuInteractionSample
                 new CodexNavigationMenuItem { Header = "Down", Value = "down", Content = "Vertical next item" }
             }
         };
-        vertical.ActivateItem(verticalSelected);
+
+        var openComponents = new CodexButton
+        {
+            Content = "Open components",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        openComponents.Click += (_, _) => menu.ActivateItem(components);
+
+        var openVertical = new CodexButton
+        {
+            Content = "Open vertical",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        openVertical.Click += (_, _) => vertical.ActivateItem(verticalSelected);
 
         var close = new CodexButton
         {
@@ -140,6 +150,8 @@ public static class NavigationMenuInteractionSample
                     Spacing = 8,
                     Children =
                     {
+                        openComponents,
+                        openVertical,
                         close,
                         activateLink
                     }

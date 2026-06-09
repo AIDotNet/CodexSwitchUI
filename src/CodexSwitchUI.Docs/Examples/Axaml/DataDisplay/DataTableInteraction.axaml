@@ -13,7 +13,6 @@
                                   Content="Columns"
                                   Size="Small"
                                   Variant="Outline"
-                                  IsOpen="True"
                                   Align="End">
       <controls:CodexDropdownButton.DropDownContent>
         <StackPanel Width="184"
@@ -77,7 +76,6 @@
               <controls:CodexDropdownButton Content="..."
                                             Size="Small"
                                             Variant="Ghost"
-                                            IsOpen="True"
                                             Align="End">
                 <controls:CodexDropdownButton.DropDownContent>
                   <StackPanel Width="188"

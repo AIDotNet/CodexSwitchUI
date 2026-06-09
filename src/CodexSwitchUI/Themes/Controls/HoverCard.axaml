@@ -31,43 +31,54 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center" />
 
-          <Border x:Name="PART_Surface"
-                  MinWidth="{TemplateBinding MinWidth}"
-                  MaxWidth="{TemplateBinding MaxWidth}"
-                  Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  CornerRadius="{TemplateBinding CornerRadius}"
-                  Padding="{TemplateBinding Padding}"
-                  Opacity="1"
-                  RenderTransform="translate(0px, 0px) scale(1)"
-                  RenderTransformOrigin="50%,50%">
-            <ContentPresenter x:Name="PART_Content"
-                              Content="{TemplateBinding Content}"
-                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                              Foreground="{TemplateBinding Foreground}"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-          </Border>
+          <Popup x:Name="PART_Popup"
+                 WindowManagerAddShadowHint="False"
+                 IsOpen="{TemplateBinding IsOpen, Mode=TwoWay}"
+                 PlacementTarget="PART_Trigger"
+                 Placement="{TemplateBinding EffectivePlacement}"
+                 IsLightDismissEnabled="False"
+                 InheritsTransform="True">
+            <Grid x:Name="PART_PopupRoot"
+                  ClipToBounds="False">
+              <Border x:Name="PART_Surface"
+                      MinWidth="{TemplateBinding MinWidth}"
+                      MaxWidth="{TemplateBinding MaxWidth}"
+                      Background="{TemplateBinding Background}"
+                      BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      CornerRadius="{TemplateBinding CornerRadius}"
+                      Padding="{TemplateBinding Padding}"
+                      Opacity="1"
+                      RenderTransform="translate(0px, 0px) scale(1)"
+                      RenderTransformOrigin="50%,50%">
+                <ContentPresenter x:Name="PART_Content"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Foreground="{TemplateBinding Foreground}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+              </Border>
 
-          <Border x:Name="PART_Arrow"
-                  Width="10"
-                  Height="10"
-                  Background="{TemplateBinding Background}"
-                  IsVisible="{TemplateBinding IsArrowVisible}"
-                  RenderTransform="rotate(45deg)"
-                  RenderTransformOrigin="50%,50%" />
+              <Border x:Name="PART_Arrow"
+                      Width="10"
+                      Height="10"
+                      Background="{TemplateBinding Background}"
+                      IsVisible="{TemplateBinding IsArrowVisible}"
+                      RenderTransform="rotate(45deg)"
+                      RenderTransformOrigin="50%,50%" />
+            </Grid>
+          </Popup>
         </Grid>
       </ControlTemplate>
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.closed /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.closed /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="Opacity" Value="0" />
     <Setter Property="IsHitTestVisible" Value="False" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.open /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.open /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="Opacity" Value="1" />
     <Setter Property="IsHitTestVisible" Value="True" />
     <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
@@ -77,69 +88,63 @@
     <Setter Property="IsHitTestVisible" Value="True" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.has-content /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.has-content /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="ClipToBounds" Value="False" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.delayed-open /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.delayed-open /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="RenderTransformOrigin" Value="50%,50%" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.delayed-close /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.delayed-close /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="RenderTransformOrigin" Value="50%,50%" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.side-top /template/ Border#PART_Surface">
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="Margin" Value="0,-112,0,0" />
+  <Style Selector="controls|CodexHoverCard.side-top /template/ Popup#PART_Popup Border#PART_Surface">
+    <Setter Property="Margin" Value="0,0,0,4" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.side-bottom /template/ Border#PART_Surface">
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="Margin" Value="0,38,0,0" />
+  <Style Selector="controls|CodexHoverCard.side-bottom /template/ Popup#PART_Popup Border#PART_Surface">
+    <Setter Property="Margin" Value="0,4,0,0" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.side-left /template/ Border#PART_Surface">
-    <Setter Property="HorizontalAlignment" Value="Left" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="Margin" Value="-248,0,0,0" />
+  <Style Selector="controls|CodexHoverCard.side-left /template/ Popup#PART_Popup Border#PART_Surface">
+    <Setter Property="Margin" Value="0,0,4,0" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.side-right /template/ Border#PART_Surface">
-    <Setter Property="HorizontalAlignment" Value="Right" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="Margin" Value="0,0,-248,0" />
+  <Style Selector="controls|CodexHoverCard.side-right /template/ Popup#PART_Popup Border#PART_Surface">
+    <Setter Property="Margin" Value="4,0,0,0" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.align-start /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.align-start /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="HorizontalAlignment" Value="Left" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.align-center /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.align-center /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="HorizontalAlignment" Value="Center" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.align-end /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.align-end /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="HorizontalAlignment" Value="Right" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.closed.side-top /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.closed.side-top /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="RenderTransform" Value="translate(0px, 4px) scale(0.96)" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.closed.side-bottom /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.closed.side-bottom /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="RenderTransform" Value="translate(0px, -4px) scale(0.96)" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.closed.side-left /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.closed.side-left /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="RenderTransform" Value="translate(4px, 0px) scale(0.96)" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.closed.side-right /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard.closed.side-right /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="RenderTransform" Value="translate(-4px, 0px) scale(0.96)" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexHoverCard /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="Transitions">
       <Transitions>
         <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationDefault}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
@@ -152,7 +157,7 @@
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexHoverCard /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexHoverCard /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="Transitions">
       <Transitions>
         <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
@@ -161,36 +166,36 @@
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexHoverCard:not(.has-arrow) /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexHoverCard:not(.has-arrow) /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="Opacity" Value="0" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.closed /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexHoverCard.closed /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="Opacity" Value="0" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.side-top /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexHoverCard.side-top /template/ Popup#PART_Popup Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Bottom" />
+    <Setter Property="Margin" Value="0,0,0,-5" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.side-bottom /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="HorizontalAlignment" Value="Center" />
     <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="Margin" Value="0,-12,0,0" />
+    <Setter Property="Margin" Value="0,-5,0,0" />
   </Style>
 
-  <Style Selector="controls|CodexHoverCard.side-bottom /template/ Border#PART_Arrow">
-    <Setter Property="HorizontalAlignment" Value="Center" />
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="Margin" Value="0,32,0,0" />
-  </Style>
-
-  <Style Selector="controls|CodexHoverCard.side-left /template/ Border#PART_Arrow">
-    <Setter Property="HorizontalAlignment" Value="Left" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="Margin" Value="-14,0,0,0" />
-  </Style>
-
-  <Style Selector="controls|CodexHoverCard.side-right /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexHoverCard.side-left /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="HorizontalAlignment" Value="Right" />
     <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="Margin" Value="0,0,-14,0" />
+    <Setter Property="Margin" Value="0,0,-5,0" />
+  </Style>
+
+  <Style Selector="controls|CodexHoverCard.side-right /template/ Popup#PART_Popup Border#PART_Arrow">
+    <Setter Property="HorizontalAlignment" Value="Left" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="Margin" Value="-5,0,0,0" />
   </Style>
 
   <Style Selector="controls|CodexHoverCard.size-sm">

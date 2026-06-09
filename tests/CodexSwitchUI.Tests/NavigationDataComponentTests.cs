@@ -2658,6 +2658,161 @@ public class NavigationDataComponentTests
     }
 
     [Fact]
+    public void MenuContextMenuAndMenubarUseWebMenuSpacing()
+    {
+        var root = Path.Combine(FindRepositoryRoot(), "src", "CodexSwitchUI", "Themes", "Controls");
+        var menu = File.ReadAllText(Path.Combine(root, "Menu.axaml"));
+        var contextMenu = File.ReadAllText(Path.Combine(root, "ContextMenu.axaml"));
+        var menubar = File.ReadAllText(Path.Combine(root, "Menubar.axaml"));
+
+        Assert.Contains("Property=\"Padding\" Value=\"8,6\"", ExtractStyleBlock(menu, "controls|CodexMenu MenuItem"));
+        Assert.Contains("Property=\"Padding\" Value=\"8,6\"", ExtractStyleBlock(contextMenu, "controls|CodexContextMenu MenuItem"));
+        Assert.Contains("Property=\"Padding\" Value=\"8,6\"", ExtractStyleBlock(menubar, "controls|CodexMenubar MenuItem"));
+
+        Assert.Contains("Property=\"Padding\" Value=\"8,4\"", ExtractStyleBlock(contextMenu, "controls|CodexContextMenu.size-sm controls|CodexContextMenuItem"));
+        Assert.Contains("Property=\"Padding\" Value=\"10,8\"", ExtractStyleBlock(contextMenu, "controls|CodexContextMenu.size-lg controls|CodexContextMenuItem"));
+        Assert.Contains("Property=\"Padding\" Value=\"8,4\"", ExtractStyleBlock(menubar, "controls|CodexMenubar.size-sm controls|CodexMenubarItem"));
+        Assert.Contains("Property=\"Padding\" Value=\"10,8\"", ExtractStyleBlock(menubar, "controls|CodexMenubar.size-lg controls|CodexMenubarItem"));
+        Assert.Contains("Property=\"Padding\" Value=\"32,6,8,6\"", ExtractStyleBlock(contextMenu, "controls|CodexContextMenu controls|CodexContextMenuItem.inset /template/ Panel Border#PART_ItemRoot"));
+
+        Assert.Contains("Property=\"Margin\" Value=\"-4,4\"", ExtractStyleBlock(menu, "controls|CodexMenu Separator"));
+        Assert.Contains("Property=\"Margin\" Value=\"-4,4\"", ExtractStyleBlock(menu, "controls|CodexMenu controls|CodexMenuSeparator"));
+        Assert.Contains("Property=\"Margin\" Value=\"-4,4\"", ExtractStyleBlock(contextMenu, "controls|CodexContextMenu Separator"));
+        Assert.Contains("Property=\"Margin\" Value=\"-4,4\"", ExtractStyleBlock(contextMenu, "controls|CodexContextMenu controls|CodexContextMenuSeparator"));
+        Assert.Contains("Property=\"Margin\" Value=\"-4,4\"", ExtractStyleBlock(menubar, "controls|CodexMenubar controls|CodexMenubarSeparator"));
+    }
+
+    [Fact]
+    public void ButtonsAndNavigationLinksUseWebActionRowSpacing()
+    {
+        var root = Path.Combine(FindRepositoryRoot(), "src", "CodexSwitchUI", "Themes", "Controls");
+        var button = File.ReadAllText(Path.Combine(root, "Button.axaml"));
+        var buttonGroup = File.ReadAllText(Path.Combine(root, "ButtonGroup.axaml"));
+        var navigationMenu = File.ReadAllText(Path.Combine(root, "NavigationMenu.axaml"));
+        var applicationShell = File.ReadAllText(Path.Combine(root, "ApplicationShell.axaml"));
+
+        var buttonDefault = ExtractStyleBlock(button, "controls|CodexButton");
+        Assert.Contains("Property=\"MinHeight\" Value=\"44\"", buttonDefault);
+        Assert.Contains("Property=\"MinWidth\" Value=\"44\"", buttonDefault);
+        Assert.Contains("Property=\"Padding\" Value=\"20,0\"", buttonDefault);
+        Assert.Contains("Spacing=\"8\"", buttonDefault);
+
+        var buttonIcon = ExtractStyleBlock(button, "controls|CodexButton.size-icon");
+        Assert.Contains("Property=\"Width\" Value=\"44\"", buttonIcon);
+        Assert.Contains("Property=\"Height\" Value=\"44\"", buttonIcon);
+        Assert.Contains("Property=\"MinWidth\" Value=\"44\"", buttonIcon);
+        Assert.Contains("Property=\"MinHeight\" Value=\"44\"", buttonIcon);
+
+        var buttonGroupText = ExtractStyleBlock(buttonGroup, "controls|CodexButtonGroupText");
+        Assert.Contains("Property=\"MinHeight\" Value=\"44\"", buttonGroupText);
+        Assert.Contains("Property=\"Padding\" Value=\"20,0\"", buttonGroupText);
+        Assert.Contains("Property=\"MinWidth\" Value=\"44\"", ExtractStyleBlock(buttonGroup, "controls|CodexButtonGroupText.size-icon"));
+
+        var navigationLink = ExtractStyleBlock(navigationMenu, "controls|CodexNavigationMenuLink");
+        Assert.Contains("Property=\"MinHeight\" Value=\"44\"", navigationLink);
+        Assert.Contains("Property=\"Padding\" Value=\"16,12\"", navigationLink);
+        Assert.Contains("ColumnSpacing=\"8\"", navigationLink);
+        Assert.Contains("Width=\"16\"", navigationLink);
+        Assert.Contains("Height=\"16\"", navigationLink);
+
+        var sideNavItem = ExtractStyleBlock(applicationShell, "controls|CodexSideNavItem");
+        Assert.Contains("Property=\"MinHeight\" Value=\"44\"", sideNavItem);
+        Assert.Contains("Property=\"Padding\" Value=\"16,12\"", sideNavItem);
+        Assert.Contains("ColumnSpacing=\"8\"", sideNavItem);
+    }
+
+    [Fact]
+    public void CardEmptyStateFieldAndSheetUseWebPanelSpacing()
+    {
+        var root = Path.Combine(FindRepositoryRoot(), "src", "CodexSwitchUI", "Themes", "Controls");
+        var card = File.ReadAllText(Path.Combine(root, "Card.axaml"));
+        var emptyState = File.ReadAllText(Path.Combine(root, "EmptyState.axaml"));
+        var field = File.ReadAllText(Path.Combine(root, "Field.axaml"));
+        var dialog = File.ReadAllText(Path.Combine(root, "Dialog.axaml"));
+        var sheet = File.ReadAllText(Path.Combine(root, "Sheet.axaml"));
+
+        Assert.Contains("Property=\"Padding\" Value=\"20\"", ExtractStyleBlock(card, "controls|CodexCard"));
+
+        var emptyStateDefault = ExtractStyleBlock(emptyState, "controls|CodexEmptyState");
+        Assert.Contains("Property=\"Padding\" Value=\"20\"", emptyStateDefault);
+        Assert.Contains("Property=\"MinHeight\" Value=\"160\"", emptyStateDefault);
+        Assert.Contains("Property=\"Padding\" Value=\"16\"", ExtractStyleBlock(emptyState, "controls|CodexEmptyState.size-sm"));
+        Assert.Contains("Property=\"MinHeight\" Value=\"128\"", ExtractStyleBlock(emptyState, "controls|CodexEmptyState.size-sm"));
+        Assert.Contains("Property=\"Padding\" Value=\"24\"", ExtractStyleBlock(emptyState, "controls|CodexEmptyState.size-lg"));
+        Assert.Contains("Property=\"MinHeight\" Value=\"200\"", ExtractStyleBlock(emptyState, "controls|CodexEmptyState.size-lg"));
+
+        Assert.Contains("RowSpacing=\"8\"", ExtractStyleBlock(field, "controls|CodexField"));
+        Assert.Contains("Property=\"RowSpacing\" Value=\"6\"", ExtractStyleBlock(field, "controls|CodexField.size-sm /template/ Grid#PART_Layout"));
+        Assert.Contains("Property=\"RowSpacing\" Value=\"4\"", ExtractStyleBlock(field, "controls|CodexField.size-icon /template/ Grid#PART_Layout"));
+        Assert.Contains("Property=\"RowSpacing\" Value=\"10\"", ExtractStyleBlock(field, "controls|CodexField.size-lg /template/ Grid#PART_Layout"));
+        Assert.Contains("StackPanel Orientation=\"Vertical\" Spacing=\"16\"", ExtractStyleBlock(field, "controls|CodexFieldGroup"));
+        Assert.Contains("StackPanel Orientation=\"Vertical\" Spacing=\"16\"", ExtractStyleBlock(field, "controls|CodexFieldSet"));
+        Assert.Contains("Spacing=\"16\"", ExtractStyleBlock(field, "controls|CodexFieldSet"));
+        Assert.Contains("Property=\"Spacing\" Value=\"12\"", ExtractStyleBlock(field, "controls|CodexFieldSet.size-sm /template/ StackPanel#PART_Root"));
+        Assert.Contains("Property=\"Spacing\" Value=\"20\"", ExtractStyleBlock(field, "controls|CodexFieldSet.size-lg /template/ StackPanel#PART_Root"));
+
+        Assert.Contains("Property=\"Padding\" Value=\"24\"", ExtractStyleBlock(dialog, "controls|CodexDialog"));
+        Assert.Contains("RowSpacing=\"16\"", ExtractStyleBlock(dialog, "controls|CodexDialog"));
+        Assert.Contains("Property=\"Padding\" Value=\"24\"", ExtractStyleBlock(sheet, "controls|CodexSheet"));
+        Assert.Contains("RowSpacing=\"16\"", ExtractStyleBlock(sheet, "controls|CodexSheet"));
+    }
+
+    [Fact]
+    public void PopupDisclosureSurfacesUseWebSideOffsetSpacing()
+    {
+        var root = Path.Combine(FindRepositoryRoot(), "src", "CodexSwitchUI", "Themes", "Controls");
+        var dropdown = File.ReadAllText(Path.Combine(root, "DropdownButton.axaml"));
+        var splitButton = File.ReadAllText(Path.Combine(root, "SplitButton.axaml"));
+        var select = File.ReadAllText(Path.Combine(root, "Select.axaml"));
+        var combobox = File.ReadAllText(Path.Combine(root, "Combobox.axaml"));
+        var datePicker = File.ReadAllText(Path.Combine(root, "DatePicker.axaml"));
+        var menu = File.ReadAllText(Path.Combine(root, "Menu.axaml"));
+        var menubar = File.ReadAllText(Path.Combine(root, "Menubar.axaml"));
+
+        Assert.Contains("Margin=\"0,4,0,0\"", dropdown);
+        Assert.Contains("Property=\"Margin\" Value=\"0,4,0,0\"", ExtractStyleBlock(dropdown, "controls|CodexDropdownButton.side-bottom /template/ Border#PART_Surface"));
+        Assert.Contains("Property=\"Margin\" Value=\"0,0,0,4\"", ExtractStyleBlock(dropdown, "controls|CodexDropdownButton.side-top /template/ Border#PART_Surface"));
+        Assert.Contains("Property=\"Margin\" Value=\"0,0,4,0\"", ExtractStyleBlock(dropdown, "controls|CodexDropdownButton.side-left /template/ Border#PART_Surface"));
+        Assert.Contains("Property=\"Margin\" Value=\"4,0,0,0\"", ExtractStyleBlock(dropdown, "controls|CodexDropdownButton.side-right /template/ Border#PART_Surface"));
+        Assert.DoesNotContain("Margin=\"0,6,0,0\"", dropdown);
+        Assert.DoesNotContain("Property=\"Margin\" Value=\"0,6,0,0\"", dropdown);
+
+        Assert.Contains("Margin=\"0,4,0,0\"", splitButton);
+        Assert.Contains("Property=\"Margin\" Value=\"0,4,0,0\"", ExtractStyleBlock(splitButton, "controls|CodexSplitButton.side-bottom /template/ Border#PART_Surface"));
+        Assert.Contains("Property=\"Margin\" Value=\"0,0,0,4\"", ExtractStyleBlock(splitButton, "controls|CodexSplitButton.side-top /template/ Border#PART_Surface"));
+        Assert.Contains("Property=\"Margin\" Value=\"0,0,4,0\"", ExtractStyleBlock(splitButton, "controls|CodexSplitButton.side-left /template/ Border#PART_Surface"));
+        Assert.Contains("Property=\"Margin\" Value=\"4,0,0,0\"", ExtractStyleBlock(splitButton, "controls|CodexSplitButton.side-right /template/ Border#PART_Surface"));
+        Assert.DoesNotContain("Margin=\"0,6,0,0\"", splitButton);
+        Assert.DoesNotContain("Property=\"Margin\" Value=\"0,6,0,0\"", splitButton);
+
+        Assert.Contains("Margin=\"0,4,0,0\"", select);
+        Assert.Contains("Margin=\"0,4,0,0\"", combobox);
+        Assert.Contains("Margin=\"0,4,0,0\"", datePicker);
+        Assert.DoesNotContain("Margin=\"0,6,0,0\"", select);
+        Assert.DoesNotContain("Margin=\"0,6,0,0\"", combobox);
+        Assert.DoesNotContain("Margin=\"0,6,0,0\"", datePicker);
+
+        Assert.Contains("Margin=\"4,0,0,0\"", ExtractStyleBlock(menu, "controls|CodexMenu MenuItem"));
+        Assert.Contains("Margin=\"4,0,0,0\"", ExtractStyleBlock(menu, "controls|CodexMenu controls|CodexMenuItem"));
+        Assert.Contains("Property=\"Margin\" Value=\"0,4,0,0\"", ExtractStyleBlock(menu, "controls|CodexMenu controls|CodexMenuItem:top /template/ Panel Popup#PART_Popup Border#PART_SubMenuSurface"));
+
+        var menubarMenu = ExtractStyleBlock(menubar, "controls|CodexMenubar controls|CodexMenubarItem");
+        Assert.Contains("Margin=\"4,0,0,0\"", menubarMenu);
+        Assert.Contains("translate(-4px, 0px) scale(0.96)", menubarMenu);
+
+        var menubarTopMenu = ExtractStyleBlock(menubar, "controls|CodexMenubar controls|CodexMenubarItem.top-level /template/ Panel Popup#PART_Popup Border#PART_MenuSurface");
+        Assert.Contains("Property=\"Margin\" Value=\"0,4,0,0\"", menubarTopMenu);
+        Assert.Contains("translate(0px, -4px) scale(0.96)", menubarTopMenu);
+        Assert.DoesNotContain("-6px", menubarTopMenu);
+
+        var menubarVerticalMenu = ExtractStyleBlock(menubar, "controls|CodexMenubar.vertical controls|CodexMenubarItem.top-level /template/ Panel Popup#PART_Popup Border#PART_MenuSurface");
+        Assert.Contains("Property=\"Margin\" Value=\"4,0,0,0\"", menubarVerticalMenu);
+        Assert.Contains("translate(-4px, 0px) scale(0.96)", menubarVerticalMenu);
+        Assert.DoesNotContain("-6px", menubarVerticalMenu);
+        Assert.DoesNotContain("-6px", menubar);
+    }
+
+    [Fact]
     public void NavigationDisclosureAndMenuComponentsUseFocusVisibleAndTokenMotion()
     {
         var root = FindRepositoryRoot();

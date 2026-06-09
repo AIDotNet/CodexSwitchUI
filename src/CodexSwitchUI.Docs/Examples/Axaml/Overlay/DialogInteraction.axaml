@@ -45,10 +45,14 @@
   <controls:CodexDialog Grid.Column="1"
                         Title="Manual close policy"
                         Description="Escape and outside pointer are disabled; host code owns dismissal."
-                        IsOpen="True"
                         CloseOnEscape="False"
                         DismissOnOutsidePointer="False"
                         IsCloseVisible="False">
+    <controls:CodexDialog.Trigger>
+      <controls:CodexButton Content="Open manual dialog"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexDialog.Trigger>
     <StackPanel Spacing="8">
       <controls:CodexBadge Content="manual"
                            Variant="Outline" />
@@ -84,8 +88,12 @@
                         Grid.Column="1"
                         Title="Action close surface"
                         Description="Action buttons stay slotted while the close control routes through Dismiss."
-                        IsOpen="True"
                         CloseContent="Esc">
+    <controls:CodexDialog.Trigger>
+      <controls:CodexButton Content="Open action surface"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexDialog.Trigger>
     <primitives:CodexText Text="Close content can mirror the keyboard dismissal affordance."
                           Role="Muted"
                           TextWrapping="Wrap" />

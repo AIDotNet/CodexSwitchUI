@@ -19,8 +19,7 @@
   </controls:CodexChart.Legend>
 
   <controls:CodexChart.Tooltip>
-    <controls:CodexChartTooltipContent Label="March"
-                                       IsOpen="True">
+    <controls:CodexChartTooltipContent Label="March">
       <controls:CodexChartTooltipItem Content="Desktop"
                                       Value="2,186"
                                       IndicatorBrush="{DynamicResource CodexSwitch.PrimaryBrush}" />

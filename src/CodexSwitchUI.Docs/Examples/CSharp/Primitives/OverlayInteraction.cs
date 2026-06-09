@@ -11,7 +11,7 @@ public static class OverlayInteractionSample
         var status = new CodexText
         {
             Role = CodexTextRole.Muted,
-            Text = "Overlay is open with Escape and outside-pointer dismissal enabled."
+            Text = "Overlay is closed by default. Open it to test Escape and outside-pointer dismissal."
         };
         var dismiss = new CodexButton
         {
@@ -21,7 +21,7 @@ public static class OverlayInteractionSample
         };
         var overlay = new CodexOverlay
         {
-            IsOpen = true,
+            IsOpen = false,
             CloseOnEscape = true,
             DismissOnOutsidePointer = true,
             IsScrimVisible = true,
@@ -41,14 +41,14 @@ public static class OverlayInteractionSample
 
         var reopen = new CodexButton
         {
-            Content = "Reopen",
+            Content = "Open",
             Size = CodexControlSize.Small,
             Variant = CodexControlVariant.Secondary
         };
         reopen.Click += (_, _) =>
         {
             overlay.IsOpen = true;
-            status.Text = "Overlay reopened without rebuilding content.";
+            status.Text = "Overlay opened without rebuilding content.";
         };
 
         var toggleScrim = new CodexButton
@@ -83,7 +83,7 @@ public static class OverlayInteractionSample
 
         var manualOverlay = new CodexOverlay
         {
-            IsOpen = true,
+            IsOpen = false,
             CloseOnEscape = false,
             DismissOnOutsidePointer = false,
             HorizontalContentAlignment = HorizontalAlignment.Center,
@@ -99,7 +99,7 @@ public static class OverlayInteractionSample
 
         var noScrim = new CodexOverlay
         {
-            IsOpen = true,
+            IsOpen = false,
             IsScrimVisible = false,
             HorizontalContentAlignment = HorizontalAlignment.Center,
             VerticalContentAlignment = VerticalAlignment.Center,

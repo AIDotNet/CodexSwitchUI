@@ -1,7 +1,6 @@
 <controls:CodexDropdownButton xmlns="https://github.com/avaloniaui"
                               xmlns:controls="using:CodexSwitchUI.Controls"
                               Content="Actions"
-                              IsOpen="True"
                               IsArrowVisible="True"
                               Align="Start">
   <controls:CodexDropdownButton.DropDownContent>

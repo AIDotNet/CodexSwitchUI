@@ -20,7 +20,7 @@
       <ControlTheme TargetType="ComboBoxItem">
         <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
-        <Setter Property="Padding" Value="10,7" />
+        <Setter Property="Padding" Value="8,6" />
         <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
@@ -156,7 +156,7 @@
                    IsLightDismissEnabled="True"
                    InheritsTransform="True">
               <Border x:Name="PART_PopupBorder"
-                      Margin="0,6,0,0"
+                      Margin="0,4,0,0"
                       Padding="4"
                       Background="{DynamicResource CodexSwitch.PopoverBrush}"
                       BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
@@ -463,7 +463,7 @@
   <Style Selector="controls|CodexSelect ComboBoxItem">
     <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
-    <Setter Property="Padding" Value="10,7" />
+    <Setter Property="Padding" Value="8,6" />
     <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />

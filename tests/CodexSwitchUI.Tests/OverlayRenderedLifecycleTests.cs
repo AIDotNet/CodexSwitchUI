@@ -166,6 +166,7 @@ public class OverlayRenderedLifecycleTests
                 HorizontalContentAlignment = HorizontalAlignment.Center,
                 VerticalContentAlignment = VerticalAlignment.Center,
                 Content = overlayContent,
+                IsOpen = true,
                 DismissCommand = new TestCommand(() => dismissCount++)
             };
             var window = new Window

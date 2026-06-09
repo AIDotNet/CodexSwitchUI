@@ -15,7 +15,6 @@ public static class SplitButtonInteractionSample
         var split = new CodexSplitButton
         {
             Content = "Run sync",
-            IsOpen = true,
             IsArrowVisible = true,
             Align = CodexDropdownAlign.Start,
             DropDownContent = ActionMenu("Run once", "Schedule", "Stop")
@@ -59,7 +58,6 @@ public static class SplitButtonInteractionSample
                 new CodexSplitButton
                 {
                     Content = "Keep open",
-                    IsOpen = true,
                     CloseOnItemSelected = false,
                     DropDownContent = ActionMenu("Preview", "Copy command")
                 },
@@ -76,7 +74,6 @@ public static class SplitButtonInteractionSample
                 new CodexSplitButton
                 {
                     Content = "End aligned",
-                    IsOpen = true,
                     Align = CodexDropdownAlign.End,
                     Variant = CodexControlVariant.Secondary,
                     DropDownContent = ActionMenu("Rename", "Duplicate", "Archive")

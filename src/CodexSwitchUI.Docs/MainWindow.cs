@@ -23,6 +23,11 @@ namespace CodexSwitchUI.Docs;
 public sealed class MainWindow : Window
 {
     private const string DocsIconBase = "avares://CodexSwitchUI.Docs/Assets/icons/";
+    private const double DocsDesktopGutter = 40;
+    private const double DocsContentVerticalPadding = 56;
+    private const double DocsInlineExampleGap = 16;
+    private const double DocsMatrixCellHorizontalPadding = 16;
+    private const double DocsMatrixCellVerticalPadding = 12;
 
     private static readonly DocsCategory[] Categories =
     [
@@ -2739,7 +2744,7 @@ public sealed class MainWindow : Window
 
         var contentScroll = new ScrollViewer
         {
-            Padding = new Thickness(34, 30, 34, 52),
+            Padding = new Thickness(DocsDesktopGutter, DocsContentVerticalPadding, DocsDesktopGutter, DocsContentVerticalPadding),
             Content = _pageSurface
         };
         Grid.SetColumn(contentScroll, 1);
@@ -2845,7 +2850,7 @@ public sealed class MainWindow : Window
                 new ColumnDefinition(GridLength.Star),
                 new ColumnDefinition(GridLength.Auto)
             },
-            Margin = new Thickness(28, 0)
+            Margin = new Thickness(DocsDesktopGutter, 0)
         };
 
         var heading = new StackPanel
@@ -3012,7 +3017,7 @@ public sealed class MainWindow : Window
     {
         var codeBlocks = new StackPanel
         {
-            Spacing = 12,
+            Spacing = DocsInlineExampleGap,
             IsVisible = false
         };
         foreach (var codeSample in example.CodeSamples)
@@ -3039,7 +3044,7 @@ public sealed class MainWindow : Window
 
         return new StackPanel
         {
-            Spacing = 14,
+            Spacing = DocsInlineExampleGap,
             Children =
             {
                 SectionHeader(example.Title, example.Description),
@@ -3183,7 +3188,7 @@ public sealed class MainWindow : Window
             CodexSwitchResourceKeys.BorderBrush,
             new Thickness(1),
             new CornerRadius(6),
-            new Thickness(10, 8),
+            new Thickness(DocsMatrixCellHorizontalPadding, DocsMatrixCellVerticalPadding),
             Text(text, role));
         Grid.SetRow(cell, row);
         Grid.SetColumn(cell, column);
@@ -3200,7 +3205,7 @@ public sealed class MainWindow : Window
                 CodexSwitchResourceKeys.BorderBrush,
                 new Thickness(1),
                 new CornerRadius(6),
-                new Thickness(10, 8),
+                new Thickness(DocsMatrixCellHorizontalPadding, DocsMatrixCellVerticalPadding),
                 Muted(note)));
         }
 
@@ -7427,7 +7432,6 @@ public sealed class MainWindow : Window
                 new CodexSplitButton
                 {
                     Content = "Run sync",
-                    IsOpen = true,
                     IsArrowVisible = true,
                     DropDownContent = new StackPanel
                     {
@@ -7583,11 +7587,10 @@ public sealed class MainWindow : Window
 
     private static Control BuildSplitButtonInteractionPreview()
     {
-        var status = Muted("OpenChanged: split menu starts open (source=Programmatic).");
+        var status = Muted("OpenChanged: split menu starts closed; use Open to disclose.");
         var openSplitButton = new CodexSplitButton
         {
             Content = "Run sync",
-            IsOpen = true,
             IsArrowVisible = true,
             Align = CodexDropdownAlign.Start,
             DropDownContent = ActionMenu("Run once", "Schedule", "Stop")
@@ -7596,6 +7599,20 @@ public sealed class MainWindow : Window
         {
             status.Text = $"OpenChanged: split menu {(args.IsOpen ? "opened" : "closed")} (source={args.Source}).";
         };
+        var open = new CodexButton
+        {
+            Content = "Open",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        open.Click += (_, _) => openSplitButton.Open();
+        var dismiss = new CodexButton
+        {
+            Content = "Dismiss",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Ghost
+        };
+        dismiss.Click += (_, _) => openSplitButton.Dismiss();
 
         var grid = new Grid
         {
@@ -7617,7 +7634,6 @@ public sealed class MainWindow : Window
                 GridCell(new CodexSplitButton
                 {
                     Content = "Keep open",
-                    IsOpen = true,
                     CloseOnItemSelected = false,
                     DropDownContent = new StackPanel
                     {
@@ -7639,7 +7655,6 @@ public sealed class MainWindow : Window
                 GridCell(new CodexSplitButton
                 {
                     Content = "End aligned",
-                    IsOpen = true,
                     Align = CodexDropdownAlign.End,
                     Variant = CodexControlVariant.Secondary,
                     DropDownContent = ActionMenu("Rename", "Duplicate", "Archive")
@@ -7653,6 +7668,12 @@ public sealed class MainWindow : Window
             Children =
             {
                 status,
+                new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 8,
+                    Children = { open, dismiss }
+                },
                 grid
             }
         };
@@ -8208,7 +8229,6 @@ public sealed class MainWindow : Window
         {
             ItemsSource = new[] { "OpenAI", "Claude", "Responses" },
             SelectedIndex = 0,
-            IsDropDownOpen = true,
             MinWidth = 240
         };
         select.OpenChanged += (_, args) =>
@@ -8219,11 +8239,18 @@ public sealed class MainWindow : Window
         {
             status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"} (source={args.Source}).";
         };
+        var openPopup = new CodexButton
+        {
+            Content = "Open",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        openPopup.Click += (_, _) => select.IsDropDownOpen = true;
         var chooseClaude = new CodexButton
         {
             Content = "Claude",
             Size = CodexControlSize.Small,
-            Variant = CodexControlVariant.Secondary
+            Variant = CodexControlVariant.Outline
         };
         chooseClaude.Click += (_, _) => select.SelectedIndex = 1;
         var closePopup = new CodexButton
@@ -8267,6 +8294,7 @@ public sealed class MainWindow : Window
                                 Spacing = 8,
                                 Children =
                                 {
+                                    openPopup,
                                     chooseClaude,
                                     closePopup
                                 }
@@ -8455,7 +8483,6 @@ public sealed class MainWindow : Window
         {
             ItemsSource = ComboboxFrameworks(),
             Text = "n",
-            IsOpen = true,
             AutoHighlight = true,
             MinWidth = 240
         };
@@ -8470,11 +8497,19 @@ public sealed class MainWindow : Window
                 : $"SelectionChanged: {args.Source} [{args.OldIndex}] {args.OldValue ?? "none"} -> [{args.NewIndex}] {args.NewValue ?? "none"}.";
         };
 
+        var open = new CodexButton
+        {
+            Content = "Open",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        open.Click += (_, _) => combobox.Open();
+
         var moveHighlight = new CodexButton
         {
             Content = "Arrow down",
             Size = CodexControlSize.Small,
-            Variant = CodexControlVariant.Secondary
+            Variant = CodexControlVariant.Outline
         };
         moveHighlight.Click += (_, _) => combobox.TryHandleInputKey(Key.Down);
 
@@ -8522,6 +8557,7 @@ public sealed class MainWindow : Window
                             Spacing = 8,
                             Children =
                             {
+                                open,
                                 moveHighlight,
                                 commit,
                                 clear
@@ -8549,7 +8585,6 @@ public sealed class MainWindow : Window
                     {
                         ItemsSource = ComboboxFrameworks(),
                         Text = "re",
-                        IsOpen = true,
                         CloseOnSelect = false,
                         MinWidth = 240
                     }
@@ -9546,11 +9581,10 @@ public sealed class MainWindow : Window
                 : "empty";
         }
 
-        var openStatus = Muted("OpenChanged: picker starts open (source=Programmatic).");
+        var openStatus = Muted("OpenChanged: picker starts closed; use ArrowDown to open.");
         var keyboardPicker = BuildDatePicker(
             new DateTime(2026, 5, 1),
             selectedDate: new DateTime(2026, 5, 13),
-            isOpen: true,
             closeOnSelect: false);
         keyboardPicker.OpenChanged += (_, args) =>
         {
@@ -9560,18 +9594,45 @@ public sealed class MainWindow : Window
         {
             openStatus.Text = $"SelectedDateChanged: {DateLabel(args.NewDate)} (source={args.Source}).";
         };
+        var openKeyboard = new CodexButton
+        {
+            Content = "ArrowDown",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        openKeyboard.Click += (_, _) => keyboardPicker.TryHandleInputKey(Key.Down);
+        var closeKeyboard = new CodexButton
+        {
+            Content = "Escape",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Ghost
+        };
+        closeKeyboard.Click += (_, _) => keyboardPicker.TryHandleInputKey(Key.Escape);
 
         var rangeStatus = Muted("RangeChanged: waiting for the second date.");
         var rangePicker = BuildDatePicker(
             new DateTime(2026, 2, 1),
             rangeStart: new DateTime(2026, 2, 9),
-            selectionMode: CodexCalendarSelectionMode.Range,
-            isOpen: true);
+            selectionMode: CodexCalendarSelectionMode.Range);
         rangePicker.RangeChanged += (_, args) =>
         {
             var suffix = args.End.HasValue ? "complete" : "open";
             rangeStatus.Text = $"RangeChanged: {DateLabel(args.Start)} -> {DateLabel(args.End)} ({suffix}, source={args.Source}).";
         };
+        var openRange = new CodexButton
+        {
+            Content = "Open range",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        openRange.Click += (_, _) => rangePicker.Open();
+        var finishRange = new CodexButton
+        {
+            Content = "Finish range",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Outline
+        };
+        finishRange.Click += (_, _) => rangePicker.SelectDate(new DateTime(2026, 2, 18));
 
         return new Grid
         {
@@ -9599,7 +9660,13 @@ public sealed class MainWindow : Window
                         Children =
                         {
                             keyboardPicker,
-                            openStatus
+                            openStatus,
+                            new StackPanel
+                            {
+                                Orientation = Orientation.Horizontal,
+                                Spacing = 8,
+                                Children = { openKeyboard, closeKeyboard }
+                            }
                         }
                     }
                 },
@@ -9613,7 +9680,13 @@ public sealed class MainWindow : Window
                         Children =
                         {
                             rangePicker,
-                            rangeStatus
+                            rangeStatus,
+                            new StackPanel
+                            {
+                                Orientation = Orientation.Horizontal,
+                                Spacing = 8,
+                                Children = { openRange, finishRange }
+                            }
                         }
                     }
                 }, row: 0, column: 1),
@@ -9636,7 +9709,6 @@ public sealed class MainWindow : Window
                         selectedDate: new DateTime(2026, 8, 18),
                         minDate: new DateTime(2026, 8, 10),
                         maxDate: new DateTime(2026, 8, 24),
-                        isOpen: true,
                         isLoading: true,
                         intent: CodexControlIntent.Error)
                 }, row: 1, column: 1)
@@ -13223,7 +13295,7 @@ public sealed class MainWindow : Window
 
     private static Control BuildToastInteractionPreview()
     {
-        var status = Muted("Toast is open. DismissCommand and close button share the same close path.");
+        var status = Muted("Toast is closed by default. Use the controls to open and dismiss it.");
         var undo = new CodexButton
         {
             Content = "Undo",
@@ -13232,6 +13304,7 @@ public sealed class MainWindow : Window
         };
         var primaryToast = new CodexToast
         {
+            IsOpen = false,
             Icon = "i",
             Title = "Provider switched",
             Description = "Close button, Escape, and DismissCommand close the same mounted surface.",
@@ -13266,7 +13339,7 @@ public sealed class MainWindow : Window
 
         var reopen = new CodexButton
         {
-            Content = "Reopen",
+            Content = "Show toast",
             Size = CodexControlSize.Small,
             Variant = CodexControlVariant.Outline
         };
@@ -13276,11 +13349,12 @@ public sealed class MainWindow : Window
             primaryToast.Variant = CodexControlVariant.Default;
             primaryToast.Title = "Provider switched";
             primaryToast.Description = "Close button, Escape, and DismissCommand close the same mounted surface.";
-            status.Text = "Toast reopened; open class restored.";
+            status.Text = "Toast opened; open class restored.";
         };
 
         var manualToast = new CodexToast
         {
+            IsOpen = false,
             Icon = "!",
             Title = "Manual dismissal policy",
             Description = "Escape is ignored because host code owns this notification.",
@@ -13290,7 +13364,7 @@ public sealed class MainWindow : Window
         };
         var manualDismiss = new CodexButton
         {
-            Content = "Manual close",
+            Content = "Toggle manual",
             Size = CodexControlSize.Small,
             Variant = CodexControlVariant.Secondary
         };
@@ -13298,8 +13372,34 @@ public sealed class MainWindow : Window
         {
             manualToast.IsOpen = !manualToast.IsOpen;
             status.Text = manualToast.IsOpen
-                ? "Manual toast reopened without changing Escape policy."
+                ? "Manual toast opened without changing Escape policy."
                 : "Manual toast closed by host-owned state change.";
+        };
+
+        var actionToast = new CodexToast
+        {
+            IsOpen = false,
+            Icon = "i",
+            Title = "Usage refreshed",
+            Description = "Action and close controls are independent slots.",
+            Action = new CodexButton
+            {
+                Content = "View",
+                Size = CodexControlSize.Small,
+                Variant = CodexControlVariant.Secondary
+            },
+            CloseContent = "Close"
+        };
+        var showAction = new CodexButton
+        {
+            Content = "Show action toast",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        showAction.Click += (_, _) =>
+        {
+            actionToast.IsOpen = true;
+            status.Text = "Action toast opened; action and close slots stay independent.";
         };
 
         var closedToast = new CodexToast
@@ -13381,18 +13481,14 @@ public sealed class MainWindow : Window
                 {
                     Label = "Action without dismissal",
                     Description = "The action slot can mutate content while the toast remains open.",
-                    Content = new CodexToast
+                    Content = new StackPanel
                     {
-                        Icon = "i",
-                        Title = "Usage refreshed",
-                        Description = "Action and close controls are independent slots.",
-                        Action = new CodexButton
+                        Spacing = 10,
+                        Children =
                         {
-                            Content = "View",
-                            Size = CodexControlSize.Small,
-                            Variant = CodexControlVariant.Secondary
-                        },
-                        CloseContent = "Close"
+                            actionToast,
+                            showAction
+                        }
                     }
                 }, row: 1, column: 0),
                 GridCell(new CodexField
@@ -13568,23 +13664,69 @@ public sealed class MainWindow : Window
     private static Control BuildSonnerInteractionPreview()
     {
         CodexSonnerService.Clear();
-        CodexSonnerService.Success("Provider saved", new CodexSonnerOptions
-        {
-            Description = "Success toast auto-dismisses after the configured duration.",
-            Action = new CodexSonnerAction("Undo", () => { })
-        });
-        CodexSonnerService.Warning("Fallback active", new CodexSonnerOptions
-        {
-            Description = "Warning toast keeps the close affordance visible.",
-            Cancel = new CodexSonnerAction("Dismiss", () => { })
-        });
-        CodexSonnerService.Loading("Refreshing usage", new CodexSonnerOptions
-        {
-            Description = "Loading toast remains until the host dismisses it.",
-            CloseButton = false
-        });
 
-        return new Grid
+        var status = Muted("Sonner viewport is empty by default. Trigger a toast to mount host rows.");
+        var success = new CodexButton
+        {
+            Content = "Success",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        success.Click += (_, _) =>
+        {
+            CodexSonnerService.Success("Provider saved", new CodexSonnerOptions
+            {
+                Description = "Success toast auto-dismisses after the configured duration.",
+                Action = new CodexSonnerAction("Undo", () => { })
+            });
+            status.Text = "Success toast queued through CodexSonnerService.";
+        };
+
+        var warning = new CodexButton
+        {
+            Content = "Warning",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Ghost
+        };
+        warning.Click += (_, _) =>
+        {
+            CodexSonnerService.Warning("Fallback active", new CodexSonnerOptions
+            {
+                Description = "Warning toast keeps the close affordance visible.",
+                Cancel = new CodexSonnerAction("Dismiss", () => { })
+            });
+            status.Text = "Warning toast queued with cancel action.";
+        };
+
+        var loading = new CodexButton
+        {
+            Content = "Loading",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Ghost
+        };
+        loading.Click += (_, _) =>
+        {
+            CodexSonnerService.Loading("Refreshing usage", new CodexSonnerOptions
+            {
+                Description = "Loading toast remains until the host dismisses it.",
+                CloseButton = false
+            });
+            status.Text = "Loading toast queued and remains until dismissed.";
+        };
+
+        var clear = new CodexButton
+        {
+            Content = "Clear",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Outline
+        };
+        clear.Click += (_, _) =>
+        {
+            CodexSonnerService.Clear();
+            status.Text = "Sonner queue cleared; viewport returned to empty default.";
+        };
+
+        var viewportGrid = new Grid
         {
             ColumnDefinitions =
             {
@@ -13620,6 +13762,28 @@ public sealed class MainWindow : Window
                         Offset = new Thickness(0)
                     }
                 })
+            }
+        };
+
+        return new StackPanel
+        {
+            Spacing = 12,
+            Children =
+            {
+                status,
+                new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 8,
+                    Children =
+                    {
+                        success,
+                        warning,
+                        loading,
+                        clear
+                    }
+                },
+                viewportGrid
             }
         };
     }
@@ -14966,7 +15130,6 @@ public sealed class MainWindow : Window
         {
             ItemsSource = new[] { overview, components }
         };
-        menu.ActivateItem(overview);
         return menu;
     }
 
@@ -15113,7 +15276,6 @@ public sealed class MainWindow : Window
         {
             ItemsSource = new[] { pointerOverview, pointerComponents }
         };
-        pointerMenu.ActivateItem(pointerOverview);
 
         var previous = new CodexNavigationMenuItem
         {
@@ -15154,8 +15316,6 @@ public sealed class MainWindow : Window
                 new CodexNavigationMenuItem { Header = "Disabled", Icon = "D", IsEnabled = false, Content = "Disabled viewport" }
             }
         };
-        motionMenu.ActivateItem(previous);
-        motionMenu.ActivateItem(active);
 
         var verticalSelected = new CodexNavigationMenuItem
         {
@@ -15174,7 +15334,6 @@ public sealed class MainWindow : Window
                 new CodexNavigationMenuItem { Header = "Down", Content = "Vertical next item" }
             }
         };
-        verticalMenu.ActivateItem(verticalSelected);
 
         var escape = new CodexNavigationMenuItem
         {
@@ -15198,7 +15357,6 @@ public sealed class MainWindow : Window
                 new CodexNavigationMenuItem { Header = "Link", Icon = "L" }
             }
         };
-        escapeMenu.ActivateItem(escape);
 
         return new Grid
         {
@@ -15238,7 +15396,6 @@ public sealed class MainWindow : Window
                 BuildMenubarProfilesMenu()
             }
         };
-        menubar.OpenMenu(file);
         return menubar;
     }
 
@@ -15479,7 +15636,7 @@ public sealed class MainWindow : Window
             Items =
             {
                 BuildMenubarFileMenu(isActive: true),
-                BuildMenubarEditMenu(includeNestedFind: true),
+                BuildMenubarEditMenu(includeNestedFind: true, openNestedFind: true),
                 BuildMenubarViewMenu(),
                 BuildMenubarProfilesMenu()
             }
@@ -15592,8 +15749,6 @@ public sealed class MainWindow : Window
                 view
             }
         };
-        menubar.OpenMenu(file);
-
         var handoffFile = BuildMenubarFileMenu();
         var handoffView = BuildMenubarViewMenu();
         var handoff = new CodexMenubar
@@ -15607,7 +15762,6 @@ public sealed class MainWindow : Window
                 BuildMenubarProfilesMenu()
             }
         };
-        handoff.OpenMenu(handoffView);
 
         var blocked = new CodexMenubar
         {
@@ -15685,7 +15839,7 @@ public sealed class MainWindow : Window
         };
     }
 
-    private static CodexMenubarMenu BuildMenubarEditMenu(bool includeNestedFind = false)
+    private static CodexMenubarMenu BuildMenubarEditMenu(bool includeNestedFind = false, bool openNestedFind = false)
     {
         var edit = new CodexMenubarMenu
         {
@@ -15703,7 +15857,7 @@ public sealed class MainWindow : Window
             edit.Items.Add(new CodexMenubarItem
             {
                 Header = "Find",
-                IsSubMenuOpen = true,
+                IsSubMenuOpen = openNestedFind,
                 Items =
                 {
                     new CodexMenubarItem { Header = "Search the web" },
@@ -15766,7 +15920,6 @@ public sealed class MainWindow : Window
                 new CodexDropdownButton
                 {
                     Content = "Actions",
-                    IsOpen = true,
                     IsArrowVisible = true,
                     Align = CodexDropdownAlign.Start,
                     DropDownContent = new StackPanel
@@ -15928,11 +16081,10 @@ public sealed class MainWindow : Window
 
     private static Control BuildDropdownInteractionPreview()
     {
-        var status = Muted("OpenChanged: dropdown starts open (source=Programmatic).");
+        var status = Muted("OpenChanged: dropdown starts closed; use Open to disclose.");
         var openDropdown = new CodexDropdownButton
         {
             Content = "Provider actions",
-            IsOpen = true,
             IsArrowVisible = true,
             Align = CodexDropdownAlign.Start,
             DropDownContent = ActionMenu("Rename", "Duplicate", "Delete")
@@ -15941,6 +16093,20 @@ public sealed class MainWindow : Window
         {
             status.Text = $"OpenChanged: dropdown {(args.IsOpen ? "opened" : "closed")} (source={args.Source}).";
         };
+        var open = new CodexButton
+        {
+            Content = "Open",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        open.Click += (_, _) => openDropdown.Open();
+        var dismiss = new CodexButton
+        {
+            Content = "Dismiss",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Ghost
+        };
+        dismiss.Click += (_, _) => openDropdown.Dismiss();
 
         var grid = new Grid
         {
@@ -15962,7 +16128,6 @@ public sealed class MainWindow : Window
                 GridCell(new CodexDropdownButton
                 {
                     Content = "Keep surface",
-                    IsOpen = true,
                     CloseOnItemSelected = false,
                     Align = CodexDropdownAlign.End,
                     DropDownContent = new StackPanel
@@ -15998,6 +16163,12 @@ public sealed class MainWindow : Window
             Children =
             {
                 status,
+                new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 8,
+                    Children = { open, dismiss }
+                },
                 grid
             }
         };
@@ -16137,7 +16308,6 @@ public sealed class MainWindow : Window
                             Header = "Focused submenu",
                             Shortcut = "Right",
                             IsActive = true,
-                            IsSubMenuOpen = true,
                             Items =
                             {
                                 new CodexMenuItem { Header = "Archive" },
@@ -16157,7 +16327,6 @@ public sealed class MainWindow : Window
                         {
                             Header = "Hover opens after delay",
                             Shortcut = "100ms",
-                            IsSubMenuOpen = true,
                             Items =
                             {
                                 new CodexMenuItem { Header = "JSON" },
@@ -16231,7 +16400,6 @@ public sealed class MainWindow : Window
                 new CodexContextMenuItem
                 {
                     Header = "Move to",
-                    IsSubMenuOpen = true,
                     Items =
                     {
                         new CodexContextMenuItem { Header = "Archive" },
@@ -16240,8 +16408,12 @@ public sealed class MainWindow : Window
                 }
             }
         };
-        menu.Classes.Add("context-menu-open");
-        return menu;
+        return new CodexButton
+        {
+            Content = "Right-click session",
+            Size = CodexControlSize.Small,
+            ContextMenu = menu
+        };
     }
 
     private static Control BuildContextMenuInteractionPreview()
@@ -16279,7 +16451,7 @@ public sealed class MainWindow : Window
             RowSpacing = 14,
             Children =
             {
-                OpenContextMenu(new CodexContextMenu
+                ContextMenuTarget("Right-click right side", new CodexContextMenu
                 {
                     MinWidth = 240,
                     Placement = PlacementMode.Right,
@@ -16290,7 +16462,6 @@ public sealed class MainWindow : Window
                         new CodexContextMenuItem
                         {
                             Header = "Move to",
-                            IsSubMenuOpen = true,
                             SubMenuPlacement = PlacementMode.RightEdgeAlignedTop,
                             Items =
                             {
@@ -16300,7 +16471,7 @@ public sealed class MainWindow : Window
                         }
                     }
                 }),
-                GridCell(OpenContextMenu(new CodexContextMenu
+                GridCell(ContextMenuTarget("Right-click left side", new CodexContextMenu
                 {
                     MinWidth = 240,
                     Placement = PlacementMode.Left,
@@ -16310,7 +16481,6 @@ public sealed class MainWindow : Window
                         new CodexContextMenuItem
                         {
                             Header = "Move left",
-                            IsSubMenuOpen = true,
                             SubMenuPlacement = PlacementMode.LeftEdgeAlignedTop,
                             Items =
                             {
@@ -16321,7 +16491,7 @@ public sealed class MainWindow : Window
                         new CodexContextMenuItem { Header = "Delete", IsEnabled = false }
                     }
                 }), row: 0, column: 1),
-                GridCell(OpenContextMenu(new CodexContextMenu
+                GridCell(ContextMenuTarget("Right-click loading", new CodexContextMenu
                 {
                     MinWidth = 240,
                     Placement = PlacementMode.Bottom,
@@ -16341,7 +16511,7 @@ public sealed class MainWindow : Window
                         }
                     }
                 }), row: 1, column: 0),
-                GridCell(OpenContextMenu(new CodexContextMenu
+                GridCell(ContextMenuTarget("Right-click selection", new CodexContextMenu
                 {
                     MinWidth = 240,
                     Placement = PlacementMode.Top,
@@ -16371,6 +16541,16 @@ public sealed class MainWindow : Window
     {
         menu.Classes.Add("context-menu-open");
         return menu;
+    }
+
+    private static CodexButton ContextMenuTarget(string content, CodexContextMenu menu)
+    {
+        return new CodexButton
+        {
+            Content = content,
+            Size = CodexControlSize.Small,
+            ContextMenu = menu
+        };
     }
 
     private static Control BuildContextMenuStatesPreview()
@@ -16855,7 +17035,6 @@ public sealed class MainWindow : Window
         return new CodexCollapsible
         {
             Header = "Advanced routing",
-            IsOpen = true,
             Content = new StackPanel
             {
                 Spacing = 10,
@@ -16880,7 +17059,6 @@ public sealed class MainWindow : Window
                 {
                     Value = "routing",
                     Header = "Advanced routing",
-                    IsOpen = true,
                     Content = new StackPanel
                     {
                         Spacing = 10,
@@ -17065,8 +17243,7 @@ public sealed class MainWindow : Window
         {
             Value = "routing",
             Header = "Routing",
-            IsOpen = true,
-            Content = Muted("This is the initially open single-mode item.")
+            Content = Muted("Closed by default; trigger or button opens this single-mode item.")
         };
         var billing = new CodexAccordionItem
         {
@@ -17106,12 +17283,20 @@ public sealed class MainWindow : Window
             HorizontalAlignment = HorizontalAlignment.Left
         };
         openBilling.Click += (_, _) => billing.IsOpen = true;
+        var openRouting = new CodexButton
+        {
+            Content = "Open routing",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary,
+            HorizontalAlignment = HorizontalAlignment.Left
+        };
+        openRouting.Click += (_, _) => routing.IsOpen = true;
 
         var collapseAll = new CodexButton
         {
             Content = "Collapse all",
             Size = CodexControlSize.Small,
-            Variant = CodexControlVariant.Secondary,
+            Variant = CodexControlVariant.Ghost,
             HorizontalAlignment = HorizontalAlignment.Left
         };
         collapseAll.Click += (_, _) =>
@@ -17143,6 +17328,7 @@ public sealed class MainWindow : Window
                             Spacing = 8,
                             Children =
                             {
+                                openRouting,
                                 openBilling,
                                 collapseAll
                             }
@@ -17159,14 +17345,12 @@ public sealed class MainWindow : Window
                         {
                             Value = "multi-routes",
                             Header = "Multiple routes",
-                            IsOpen = true,
-                            Content = Muted("Independent toggle remains open.")
+                            Content = Muted("Independent toggle can stay open.")
                         },
                         new CodexAccordionItem
                         {
                             Value = "multi-limits",
                             Header = "Multiple limits",
-                            IsOpen = true,
                             Content = Muted("The second item can stay open at the same time.")
                         }
                     }
@@ -17288,11 +17472,10 @@ public sealed class MainWindow : Window
 
     private static Control BuildCollapsibleInteractionPreview()
     {
-        var status = Muted("OpenChanged: measured disclosure starts open.");
+        var status = Muted("OpenChanged: measured disclosure starts closed.");
         var measured = new CodexCollapsible
         {
             Header = "Measured disclosure",
-            IsOpen = true,
             AnimationDuration = TimeSpan.FromMilliseconds(220),
             ContentPadding = new Thickness(0, 10, 0, 0),
             Content = new StackPanel
@@ -17309,6 +17492,28 @@ public sealed class MainWindow : Window
         measured.OpenChanged += (_, args) =>
         {
             status.Text = args.IsOpen ? "OpenChanged: content opened and measured." : "OpenChanged: content closed after height animation.";
+        };
+        var toggle = new CodexButton
+        {
+            Content = "Toggle",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        toggle.Click += (_, _) => measured.Toggle();
+        var reduceMotion = new CodexButton
+        {
+            Content = "Reduce motion",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Ghost
+        };
+        reduceMotion.Click += (_, _) =>
+        {
+            measured.AnimationDuration = measured.AnimationDuration == TimeSpan.Zero
+                ? TimeSpan.FromMilliseconds(220)
+                : TimeSpan.Zero;
+            status.Text = measured.AnimationDuration == TimeSpan.Zero
+                ? "AnimationDuration=0 jumps to measured height."
+                : "Measured height animation restored.";
         };
 
         var grid = new Grid
@@ -17331,7 +17536,6 @@ public sealed class MainWindow : Window
                 GridCell(new CodexCollapsible
                 {
                     Header = "Reduced motion",
-                    IsOpen = true,
                     AnimationDuration = TimeSpan.Zero,
                     Content = Muted("Zero duration jumps to the final measured height.")
                 }, row: 0, column: 1),
@@ -17357,6 +17561,12 @@ public sealed class MainWindow : Window
             Children =
             {
                 status,
+                new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 8,
+                    Children = { toggle, reduceMotion }
+                },
                 grid
             }
         };
@@ -17657,7 +17867,6 @@ public sealed class MainWindow : Window
                                     Content = new CodexDropdownButton
                                     {
                                         Content = "...",
-                                        IsOpen = true,
                                         Size = CodexControlSize.Small,
                                         Variant = CodexControlVariant.Ghost,
                                         IsArrowVisible = false,
@@ -18266,7 +18475,6 @@ public sealed class MainWindow : Window
             Trigger = new CodexButton { Content = "Delete provider", Size = CodexControlSize.Small, Variant = CodexControlVariant.Destructive },
             Title = "Delete provider?",
             Description = "Dialog dismissal uses Escape, outside pointer, close button, and focus return.",
-            IsOpen = true,
             Content = new StackPanel
             {
                 Spacing = 10,
@@ -18461,9 +18669,14 @@ public sealed class MainWindow : Window
 
         var manualDialog = new CodexDialog
         {
+            Trigger = new CodexButton
+            {
+                Content = "Open manual dialog",
+                Size = CodexControlSize.Small,
+                Variant = CodexControlVariant.Secondary
+            },
             Title = "Manual close policy",
             Description = "Escape and outside pointer are disabled; host code owns dismissal.",
-            IsOpen = true,
             CloseOnEscape = false,
             DismissOnOutsidePointer = false,
             IsCloseVisible = false,
@@ -18536,9 +18749,14 @@ public sealed class MainWindow : Window
                 }, row: 1, column: 0),
                 GridCell(new CodexDialog
                 {
+                    Trigger = new CodexButton
+                    {
+                        Content = "Open action surface",
+                        Size = CodexControlSize.Small,
+                        Variant = CodexControlVariant.Secondary
+                    },
                     Title = "Action close surface",
                     Description = "Action buttons stay in the dialog slot while the close control routes through Dismiss.",
-                    IsOpen = true,
                     CloseContent = "Esc",
                     Content = Muted("Close content can mirror the keyboard dismissal affordance."),
                     Action = new StackPanel
@@ -18567,7 +18785,6 @@ public sealed class MainWindow : Window
                 Variant = CodexControlVariant.Destructive,
                 Size = CodexControlSize.Small
             },
-            IsOpen = true,
             Title = "Delete provider?",
             Description = "This action cannot be undone. Requests will stop routing through this provider.",
             Media = "!",
@@ -18741,7 +18958,6 @@ public sealed class MainWindow : Window
 
         var asyncDialog = new CodexAlertDialog
         {
-            IsOpen = true,
             Trigger = new CodexButton
             {
                 Content = "Open async confirmation",
@@ -18805,7 +19021,12 @@ public sealed class MainWindow : Window
                         clearLoading,
                         new CodexAlertDialog
                         {
-                            IsOpen = true,
+                            Trigger = new CodexButton
+                            {
+                                Content = "Open outside policy",
+                                Size = CodexControlSize.Small,
+                                Variant = CodexControlVariant.Secondary
+                            },
                             Title = "Manual outside policy",
                             Description = "Outside pointer dismissal can be enabled for non-critical variants.",
                             DismissOnOutsidePointer = true,
@@ -18835,7 +19056,6 @@ public sealed class MainWindow : Window
                     Title = "Provider filters",
                     Description = "Sheet extends dialog dismissal with edge-mounted slide motion.",
                     Side = CodexSheetSide.Right,
-                    IsOpen = true,
                     Width = 360,
                     Content = new StackPanel
                     {
@@ -18973,7 +19193,7 @@ public sealed class MainWindow : Window
             Content = "Toggle sheet",
             Size = CodexControlSize.Small
         };
-        var status = Muted("Sheet is open on the right edge.");
+        var status = Muted("OpenChanged: sheet starts closed.");
         var sheet = new CodexSheet
         {
             Trigger = trigger,
@@ -18981,7 +19201,6 @@ public sealed class MainWindow : Window
             Description = "Dismiss, Escape, outside pointer, and focus return reuse the dialog contract.",
             Side = CodexSheetSide.Right,
             Width = 360,
-            IsOpen = true,
             RestoreFocusElement = trigger,
             Content = new StackPanel
             {
@@ -19117,7 +19336,12 @@ public sealed class MainWindow : Window
                 },
                 GridCell(new CodexSheet
                 {
-                    IsOpen = true,
+                    Trigger = new CodexButton
+                    {
+                        Content = "Open manual sheet",
+                        Size = CodexControlSize.Small,
+                        Variant = CodexControlVariant.Secondary
+                    },
                     Title = "Manual close",
                     Description = "Outside pointer and Escape can be disabled for transactional flows.",
                     Side = CodexSheetSide.Left,
@@ -19144,7 +19368,12 @@ public sealed class MainWindow : Window
                 }, row: 1, column: 0),
                 GridCell(new CodexSheet
                 {
-                    IsOpen = true,
+                    Trigger = new CodexButton
+                    {
+                        Content = "Open no-close sheet",
+                        Size = CodexControlSize.Small,
+                        Variant = CodexControlVariant.Secondary
+                    },
                     Title = "No close button",
                     Description = "showCloseButton=false maps to IsCloseVisible=false.",
                     Side = CodexSheetSide.Top,
@@ -19176,7 +19405,6 @@ public sealed class MainWindow : Window
                     Title = "Provider usage",
                     Description = "Drawer uses a handle, a scrollable body, and sticky footer actions.",
                     Direction = CodexDrawerDirection.Bottom,
-                    IsOpen = true,
                     Content = DrawerUsageContent(),
                     Action = DrawerActionRow("Cancel", "Submit")
                 }
@@ -19286,43 +19514,43 @@ public sealed class MainWindow : Window
             Content = "Open drawer",
             Size = CodexControlSize.Small
         };
-        var status = Muted("Drawer is open at the bottom edge.");
-            var drawer = new CodexDrawer
-            {
-                Trigger = trigger,
-                Title = "Route actions",
-                Description = "Drag the handle past the threshold or dismiss through the shared dialog command.",
-                Direction = CodexDrawerDirection.Bottom,
-                IsOpen = true,
-                RestoreFocusElement = trigger,
-                Content = DrawerUsageContent(),
-                Action = DrawerActionRow("Cancel", "Submit")
-            };
-            drawer.OpenChanged += (_, args) =>
-            {
-                status.Text = args.IsOpen
-                    ? $"Drawer opened at the {drawer.Direction.ToString().ToLowerInvariant()} edge."
-                    : "Drawer closed and left the trigger mounted.";
-            };
-            drawer.DragCompleted += (_, args) =>
-            {
-                status.Text = args.Dismissed
+        var status = Muted("OpenChanged: drawer starts closed.");
+        var drawer = new CodexDrawer
+        {
+            Trigger = trigger,
+            Title = "Route actions",
+            Description = "Drag the handle past the threshold or dismiss through the shared dialog command.",
+            Direction = CodexDrawerDirection.Bottom,
+            RestoreFocusElement = trigger,
+            Content = DrawerUsageContent(),
+            Action = DrawerActionRow("Cancel", "Submit")
+        };
+        drawer.OpenChanged += (_, args) =>
+        {
+            status.Text = args.IsOpen
+                ? $"Drawer opened at the {drawer.Direction.ToString().ToLowerInvariant()} edge."
+                : "Drawer closed and left the trigger mounted.";
+        };
+        drawer.DragCompleted += (_, args) =>
+        {
+            status.Text = args.Dismissed
                 ? $"Drag dismissed at {args.DragOffset:0}px and requested close."
                 : $"Drag settled at {args.DragOffset:0}px without closing.";
         };
         drawer.RestoreFocusRequested += (_, _) =>
         {
-                status.Text = "Drawer dismissed and requested focus restoration to the trigger.";
-            };
+            status.Text = "Drawer dismissed and requested focus restoration to the trigger.";
+        };
 
-            var dragShort = new CodexButton
-            {
+        var dragShort = new CodexButton
+        {
             Content = "Drag 48px",
             Size = CodexControlSize.Small,
             Variant = CodexControlVariant.Secondary
         };
         dragShort.Click += (_, _) =>
         {
+            drawer.IsOpen = true;
             drawer.BeginDrag();
             drawer.DragBy(48);
             drawer.CompleteDrag();
@@ -19409,7 +19637,6 @@ public sealed class MainWindow : Window
                     Title = "Manual drawer",
                     Description = "Escape and outside pointer can be disabled for form flows.",
                     Direction = CodexDrawerDirection.Right,
-                    IsOpen = true,
                     Width = 360,
                     CloseOnEscape = false,
                     DismissOnOutsidePointer = false,
@@ -19511,7 +19738,6 @@ public sealed class MainWindow : Window
         {
             Trigger = new CodexButton { Content = "Open command menu", Size = CodexControlSize.Small },
             Placeholder = "Run command...",
-            IsOpen = true,
             CloseOnItemSelected = true,
             Content = new CodexCommandList
             {
@@ -19677,12 +19903,11 @@ public sealed class MainWindow : Window
             Content = "Open command menu",
             Size = CodexControlSize.Small
         };
-        var status = Muted("Command dialog is open; selecting an enabled item can close it.");
+        var status = Muted("Command dialog starts closed; selecting an enabled item can close it after opening.");
         var closeOnSelectDialog = new CodexCommandDialog
         {
             Trigger = trigger,
             Placeholder = "Search commands...",
-            IsOpen = true,
             CloseOnItemSelected = true,
             RestoreFocusElement = trigger,
             Content = new CodexCommandList
@@ -19742,7 +19967,6 @@ public sealed class MainWindow : Window
                 {
                     Trigger = new CodexButton { Content = "Open loading menu", Size = CodexControlSize.Small },
                     Placeholder = "Loading command...",
-                    IsOpen = true,
                     IsLoading = true,
                     CloseOnItemSelected = true,
                     Content = new CodexCommandList
@@ -19758,7 +19982,6 @@ public sealed class MainWindow : Window
                 {
                     Trigger = new CodexButton { Content = "Open manual menu", Size = CodexControlSize.Small },
                     Placeholder = "Manual close...",
-                    IsOpen = true,
                     CloseOnItemSelected = false,
                     Content = new CodexCommandList
                     {
@@ -19800,7 +20023,6 @@ public sealed class MainWindow : Window
             Trigger = new CodexButton { Content = "Trigger", Size = CodexControlSize.Small },
             Title = "Usage window",
             Description = "Popover content uses the same dismiss and focus-return contract as overlays.",
-            IsOpen = true,
             IsArrowVisible = true,
             Content = new StackPanel
             {
@@ -19980,9 +20202,14 @@ public sealed class MainWindow : Window
 
         var policy = new CodexPopover
         {
+            Trigger = new CodexButton
+            {
+                Content = "Open persistent panel",
+                Size = CodexControlSize.Small,
+                Variant = CodexControlVariant.Secondary
+            },
             Title = "Persistent panel",
             Description = "Escape and outside pointer are disabled for manual host control.",
-            IsOpen = true,
             CloseOnEscape = false,
             DismissOnOutsidePointer = false,
             IsCloseVisible = false,
@@ -20051,9 +20278,14 @@ public sealed class MainWindow : Window
                 }, row: 1, column: 0),
                 GridCell(new CodexPopover
                 {
+                    Trigger = new CodexButton
+                    {
+                        Content = "Open action content",
+                        Size = CodexControlSize.Small,
+                        Variant = CodexControlVariant.Secondary
+                    },
                     Title = "Action content",
                     Description = "Action slot remains mounted while close content routes through Dismiss.",
-                    IsOpen = true,
                     CloseContent = "Esc",
                     Content = Muted("Popover body can contain any Codex component."),
                     Action = new StackPanel
@@ -20078,7 +20310,6 @@ public sealed class MainWindow : Window
             Trigger = new CodexButton { Content = "Hover target", HorizontalAlignment = HorizontalAlignment.Left },
             Content = "Token usage refreshes every minute.",
             Placement = PlacementMode.Bottom,
-            IsOpen = true,
             IsArrowVisible = true,
             Size = CodexControlSize.Small
         };
@@ -20205,10 +20436,15 @@ public sealed class MainWindow : Window
                 },
                 GridCell(new CodexTooltip
                 {
+                    Trigger = new CodexButton
+                    {
+                        Content = "Persistent hint",
+                        Size = CodexControlSize.Small,
+                        Variant = CodexControlVariant.Secondary
+                    },
                     Content = "Escape dismissal is disabled for persistent hints.",
                     Placement = PlacementMode.Right,
                     CloseOnEscape = false,
-                    IsOpen = true,
                     IsArrowVisible = true
                 }, row: 0, column: 1),
                 GridCell(new CodexTooltip
@@ -20216,7 +20452,6 @@ public sealed class MainWindow : Window
                     Trigger = new CodexButton { Content = "Save", Variant = CodexControlVariant.Secondary },
                     Content = "Large top-aligned tooltip with arrow.",
                     Placement = PlacementMode.Top,
-                    IsOpen = true,
                     IsArrowVisible = true,
                     Size = CodexControlSize.Large
                 }, row: 1, column: 0),
@@ -20325,7 +20560,6 @@ public sealed class MainWindow : Window
         return new CodexHoverCard
         {
             Trigger = new CodexButton { Content = "Provider details" },
-            IsOpen = true,
             Placement = PlacementMode.Right,
             Align = CodexHoverCardAlign.Start,
             Content = new StackPanel
@@ -20524,7 +20758,6 @@ public sealed class MainWindow : Window
                 new CodexHoverCard
                 {
                     Trigger = new CodexButton { Content = "Provider details", Size = CodexControlSize.Small },
-                    IsOpen = true,
                     Placement = PlacementMode.Right,
                     Align = CodexHoverCardAlign.Start,
                     OpenDelay = TimeSpan.FromMilliseconds(700),
@@ -20534,7 +20767,6 @@ public sealed class MainWindow : Window
                 GridCell(new CodexHoverCard
                 {
                     Trigger = new CodexButton { Content = "Instant focus", Size = CodexControlSize.Small },
-                    IsOpen = true,
                     Placement = PlacementMode.Top,
                     Align = CodexHoverCardAlign.End,
                     OpenDelay = TimeSpan.Zero,
@@ -23482,7 +23714,7 @@ public sealed class MainWindow : Window
             Description = "Showing total visitors for the last 3 months",
             IsInteractive = true,
             Legend = ChartLegend(false),
-            Tooltip = ChartTooltip("March", true, CodexChartIndicatorStyle.Dot),
+            Tooltip = ChartTooltip("March", false, CodexChartIndicatorStyle.Dot),
             Footer = Muted("Desktop 7,324 · Mobile 7,250"),
             Content = new CodexUsagePieChart
             {
@@ -23612,7 +23844,7 @@ public sealed class MainWindow : Window
     {
         var status = Muted("Refresh data, toggle tooltip, change legend orientation, and switch indicator geometry.");
         var useBurstData = false;
-        var tooltipOpen = true;
+        var tooltipOpen = false;
         var verticalLegend = false;
         var compact = false;
         var indicator = CodexChartIndicatorStyle.Dot;
@@ -23632,7 +23864,7 @@ public sealed class MainWindow : Window
             Title = "Interactive chart",
             Description = "Chart helpers keep Web-style config surfaces mounted while chart data changes.",
             Legend = ChartLegend(false),
-            Tooltip = ChartTooltip("Current slice", true, indicator),
+            Tooltip = ChartTooltip("Current slice", tooltipOpen, indicator),
             Footer = Muted("Host state controls data, tooltip, legend, and density."),
             Content = chart
         };
@@ -23770,7 +24002,7 @@ public sealed class MainWindow : Window
                     }
                 }
             },
-            Tooltip = ChartTooltip("Hover a bar", true, CodexChartIndicatorStyle.Square),
+            Tooltip = ChartTooltip("Hover a bar", false, CodexChartIndicatorStyle.Square),
             Footer = Muted("Pointer hover exposes active-bar metadata and tooltip interpolation."),
             Content = new CodexBarChart
             {
@@ -24041,7 +24273,7 @@ public sealed class MainWindow : Window
                     }
                 }
             },
-            Tooltip = ChartTooltip("Hover a point", true, CodexChartIndicatorStyle.Line),
+            Tooltip = ChartTooltip("Hover a point", false, CodexChartIndicatorStyle.Line),
             Footer = Muted("Pointer hover exposes active-point metadata and tooltip interpolation."),
             Content = new CodexLineChart
             {
@@ -25894,24 +26126,38 @@ public sealed class MainWindow : Window
 
     private static Control BuildOverlayPrimitivePreview()
     {
+        var overlay = new CodexOverlay
+        {
+            HorizontalContentAlignment = HorizontalAlignment.Center,
+            VerticalContentAlignment = VerticalAlignment.Center
+        };
+        var dismissButton = new CodexButton { Content = "Dismiss", Size = CodexControlSize.Small };
+        var openButton = new CodexButton
+        {
+            Content = "Open overlay",
+            Size = CodexControlSize.Small,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        };
+
+        openButton.Click += (_, _) => overlay.SetCurrentValue(CodexOverlay.IsOpenProperty, true);
+        dismissButton.Click += (_, _) => overlay.Dismiss();
+
+        overlay.Content = new CodexCard
+        {
+            Width = 260,
+            Title = "Overlay content",
+            Description = "Scrim, hit testing, and dismissal state are owned by the primitive.",
+            Content = dismissButton
+        };
+
         return new Grid
         {
             Height = 180,
             Children =
             {
-                new CodexOverlay
-                {
-                    IsOpen = true,
-                    HorizontalContentAlignment = HorizontalAlignment.Center,
-                    VerticalContentAlignment = VerticalAlignment.Center,
-                    Content = new CodexCard
-                    {
-                        Width = 260,
-                        Title = "Overlay content",
-                        Description = "Scrim, hit testing, and dismissal state are owned by the primitive.",
-                        Content = new CodexButton { Content = "Dismiss", Size = CodexControlSize.Small }
-                    }
-                }
+                openButton,
+                overlay
             }
         };
     }
@@ -26031,7 +26277,7 @@ public sealed class MainWindow : Window
 
     private static Control BuildOverlayPrimitiveInteractionPreview()
     {
-        var status = Muted("Overlay is open with Escape and outside-pointer dismissal enabled.");
+        var status = Muted("Overlay is closed by default. Open it to test Escape and outside-pointer dismissal.");
         var dismiss = new CodexButton
         {
             Content = "Dismiss",
@@ -26040,7 +26286,7 @@ public sealed class MainWindow : Window
         };
         var overlay = new CodexOverlay
         {
-            IsOpen = true,
+            IsOpen = false,
             CloseOnEscape = true,
             DismissOnOutsidePointer = true,
             HorizontalContentAlignment = HorizontalAlignment.Center,
@@ -26058,14 +26304,14 @@ public sealed class MainWindow : Window
 
         var reopen = new CodexButton
         {
-            Content = "Reopen",
+            Content = "Open",
             Size = CodexControlSize.Small,
             Variant = CodexControlVariant.Secondary
         };
         reopen.Click += (_, _) =>
         {
             overlay.IsOpen = true;
-            status.Text = "Overlay reopened without rebuilding content.";
+            status.Text = "Overlay opened without rebuilding content.";
         };
 
         var toggleScrim = new CodexButton
@@ -26149,7 +26395,7 @@ public sealed class MainWindow : Window
                 GridCell(new CodexField
                 {
                     Label = "Manual policy",
-                    Description = "Host-managed layers can disable Escape and outside-pointer dismissal.",
+                    Description = "Host-managed layers can disable Escape and outside-pointer dismissal once opened.",
                     Content = new Grid
                     {
                         Height = 160,
@@ -26157,7 +26403,7 @@ public sealed class MainWindow : Window
                         {
                             new CodexOverlay
                             {
-                                IsOpen = true,
+                                IsOpen = false,
                                 CloseOnEscape = false,
                                 DismissOnOutsidePointer = false,
                                 HorizontalContentAlignment = HorizontalAlignment.Center,
@@ -26176,7 +26422,7 @@ public sealed class MainWindow : Window
                 GridCell(new CodexField
                 {
                     Label = "No scrim",
-                    Description = "The content layer can stay open while scrim rendering is disabled.",
+                    Description = "The content layer can open while scrim rendering is disabled.",
                     Content = new Grid
                     {
                         Height = 150,
@@ -26184,7 +26430,7 @@ public sealed class MainWindow : Window
                         {
                             new CodexOverlay
                             {
-                                IsOpen = true,
+                                IsOpen = false,
                                 IsScrimVisible = false,
                                 HorizontalContentAlignment = HorizontalAlignment.Center,
                                 VerticalContentAlignment = VerticalAlignment.Center,

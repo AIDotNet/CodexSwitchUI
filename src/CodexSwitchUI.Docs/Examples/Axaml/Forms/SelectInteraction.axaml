@@ -9,7 +9,6 @@
                        Description="Trigger, selected item, popup-open class, OpenChanged, and source-aware ValueChanged share one state path.">
     <StackPanel Spacing="8">
       <controls:CodexSelect SelectedIndex="0"
-                            IsDropDownOpen="True"
                             MinWidth="240">
         <x:String>OpenAI</x:String>
         <x:String>Claude</x:String>
@@ -19,9 +18,12 @@
                  TextWrapping="Wrap" />
       <StackPanel Orientation="Horizontal"
                   Spacing="8">
-        <controls:CodexButton Content="Claude"
+        <controls:CodexButton Content="Open"
                               Size="Small"
                               Variant="Secondary" />
+        <controls:CodexButton Content="Claude"
+                              Size="Small"
+                              Variant="Outline" />
         <controls:CodexButton Content="Close"
                               Size="Small"
                               Variant="Ghost" />

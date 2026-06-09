@@ -122,7 +122,7 @@
                  IsLightDismissEnabled="True"
                  InheritsTransform="True">
             <Border x:Name="PART_PopupBorder"
-                    Margin="0,6,0,0"
+                    Margin="0,4,0,0"
                     Padding="4"
                     Background="{DynamicResource CodexSwitch.PopoverBrush}"
                     BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"
@@ -498,8 +498,8 @@
   <Style Selector="controls|CodexComboboxItem">
     <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
-    <Setter Property="MinHeight" Value="34" />
-    <Setter Property="Padding" Value="8,7" />
+    <Setter Property="MinHeight" Value="32" />
+    <Setter Property="Padding" Value="8,6" />
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderBrush" Value="Transparent" />

@@ -65,7 +65,12 @@ public static Control BuildAlertDialogInteractionPreview()
 
     var asyncDialog = new CodexAlertDialog
     {
-        IsOpen = true,
+        Trigger = new CodexButton
+        {
+            Content = "Open async confirmation",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        },
         Title = "Async confirmation",
         Description = "CloseOnAction=false keeps the dialog open while the host completes work.",
         CloseOnAction = false,

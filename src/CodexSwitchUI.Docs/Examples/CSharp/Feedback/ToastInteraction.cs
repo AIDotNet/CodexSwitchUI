@@ -10,7 +10,7 @@ public static Control BuildToastInteractionPreview()
     var status = new CodexText
     {
         Role = CodexTextRole.Muted,
-        Text = "Toast is open. DismissCommand and close button share the same close path."
+        Text = "Toast is closed by default. Use the controls to open and dismiss it."
     };
     var undo = new CodexButton
     {
@@ -20,6 +20,7 @@ public static Control BuildToastInteractionPreview()
     };
     var primaryToast = new CodexToast
     {
+        IsOpen = false,
         Icon = "i",
         Title = "Provider switched",
         Description = "Close button, Escape, and DismissCommand close the same mounted surface.",
@@ -55,7 +56,7 @@ public static Control BuildToastInteractionPreview()
 
     var reopen = new CodexButton
     {
-        Content = "Reopen",
+        Content = "Show toast",
         Size = CodexControlSize.Small,
         Variant = CodexControlVariant.Outline
     };
@@ -65,11 +66,12 @@ public static Control BuildToastInteractionPreview()
         primaryToast.Variant = CodexControlVariant.Default;
         primaryToast.Title = "Provider switched";
         primaryToast.Description = "Close button, Escape, and DismissCommand close the same mounted surface.";
-        status.Text = "Toast reopened; open class restored.";
+        status.Text = "Toast opened; open class restored.";
     };
 
     var manualToast = new CodexToast
     {
+        IsOpen = false,
         Icon = "!",
         Title = "Manual dismissal policy",
         Description = "Escape is ignored because host code owns this notification.",
@@ -79,7 +81,7 @@ public static Control BuildToastInteractionPreview()
     };
     var manualDismiss = new CodexButton
     {
-        Content = "Manual close",
+        Content = "Toggle manual",
         Size = CodexControlSize.Small,
         Variant = CodexControlVariant.Secondary
     };
@@ -87,8 +89,34 @@ public static Control BuildToastInteractionPreview()
     {
         manualToast.IsOpen = !manualToast.IsOpen;
         status.Text = manualToast.IsOpen
-            ? "Manual toast reopened without changing Escape policy."
+            ? "Manual toast opened without changing Escape policy."
             : "Manual toast closed by host-owned state change.";
+    };
+
+    var actionToast = new CodexToast
+    {
+        IsOpen = false,
+        Icon = "i",
+        Title = "Usage refreshed",
+        Description = "Action and close controls are independent slots.",
+        Action = new CodexButton
+        {
+            Content = "View",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        },
+        CloseContent = "Close"
+    };
+    var showAction = new CodexButton
+    {
+        Content = "Show action toast",
+        Size = CodexControlSize.Small,
+        Variant = CodexControlVariant.Secondary
+    };
+    showAction.Click += (_, _) =>
+    {
+        actionToast.IsOpen = true;
+        status.Text = "Action toast opened; action and close slots stay independent.";
     };
 
     return new StackPanel
@@ -109,7 +137,9 @@ public static Control BuildToastInteractionPreview()
                 }
             },
             manualToast,
-            manualDismiss
+            manualDismiss,
+            actionToast,
+            showAction
         }
     };
 }

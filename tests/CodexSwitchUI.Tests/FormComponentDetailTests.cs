@@ -1841,6 +1841,9 @@ public class FormComponentDetailTests
     public void SelectStyleOwnsPopupItemsAndOpeningMotion()
     {
         var root = FindRepositoryRoot();
+        var selectStyle = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Select.axaml"));
+        var selectItemTheme = ExtractBlock(selectStyle, "<ControlTheme TargetType=\"ComboBoxItem\">", "</ControlTheme>");
+        var selectItemStyle = ExtractStyleBlock(selectStyle, "controls|CodexSelect ComboBoxItem");
         var selectCode = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Controls", "CodexSelect.cs"));
 
         AssertStyleContains(
@@ -1856,6 +1859,13 @@ public class FormComponentDetailTests
             "<Setter Property=\"Opacity\" Value=\"1\"",
             "<Setter Property=\"RenderTransform\" Value=\"scale(1)\"",
             "TransformOperationsTransition");
+
+        Assert.Contains("Margin=\"0,4,0,0\"", selectStyle);
+        Assert.Contains("<Setter Property=\"Padding\" Value=\"8,6\" />", selectItemTheme);
+        Assert.Contains("<Setter Property=\"Padding\" Value=\"8,6\" />", selectItemStyle);
+        Assert.DoesNotContain("Margin=\"0,6,0,0\"", selectStyle);
+        Assert.DoesNotContain("<Setter Property=\"Padding\" Value=\"10,7\" />", selectItemTheme);
+        Assert.DoesNotContain("<Setter Property=\"Padding\" Value=\"10,7\" />", selectItemStyle);
 
         Assert.Contains("IsDropDownOpenProperty.Changed.AddClassHandler<CodexSelect>", selectCode);
         Assert.Contains("SelectingItemsControl.SelectionChangedEvent.AddClassHandler<CodexSelect>", selectCode);
@@ -1934,6 +1944,8 @@ public class FormComponentDetailTests
     public void ComboboxStyleOwnsSearchPopupItemStatesAndOpeningMotion()
     {
         var root = FindRepositoryRoot();
+        var comboboxStyle = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Combobox.axaml"));
+        var comboboxItemStyle = ExtractStyleBlock(comboboxStyle, "controls|CodexComboboxItem");
         var comboboxCode = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Controls", "CodexCombobox.cs"));
 
         AssertStyleContains(
@@ -1961,6 +1973,13 @@ public class FormComponentDetailTests
             "controls|CodexComboboxItem.highlighted",
             "controls|CodexComboboxItem.selected /template/ PathIcon#PART_Check",
             "TransformOperationsTransition");
+
+        Assert.Contains("Margin=\"0,4,0,0\"", comboboxStyle);
+        Assert.Contains("<Setter Property=\"MinHeight\" Value=\"32\" />", comboboxItemStyle);
+        Assert.Contains("<Setter Property=\"Padding\" Value=\"8,6\" />", comboboxItemStyle);
+        Assert.DoesNotContain("Margin=\"0,6,0,0\"", comboboxStyle);
+        Assert.DoesNotContain("<Setter Property=\"MinHeight\" Value=\"34\" />", comboboxItemStyle);
+        Assert.DoesNotContain("<Setter Property=\"Padding\" Value=\"8,7\" />", comboboxItemStyle);
 
         Assert.Contains("ItemsSourceProperty.Changed.AddClassHandler<CodexCombobox>", comboboxCode);
         Assert.Contains("SelectedItemProperty.Changed.AddClassHandler<CodexCombobox>", comboboxCode);
@@ -2093,6 +2112,24 @@ public class FormComponentDetailTests
             yield return style[start..end];
             start = end;
         }
+    }
+
+    private static string ExtractStyleBlock(string style, string selector)
+    {
+        return ExtractBlock(style, $"<Style Selector=\"{selector}\"", "</Style>");
+    }
+
+    private static string ExtractBlock(string style, string open, string close)
+    {
+        var start = style.IndexOf(open, StringComparison.Ordinal);
+
+        Assert.True(start >= 0, $"Missing block opener '{open}'.");
+
+        var end = style.IndexOf(close, start, StringComparison.Ordinal);
+
+        Assert.True(end >= 0, $"Block opener '{open}' is not closed by '{close}'.");
+
+        return style[start..(end + close.Length)];
     }
 
     private static string FindRepositoryRoot()

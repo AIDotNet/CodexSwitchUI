@@ -819,8 +819,8 @@
   </Style>
 
   <Style Selector="controls|CodexSideNavItem">
-    <Setter Property="MinHeight" Value="38" />
-    <Setter Property="Padding" Value="10,8" />
+    <Setter Property="MinHeight" Value="44" />
+    <Setter Property="Padding" Value="16,12" />
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderBrush" Value="Transparent" />
@@ -847,7 +847,7 @@
                 Padding="{TemplateBinding Padding}">
           <Grid ColumnDefinitions="Auto,*"
                 RowDefinitions="Auto,Auto"
-                ColumnSpacing="10">
+                ColumnSpacing="8">
             <ContentPresenter Grid.RowSpan="2"
                               Content="{TemplateBinding Icon}"
                               IsVisible="{TemplateBinding HasIcon}"

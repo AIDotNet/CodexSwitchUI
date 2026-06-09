@@ -3,7 +3,6 @@
             Spacing="10">
   <controls:CodexTooltip Content="Token usage refreshes every minute."
                          Placement="Bottom"
-                         IsOpen="True"
                          IsArrowVisible="True"
                          Size="Small">
     <controls:CodexTooltip.Trigger>

@@ -61,7 +61,6 @@ public static class ContextMenuInteractionSample
                 new CodexContextMenuItem
                 {
                     Header = "Move to",
-                    IsSubMenuOpen = true,
                     SubMenuPlacement = PlacementMode.RightEdgeAlignedTop,
                     Items =
                     {
@@ -80,7 +79,6 @@ public static class ContextMenuInteractionSample
                 }
             }
         };
-        contextMenu.Classes.Add("context-menu-open");
 
         var leftMenu = new CodexContextMenu
         {
@@ -93,7 +91,6 @@ public static class ContextMenuInteractionSample
                 new CodexContextMenuItem
                 {
                     Header = "Move left",
-                    IsSubMenuOpen = true,
                     SubMenuPlacement = PlacementMode.LeftEdgeAlignedTop,
                     Items =
                     {
@@ -103,7 +100,6 @@ public static class ContextMenuInteractionSample
                 }
             }
         };
-        leftMenu.Classes.Add("context-menu-open");
 
         return new StackPanel
         {
@@ -111,9 +107,19 @@ public static class ContextMenuInteractionSample
             Children =
             {
                 status,
-                contextMenu,
-                leftMenu
+                ContextMenuTarget("Right-click right side", contextMenu),
+                ContextMenuTarget("Right-click loading", leftMenu)
             }
+        };
+    }
+
+    private static CodexButton ContextMenuTarget(string content, CodexContextMenu menu)
+    {
+        return new CodexButton
+        {
+            Content = content,
+            Size = CodexControlSize.Small,
+            ContextMenu = menu
         };
     }
 

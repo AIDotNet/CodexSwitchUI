@@ -66,6 +66,9 @@ public class CodexPopover : CodexFrame
     public static readonly StyledProperty<PlacementMode> PlacementProperty =
         AvaloniaProperty.Register<CodexPopover, PlacementMode>(nameof(Placement), PlacementMode.Bottom);
 
+    public static readonly StyledProperty<PlacementMode> EffectivePlacementProperty =
+        AvaloniaProperty.Register<CodexPopover, PlacementMode>(nameof(EffectivePlacement), PlacementMode.Bottom);
+
     public static readonly StyledProperty<CodexPopoverAlign> AlignProperty =
         AvaloniaProperty.Register<CodexPopover, CodexPopoverAlign>(nameof(Align), CodexPopoverAlign.Center);
 
@@ -195,6 +198,12 @@ public class CodexPopover : CodexFrame
     {
         get => GetValue(PlacementProperty);
         set => SetValue(PlacementProperty, value);
+    }
+
+    public PlacementMode EffectivePlacement
+    {
+        get => GetValue(EffectivePlacementProperty);
+        private set => SetValue(EffectivePlacementProperty, value);
     }
 
     public CodexPopoverAlign Align
@@ -401,6 +410,7 @@ public class CodexPopover : CodexFrame
 
     private void SyncOpenState()
     {
+        EffectivePlacement = CodexPopupPlacement.Resolve(Placement, Align);
         Classes.Set("open", IsOpen);
         Classes.Set("closed", !IsOpen);
         Classes.Set("trigger-open", HasTrigger && IsOpen);

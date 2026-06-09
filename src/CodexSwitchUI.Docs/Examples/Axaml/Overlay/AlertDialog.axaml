@@ -1,7 +1,6 @@
 <controls:CodexAlertDialog xmlns="https://github.com/avaloniaui"
                            xmlns:controls="using:CodexSwitchUI.Controls"
                            xmlns:primitives="using:CodexSwitchUI.Primitives"
-                           IsOpen="True"
                            Title="Delete provider?"
                            Description="This action cannot be undone. Requests will stop routing through this provider."
                            Media="!"

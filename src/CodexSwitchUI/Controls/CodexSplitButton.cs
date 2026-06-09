@@ -48,6 +48,9 @@ public class CodexSplitButton : ContentControl
     public static readonly StyledProperty<PlacementMode> PlacementProperty =
         AvaloniaProperty.Register<CodexSplitButton, PlacementMode>(nameof(Placement), PlacementMode.Bottom);
 
+    public static readonly StyledProperty<PlacementMode> EffectivePlacementProperty =
+        AvaloniaProperty.Register<CodexSplitButton, PlacementMode>(nameof(EffectivePlacement), PlacementMode.Bottom);
+
     public static readonly StyledProperty<CodexDropdownAlign> AlignProperty =
         AvaloniaProperty.Register<CodexSplitButton, CodexDropdownAlign>(nameof(Align), CodexDropdownAlign.Center);
 
@@ -156,6 +159,12 @@ public class CodexSplitButton : ContentControl
     {
         get => GetValue(PlacementProperty);
         set => SetValue(PlacementProperty, value);
+    }
+
+    public PlacementMode EffectivePlacement
+    {
+        get => GetValue(EffectivePlacementProperty);
+        private set => SetValue(EffectivePlacementProperty, value);
     }
 
     public CodexDropdownAlign Align
@@ -508,6 +517,7 @@ public class CodexSplitButton : ContentControl
 
     private void SyncClasses()
     {
+        EffectivePlacement = CodexPopupPlacement.Resolve(Placement, Align);
         CodexClassSync.SetVariant(Classes, Variant);
         CodexClassSync.SetSize(Classes, Size);
         Classes.Set("open", IsOpen);

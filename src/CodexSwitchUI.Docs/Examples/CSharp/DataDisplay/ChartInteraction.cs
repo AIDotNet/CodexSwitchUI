@@ -9,7 +9,7 @@ public static class ChartInteractionSample
     {
         var status = Muted("Refresh data, toggle tooltip, change legend orientation, and switch indicator geometry.");
         var useBurstData = false;
-        var tooltipOpen = true;
+        var tooltipOpen = false;
         var verticalLegend = false;
         var compact = false;
         var indicator = CodexChartIndicatorStyle.Dot;
@@ -29,7 +29,7 @@ public static class ChartInteractionSample
             Title = "Interactive chart",
             Description = "Chart helpers keep Web-style config surfaces mounted while chart data changes.",
             Legend = ChartLegend(false),
-            Tooltip = ChartTooltip("Current slice", true, indicator),
+            Tooltip = ChartTooltip("Current slice", tooltipOpen, indicator),
             Footer = Muted("Host state controls data, tooltip, legend, and density."),
             Content = chart
         };

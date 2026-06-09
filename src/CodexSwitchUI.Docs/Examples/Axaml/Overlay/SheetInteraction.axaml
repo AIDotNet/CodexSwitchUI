@@ -7,12 +7,11 @@
       RowSpacing="14">
   <StackPanel Spacing="10">
     <primitives:CodexText Role="Muted"
-                          Text="Sheet is open on the right edge." />
+                          Text="OpenChanged: sheet starts closed." />
     <Grid Height="280">
       <controls:CodexSheet Title="Route filters"
                            Description="Dismiss, Escape, outside pointer, and focus return reuse the dialog contract."
                            Side="Right"
-                           IsOpen="True"
                            Width="360">
         <controls:CodexSheet.Trigger>
           <controls:CodexButton Content="Toggle sheet"
@@ -62,10 +61,14 @@
                        Description="Outside pointer and Escape can be disabled for transactional flows."
                        Side="Left"
                        Width="330"
-                       IsOpen="True"
                        CloseOnEscape="False"
                        DismissOnOutsidePointer="False"
                        IsCloseVisible="False">
+    <controls:CodexSheet.Trigger>
+      <controls:CodexButton Content="Open manual sheet"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexSheet.Trigger>
     <controls:CodexSheet.Content>
       <primitives:CodexText Role="Muted"
                             Text="Host code controls when this sheet closes." />
@@ -95,8 +98,12 @@
                        Title="No close button"
                        Description="showCloseButton=false maps to IsCloseVisible=false."
                        Side="Top"
-                       IsOpen="True"
                        IsCloseVisible="False">
+    <controls:CodexSheet.Trigger>
+      <controls:CodexButton Content="Open no-close sheet"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexSheet.Trigger>
     <StackPanel Spacing="8">
       <primitives:CodexText Role="Muted"
                             Text="The action slot can provide the only close affordance." />

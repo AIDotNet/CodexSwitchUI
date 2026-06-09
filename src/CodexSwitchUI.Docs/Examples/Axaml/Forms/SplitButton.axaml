@@ -3,7 +3,6 @@
             Orientation="Horizontal"
             Spacing="12">
   <controls:CodexSplitButton Content="Run sync"
-                             IsOpen="True"
                              IsArrowVisible="True">
     <controls:CodexSplitButton.DropDownContent>
       <StackPanel Width="190"

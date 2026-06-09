@@ -15,7 +15,7 @@ public static class DrawerInteractionSample
         var status = new CodexText
         {
             Role = CodexTextRole.Muted,
-            Text = "Drawer is open at the bottom edge."
+            Text = "OpenChanged: drawer starts closed."
         };
         var drawer = new CodexDrawer
         {
@@ -23,7 +23,6 @@ public static class DrawerInteractionSample
             Title = "Route actions",
             Description = "Drag the handle past the threshold or dismiss through the shared dialog command.",
             Direction = CodexDrawerDirection.Bottom,
-            IsOpen = true,
             RestoreFocusElement = trigger,
             Content = new CodexText
             {
@@ -58,6 +57,7 @@ public static class DrawerInteractionSample
         };
         dragShort.Click += (_, _) =>
         {
+            drawer.IsOpen = true;
             drawer.BeginDrag();
             drawer.DragBy(48);
             drawer.CompleteDrag();
@@ -97,9 +97,9 @@ public static class DrawerInteractionSample
 
         var manualDrawer = new CodexDrawer
         {
+            Trigger = new CodexButton { Content = "Open manual drawer", Size = CodexControlSize.Small },
             Title = "Manual drawer",
             Direction = CodexDrawerDirection.Right,
-            IsOpen = true,
             CloseOnEscape = false,
             DismissOnOutsidePointer = false,
             CloseOnDragDismiss = false,

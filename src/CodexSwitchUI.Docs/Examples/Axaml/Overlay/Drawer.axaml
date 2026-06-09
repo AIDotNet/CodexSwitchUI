@@ -3,8 +3,7 @@
       Height="320">
   <controls:CodexDrawer Title="Provider usage"
                         Description="Drawer uses a handle, a scrollable body, and sticky footer actions."
-                        Direction="Bottom"
-                        IsOpen="True">
+                        Direction="Bottom">
     <controls:CodexDrawer.Trigger>
       <controls:CodexButton Content="Open provider drawer"
                             Size="Small" />

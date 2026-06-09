@@ -10,8 +10,9 @@
     <controls:CodexField.Content>
       <StackPanel Spacing="10">
         <primitives:CodexText Role="Muted"
-                              Text="Toast is open. DismissCommand and close button share the same close path." />
-        <controls:CodexToast Icon="i"
+                              Text="Toast is closed by default. Use the controls to open and dismiss it." />
+        <controls:CodexToast IsOpen="False"
+                             Icon="i"
                              Title="Provider switched"
                              Description="Close button, Escape, and DismissCommand close the same mounted surface."
                              CloseContent="Dismiss">
@@ -26,7 +27,7 @@
           <controls:CodexButton Content="Dismiss command"
                                 Size="Small"
                                 Variant="Secondary" />
-          <controls:CodexButton Content="Reopen"
+          <controls:CodexButton Content="Show toast"
                                 Size="Small"
                                 Variant="Outline" />
         </StackPanel>
@@ -39,13 +40,14 @@
                        Description="CloseOnEscape=false keeps keyboard dismissal under host control.">
     <controls:CodexField.Content>
       <StackPanel Spacing="10">
-        <controls:CodexToast Icon="!"
+        <controls:CodexToast IsOpen="False"
+                             Icon="!"
                              Title="Manual dismissal policy"
                              Description="Escape is ignored because host code owns this notification."
                              Variant="Warning"
                              CloseOnEscape="False"
                              CloseContent="Manual" />
-        <controls:CodexButton Content="Manual close"
+        <controls:CodexButton Content="Toggle manual"
                               Size="Small"
                               Variant="Secondary" />
       </StackPanel>
@@ -56,16 +58,22 @@
                        Label="Action without dismissal"
                        Description="The action slot can mutate content while the toast remains open.">
     <controls:CodexField.Content>
-      <controls:CodexToast Icon="i"
-                           Title="Usage refreshed"
-                           Description="Action and close controls are independent slots."
-                           CloseContent="Close">
-        <controls:CodexToast.Action>
-          <controls:CodexButton Content="View"
-                                Size="Small"
-                                Variant="Secondary" />
-        </controls:CodexToast.Action>
-      </controls:CodexToast>
+      <StackPanel Spacing="10">
+        <controls:CodexToast IsOpen="False"
+                             Icon="i"
+                             Title="Usage refreshed"
+                             Description="Action and close controls are independent slots."
+                             CloseContent="Close">
+          <controls:CodexToast.Action>
+            <controls:CodexButton Content="View"
+                                  Size="Small"
+                                  Variant="Secondary" />
+          </controls:CodexToast.Action>
+        </controls:CodexToast>
+        <controls:CodexButton Content="Show action toast"
+                              Size="Small"
+                              Variant="Secondary" />
+      </StackPanel>
     </controls:CodexField.Content>
   </controls:CodexField>
 

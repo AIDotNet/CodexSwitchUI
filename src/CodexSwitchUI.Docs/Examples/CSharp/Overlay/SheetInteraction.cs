@@ -15,7 +15,7 @@ public static class SheetInteractionSample
         var status = new CodexText
         {
             Role = CodexTextRole.Muted,
-            Text = "Sheet is open on the right edge."
+            Text = "OpenChanged: sheet starts closed."
         };
         var sheet = new CodexSheet
         {
@@ -24,7 +24,6 @@ public static class SheetInteractionSample
             Description = "Dismiss, Escape, outside pointer, and focus return reuse the dialog contract.",
             Side = CodexSheetSide.Right,
             Width = 360,
-            IsOpen = true,
             RestoreFocusElement = trigger,
             Content = new CodexText
             {

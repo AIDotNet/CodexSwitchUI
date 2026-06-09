@@ -16,7 +16,6 @@ public static class CollapsibleInteractionSample
         var collapsible = new CodexCollapsible
         {
             Header = "Measured disclosure",
-            IsOpen = true,
             AnimationDuration = TimeSpan.FromMilliseconds(220),
             ContentPadding = new Thickness(0, 10, 0, 0),
             Content = new StackPanel

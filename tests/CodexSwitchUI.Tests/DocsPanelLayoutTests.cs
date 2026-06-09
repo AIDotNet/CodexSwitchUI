@@ -271,6 +271,41 @@ public class DocsPanelLayoutTests
     }
 
     [Fact]
+    public void DocsNonStateSamplesDoNotDefaultDisclosureControlsOpen()
+    {
+        var openAttributes = new[]
+        {
+            "IsOpen=\"True\"",
+            "IsSubMenuOpen=\"True\"",
+            "IsDropDownOpen=\"True\"",
+            "IsExpanded=\"True\""
+        };
+        var examplesRoot = Path.Combine(DocsRoot(), "Examples", "Axaml");
+        var offenders = new List<string>();
+
+        foreach (var path in Directory.EnumerateFiles(examplesRoot, "*.axaml", SearchOption.AllDirectories))
+        {
+            var fileName = Path.GetFileName(path);
+            if (fileName.EndsWith("Anatomy.axaml", StringComparison.Ordinal)
+                || fileName.EndsWith("States.axaml", StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            var lines = File.ReadAllLines(path);
+            for (var index = 0; index < lines.Length; index++)
+            {
+                if (openAttributes.Any(attribute => lines[index].Contains(attribute, StringComparison.Ordinal)))
+                {
+                    offenders.Add($"{Path.GetRelativePath(examplesRoot, path)}:{index + 1}");
+                }
+            }
+        }
+
+        Assert.Empty(offenders);
+    }
+
+    [Fact]
     public void PreviewSectionShowsInlineExpandableCodeForTheCurrentExample()
     {
         var mainWindow = ReadDocsSource("MainWindow.cs");
@@ -301,6 +336,37 @@ public class DocsPanelLayoutTests
         Assert.True(previewIndex >= 0, "Inline examples must render the component preview.");
         Assert.True(toggleIndex > previewIndex, "Inline examples must render the Show code button below the component preview.");
         Assert.True(codeIndex > toggleIndex, "Inline examples must render the current code blocks below the Show code button.");
+    }
+
+    [Fact]
+    public void DocsShellCodeBlocksAndMatricesUseWebSpacing()
+    {
+        var mainWindow = ReadDocsSource("MainWindow.cs");
+        var codeBlock = ReadDocsSource(Path.Combine("Controls", "DocsCodeBlock.cs"));
+        var shell = ExtractMethod(mainWindow, "BuildDocsShell");
+        var topbar = ExtractMethod(mainWindow, "BuildTopbar");
+        var inlineExample = ExtractMethod(mainWindow, "BuildInlineExample");
+        var addMatrixCell = ExtractMethod(mainWindow, "AddMatrixCell");
+        var behaviorNotes = ExtractMethod(mainWindow, "BuildBehaviorNotes");
+
+        Assert.Contains("private const double DocsDesktopGutter = 40;", mainWindow);
+        Assert.Contains("private const double DocsContentVerticalPadding = 56;", mainWindow);
+        Assert.Contains("private const double DocsInlineExampleGap = 16;", mainWindow);
+        Assert.Contains("private const double DocsMatrixCellHorizontalPadding = 16;", mainWindow);
+        Assert.Contains("private const double DocsMatrixCellVerticalPadding = 12;", mainWindow);
+        Assert.Contains("Padding = new Thickness(DocsDesktopGutter, DocsContentVerticalPadding, DocsDesktopGutter, DocsContentVerticalPadding)", shell);
+        Assert.Contains("Margin = new Thickness(DocsDesktopGutter, 0)", topbar);
+        Assert.Contains("Spacing = DocsInlineExampleGap", inlineExample);
+        Assert.DoesNotContain("Spacing = 14", inlineExample);
+        Assert.Contains("new Thickness(DocsMatrixCellHorizontalPadding, DocsMatrixCellVerticalPadding)", addMatrixCell);
+        Assert.Contains("new Thickness(DocsMatrixCellHorizontalPadding, DocsMatrixCellVerticalPadding)", behaviorNotes);
+
+        Assert.Contains("private const double CodeInset = 16;", codeBlock);
+        Assert.Contains("private const double LineNumberColumnWidth = 56;", codeBlock);
+        Assert.Contains("Padding = new Thickness(0, CodeInset, 12, CodeInset)", codeBlock);
+        Assert.Contains("Padding = new Thickness(0, CodeInset, CodeInset, CodeInset)", codeBlock);
+        Assert.Contains("Padding = new Thickness(CodeInset, 0)", codeBlock);
+        Assert.Contains("new ColumnDefinition(new GridLength(LineNumberColumnWidth))", codeBlock);
     }
 
     [Fact]
@@ -896,7 +962,7 @@ public class DocsPanelLayoutTests
         Assert.Contains("ActivateItem", navigationMenuCode);
         Assert.Contains("CloseViewport", navigationMenuCode);
         Assert.Contains("Orientation = Orientation.Vertical", navigationMenuCode);
-        Assert.Contains("ActiveValue = \"selected\"", navigationMenuCode);
+        Assert.Contains("openVertical.Click", navigationMenuCode);
         Assert.Contains("IsEnabled = false", navigationMenuCode);
 
         var menubarSample = Path.Combine(root, "Examples", "CSharp", "Navigation", "MenubarInteraction.cs");
@@ -905,10 +971,9 @@ public class DocsPanelLayoutTests
         Assert.Contains("ItemSelected", menubarCode);
         Assert.Contains("DidCloseOnSelect", menubarCode);
         Assert.Contains("ActiveMenuChanged", menubarCode);
-        Assert.Contains("OpenMenu(file)", menubarCode);
+        Assert.Contains("OpenMenu(view)", menubarCode);
         Assert.Contains("Dismiss()", menubarCode);
         Assert.Contains("IsLoading = true", menubarCode);
-        Assert.Contains("IsSubMenuOpen = true", menubarCode);
 
         var commandSample = Path.Combine(root, "Examples", "CSharp", "Navigation", "CommandInteraction.cs");
         Assert.True(File.Exists(commandSample), "Expected Command companion C# interaction sample.");
@@ -970,7 +1035,8 @@ public class DocsPanelLayoutTests
         Assert.Contains("DidCloseOnSelect", menuCode);
         Assert.Contains("MenuItemToggleType.CheckBox", menuCode);
         Assert.Contains("MenuItemToggleType.Radio", menuCode);
-        Assert.Contains("IsSubMenuOpen = true", menuCode);
+        Assert.Contains("Header = \"Focused submenu\"", menuCode);
+        Assert.Contains("Header = \"Export blocked\"", menuCode);
         Assert.Contains("IsLoading = true", menuCode);
         Assert.Contains("Command = new SampleCommand", menuCode);
 
@@ -981,7 +1047,8 @@ public class DocsPanelLayoutTests
         Assert.Contains("DidCloseOnSelect", contextMenuCode);
         Assert.Contains("SubMenuPlacement = PlacementMode.RightEdgeAlignedTop", contextMenuCode);
         Assert.Contains("Placement = PlacementMode.Left", contextMenuCode);
-        Assert.Contains("Classes.Add(\"context-menu-open\")", contextMenuCode);
+        Assert.Contains("ContextMenuTarget(\"Right-click right side\"", contextMenuCode);
+        Assert.Contains("ContextMenu = menu", contextMenuCode);
         Assert.Contains("IsInset = true", contextMenuCode);
         Assert.Contains("IsLoading = true", contextMenuCode);
         Assert.Contains("Command = new SampleCommand", contextMenuCode);
@@ -2375,6 +2442,329 @@ public class DocsPanelLayoutTests
             Assert.True(
                 caseCount >= 4,
                 $"Expected {pageId} to expose at least four rendered examples with local AXAML code reveal, found {caseCount}.");
+        }
+    }
+
+    [Fact]
+    public void DefaultDocsSamplesAndPreviewsDoNotForceDisclosureSurfacesOpen()
+    {
+        var source = ReadDocsSource("MainWindow.cs");
+        var forbiddenAxaml = new[]
+        {
+            "IsOpen=\"True\"",
+            "IsDropDownOpen=\"True\"",
+            "IsSubMenuOpen=\"True\"",
+            "IsExpanded=\"True\"",
+            "Classes=\"context-menu-open\""
+        };
+
+        foreach (var sample in ExtractSamplePaths(source))
+        {
+            var path = Path.Combine(DocsRoot(), "Examples", "Axaml", sample.Replace('/', Path.DirectorySeparatorChar));
+            var text = File.ReadAllText(path);
+
+            foreach (var snippet in forbiddenAxaml)
+            {
+                Assert.DoesNotContain(snippet, text);
+            }
+        }
+
+        var defaultPreviewMethods = new[]
+        {
+            "BuildSplitButtonPreview",
+            "BuildNavigationMenuPreview",
+            "BuildMenubarPreview",
+            "BuildDropdownPreview",
+            "BuildContextMenuPreview",
+            "BuildCollapsiblePreview",
+            "BuildAccordionPreview",
+            "BuildDialogPreview",
+            "BuildAlertDialogPreview",
+            "BuildSheetPreview",
+            "BuildDrawerPreview",
+            "BuildCommandDialogPreview",
+            "BuildPopoverPreview",
+            "BuildTooltipPreview",
+            "BuildHoverCardPreview",
+            "BuildChartPreview",
+            "BuildBarChartPreview",
+            "BuildLineChartPreview",
+            "BuildOverlayPrimitivePreview"
+        };
+        var forbiddenCode = new[]
+        {
+            "IsOpen = true",
+            "IsDropDownOpen = true",
+            "IsSubMenuOpen = true",
+            ".ActivateItem(",
+            ".OpenMenu(",
+            "Classes.Add(\"context-menu-open\")"
+        };
+
+        foreach (var methodName in defaultPreviewMethods)
+        {
+            var method = ExtractMethod(source, methodName);
+            foreach (var snippet in forbiddenCode)
+            {
+                Assert.DoesNotContain(snippet, method);
+            }
+        }
+    }
+
+    [Fact]
+    public void FormInteractionDocsDoNotStartPopupExamplesOpen()
+    {
+        var source = ReadDocsSource("MainWindow.cs");
+        var methods = new[]
+        {
+            "BuildSplitButtonInteractionPreview",
+            "BuildSelectInteractionPreview",
+            "BuildComboboxInteractionPreview",
+            "BuildDatePickerInteractionPreview"
+        };
+        var forbiddenCode = new[]
+        {
+            "IsOpen = true,",
+            "IsDropDownOpen = true,",
+            "isOpen: true"
+        };
+
+        foreach (var methodName in methods)
+        {
+            var method = ExtractMethod(source, methodName);
+            foreach (var snippet in forbiddenCode)
+            {
+                Assert.DoesNotContain(snippet, method);
+            }
+        }
+
+        var docsRoot = DocsRoot();
+        var csharpSamples = new[]
+        {
+            "SelectInteraction.cs",
+            "ComboboxInteraction.cs",
+            "SplitButtonInteraction.cs",
+            "DatePickerInteraction.cs"
+        };
+        foreach (var sample in csharpSamples)
+        {
+            var text = File.ReadAllText(Path.Combine(docsRoot, "Examples", "CSharp", "Forms", sample));
+            Assert.DoesNotContain("IsOpen = true,", text);
+            Assert.DoesNotContain("IsDropDownOpen = true,", text);
+        }
+
+        var axamlSamples = new[]
+        {
+            "SelectInteraction.axaml",
+            "ComboboxInteraction.axaml",
+            "SplitButtonInteraction.axaml",
+            "DatePickerInteraction.axaml"
+        };
+        foreach (var sample in axamlSamples)
+        {
+            var text = File.ReadAllText(Path.Combine(docsRoot, "Examples", "Axaml", "Forms", sample));
+            Assert.DoesNotContain("IsOpen=\"True\"", text);
+            Assert.DoesNotContain("IsDropDownOpen=\"True\"", text);
+        }
+    }
+
+    [Fact]
+    public void NavigationInteractionDocsDoNotStartDisclosureExamplesOpen()
+    {
+        var source = ReadDocsSource("MainWindow.cs");
+        var methods = new[]
+        {
+            "BuildDropdownInteractionPreview",
+            "BuildAccordionInteractionPreview",
+            "BuildCollapsibleInteractionPreview",
+            "BuildNavigationMenuInteractionPreview",
+            "BuildMenubarInteractionPreview",
+            "BuildMenuInteractionPreview",
+            "BuildContextMenuInteractionPreview",
+            "BuildBreadcrumbInteractionPreview"
+        };
+        var forbiddenCode = new[]
+        {
+            "IsOpen = true,",
+            "IsSubMenuOpen = true,",
+            ".Classes.Add(\"context-menu-open\")"
+        };
+
+        foreach (var methodName in methods)
+        {
+            var method = ExtractMethod(source, methodName);
+            foreach (var snippet in forbiddenCode)
+            {
+                Assert.DoesNotContain(snippet, method);
+            }
+        }
+
+        var docsRoot = DocsRoot();
+        var csharpSamples = new[]
+        {
+            "DropdownButtonInteraction.cs",
+            "AccordionInteraction.cs",
+            "CollapsibleInteraction.cs",
+            "NavigationMenuInteraction.cs",
+            "MenubarInteraction.cs",
+            "MenuInteraction.cs",
+            "ContextMenuInteraction.cs",
+            "BreadcrumbInteraction.cs"
+        };
+        foreach (var sample in csharpSamples)
+        {
+            var text = File.ReadAllText(Path.Combine(docsRoot, "Examples", "CSharp", "Navigation", sample));
+            Assert.DoesNotContain("IsOpen = true,", text);
+            Assert.DoesNotContain("IsSubMenuOpen = true,", text);
+            Assert.DoesNotContain("Classes.Add(\"context-menu-open\")", text);
+            Assert.DoesNotContain("\n        menu.ActivateItem(overview);", text);
+            Assert.DoesNotContain("\n        menu.ActivateItem(components);", text);
+            Assert.DoesNotContain("\n        vertical.ActivateItem(verticalSelected);", text);
+            Assert.DoesNotContain("\n        menubar.OpenMenu(file);", text);
+            Assert.DoesNotContain("contextMenu.Classes.Add(\"context-menu-open\");", text);
+            Assert.DoesNotContain("leftMenu.Classes.Add(\"context-menu-open\");", text);
+        }
+
+        var axamlSamples = new[]
+        {
+            "DropdownButtonInteraction.axaml",
+            "AccordionInteraction.axaml",
+            "CollapsibleInteraction.axaml",
+            "NavigationMenuInteraction.axaml",
+            "MenubarInteraction.axaml",
+            "MenuInteraction.axaml",
+            "ContextMenuInteraction.axaml",
+            "BreadcrumbInteraction.axaml"
+        };
+        foreach (var sample in axamlSamples)
+        {
+            var text = File.ReadAllText(Path.Combine(docsRoot, "Examples", "Axaml", "Navigation", sample));
+            Assert.DoesNotContain("IsOpen=\"True\"", text);
+            Assert.DoesNotContain("IsSubMenuOpen=\"True\"", text);
+            Assert.DoesNotContain("Classes=\"context-menu-open\"", text);
+        }
+    }
+
+    [Fact]
+    public void OverlayInteractionDocsDoNotStartLayerExamplesOpen()
+    {
+        var source = ReadDocsSource("MainWindow.cs");
+        var methods = new[]
+        {
+            "BuildDialogInteractionPreview",
+            "BuildAlertDialogInteractionPreview",
+            "BuildPopoverInteractionPreview",
+            "BuildSheetInteractionPreview",
+            "BuildDrawerInteractionPreview",
+            "BuildCommandDialogInteractionPreview",
+            "BuildTooltipInteractionPreview",
+            "BuildHoverCardInteractionPreview"
+        };
+
+        foreach (var methodName in methods)
+        {
+            var method = ExtractMethod(source, methodName);
+            Assert.DoesNotContain("IsOpen = true,", method);
+        }
+
+        var docsRoot = DocsRoot();
+        var csharpSamples = new[]
+        {
+            "DialogInteraction.cs",
+            "AlertDialogInteraction.cs",
+            "PopoverInteraction.cs",
+            "SheetInteraction.cs",
+            "DrawerInteraction.cs",
+            "CommandDialogInteraction.cs",
+            "TooltipInteraction.cs",
+            "HoverCardInteraction.cs"
+        };
+        foreach (var sample in csharpSamples)
+        {
+            var text = File.ReadAllText(Path.Combine(docsRoot, "Examples", "CSharp", "Overlay", sample));
+            Assert.DoesNotContain("IsOpen = true,", text);
+        }
+
+        var axamlSamples = new[]
+        {
+            "DialogInteraction.axaml",
+            "AlertDialogInteraction.axaml",
+            "PopoverInteraction.axaml",
+            "SheetInteraction.axaml",
+            "DrawerInteraction.axaml",
+            "CommandDialogInteraction.axaml",
+            "TooltipInteraction.axaml",
+            "HoverCardInteraction.axaml"
+        };
+        foreach (var sample in axamlSamples)
+        {
+            var text = File.ReadAllText(Path.Combine(docsRoot, "Examples", "Axaml", "Overlay", sample));
+            Assert.DoesNotContain("IsOpen=\"True\"", text);
+        }
+    }
+
+    [Fact]
+    public void FeedbackDataAndPrimitiveInteractionDocsDoNotStartTransientExamplesOpen()
+    {
+        var source = ReadDocsSource("MainWindow.cs");
+
+        var toastMethod = ExtractMethod(source, "BuildToastInteractionPreview");
+        Assert.DoesNotContain("IsOpen = true,", toastMethod);
+        Assert.Contains("IsOpen = false,", toastMethod);
+        Assert.Contains("primaryToast.IsOpen = true;", toastMethod);
+
+        var sonnerMethod = ExtractMethod(source, "BuildSonnerInteractionPreview");
+        Assert.Contains("CodexSonnerService.Clear();", sonnerMethod);
+        Assert.DoesNotContain("\n        CodexSonnerService.Success", sonnerMethod);
+        Assert.DoesNotContain("\n        CodexSonnerService.Warning", sonnerMethod);
+        Assert.DoesNotContain("\n        CodexSonnerService.Loading", sonnerMethod);
+        Assert.Contains("success.Click", sonnerMethod);
+        Assert.Contains("loading.Click", sonnerMethod);
+
+        var chartMethod = ExtractMethod(source, "BuildChartInteractionPreview");
+        Assert.DoesNotContain("var tooltipOpen = true;", chartMethod);
+        Assert.DoesNotContain("ChartTooltip(\"Current slice\", true", chartMethod);
+        Assert.Contains("var tooltipOpen = false;", chartMethod);
+
+        var overlayMethod = ExtractMethod(source, "BuildOverlayPrimitiveInteractionPreview");
+        Assert.DoesNotContain("IsOpen = true,", overlayMethod);
+        Assert.Contains("IsOpen = false,", overlayMethod);
+        Assert.Contains("overlay.IsOpen = true;", overlayMethod);
+
+        var docsRoot = DocsRoot();
+        var feedbackCSharp = new[]
+        {
+            "ToastInteraction.cs",
+            "SonnerInteraction.cs"
+        };
+        foreach (var sample in feedbackCSharp)
+        {
+            var text = File.ReadAllText(Path.Combine(docsRoot, "Examples", "CSharp", "Feedback", sample));
+            Assert.DoesNotContain("IsOpen = true,", text);
+            Assert.DoesNotContain("\n    CodexSonnerService.Success", text);
+            Assert.DoesNotContain("\n    CodexSonnerService.Warning", text);
+            Assert.DoesNotContain("\n    CodexSonnerService.Loading", text);
+        }
+
+        var chartCSharp = File.ReadAllText(Path.Combine(docsRoot, "Examples", "CSharp", "DataDisplay", "ChartInteraction.cs"));
+        Assert.DoesNotContain("var tooltipOpen = true;", chartCSharp);
+        Assert.DoesNotContain("ChartTooltip(\"Current slice\", true", chartCSharp);
+
+        var primitiveOverlayCSharp = File.ReadAllText(Path.Combine(docsRoot, "Examples", "CSharp", "Primitives", "OverlayInteraction.cs"));
+        Assert.DoesNotContain("IsOpen = true,", primitiveOverlayCSharp);
+
+        var axamlSamples = new[]
+        {
+            Path.Combine("Feedback", "ToastInteraction.axaml"),
+            Path.Combine("Feedback", "SonnerInteraction.axaml"),
+            Path.Combine("DataDisplay", "ChartInteraction.axaml"),
+            Path.Combine("DataDisplay", "DataTableInteraction.axaml"),
+            Path.Combine("Primitives", "OverlayInteraction.axaml")
+        };
+        foreach (var sample in axamlSamples)
+        {
+            var text = File.ReadAllText(Path.Combine(docsRoot, "Examples", "Axaml", sample));
+            Assert.DoesNotContain("IsOpen=\"True\"", text);
         }
     }
 

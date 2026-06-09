@@ -15,7 +15,6 @@ public static class SelectInteractionSample
         {
             ItemsSource = new[] { "OpenAI", "Claude", "Responses" },
             SelectedIndex = 0,
-            IsDropDownOpen = true,
             MinWidth = 240
         };
         select.OpenChanged += (_, args) =>
@@ -27,11 +26,19 @@ public static class SelectInteractionSample
             status.Text = $"ValueChanged: {args.OldValue ?? "none"} -> {args.NewValue ?? "none"} (source={args.Source}).";
         };
 
+        var openPopup = new CodexButton
+        {
+            Content = "Open",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        openPopup.Click += (_, _) => select.IsDropDownOpen = true;
+
         var chooseClaude = new CodexButton
         {
             Content = "Claude",
             Size = CodexControlSize.Small,
-            Variant = CodexControlVariant.Secondary
+            Variant = CodexControlVariant.Outline
         };
         chooseClaude.Click += (_, _) => select.SelectedIndex = 1;
 
@@ -56,6 +63,7 @@ public static class SelectInteractionSample
                     Spacing = 8,
                     Children =
                     {
+                        openPopup,
                         chooseClaude,
                         closePopup
                     }

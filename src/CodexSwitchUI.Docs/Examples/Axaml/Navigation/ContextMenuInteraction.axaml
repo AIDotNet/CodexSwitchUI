@@ -7,66 +7,80 @@
         RowDefinitions="Auto,Auto"
         ColumnSpacing="14"
         RowSpacing="14">
-  <controls:CodexContextMenu MinWidth="240"
-                             Placement="Right"
-                             Classes="context-menu-open">
-    <controls:CodexContextMenuLabel Content="Right side" />
-    <controls:CodexContextMenuItem Header="Open session"
-                                   Shortcut="Cmd+O"
-                                   IsActive="True" />
-    <controls:CodexContextMenuItem Header="Move to"
-                                   IsSubMenuOpen="True"
-                                   SubMenuPlacement="RightEdgeAlignedTop">
-      <controls:CodexContextMenuItem Header="Archive" />
-      <controls:CodexContextMenuItem Header="Favorites" />
-    </controls:CodexContextMenuItem>
-  </controls:CodexContextMenu>
+  <controls:CodexButton Content="Right-click right side"
+                        Size="Small">
+    <controls:CodexButton.ContextMenu>
+      <controls:CodexContextMenu MinWidth="240"
+                                 Placement="Right">
+        <controls:CodexContextMenuLabel Content="Right side" />
+        <controls:CodexContextMenuItem Header="Open session"
+                                       Shortcut="Cmd+O"
+                                       IsActive="True" />
+        <controls:CodexContextMenuItem Header="Move to"
+                                       SubMenuPlacement="RightEdgeAlignedTop">
+          <controls:CodexContextMenuItem Header="Archive" />
+          <controls:CodexContextMenuItem Header="Favorites" />
+        </controls:CodexContextMenuItem>
+      </controls:CodexContextMenu>
+    </controls:CodexButton.ContextMenu>
+  </controls:CodexButton>
 
-  <controls:CodexContextMenu Grid.Column="1"
-                             MinWidth="240"
-                             Placement="Left"
-                             Classes="context-menu-open">
-    <controls:CodexContextMenuLabel Content="Left side" />
-    <controls:CodexContextMenuItem Header="Move left"
-                                   IsSubMenuOpen="True"
-                                   SubMenuPlacement="LeftEdgeAlignedTop">
-      <controls:CodexContextMenuItem Header="Inbox" />
-      <controls:CodexContextMenuItem Header="Backlog" />
-    </controls:CodexContextMenuItem>
-    <controls:CodexContextMenuItem Header="Delete"
-                                   IsEnabled="False" />
-  </controls:CodexContextMenu>
+  <controls:CodexButton Grid.Column="1"
+                        Content="Right-click left side"
+                        Size="Small">
+    <controls:CodexButton.ContextMenu>
+      <controls:CodexContextMenu MinWidth="240"
+                                 Placement="Left">
+        <controls:CodexContextMenuLabel Content="Left side" />
+        <controls:CodexContextMenuItem Header="Move left"
+                                       SubMenuPlacement="LeftEdgeAlignedTop">
+          <controls:CodexContextMenuItem Header="Inbox" />
+          <controls:CodexContextMenuItem Header="Backlog" />
+        </controls:CodexContextMenuItem>
+        <controls:CodexContextMenuItem Header="Delete"
+                                       IsEnabled="False" />
+      </controls:CodexContextMenu>
+    </controls:CodexButton.ContextMenu>
+  </controls:CodexButton>
 
-  <controls:CodexContextMenu Grid.Row="1"
-                             MinWidth="240"
-                             Placement="Bottom"
-                             Classes="context-menu-open"
-                             IsLoading="True">
-    <controls:CodexContextMenuLabel Content="Loading gate"
-                                    IsInset="True" />
-    <controls:CodexContextMenuItem Header="Copy link"
-                                   Shortcut="Cmd+L" />
-    <controls:CodexContextMenuItem Header="Move blocked">
-      <controls:CodexContextMenuItem Header="Archive" />
-      <controls:CodexContextMenuItem Header="Favorites" />
-    </controls:CodexContextMenuItem>
-  </controls:CodexContextMenu>
+  <controls:CodexButton Grid.Row="1"
+                        Content="Right-click loading"
+                        Size="Small">
+    <controls:CodexButton.ContextMenu>
+      <controls:CodexContextMenu MinWidth="240"
+                                 Placement="Bottom"
+                                 IsLoading="True">
+        <controls:CodexContextMenuLabel Content="Loading gate"
+                                        IsInset="True" />
+        <controls:CodexContextMenuItem Header="Copy link"
+                                       Shortcut="Cmd+L" />
+        <controls:CodexContextMenuItem Header="Move blocked">
+          <controls:CodexContextMenuItem Header="Archive" />
+          <controls:CodexContextMenuItem Header="Favorites" />
+        </controls:CodexContextMenuItem>
+      </controls:CodexContextMenu>
+    </controls:CodexButton.ContextMenu>
+  </controls:CodexButton>
 
-  <controls:CodexContextMenu Grid.Row="1"
-                             Grid.Column="1"
-                             MinWidth="240"
-                             Placement="Top"
-                             Classes="context-menu-open">
-    <controls:CodexContextMenuLabel Content="Selection" />
-    <controls:CodexContextMenuItem Header="Pinned"
-                                   ToggleType="CheckBox"
-                                   IsChecked="True" />
-    <controls:CodexContextMenuItem Header="Compact mode"
-                                   ToggleType="Radio"
-                                   IsChecked="True"
-                                   IsInset="True" />
-    <controls:CodexContextMenuItem Header="Disabled leaf"
-                                   IsEnabled="False" />
-  </controls:CodexContextMenu>
+  <controls:CodexButton Grid.Row="1"
+                        Grid.Column="1"
+                        Content="Right-click selection"
+                        Size="Small">
+    <controls:CodexButton.ContextMenu>
+      <controls:CodexContextMenu MinWidth="240"
+                                 Placement="Top">
+        <controls:CodexContextMenuLabel Content="Selection" />
+        <controls:CodexContextMenuItem Header="Pinned"
+                                       ToggleType="CheckBox"
+                                       IsChecked="True" />
+        <controls:CodexContextMenuItem Header="Compact mode"
+                                       ToggleType="Radio"
+                                       IsChecked="True"
+                                       IsInset="True" />
+        <controls:CodexContextMenuItem Header="Disabled leaf"
+                                       IsEnabled="False" />
+      </controls:CodexContextMenu>
+    </controls:CodexButton.ContextMenu>
+  </controls:CodexButton>
   </Grid>
 </StackPanel>

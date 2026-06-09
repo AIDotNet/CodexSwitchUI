@@ -90,7 +90,6 @@ public static class BreadcrumbInteractionSample
                         Content = new CodexDropdownButton
                         {
                             Content = "...",
-                            IsOpen = true,
                             Size = CodexControlSize.Small,
                             Variant = CodexControlVariant.Ghost,
                             IsArrowVisible = false,

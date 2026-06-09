@@ -136,7 +136,7 @@
                  IsLightDismissEnabled="True"
                  InheritsTransform="True">
             <Border x:Name="PART_PopupBorder"
-                    Margin="0,6,0,0"
+                    Margin="0,4,0,0"
                     Padding="0"
                     Background="{DynamicResource CodexSwitch.PopoverBrush}"
                     BorderBrush="{DynamicResource CodexSwitch.BorderBrush}"

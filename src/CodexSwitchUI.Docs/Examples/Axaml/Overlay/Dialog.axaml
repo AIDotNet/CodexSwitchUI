@@ -2,8 +2,7 @@
                       xmlns:controls="using:CodexSwitchUI.Controls"
                       xmlns:primitives="using:CodexSwitchUI.Primitives"
                       Title="Delete provider?"
-                      Description="Dialog dismissal uses Escape, outside pointer, close button, and focus return."
-                      IsOpen="True">
+                      Description="Dialog dismissal uses Escape, outside pointer, close button, and focus return.">
   <controls:CodexDialog.Trigger>
     <controls:CodexButton Content="Delete provider"
                           Size="Small"

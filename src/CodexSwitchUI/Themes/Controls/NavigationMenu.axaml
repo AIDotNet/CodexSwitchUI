@@ -345,8 +345,8 @@
     <Setter Property="BorderBrush" Value="Transparent" />
     <Setter Property="BorderThickness" Value="1" />
     <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusSm}" />
-    <Setter Property="Padding" Value="10" />
-    <Setter Property="MinHeight" Value="56" />
+    <Setter Property="Padding" Value="16,12" />
+    <Setter Property="MinHeight" Value="44" />
     <Setter Property="Cursor" Value="Hand" />
     <Setter Property="FocusAdorner" Value="{x:Null}" />
     <Setter Property="Transitions">
@@ -370,8 +370,8 @@
                 ColumnSpacing="8">
             <ContentPresenter x:Name="PART_LinkIcon"
                               Grid.Column="0"
-                              Width="18"
-                              Height="18"
+                              Width="16"
+                              Height="16"
                               Content="{TemplateBinding Icon}"
                               IsVisible="{TemplateBinding HasIcon}"
                               HorizontalAlignment="Center"

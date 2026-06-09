@@ -11,13 +11,12 @@ public static class DatePickerInteractionSample
         var status = new CodexText
         {
             Role = CodexTextRole.Muted,
-            Text = "OpenChanged: picker starts open (source=Programmatic)."
+            Text = "OpenChanged: picker starts closed; use ArrowDown to open."
         };
         var picker = new CodexDatePicker
         {
             DisplayDate = new DateTime(2026, 5, 1),
             SelectedDate = new DateTime(2026, 5, 13),
-            IsOpen = true,
             CloseOnSelect = false,
             MinWidth = 280
         };
@@ -55,7 +54,6 @@ public static class DatePickerInteractionSample
             DisplayDate = new DateTime(2026, 2, 1),
             SelectionMode = CodexCalendarSelectionMode.Range,
             RangeStart = new DateTime(2026, 2, 9),
-            IsOpen = true,
             MinWidth = 280
         };
         rangePicker.RangeChanged += (_, args) =>
@@ -63,7 +61,9 @@ public static class DatePickerInteractionSample
             var suffix = args.End.HasValue ? "complete" : "open";
             rangeStatus.Text = $"RangeChanged: {DateLabel(args.Start)} -> {DateLabel(args.End)} ({suffix}, source={args.Source}).";
         };
-        var finishRange = new CodexButton { Content = "Finish range", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary };
+        var openRange = new CodexButton { Content = "Open range", Size = CodexControlSize.Small, Variant = CodexControlVariant.Secondary };
+        openRange.Click += (_, _) => rangePicker.Open();
+        var finishRange = new CodexButton { Content = "Finish range", Size = CodexControlSize.Small, Variant = CodexControlVariant.Outline };
         finishRange.Click += (_, _) => rangePicker.SelectDate(new DateTime(2026, 2, 18));
 
         var guarded = new CodexDatePicker
@@ -72,7 +72,6 @@ public static class DatePickerInteractionSample
             SelectedDate = new DateTime(2026, 8, 18),
             MinDate = new DateTime(2026, 8, 10),
             MaxDate = new DateTime(2026, 8, 24),
-            IsOpen = true,
             IsLoading = true,
             Intent = CodexControlIntent.Error,
             MinWidth = 280
@@ -103,7 +102,12 @@ public static class DatePickerInteractionSample
                 clearSelection,
                 rangeStatus,
                 rangePicker,
-                finishRange,
+                new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Spacing = 8,
+                    Children = { openRange, finishRange }
+                },
                 guarded,
                 tryGuardedSelection
             }

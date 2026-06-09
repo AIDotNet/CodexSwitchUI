@@ -17,15 +17,13 @@
       </controls:CodexMenubarItem>
     </controls:CodexMenubarMenu>
 
-    <controls:CodexMenubarMenu Header="Edit"
-                                IsSubMenuOpen="True">
+    <controls:CodexMenubarMenu Header="Edit">
       <controls:CodexMenubarItem Header="Undo"
                                  Shortcut="Cmd+Z" />
       <controls:CodexMenubarItem Header="Redo"
                                  Shortcut="Shift+Cmd+Z" />
       <controls:CodexMenubarSeparator />
-      <controls:CodexMenubarItem Header="Find"
-                                 IsSubMenuOpen="True">
+      <controls:CodexMenubarItem Header="Find">
         <controls:CodexMenubarItem Header="Search the web" />
         <controls:CodexMenubarSeparator />
         <controls:CodexMenubarItem Header="Find"

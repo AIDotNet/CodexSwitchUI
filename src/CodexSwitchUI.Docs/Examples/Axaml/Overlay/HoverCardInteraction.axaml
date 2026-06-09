@@ -5,8 +5,7 @@
       RowDefinitions="Auto,Auto"
       ColumnSpacing="14"
       RowSpacing="14">
-  <controls:CodexHoverCard IsOpen="True"
-                           Placement="Right"
+  <controls:CodexHoverCard Placement="Right"
                            Align="Start"
                            OpenDelay="0:0:0.7"
                            CloseDelay="0:0:0.3">
@@ -27,7 +26,6 @@
   </controls:CodexHoverCard>
 
   <controls:CodexHoverCard Grid.Column="1"
-                           IsOpen="True"
                            Placement="Top"
                            Align="End"
                            OpenDelay="0:0:0"

@@ -17,8 +17,7 @@ public static class AccordionInteractionSample
         {
             Value = "routing",
             Header = "Routing",
-            IsOpen = true,
-            Content = new CodexText { Role = CodexTextRole.Muted, Text = "Initially open single-mode item." }
+            Content = new CodexText { Role = CodexTextRole.Muted, Text = "Closed by default; trigger or button opens this single-mode item." }
         };
         var billing = new CodexAccordionItem
         {
@@ -50,12 +49,19 @@ public static class AccordionInteractionSample
             Size = CodexControlSize.Small
         };
         openBilling.Click += (_, _) => billing.IsOpen = true;
+        var openRouting = new CodexButton
+        {
+            Content = "Open routing",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        openRouting.Click += (_, _) => routing.IsOpen = true;
 
         var collapseAll = new CodexButton
         {
             Content = "Collapse all",
             Size = CodexControlSize.Small,
-            Variant = CodexControlVariant.Secondary
+            Variant = CodexControlVariant.Ghost
         };
         collapseAll.Click += (_, _) =>
         {
@@ -76,7 +82,7 @@ public static class AccordionInteractionSample
                 {
                     Orientation = Orientation.Horizontal,
                     Spacing = 8,
-                    Children = { openBilling, collapseAll }
+                    Children = { openRouting, openBilling, collapseAll }
                 },
                 new CodexAccordion
                 {
@@ -89,14 +95,12 @@ public static class AccordionInteractionSample
                         {
                             Value = "multi-routes",
                             Header = "Multiple routes",
-                            IsOpen = true,
-                            Content = new CodexText { Role = CodexTextRole.Muted, Text = "Independent toggle remains open." }
+                            Content = new CodexText { Role = CodexTextRole.Muted, Text = "Independent toggle can stay open." }
                         },
                         new CodexAccordionItem
                         {
                             Value = "multi-limits",
                             Header = "Multiple limits",
-                            IsOpen = true,
                             Content = new CodexText { Role = CodexTextRole.Muted, Text = "The second item can stay open at the same time." }
                         }
                     }

@@ -4,7 +4,6 @@
             Spacing="14">
   <controls:CodexPopover Title="Usage window"
                          Description="Popover content uses the same dismiss and focus-return contract as overlays."
-                         IsOpen="True"
                          IsArrowVisible="True">
     <controls:CodexPopover.Trigger>
       <controls:CodexButton Content="Trigger"

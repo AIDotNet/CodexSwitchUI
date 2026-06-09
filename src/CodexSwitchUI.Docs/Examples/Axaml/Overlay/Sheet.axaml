@@ -5,7 +5,6 @@
   <controls:CodexSheet Title="Provider filters"
                        Description="Sheet extends dialog dismissal with edge-mounted slide motion."
                        Side="Right"
-                       IsOpen="True"
                        Width="360">
     <controls:CodexSheet.Trigger>
       <controls:CodexButton Content="Open filters"

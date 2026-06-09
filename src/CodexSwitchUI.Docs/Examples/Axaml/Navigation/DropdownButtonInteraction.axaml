@@ -1,15 +1,23 @@
 <StackPanel xmlns="https://github.com/avaloniaui"
             xmlns:controls="using:CodexSwitchUI.Controls"
             Spacing="12">
-  <TextBlock Text="OpenChanged: dropdown starts open."
+  <TextBlock Text="OpenChanged: dropdown starts closed."
              TextWrapping="Wrap" />
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexButton Content="Open"
+                          Size="Small"
+                          Variant="Secondary" />
+    <controls:CodexButton Content="Dismiss"
+                          Size="Small"
+                          Variant="Ghost" />
+  </StackPanel>
 
   <Grid ColumnDefinitions="*,*"
         RowDefinitions="Auto,Auto"
         ColumnSpacing="14"
         RowSpacing="14">
     <controls:CodexDropdownButton Content="Provider actions"
-                                  IsOpen="True"
                                   IsArrowVisible="True"
                                   Align="Start">
       <controls:CodexDropdownButton.DropDownContent>
@@ -30,7 +38,6 @@
 
     <controls:CodexDropdownButton Grid.Column="1"
                                   Content="Keep surface"
-                                  IsOpen="True"
                                   CloseOnItemSelected="False"
                                   Align="End">
       <controls:CodexDropdownButton.DropDownContent>

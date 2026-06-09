@@ -9,8 +9,8 @@
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
     <Setter Property="BorderThickness" Value="1" />
     <Setter Property="CornerRadius" Value="{DynamicResource CodexSwitch.RadiusLg}" />
-    <Setter Property="Padding" Value="28" />
-    <Setter Property="MinHeight" Value="180" />
+    <Setter Property="Padding" Value="20" />
+    <Setter Property="MinHeight" Value="160" />
     <Setter Property="HorizontalContentAlignment" Value="Center" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="FocusAdorner" Value="{x:Null}" />
@@ -165,8 +165,8 @@
   </Style>
 
   <Style Selector="controls|CodexEmptyState.size-sm">
-    <Setter Property="Padding" Value="20" />
-    <Setter Property="MinHeight" Value="140" />
+    <Setter Property="Padding" Value="16" />
+    <Setter Property="MinHeight" Value="128" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
   </Style>
 
@@ -176,8 +176,8 @@
   </Style>
 
   <Style Selector="controls|CodexEmptyState.size-lg">
-    <Setter Property="Padding" Value="36" />
-    <Setter Property="MinHeight" Value="220" />
+    <Setter Property="Padding" Value="24" />
+    <Setter Property="MinHeight" Value="200" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
   </Style>
 

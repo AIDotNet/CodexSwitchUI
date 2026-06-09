@@ -17,7 +17,6 @@
 
   <controls:CodexChartContainer.Tooltip>
     <controls:CodexChartTooltipContent Label="Hover a point"
-                                       IsOpen="True"
                                        IndicatorStyle="Line">
       <controls:CodexChartTooltipItem Content="Requests"
                                       Value="512"

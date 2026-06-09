@@ -52,6 +52,9 @@ public class CodexDropdownButton : ContentControl
     public static readonly StyledProperty<PlacementMode> PlacementProperty =
         AvaloniaProperty.Register<CodexDropdownButton, PlacementMode>(nameof(Placement), PlacementMode.Bottom);
 
+    public static readonly StyledProperty<PlacementMode> EffectivePlacementProperty =
+        AvaloniaProperty.Register<CodexDropdownButton, PlacementMode>(nameof(EffectivePlacement), PlacementMode.Bottom);
+
     public static readonly StyledProperty<CodexDropdownAlign> AlignProperty =
         AvaloniaProperty.Register<CodexDropdownButton, CodexDropdownAlign>(nameof(Align), CodexDropdownAlign.Center);
 
@@ -137,6 +140,12 @@ public class CodexDropdownButton : ContentControl
     {
         get => GetValue(PlacementProperty);
         set => SetValue(PlacementProperty, value);
+    }
+
+    public PlacementMode EffectivePlacement
+    {
+        get => GetValue(EffectivePlacementProperty);
+        private set => SetValue(EffectivePlacementProperty, value);
     }
 
     public CodexDropdownAlign Align
@@ -396,6 +405,7 @@ public class CodexDropdownButton : ContentControl
 
     private void SyncClasses()
     {
+        EffectivePlacement = CodexPopupPlacement.Resolve(Placement, Align);
         CodexClassSync.SetVariant(Classes, Variant);
         CodexClassSync.SetSize(Classes, Size);
         Classes.Set("open", IsOpen);

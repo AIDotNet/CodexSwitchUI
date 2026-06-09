@@ -70,9 +70,14 @@ public static class PopoverInteractionSample
 
         var policy = new CodexPopover
         {
+            Trigger = new CodexButton
+            {
+                Content = "Open persistent panel",
+                Size = CodexControlSize.Small,
+                Variant = CodexControlVariant.Secondary
+            },
             Title = "Persistent panel",
             Description = "Escape and outside pointer are disabled for manual host control.",
-            IsOpen = true,
             CloseOnEscape = false,
             DismissOnOutsidePointer = false,
             IsCloseVisible = false,

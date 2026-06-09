@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Layout;
 using CodexSwitchUI.Controls;
 
 public static class SonnerInteractionSample
@@ -8,23 +9,71 @@ public static Control BuildSonnerInteractionPreview()
 {
     CodexSonnerService.Clear();
 
-    CodexSonnerService.Success("Provider saved", new CodexSonnerOptions
+    var status = new CodexText
     {
-        Description = "Success toast auto-dismisses after the configured duration.",
-        Action = new CodexSonnerAction("Undo", () => { })
-    });
+        Role = CodexTextRole.Muted,
+        Text = "Sonner viewport is empty by default. Trigger a toast to mount host rows."
+    };
 
-    CodexSonnerService.Warning("Fallback active", new CodexSonnerOptions
+    var success = new CodexButton
     {
-        Description = "Warning toast keeps the close affordance visible.",
-        Cancel = new CodexSonnerAction("Dismiss", () => { })
-    });
+        Content = "Success",
+        Size = CodexControlSize.Small,
+        Variant = CodexControlVariant.Secondary
+    };
+    success.Click += (_, _) =>
+    {
+        CodexSonnerService.Success("Provider saved", new CodexSonnerOptions
+        {
+            Description = "Success toast auto-dismisses after the configured duration.",
+            Action = new CodexSonnerAction("Undo", () => { })
+        });
+        status.Text = "Success toast queued through CodexSonnerService.";
+    };
 
-    CodexSonnerService.Loading("Refreshing usage", new CodexSonnerOptions
+    var warning = new CodexButton
     {
-        Description = "Loading toast remains until the host dismisses it.",
-        CloseButton = false
-    });
+        Content = "Warning",
+        Size = CodexControlSize.Small,
+        Variant = CodexControlVariant.Ghost
+    };
+    warning.Click += (_, _) =>
+    {
+        CodexSonnerService.Warning("Fallback active", new CodexSonnerOptions
+        {
+            Description = "Warning toast keeps the close affordance visible.",
+            Cancel = new CodexSonnerAction("Dismiss", () => { })
+        });
+        status.Text = "Warning toast queued with cancel action.";
+    };
+
+    var loading = new CodexButton
+    {
+        Content = "Loading",
+        Size = CodexControlSize.Small,
+        Variant = CodexControlVariant.Ghost
+    };
+    loading.Click += (_, _) =>
+    {
+        CodexSonnerService.Loading("Refreshing usage", new CodexSonnerOptions
+        {
+            Description = "Loading toast remains until the host dismisses it.",
+            CloseButton = false
+        });
+        status.Text = "Loading toast queued and remains until dismissed.";
+    };
+
+    var clear = new CodexButton
+    {
+        Content = "Clear",
+        Size = CodexControlSize.Small,
+        Variant = CodexControlVariant.Outline
+    };
+    clear.Click += (_, _) =>
+    {
+        CodexSonnerService.Clear();
+        status.Text = "Sonner queue cleared; viewport returned to empty default.";
+    };
 
     var expandedViewport = new Border
     {
@@ -55,7 +104,7 @@ public static Control BuildSonnerInteractionPreview()
     };
     Grid.SetColumn(compactViewport, 1);
 
-    return new Grid
+    var viewportGrid = new Grid
     {
         ColumnDefinitions =
         {
@@ -67,6 +116,28 @@ public static Control BuildSonnerInteractionPreview()
         {
             expandedViewport,
             compactViewport
+        }
+    };
+
+    return new StackPanel
+    {
+        Spacing = 12,
+        Children =
+        {
+            status,
+            new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Spacing = 8,
+                Children =
+                {
+                    success,
+                    warning,
+                    loading,
+                    clear
+                }
+            },
+            viewportGrid
         }
     };
 }

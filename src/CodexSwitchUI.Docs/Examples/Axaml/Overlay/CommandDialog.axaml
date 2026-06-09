@@ -1,7 +1,6 @@
 <controls:CodexCommandDialog xmlns="https://github.com/avaloniaui"
                              xmlns:controls="using:CodexSwitchUI.Controls"
 	                             Placeholder="Run command..."
-	                             IsOpen="True"
 	                             CloseOnItemSelected="True">
   <controls:CodexCommandDialog.Trigger>
     <controls:CodexButton Content="Open command menu"

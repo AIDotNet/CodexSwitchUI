@@ -38,10 +38,14 @@
   <controls:CodexPopover Grid.Column="1"
                          Title="Persistent panel"
                          Description="Escape and outside pointer are disabled for manual host control."
-                         IsOpen="True"
                          CloseOnEscape="False"
                          DismissOnOutsidePointer="False"
                          IsCloseVisible="False">
+    <controls:CodexPopover.Trigger>
+      <controls:CodexButton Content="Open persistent panel"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexPopover.Trigger>
     <StackPanel Spacing="8">
       <controls:CodexBadge Content="manual"
                            Variant="Outline" />
@@ -73,8 +77,12 @@
                          Grid.Column="1"
                          Title="Action content"
                          Description="Action slot remains mounted while close content routes through Dismiss."
-                         IsOpen="True"
                          CloseContent="Esc">
+    <controls:CodexPopover.Trigger>
+      <controls:CodexButton Content="Open action content"
+                            Size="Small"
+                            Variant="Secondary" />
+    </controls:CodexPopover.Trigger>
     <primitives:CodexText Text="Popover body can contain any Codex component."
                           Role="Muted"
                           TextWrapping="Wrap" />

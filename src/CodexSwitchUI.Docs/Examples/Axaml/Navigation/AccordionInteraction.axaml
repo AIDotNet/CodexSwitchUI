@@ -6,8 +6,7 @@
   <StackPanel Spacing="12">
     <controls:CodexAccordion IsCollapsible="True">
       <controls:CodexAccordionItem Value="routing"
-                                   Header="Routing"
-                                   IsOpen="True">
+                                   Header="Routing">
         <primitives:CodexText Text="Enter and Space toggle this item; Arrow keys move across triggers."
                               Role="Muted"
                               TextWrapping="Wrap" />
@@ -29,21 +28,30 @@
     <primitives:CodexText Text="ValueChanged reports open values, changed value, index, and source."
                           Role="Muted"
                           TextWrapping="Wrap" />
+    <StackPanel Orientation="Horizontal"
+                Spacing="8">
+      <controls:CodexButton Content="Open routing"
+                            Size="Small"
+                            Variant="Secondary" />
+      <controls:CodexButton Content="Open billing"
+                            Size="Small" />
+      <controls:CodexButton Content="Collapse all"
+                            Size="Small"
+                            Variant="Ghost" />
+    </StackPanel>
   </StackPanel>
 
   <controls:CodexAccordion Grid.Column="1"
                            Type="Multiple"
                            Size="Small">
     <controls:CodexAccordionItem Value="multi-routes"
-                                 Header="Multiple routes"
-                                 IsOpen="True">
+                                 Header="Multiple routes">
       <primitives:CodexText Text="Independent toggle remains open."
                             Role="Muted"
                             TextWrapping="Wrap" />
     </controls:CodexAccordionItem>
     <controls:CodexAccordionItem Value="multi-limits"
-                                 Header="Multiple limits"
-                                 IsOpen="True">
+                                 Header="Multiple limits">
       <primitives:CodexText Text="The second item can stay open at the same time."
                             Role="Muted"
                             TextWrapping="Wrap" />

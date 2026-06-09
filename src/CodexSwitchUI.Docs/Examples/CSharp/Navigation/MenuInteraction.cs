@@ -48,7 +48,6 @@ public static class MenuInteractionSample
                     Header = "Focused submenu",
                     Shortcut = "Right",
                     IsActive = true,
-                    IsSubMenuOpen = true,
                     Items =
                     {
                         new CodexMenuItem { Header = "Archive" },

@@ -16,7 +16,6 @@ public static class ComboboxInteractionSample
         {
             ItemsSource = Frameworks(),
             Text = "n",
-            IsOpen = true,
             AutoHighlight = true,
             MinWidth = 240
         };
@@ -35,11 +34,19 @@ public static class ComboboxInteractionSample
             status.Text = $"InputValueChanged: {args.OldValue ?? "empty"} -> {args.NewValue ?? "empty"}.";
         };
 
+        var open = new CodexButton
+        {
+            Content = "Open",
+            Size = CodexControlSize.Small,
+            Variant = CodexControlVariant.Secondary
+        };
+        open.Click += (_, _) => combobox.Open();
+
         var moveHighlight = new CodexButton
         {
             Content = "Arrow down",
             Size = CodexControlSize.Small,
-            Variant = CodexControlVariant.Secondary
+            Variant = CodexControlVariant.Outline
         };
         moveHighlight.Click += (_, _) => combobox.TryHandleInputKey(Key.Down);
 
@@ -79,6 +86,7 @@ public static class ComboboxInteractionSample
                     Spacing = 8,
                     Children =
                     {
+                        open,
                         moveHighlight,
                         commit,
                         clear,
@@ -89,7 +97,6 @@ public static class ComboboxInteractionSample
                 {
                     ItemsSource = Frameworks(),
                     Text = "re",
-                    IsOpen = true,
                     CloseOnSelect = false,
                     MinWidth = 240
                 },

@@ -43,7 +43,6 @@
           <controls:CodexBreadcrumbSeparator />
           <controls:CodexBreadcrumbItem>
             <controls:CodexDropdownButton Content="..."
-                                          IsOpen="True"
                                           Size="Small"
                                           Variant="Ghost"
                                           IsArrowVisible="False">

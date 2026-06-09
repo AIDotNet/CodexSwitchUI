@@ -400,7 +400,7 @@ public class CodexChartTooltipContent : ItemsControl
         AvaloniaProperty.Register<CodexChartTooltipContent, string?>(nameof(Label));
 
     public static readonly StyledProperty<bool> IsOpenProperty =
-        AvaloniaProperty.Register<CodexChartTooltipContent, bool>(nameof(IsOpen), true);
+        AvaloniaProperty.Register<CodexChartTooltipContent, bool>(nameof(IsOpen));
 
     public static readonly StyledProperty<bool> HideLabelProperty =
         AvaloniaProperty.Register<CodexChartTooltipContent, bool>(nameof(HideLabel));

@@ -51,7 +51,7 @@
                     RenderTransformOrigin="50%,50%">
               <Grid RowDefinitions="Auto,*,Auto"
                     ColumnDefinitions="*,Auto"
-                    RowSpacing="18"
+                    RowSpacing="16"
                     ColumnSpacing="12">
                 <StackPanel x:Name="PART_Header"
                             Grid.Row="0"

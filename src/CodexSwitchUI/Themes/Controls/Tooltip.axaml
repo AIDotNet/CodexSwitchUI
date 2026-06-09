@@ -47,65 +47,76 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center" />
 
-          <Border x:Name="PART_Surface"
-                  MinHeight="{TemplateBinding MinHeight}"
-                  MaxWidth="{TemplateBinding MaxWidth}"
-                  Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
-                  Padding="{TemplateBinding Padding}"
-                  Opacity="1"
-                  RenderTransform="translate(0px, 0px) scale(1)"
-                  RenderTransformOrigin="50%,50%">
-            <ContentPresenter x:Name="PART_Content"
-                              Content="{TemplateBinding Content}"
-                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                              Foreground="{TemplateBinding Foreground}"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-          </Border>
+          <Popup x:Name="PART_Popup"
+                 WindowManagerAddShadowHint="False"
+                 IsOpen="{TemplateBinding IsOpen, Mode=TwoWay}"
+                 PlacementTarget="PART_Trigger"
+                 Placement="{TemplateBinding Placement}"
+                 IsLightDismissEnabled="False"
+                 InheritsTransform="True">
+            <Grid x:Name="PART_PopupRoot"
+                  ClipToBounds="False">
+              <Border x:Name="PART_Surface"
+                      MinHeight="{TemplateBinding MinHeight}"
+                      MaxWidth="{TemplateBinding MaxWidth}"
+                      Background="{TemplateBinding Background}"
+                      BorderBrush="{TemplateBinding BorderBrush}"
+                      BorderThickness="{TemplateBinding BorderThickness}"
+                      CornerRadius="{DynamicResource CodexSwitch.RadiusMd}"
+                      Padding="{TemplateBinding Padding}"
+                      Opacity="1"
+                      RenderTransform="translate(0px, 0px) scale(1)"
+                      RenderTransformOrigin="50%,50%">
+                <ContentPresenter x:Name="PART_Content"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Foreground="{TemplateBinding Foreground}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+              </Border>
 
-          <Border x:Name="PART_Arrow"
-                  Width="8"
-                  Height="8"
-                  Background="{TemplateBinding Background}"
-                  IsVisible="{TemplateBinding IsArrowVisible}"
-                  RenderTransform="rotate(45deg)"
-                  RenderTransformOrigin="50%,50%" />
+              <Border x:Name="PART_Arrow"
+                      Width="8"
+                      Height="8"
+                      Background="{TemplateBinding Background}"
+                      IsVisible="{TemplateBinding IsArrowVisible}"
+                      RenderTransform="rotate(45deg)"
+                      RenderTransformOrigin="50%,50%" />
+            </Grid>
+          </Popup>
         </Grid>
       </ControlTemplate>
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexTooltip.closed /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexTooltip.closed /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="Opacity" Value="0" />
     <Setter Property="IsHitTestVisible" Value="False" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.open /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexTooltip.open /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="Opacity" Value="1" />
     <Setter Property="IsHitTestVisible" Value="False" />
     <Setter Property="RenderTransform" Value="translate(0px, 0px) scale(1)" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.closed.side-top /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexTooltip.closed.side-top /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="RenderTransform" Value="translate(0px, 2px) scale(0.95)" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.closed.side-bottom /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexTooltip.closed.side-bottom /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="RenderTransform" Value="translate(0px, -2px) scale(0.95)" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.closed.side-left /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexTooltip.closed.side-left /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="RenderTransform" Value="translate(2px, 0px) scale(0.95)" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.closed.side-right /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexTooltip.closed.side-right /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="RenderTransform" Value="translate(-2px, 0px) scale(0.95)" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip /template/ Border#PART_Surface">
+  <Style Selector="controls|CodexTooltip /template/ Popup#PART_Popup Border#PART_Surface">
     <Setter Property="Transitions">
       <Transitions>
         <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
@@ -116,29 +127,23 @@
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexTooltip.has-trigger.side-top /template/ Border#PART_Surface">
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="Margin" Value="0,-36,0,0" />
+  <Style Selector="controls|CodexTooltip.has-trigger.side-top /template/ Popup#PART_Popup Border#PART_Surface">
+    <Setter Property="Margin" Value="0,0,0,4" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.has-trigger.side-bottom /template/ Border#PART_Surface">
-    <Setter Property="VerticalAlignment" Value="Top" />
-    <Setter Property="Margin" Value="0,36,0,0" />
+  <Style Selector="controls|CodexTooltip.has-trigger.side-bottom /template/ Popup#PART_Popup Border#PART_Surface">
+    <Setter Property="Margin" Value="0,4,0,0" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.has-trigger.side-left /template/ Border#PART_Surface">
-    <Setter Property="HorizontalAlignment" Value="Left" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="Margin" Value="-188,0,0,0" />
+  <Style Selector="controls|CodexTooltip.has-trigger.side-left /template/ Popup#PART_Popup Border#PART_Surface">
+    <Setter Property="Margin" Value="0,0,4,0" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.has-trigger.side-right /template/ Border#PART_Surface">
-    <Setter Property="HorizontalAlignment" Value="Right" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="Margin" Value="0,0,-188,0" />
+  <Style Selector="controls|CodexTooltip.has-trigger.side-right /template/ Popup#PART_Popup Border#PART_Surface">
+    <Setter Property="Margin" Value="4,0,0,0" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexTooltip /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="Transitions">
       <Transitions>
         <DoubleTransition Property="Opacity" Duration="{DynamicResource CodexSwitch.MotionDurationFast}" Easing="{DynamicResource CodexSwitch.MotionEaseOut}" />
@@ -147,33 +152,33 @@
     </Setter>
   </Style>
 
-  <Style Selector="controls|CodexTooltip.has-arrow /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexTooltip.has-arrow /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="Opacity" Value="1" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.closed /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexTooltip.closed /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="Opacity" Value="0" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.side-top /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexTooltip.side-top /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="HorizontalAlignment" Value="Center" />
     <Setter Property="VerticalAlignment" Value="Bottom" />
     <Setter Property="Margin" Value="0,0,0,-4" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.side-bottom /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexTooltip.side-bottom /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="HorizontalAlignment" Value="Center" />
     <Setter Property="VerticalAlignment" Value="Top" />
     <Setter Property="Margin" Value="0,-4,0,0" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.side-left /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexTooltip.side-left /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="HorizontalAlignment" Value="Right" />
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="Margin" Value="0,0,-4,0" />
   </Style>
 
-  <Style Selector="controls|CodexTooltip.side-right /template/ Border#PART_Arrow">
+  <Style Selector="controls|CodexTooltip.side-right /template/ Popup#PART_Popup Border#PART_Arrow">
     <Setter Property="HorizontalAlignment" Value="Left" />
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="Margin" Value="-4,0,0,0" />

@@ -65,7 +65,6 @@ public static class HoverCardInteractionSample
                 new CodexHoverCard
                 {
                     Trigger = new CodexButton { Content = "Instant focus", Size = CodexControlSize.Small },
-                    IsOpen = true,
                     Placement = PlacementMode.Top,
                     Align = CodexHoverCardAlign.End,
                     OpenDelay = TimeSpan.Zero,

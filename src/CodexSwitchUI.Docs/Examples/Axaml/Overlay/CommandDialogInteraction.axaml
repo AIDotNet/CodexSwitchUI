@@ -9,7 +9,6 @@
     <primitives:CodexText Role="Muted"
                           Text="ItemSelected forwards Pointer, Keyboard, and Programmatic source metadata from the command item." />
     <controls:CodexCommandDialog Placeholder="Search commands..."
-                                 IsOpen="True"
                                  CloseOnItemSelected="True">
       <controls:CodexCommandDialog.Trigger>
         <controls:CodexButton Content="Open command menu"
@@ -37,7 +36,6 @@
 
   <controls:CodexCommandDialog Grid.Column="1"
                                Placeholder="Loading command..."
-                               IsOpen="True"
                                IsLoading="True"
                                CloseOnItemSelected="True">
     <controls:CodexCommandDialog.Trigger>
@@ -52,7 +50,6 @@
 
   <controls:CodexCommandDialog Grid.Row="1"
                                Placeholder="Manual close..."
-                               IsOpen="True"
                                CloseOnItemSelected="False">
     <controls:CodexCommandDialog.Trigger>
       <controls:CodexButton Content="Open manual menu"

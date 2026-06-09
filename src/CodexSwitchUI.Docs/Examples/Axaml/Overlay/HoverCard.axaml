@@ -1,6 +1,5 @@
 <controls:CodexHoverCard xmlns="https://github.com/avaloniaui"
                          xmlns:controls="using:CodexSwitchUI.Controls"
-                         IsOpen="True"
                          Placement="Right"
                          Align="Start">
   <controls:CodexHoverCard.Trigger>

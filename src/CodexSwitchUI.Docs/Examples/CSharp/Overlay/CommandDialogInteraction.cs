@@ -14,13 +14,12 @@ public static class CommandDialogInteractionSample
         var status = new CodexText
         {
             Role = CodexTextRole.Muted,
-            Text = "Command dialog is open; selecting an enabled item can close it."
+            Text = "Command dialog starts closed; selecting an enabled item can close it after opening."
         };
         var closeOnSelectDialog = new CodexCommandDialog
         {
             Trigger = trigger,
             Placeholder = "Search commands...",
-            IsOpen = true,
             CloseOnItemSelected = true,
             RestoreFocusElement = trigger,
             Content = new CodexCommandList
@@ -56,7 +55,6 @@ public static class CommandDialogInteractionSample
         {
             Trigger = new CodexButton { Content = "Open loading menu", Size = CodexControlSize.Small },
             Placeholder = "Loading command...",
-            IsOpen = true,
             IsLoading = true,
             CloseOnItemSelected = true,
             Content = new CodexCommandList
@@ -72,7 +70,6 @@ public static class CommandDialogInteractionSample
         {
             Trigger = new CodexButton { Content = "Open manual menu", Size = CodexControlSize.Small },
             Placeholder = "Manual close...",
-            IsOpen = true,
             CloseOnItemSelected = false,
             Content = new CodexCommandList
             {

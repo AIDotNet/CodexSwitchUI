@@ -72,10 +72,15 @@ public static class TooltipInteractionSample
                     },
                     new CodexTooltip
                     {
+                        Trigger = new CodexButton
+                        {
+                            Content = "Persistent hint",
+                            Size = CodexControlSize.Small,
+                            Variant = CodexControlVariant.Secondary
+                        },
                         Content = "Escape dismissal is disabled for persistent hints.",
                         Placement = PlacementMode.Right,
                         CloseOnEscape = false,
-                        IsOpen = true,
                         IsArrowVisible = true
                     },
                     new CodexTooltip
@@ -83,7 +88,6 @@ public static class TooltipInteractionSample
                         Trigger = new CodexButton { Content = "Save", Variant = CodexControlVariant.Secondary },
                         Content = "Large top-aligned tooltip with arrow.",
                         Placement = PlacementMode.Top,
-                        IsOpen = true,
                         IsArrowVisible = true,
                         Size = CodexControlSize.Large
                     },

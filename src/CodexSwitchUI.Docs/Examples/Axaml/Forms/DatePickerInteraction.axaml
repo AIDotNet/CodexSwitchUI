@@ -9,12 +9,20 @@
     <StackPanel Spacing="8">
       <controls:CodexDatePicker DisplayDate="2026-05-01"
                                 SelectedDate="2026-05-13"
-                                IsOpen="True"
                                 CloseOnSelect="False"
                                 MinWidth="280"
                                 HorizontalAlignment="Left" />
-      <TextBlock Text="OpenChanged: picker starts open (source=Programmatic)."
+      <TextBlock Text="OpenChanged: picker starts closed; use ArrowDown to open."
                  Opacity="0.72" />
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="ArrowDown"
+                              Size="Small"
+                              Variant="Secondary" />
+        <controls:CodexButton Content="Escape"
+                              Size="Small"
+                              Variant="Ghost" />
+      </StackPanel>
     </StackPanel>
   </controls:CodexField>
 
@@ -25,11 +33,19 @@
       <controls:CodexDatePicker DisplayDate="2026-02-01"
                                 SelectionMode="Range"
                                 RangeStart="2026-02-09"
-                                IsOpen="True"
                                 MinWidth="280"
                                 HorizontalAlignment="Left" />
       <TextBlock Text="RangeChanged: waiting for the second date."
                  Opacity="0.72" />
+      <StackPanel Orientation="Horizontal"
+                  Spacing="8">
+        <controls:CodexButton Content="Open range"
+                              Size="Small"
+                              Variant="Secondary" />
+        <controls:CodexButton Content="Finish range"
+                              Size="Small"
+                              Variant="Outline" />
+      </StackPanel>
     </StackPanel>
   </controls:CodexField>
 
@@ -52,7 +68,6 @@
                               SelectedDate="2026-08-18"
                               MinDate="2026-08-10"
                               MaxDate="2026-08-24"
-                              IsOpen="True"
                               IsLoading="True"
                               Intent="Error"
                               MinWidth="280"

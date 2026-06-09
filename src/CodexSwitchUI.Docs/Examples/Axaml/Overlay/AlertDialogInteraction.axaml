@@ -35,7 +35,6 @@
               Spacing="10">
     <controls:CodexAlertDialog Title="Async confirmation"
                                Description="CloseOnAction=false keeps the dialog open while the host completes work."
-                               IsOpen="True"
                                CloseOnAction="False"
                                IsActionLoading="True"
                                ActionContent="Uploading">
@@ -54,9 +53,13 @@
                           HorizontalAlignment="Left" />
     <controls:CodexAlertDialog Title="Manual outside policy"
                                Description="Outside pointer dismissal can be enabled for non-critical variants."
-                               IsOpen="True"
                                DismissOnOutsidePointer="True"
                                ActionContent="Continue">
+      <controls:CodexAlertDialog.Trigger>
+        <controls:CodexButton Content="Open outside policy"
+                              Size="Small"
+                              Variant="Secondary" />
+      </controls:CodexAlertDialog.Trigger>
       <primitives:CodexText Text="This sample opts into regular Dialog outside-pointer dismissal."
                             Role="Muted"
                             TextWrapping="Wrap" />

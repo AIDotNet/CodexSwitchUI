@@ -15,6 +15,35 @@ namespace CodexSwitchUI.Tests;
 public class OverlayFeedbackComponentTests
 {
     [Fact]
+    public void DisclosureAndTooltipLikeComponentsDefaultClosed()
+    {
+        Assert.False(new CodexDialog().IsOpen);
+        Assert.False(new CodexAlertDialog().IsOpen);
+        Assert.False(new CodexCommandDialog().IsOpen);
+        Assert.False(new CodexPopover().IsOpen);
+        Assert.False(new CodexTooltip().IsOpen);
+        Assert.False(new CodexHoverCard().IsOpen);
+        Assert.False(new CodexSheet().IsOpen);
+        Assert.False(new CodexDrawer().IsOpen);
+        Assert.False(new CodexDropdownButton().IsOpen);
+        Assert.False(new CodexSplitButton().IsOpen);
+        Assert.False(new CodexCollapsible().IsOpen);
+        Assert.False(new CodexAccordionItem().IsOpen);
+        Assert.False(new CodexNavigationMenuItem().IsOpen);
+        Assert.False(new CodexCombobox().IsOpen);
+        Assert.False(new CodexSelect().IsDropDownOpen);
+        Assert.False(new CodexNativeSelect().IsDropDownOpen);
+        Assert.False(new CodexDatePicker().IsOpen);
+        Assert.False(new CodexOverlay().IsOpen);
+        Assert.False(new CodexChartTooltipContent().IsOpen);
+
+        Assert.True(new CodexToast().IsOpen);
+        Assert.True(new CodexSidebarProvider().IsOpen);
+        Assert.True(new CodexSidebar().IsOpen);
+        Assert.True(new CodexSidebarInset().IsOpen);
+    }
+
+    [Fact]
     public void DialogPopoverAndToastExposeSlotState()
     {
         var dialog = new CodexDialog
@@ -1221,6 +1250,125 @@ public class OverlayFeedbackComponentTests
     }
 
     [Fact]
+    public void PopupAlignResolvesToWebSideAlignedPlacement()
+    {
+        var cases = new[]
+        {
+            (PlacementMode.Bottom, PlacementMode.Bottom, PlacementMode.BottomEdgeAlignedLeft, PlacementMode.BottomEdgeAlignedRight),
+            (PlacementMode.Top, PlacementMode.Top, PlacementMode.TopEdgeAlignedLeft, PlacementMode.TopEdgeAlignedRight),
+            (PlacementMode.Left, PlacementMode.Left, PlacementMode.LeftEdgeAlignedTop, PlacementMode.LeftEdgeAlignedBottom),
+            (PlacementMode.Right, PlacementMode.Right, PlacementMode.RightEdgeAlignedTop, PlacementMode.RightEdgeAlignedBottom)
+        };
+
+        foreach (var (placement, center, start, end) in cases)
+        {
+            AssertPopoverPlacement(placement, CodexPopoverAlign.Center, center);
+            AssertPopoverPlacement(placement, CodexPopoverAlign.Start, start);
+            AssertPopoverPlacement(placement, CodexPopoverAlign.End, end);
+            AssertHoverCardPlacement(placement, CodexHoverCardAlign.Center, center);
+            AssertHoverCardPlacement(placement, CodexHoverCardAlign.Start, start);
+            AssertHoverCardPlacement(placement, CodexHoverCardAlign.End, end);
+            AssertDropdownPlacement(placement, CodexDropdownAlign.Center, center);
+            AssertDropdownPlacement(placement, CodexDropdownAlign.Start, start);
+            AssertDropdownPlacement(placement, CodexDropdownAlign.End, end);
+            AssertSplitPlacement(placement, CodexDropdownAlign.Center, center);
+            AssertSplitPlacement(placement, CodexDropdownAlign.Start, start);
+            AssertSplitPlacement(placement, CodexDropdownAlign.End, end);
+        }
+
+        static void AssertPopoverPlacement(PlacementMode placement, CodexPopoverAlign align, PlacementMode expected)
+        {
+            var popover = new CodexPopover { Placement = placement, Align = align };
+            Assert.Equal(expected, popover.EffectivePlacement);
+        }
+
+        static void AssertHoverCardPlacement(PlacementMode placement, CodexHoverCardAlign align, PlacementMode expected)
+        {
+            var hoverCard = new CodexHoverCard { Placement = placement, Align = align };
+            Assert.Equal(expected, hoverCard.EffectivePlacement);
+        }
+
+        static void AssertDropdownPlacement(PlacementMode placement, CodexDropdownAlign align, PlacementMode expected)
+        {
+            var dropdown = new CodexDropdownButton
+            {
+                DropDownContent = new StackPanel(),
+                Placement = placement,
+                Align = align
+            };
+            Assert.Equal(expected, dropdown.EffectivePlacement);
+        }
+
+        static void AssertSplitPlacement(PlacementMode placement, CodexDropdownAlign align, PlacementMode expected)
+        {
+            var splitButton = new CodexSplitButton
+            {
+                DropDownContent = new StackPanel(),
+                Placement = placement,
+                Align = align
+            };
+            Assert.Equal(expected, splitButton.EffectivePlacement);
+        }
+    }
+
+    [Fact]
+    public void TooltipHoverCardAndPopoverUsePopupSideOffsetPlacement()
+    {
+        var root = FindRepositoryRoot();
+        var tooltipStyle = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Tooltip.axaml"));
+        var hoverCardStyle = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "HoverCard.axaml"));
+        var popoverStyle = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Popover.axaml"));
+        var dropdownButtonStyle = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "DropdownButton.axaml"));
+        var splitButtonStyle = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "SplitButton.axaml"));
+        var hoverCardSource = File.ReadAllText(Path.Combine(root, "src", "CodexSwitchUI", "Controls", "CodexHoverCard.cs"));
+
+        Assert.Contains("<Popup x:Name=\"PART_Popup\"", tooltipStyle);
+        Assert.Contains("PlacementTarget=\"PART_Trigger\"", tooltipStyle);
+        Assert.Contains("Placement=\"{TemplateBinding Placement}\"", tooltipStyle);
+        Assert.Contains("controls|CodexTooltip.has-trigger.side-bottom /template/ Popup#PART_Popup Border#PART_Surface", tooltipStyle);
+        Assert.Contains("<Setter Property=\"Margin\" Value=\"0,4,0,0\" />", tooltipStyle);
+        Assert.Contains("controls|CodexTooltip.has-trigger.side-right /template/ Popup#PART_Popup Border#PART_Surface", tooltipStyle);
+        Assert.Contains("<Setter Property=\"Margin\" Value=\"4,0,0,0\" />", tooltipStyle);
+        Assert.DoesNotContain("-188", tooltipStyle);
+        Assert.DoesNotContain("0,36,0,0", tooltipStyle);
+        Assert.DoesNotContain("0,-36,0,0", tooltipStyle);
+
+        Assert.Contains("<Popup x:Name=\"PART_Popup\"", hoverCardStyle);
+        Assert.Contains("PlacementTarget=\"PART_Trigger\"", hoverCardStyle);
+        Assert.Contains("Placement=\"{TemplateBinding EffectivePlacement}\"", hoverCardStyle);
+        Assert.DoesNotContain("Placement=\"{TemplateBinding Placement}\"", hoverCardStyle);
+        Assert.Contains("controls|CodexHoverCard.side-bottom /template/ Popup#PART_Popup Border#PART_Surface", hoverCardStyle);
+        Assert.Contains("<Setter Property=\"Margin\" Value=\"0,4,0,0\" />", hoverCardStyle);
+        Assert.Contains("controls|CodexHoverCard.side-right /template/ Popup#PART_Popup Border#PART_Surface", hoverCardStyle);
+        Assert.Contains("<Setter Property=\"Margin\" Value=\"4,0,0,0\" />", hoverCardStyle);
+        Assert.DoesNotContain("-248", hoverCardStyle);
+        Assert.DoesNotContain("-112", hoverCardStyle);
+        Assert.DoesNotContain("0,38,0,0", hoverCardStyle);
+        Assert.DoesNotContain("-14", hoverCardStyle);
+        Assert.DoesNotContain("0,32,0,0", hoverCardStyle);
+
+        Assert.Contains("<Popup x:Name=\"PART_Popup\"", popoverStyle);
+        Assert.Contains("PlacementTarget=\"PART_Trigger\"", popoverStyle);
+        Assert.Contains("Placement=\"{TemplateBinding EffectivePlacement}\"", popoverStyle);
+        Assert.DoesNotContain("Placement=\"{TemplateBinding Placement}\"", popoverStyle);
+        Assert.Contains("controls|CodexPopover.has-trigger.side-bottom /template/ Popup#PART_Popup Border#PART_Surface", popoverStyle);
+        Assert.Contains("<Setter Property=\"Margin\" Value=\"0,4,0,0\" />", popoverStyle);
+        Assert.Contains("controls|CodexPopover.has-trigger.side-right /template/ Popup#PART_Popup Border#PART_Surface", popoverStyle);
+        Assert.Contains("<Setter Property=\"Margin\" Value=\"4,0,0,0\" />", popoverStyle);
+        Assert.DoesNotContain("RowDefinitions=\"Auto,Auto\"", popoverStyle);
+        Assert.DoesNotContain("Margin\" Value=\"0,8,0,0\"", popoverStyle);
+
+        Assert.Contains("e.NameScope.Find<Border>(\"PART_Surface\")", hoverCardSource);
+        Assert.Contains("PointerEntered += OnSurfacePointerEntered", hoverCardSource);
+        Assert.Contains("PointerExited += OnSurfacePointerExited", hoverCardSource);
+
+        Assert.Contains("Placement=\"{TemplateBinding EffectivePlacement}\"", dropdownButtonStyle);
+        Assert.DoesNotContain("Placement=\"{TemplateBinding Placement}\"", dropdownButtonStyle);
+        Assert.Contains("Placement=\"{TemplateBinding EffectivePlacement}\"", splitButtonStyle);
+        Assert.DoesNotContain("Placement=\"{TemplateBinding Placement}\"", splitButtonStyle);
+    }
+
+    [Fact]
     public void DropdownButtonMirrorsDropdownMenuOpenDismissAndSelectSemantics()
     {
         var changes = new List<(bool IsOpen, CodexDropdownButtonOpenChangeSource Source)>();
@@ -1429,6 +1577,7 @@ public class OverlayFeedbackComponentTests
         var dismissed = 0;
         var overlay = new CodexOverlay
         {
+            IsOpen = true,
             DismissCommand = new TestCommand(() => dismissed++)
         };
         var inside = new Border();
@@ -2061,15 +2210,15 @@ public class OverlayFeedbackComponentTests
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Dialog.axaml"),
             "PART_Root", "PART_Trigger", "PART_Overlay", "PART_Surface", "PART_Header", "PART_Title", "PART_Description", "PART_Content", "PART_Action", "PART_Close", "DismissCommand", "closed", "modal", "non-modal", "has-trigger", "TransformOperationsTransition", "Transitions");
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Popover.axaml"),
-            "PART_Root", "PART_Trigger", "PART_Surface", "PART_Header", "PART_Title", "PART_Description", "PART_Content", "PART_Action", "PART_Close", "PART_Arrow", "DismissCommand", "side-top", "side-bottom", "side-left", "side-right", "align-start", "align-center", "align-end", "closed", "has-trigger", "has-arrow", "TransformOperationsTransition", "Transitions");
+            "PART_Root", "PART_Trigger", "PART_Popup", "PART_Surface", "PART_Header", "PART_Title", "PART_Description", "PART_Content", "PART_Action", "PART_Close", "PART_Arrow", "DismissCommand", "side-top", "side-bottom", "side-left", "side-right", "align-start", "align-center", "align-end", "closed", "has-trigger", "has-arrow", "TransformOperationsTransition", "Transitions");
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "CommandDialog.axaml"),
             "PART_Root", "PART_Trigger", "PART_Layer", "PART_Overlay", "PART_Surface", "PART_Command", "PART_Content", "PART_Close", "SearchText", "ShouldFilter", "LoopNavigation", "DismissCommand", "closed", "modal", "non-modal", "has-trigger", "loading", "TransformOperationsTransition", "Transitions");
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Drawer.axaml"),
             "PART_Root", "PART_Trigger", "PART_Layer", "PART_Overlay", "PART_Surface", "PART_Handle", "PART_Header", "PART_Title", "PART_Description", "PART_ContentScroll", "PART_Content", "PART_Footer", "PART_Close", "DismissCommand", "closed", "modal", "non-modal", "has-trigger", "direction-bottom", "direction-top", "direction-right", "direction-left", "has-handle", "dragging", "drag-dismiss-ready", "scale-background", "close-on-drag", "TransformOperationsTransition", "Transitions");
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "Tooltip.axaml"),
-            "CodexTooltipProvider", "PART_Root", "PART_Trigger", "PART_Surface", "PART_Content", "PART_Arrow", "side-top", "side-bottom", "side-left", "side-right", "closed", "has-trigger", "has-arrow", "TransformOperationsTransition", "Transitions");
+            "CodexTooltipProvider", "PART_Root", "PART_Trigger", "PART_Popup", "PART_Surface", "PART_Content", "PART_Arrow", "side-top", "side-bottom", "side-left", "side-right", "closed", "has-trigger", "has-arrow", "TransformOperationsTransition", "Transitions");
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "HoverCard.axaml"),
-            "PART_Root", "PART_Trigger", "PART_Surface", "PART_Content", "PART_Arrow", "side-top", "side-bottom", "side-left", "side-right", "align-start", "align-center", "align-end", "closed", "has-trigger", "has-arrow", "delayed-open", "delayed-close", "TransformOperationsTransition", "Transitions");
+            "PART_Root", "PART_Trigger", "PART_Popup", "PART_Surface", "PART_Content", "PART_Arrow", "side-top", "side-bottom", "side-left", "side-right", "align-start", "align-center", "align-end", "closed", "has-trigger", "has-arrow", "delayed-open", "delayed-close", "TransformOperationsTransition", "Transitions");
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "DropdownButton.axaml"),
             "PART_Root", "PART_Trigger", "PART_Chevron", "PART_Popup", "PART_Surface", "PART_DropDownContent", "PART_Arrow", "IsLightDismissEnabled", "side-top", "side-bottom", "side-left", "side-right", "align-start", "align-center", "align-end", "closed", "has-arrow", "TransformOperationsTransition", "Transitions");
         AssertStyle(Path.Combine(root, "src", "CodexSwitchUI", "Themes", "Controls", "SplitButton.axaml"),

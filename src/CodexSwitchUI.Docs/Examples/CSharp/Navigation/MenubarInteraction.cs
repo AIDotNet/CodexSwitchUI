@@ -57,7 +57,6 @@ public static class MenubarInteractionSample
                 new CodexMenubarItem
                 {
                     Header = "Find",
-                    IsSubMenuOpen = true,
                     Items =
                     {
                         new CodexMenubarItem { Header = "Search the web" },
@@ -98,7 +97,6 @@ public static class MenubarInteractionSample
         {
             status.Text = $"ActiveMenuChanged: {args.OldMenu?.Header ?? "none"} -> {args.NewMenu?.Header ?? "none"}.";
         };
-        menubar.OpenMenu(file);
 
         var blocked = new CodexMenubar
         {

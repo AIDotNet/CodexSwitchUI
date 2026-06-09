@@ -10,9 +10,9 @@
     <controls:CodexField.Content>
       <StackPanel Spacing="10">
         <primitives:CodexText Role="Muted"
-                              Text="Overlay is open with Escape and outside-pointer dismissal enabled." />
+                              Text="Overlay is closed by default. Open it to test Escape and outside-pointer dismissal." />
         <Grid Height="188">
-          <primitives:CodexOverlay IsOpen="True"
+          <primitives:CodexOverlay IsOpen="False"
                                    CloseOnEscape="True"
                                    DismissOnOutsidePointer="True"
                                    HorizontalContentAlignment="Center"
@@ -28,7 +28,7 @@
         </Grid>
         <StackPanel Orientation="Horizontal"
                     Spacing="8">
-          <controls:CodexButton Content="Reopen"
+          <controls:CodexButton Content="Open"
                                 Size="Small"
                                 Variant="Secondary" />
           <controls:CodexButton Content="Toggle scrim"
@@ -47,7 +47,7 @@
                        Description="Host-managed layers can disable Escape and outside-pointer dismissal.">
     <controls:CodexField.Content>
       <Grid Height="160">
-        <primitives:CodexOverlay IsOpen="True"
+        <primitives:CodexOverlay IsOpen="False"
                                  CloseOnEscape="False"
                                  DismissOnOutsidePointer="False"
                                  HorizontalContentAlignment="Center"
@@ -65,10 +65,10 @@
 
   <controls:CodexField Grid.Row="1"
                        Label="No scrim"
-                       Description="The content layer can stay open while scrim rendering is disabled.">
+                       Description="The content layer can open while scrim rendering is disabled.">
     <controls:CodexField.Content>
       <Grid Height="150">
-        <primitives:CodexOverlay IsOpen="True"
+        <primitives:CodexOverlay IsOpen="False"
                                  IsScrimVisible="False"
                                  HorizontalContentAlignment="Center"
                                  VerticalContentAlignment="Center">

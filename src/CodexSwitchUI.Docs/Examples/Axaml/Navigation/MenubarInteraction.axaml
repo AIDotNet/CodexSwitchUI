@@ -7,8 +7,7 @@
   <StackPanel Spacing="10">
     <TextBlock Text="ItemSelected: ready." />
     <controls:CodexMenubar Loop="True">
-      <controls:CodexMenubarMenu Header="File"
-                                  IsSubMenuOpen="True">
+      <controls:CodexMenubarMenu Header="File">
         <controls:CodexMenubarItem Header="New tab"
                                    Shortcut="Cmd+T" />
         <controls:CodexMenubarItem Header="New window"
@@ -39,8 +38,7 @@
     <controls:CodexMenubarMenu Header="File">
       <controls:CodexMenubarItem Header="New tab" />
     </controls:CodexMenubarMenu>
-    <controls:CodexMenubarMenu Header="View"
-                                IsSubMenuOpen="True">
+    <controls:CodexMenubarMenu Header="View">
       <controls:CodexMenubarCheckboxItem Header="Open-on-hover handoff"
                                          IsChecked="True" />
     </controls:CodexMenubarMenu>

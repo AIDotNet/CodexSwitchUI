@@ -1,15 +1,23 @@
 <StackPanel xmlns="https://github.com/avaloniaui"
             xmlns:controls="using:CodexSwitchUI.Controls"
             Spacing="12">
-  <TextBlock Text="OpenChanged: split menu starts open."
+  <TextBlock Text="OpenChanged: split menu starts closed."
              TextWrapping="Wrap" />
+  <StackPanel Orientation="Horizontal"
+              Spacing="8">
+    <controls:CodexButton Content="Open"
+                          Size="Small"
+                          Variant="Secondary" />
+    <controls:CodexButton Content="Dismiss"
+                          Size="Small"
+                          Variant="Ghost" />
+  </StackPanel>
 
   <Grid ColumnDefinitions="*,*"
         RowDefinitions="Auto,Auto"
         ColumnSpacing="14"
         RowSpacing="14">
     <controls:CodexSplitButton Content="Run sync"
-                               IsOpen="True"
                                IsArrowVisible="True"
                                Align="Start">
       <controls:CodexSplitButton.DropDownContent>
@@ -30,7 +38,6 @@
 
     <controls:CodexSplitButton Grid.Column="1"
                                Content="Keep open"
-                               IsOpen="True"
                                CloseOnItemSelected="False">
       <controls:CodexSplitButton.DropDownContent>
         <StackPanel Width="190"
@@ -53,7 +60,6 @@
     <controls:CodexSplitButton Grid.Row="1"
                                Grid.Column="1"
                                Content="End aligned"
-                               IsOpen="True"
                                Align="End"
                                Variant="Secondary">
       <controls:CodexSplitButton.DropDownContent>

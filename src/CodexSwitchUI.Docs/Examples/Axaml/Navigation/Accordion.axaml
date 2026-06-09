@@ -2,8 +2,7 @@
                          xmlns:controls="using:CodexSwitchUI.Controls"
                          IsCollapsible="True">
   <controls:CodexAccordionItem Value="routing"
-                               Header="Advanced routing"
-                               IsOpen="True">
+                               Header="Advanced routing">
     <StackPanel Spacing="10">
       <controls:CodexCheckBox Content="Prefer cached sessions"
                               IsChecked="True" />

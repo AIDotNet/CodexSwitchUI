@@ -1,8 +1,14 @@
 <Grid xmlns="https://github.com/avaloniaui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:controls="using:CodexSwitchUI.Controls"
       xmlns:primitives="using:CodexSwitchUI.Primitives"
       Height="180">
-  <primitives:CodexOverlay IsOpen="True"
+  <controls:CodexToggle x:Name="OverlayToggle"
+                        Content="Open overlay"
+                        Size="Small"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
+  <primitives:CodexOverlay IsOpen="{Binding IsChecked, ElementName=OverlayToggle}"
                            HorizontalContentAlignment="Center"
                            VerticalContentAlignment="Center">
     <controls:CodexCard Width="260"

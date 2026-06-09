@@ -1,8 +1,7 @@
 <controls:CodexMenubar xmlns="https://github.com/avaloniaui"
                         xmlns:controls="using:CodexSwitchUI.Controls"
                         Loop="True">
-  <controls:CodexMenubarMenu Header="File"
-                              IsSubMenuOpen="True">
+  <controls:CodexMenubarMenu Header="File">
     <controls:CodexMenubarGroup Header="File">
       <controls:CodexMenubarItem Header="New tab"
                                  Shortcut="Cmd+T"

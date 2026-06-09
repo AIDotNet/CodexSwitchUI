@@ -10,7 +10,7 @@ public static class DropdownButtonInteractionSample
         var status = new CodexText
         {
             Role = CodexTextRole.Muted,
-            Text = "OpenChanged: dropdown starts open."
+            Text = "OpenChanged: dropdown starts closed."
         };
         var trigger = new CodexButton
         {
@@ -21,7 +21,6 @@ public static class DropdownButtonInteractionSample
         var dropdown = new CodexDropdownButton
         {
             Content = "Provider actions",
-            IsOpen = true,
             IsArrowVisible = true,
             Align = CodexDropdownAlign.Start,
             RestoreFocusElement = trigger,
@@ -49,7 +48,6 @@ public static class DropdownButtonInteractionSample
         var keepSurface = new CodexDropdownButton
         {
             Content = "Keep surface",
-            IsOpen = true,
             CloseOnItemSelected = false,
             Align = CodexDropdownAlign.End,
             DropDownContent = new StackPanel

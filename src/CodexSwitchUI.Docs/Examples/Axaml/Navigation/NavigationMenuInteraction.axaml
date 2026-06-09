@@ -7,7 +7,6 @@
   <controls:CodexNavigationMenu>
     <controls:CodexNavigationMenuItem Header="Overview"
                                       Icon="O"
-                                      IsOpen="True"
                                       ViewportWidth="360">
       <controls:CodexNavigationMenuContent Header="Pointer enter"
                                            Description="Trigger activation opens the shared viewport.">
@@ -43,7 +42,6 @@
     </controls:CodexNavigationMenuItem>
     <controls:CodexNavigationMenuItem Header="Active"
                                       Icon="A"
-                                      IsOpen="True"
                                       ViewportWidth="420">
       <controls:CodexNavigationMenuContent Header="Active"
                                            Description="The active item owns viewport width and content.">
@@ -64,7 +62,6 @@
     <controls:CodexNavigationMenuItem Header="Up"
                                       Content="Vertical previous item" />
     <controls:CodexNavigationMenuItem Header="Selected"
-                                      IsOpen="True"
                                       Content="Vertical viewport content" />
     <controls:CodexNavigationMenuItem Header="Disabled"
                                       IsEnabled="False"
@@ -76,8 +73,7 @@
   <controls:CodexNavigationMenu Grid.Row="1"
                                 Grid.Column="1">
     <controls:CodexNavigationMenuItem Header="Escape"
-                                      Icon="E"
-                                      IsOpen="True">
+                                      Icon="E">
       <controls:CodexNavigationMenuContent Header="Dismiss"
                                            Description="Escape closes the viewport and clears active item.">
         <controls:CodexNavigationMenuLink Content="Close contract"

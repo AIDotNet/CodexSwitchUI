@@ -200,8 +200,8 @@
   </Style>
 
   <Style Selector="controls|CodexButtonGroupText">
-    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
-    <Setter Property="Padding" Value="{DynamicResource CodexSwitch.ControlPaddingMd}" />
+    <Setter Property="MinHeight" Value="44" />
+    <Setter Property="Padding" Value="20,0" />
     <Setter Property="Background" Value="{DynamicResource CodexSwitch.MutedBrush}" />
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.MutedForegroundBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource CodexSwitch.BorderBrush}" />
@@ -252,8 +252,8 @@
   </Style>
 
   <Style Selector="controls|CodexButtonGroupText.size-icon">
-    <Setter Property="MinWidth" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
-    <Setter Property="MinHeight" Value="{DynamicResource CodexSwitch.ControlHeightMd}" />
+    <Setter Property="MinWidth" Value="44" />
+    <Setter Property="MinHeight" Value="44" />
     <Setter Property="Padding" Value="0" />
   </Style>
 

@@ -96,7 +96,7 @@
     <Setter Property="FontFamily" Value="{DynamicResource CodexSwitch.FontFamily}" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeMd}" />
     <Setter Property="MinHeight" Value="32" />
-    <Setter Property="Padding" Value="6,6" />
+    <Setter Property="Padding" Value="8,6" />
     <Setter Property="Foreground" Value="{DynamicResource CodexSwitch.PopoverForegroundBrush}" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderBrush" Value="Transparent" />
@@ -410,7 +410,7 @@
   </Style>
 
   <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.inset /template/ Panel Border#PART_ItemRoot">
-    <Setter Property="Padding" Value="30,6,8,6" />
+    <Setter Property="Padding" Value="32,6,8,6" />
   </Style>
 
   <Style Selector="controls|CodexContextMenu controls|CodexContextMenuItem.has-submenu /template/ Panel Border#PART_ItemRoot PathIcon#PART_SubMenuArrow">
@@ -468,13 +468,13 @@
 
   <Style Selector="controls|CodexContextMenu.size-sm controls|CodexContextMenuItem">
     <Setter Property="MinHeight" Value="28" />
-    <Setter Property="Padding" Value="6,4" />
+    <Setter Property="Padding" Value="8,4" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeSm}" />
   </Style>
 
   <Style Selector="controls|CodexContextMenu.size-lg controls|CodexContextMenuItem">
     <Setter Property="MinHeight" Value="38" />
-    <Setter Property="Padding" Value="8,8" />
+    <Setter Property="Padding" Value="10,8" />
     <Setter Property="FontSize" Value="{DynamicResource CodexSwitch.FontSizeLg}" />
   </Style>
 
@@ -528,7 +528,7 @@
   </Style>
 
   <Style Selector="controls|CodexContextMenuLabel.inset">
-    <Setter Property="Padding" Value="30,6,8,6" />
+    <Setter Property="Padding" Value="32,6,8,6" />
   </Style>
 
   <Style Selector="controls|CodexContextMenuShortcut">
